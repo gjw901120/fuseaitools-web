@@ -1,0 +1,28 @@
+/* 基础样式设置 */
+:root {
+    --container-padding: 4rem;
+    --section-spacing: 4rem;
+    --content-max-width: 1600px;
+}
+
+/* 基础样式设置 */
+* {
+    box-sizing: border-box;
+}
+
+/* 响应式间距 */
+@media (max-width: 768px) {
+    :root {
+        --container-padding: 1rem;
+        --section-spacing: 3rem;
+    }
+}
+
+/* 通用间距工具类 */
+.section-spacing {
+    margin: var(--section-spacing) 0;
+}
+
+.content-padding {
+    padding: 0 var(--container-padding);
+}

@@ -1,0 +1,43 @@
+User-agent: *
+Allow: /
+
+# 主要页面
+Allow: /home
+Allow: /about
+Allow: /pricing
+Allow: /tools
+Allow: /news
+
+# AI工具页面
+Allow: /home/gpt-4o-image
+Allow: /home/elevenlabs
+Allow: /home/elevenlabs/multilingual-v2
+Allow: /home/elevenlabs/turbo-2-5
+Allow: /home/elevenlabs/speech-to-text
+Allow: /home/elevenlabs/sound-effect-v2
+Allow: /home/elevenlabs/audio-isolation
+Allow: /home/nano-banana
+Allow: /home/midjourney
+Allow: /home/veo3
+Allow: /home/runway
+Allow: /home/luma
+
+# 静态资源
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# 禁止访问
+Disallow: /api/
+Disallow: /_nuxt/
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://simplyaitools.com/sitemap.xml
+
+
+
+
+
+

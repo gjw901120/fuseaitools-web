@@ -1,0 +1,74 @@
+/* 专门的容器样式文件 - 确保布局正确 */
+
+/* 重置所有可能干扰的样式 */
+.simply-container {
+    all: initial !important;
+    display: block !important;
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* 确保内容正常显示 */
+.simply-container * {
+    box-sizing: border-box;
+}
+
+/* 针对不同组件的特定样式 */
+.app-header .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+.hero-section .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+.app-footer .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+.pricing-section .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+.product-showcase .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+.image-gallery .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+.pricing-page .simply-container {
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 4rem !important;
+    width: 100% !important;
+}
+
+/* 移动端响应式 */
+@media (max-width: 768px) {
+    .simply-container {
+        padding: 0 2rem !important;
+    }
+}

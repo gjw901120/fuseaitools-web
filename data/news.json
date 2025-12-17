@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "slug": "introducing-gpt5-next-generation-ai-language-models",
+    "title": "Introducing GPT-5: The Next Generation of AI Language Models",
+    "excerpt": "OpenAI has announced the release of GPT-5, featuring improved reasoning capabilities and enhanced multimodal understanding.",
+    "category": "Chat",
+    "image": "/images/news/gpt5-announcement.jpg",
+    "publishDate": "2024-01-15",
+    "readTime": 5,
+    "content": "Full article content about GPT-5..."
+  },
+  {
+    "id": 2,
+    "slug": "simplyai-tools-claude4-integration",
+    "title": "SimplyAI Tools Now Supports Claude 4 Integration",
+    "excerpt": "We are excited to announce the integration of Claude 4 into our platform, providing users with access to Anthropic's latest AI model.",
+    "category": "Image",
+    "image": "/images/news/claude4-integration.jpg",
+    "publishDate": "2024-01-12",
+    "readTime": 3,
+    "content": "Full article content about Claude 4 integration..."
+  },
+  {
+    "id": 3,
+    "slug": "future-ai-business-trends-2024",
+    "title": "The Future of AI in Business: Trends to Watch in 2024",
+    "excerpt": "Explore the key AI trends that will shape business operations and decision-making processes throughout 2024.",
+    "category": "Audio",
+    "image": "/images/news/ai-business-trends.jpg",
+    "publishDate": "2024-01-10",
+    "readTime": 7,
+    "content": "Full article content about AI business trends..."
+  },
+  {
+    "id": 4,
+    "slug": "maximize-productivity-ai-writing-tools",
+    "title": "How to Maximize Productivity with AI Writing Tools",
+    "excerpt": "Learn practical tips and techniques for using AI writing assistants to boost your content creation efficiency.",
+    "category": "Video",
+    "image": "/images/news/ai-writing-tips.jpg",
+    "publishDate": "2024-01-08",
+    "readTime": 4,
+    "content": "Full article content about AI writing tips..."
+  },
+  {
+    "id": 5,
+    "slug": "new-dashboard-features-enhanced-analytics",
+    "title": "New Dashboard Features: Enhanced Analytics and Reporting",
+    "excerpt": "Discover the latest dashboard improvements that provide deeper insights into your AI usage and performance metrics.",
+    "category": "Image",
+    "image": "/images/news/dashboard-updates.jpg",
+    "publishDate": "2024-01-05",
+    "readTime": 3,
+    "content": "Full article content about dashboard updates..."
+  },
+  {
+    "id": 6,
+    "slug": "ai-ethics-2024-balancing-innovation-responsibility",
+    "title": "AI Ethics in 2024: Balancing Innovation with Responsibility",
+    "excerpt": "A comprehensive look at the evolving landscape of AI ethics and the importance of responsible AI development.",
+    "category": "Audio",
+    "image": "/images/news/ai-ethics.jpg",
+    "publishDate": "2024-01-03",
+    "readTime": 6,
+    "content": "Full article content about AI ethics..."
+  },
+  {
+    "id": 7,
+    "slug": "getting-started-midjourney-complete-guide",
+    "title": "Getting Started with Midjourney: A Complete Guide",
+    "excerpt": "Everything you need to know to start creating stunning AI-generated images with Midjourney.",
+    "category": "Video",
+    "image": "/images/news/midjourney-guide.jpg",
+    "publishDate": "2024-01-01",
+    "readTime": 8,
+    "content": "Full article content about Midjourney guide..."
+  },
+  {
+    "id": 8,
+    "slug": "rise-multimodal-ai-beyond-text-images",
+    "title": "The Rise of Multimodal AI: Beyond Text and Images",
+    "excerpt": "Exploring how AI models are evolving to understand and generate content across multiple modalities.",
+    "category": "Chat",
+    "image": "/images/news/multimodal-ai.jpg",
+    "publishDate": "2023-12-28",
+    "readTime": 5,
+    "content": "Full article content about multimodal AI..."
+  },
+  {
+    "id": 9,
+    "slug": "openai-latest-breakthrough-gpt4-turbo-performance",
+    "title": "OpenAI's Latest Breakthrough: GPT-4 Turbo Performance",
+    "excerpt": "Discover the enhanced capabilities and improved performance of OpenAI's GPT-4 Turbo model.",
+    "category": "Chat",
+    "image": "/images/news/gpt4-turbo.jpg",
+    "publishDate": "2023-12-25",
+    "readTime": 6,
+    "content": "Full article content about GPT-4 Turbo..."
+  },
+  {
+    "id": 10,
+    "slug": "building-ai-powered-applications-best-practices",
+    "title": "Building AI-Powered Applications: Best Practices",
+    "excerpt": "Learn the essential best practices for developing robust and scalable AI-powered applications.",
+    "category": "Video",
+    "image": "/images/news/ai-app-development.jpg",
+    "publishDate": "2023-12-22",
+    "readTime": 7,
+    "content": "Full article content about AI app development..."
+  },
+  {
+    "id": 11,
+    "slug": "impact-ai-healthcare-revolutionary-changes",
+    "title": "The Impact of AI on Healthcare: Revolutionary Changes",
+    "excerpt": "How artificial intelligence is transforming healthcare delivery and patient outcomes.",
+    "category": "Audio",
+    "image": "/images/news/ai-healthcare.jpg",
+    "publishDate": "2023-12-20",
+    "readTime": 8,
+    "content": "Full article content about AI in healthcare..."
+  },
+  {
+    "id": 12,
+    "slug": "simplyai-tools-platform-updates-december-2023",
+    "title": "SimplyAI Tools Platform Updates: December 2023",
+    "excerpt": "Check out the latest features and improvements added to the SimplyAI Tools platform this month.",
+    "category": "Image",
+    "image": "/images/news/platform-updates-dec.jpg",
+    "publishDate": "2023-12-18",
+    "readTime": 4,
+    "content": "Full article content about December platform updates..."
+  },
+  {
+    "id": 13,
+    "slug": "understanding-ai-model-training-technical-deep-dive",
+    "title": "Understanding AI Model Training: A Technical Deep Dive",
+    "excerpt": "A comprehensive guide to understanding how AI models are trained and optimized.",
+    "category": "Video",
+    "image": "/images/news/ai-training.jpg",
+    "publishDate": "2023-12-15",
+    "readTime": 10,
+    "content": "Full article content about AI model training..."
+  },
+  {
+    "id": 14,
+    "slug": "future-work-ai-integration-business",
+    "title": "The Future of Work: AI Integration in Business",
+    "excerpt": "Exploring how businesses are integrating AI to enhance productivity and streamline operations.",
+    "category": "Audio",
+    "image": "/images/news/ai-workplace.jpg",
+    "publishDate": "2023-12-12",
+    "readTime": 6,
+    "content": "Full article content about AI in the workplace..."
+  },
+  {
+    "id": 15,
+    "slug": "advanced-prompt-engineering-techniques",
+    "title": "Advanced Prompt Engineering Techniques",
+    "excerpt": "Master the art of prompt engineering with these advanced techniques for better AI interactions.",
+    "category": "Video",
+    "image": "/images/news/prompt-engineering.jpg",
+    "publishDate": "2023-12-10",
+    "readTime": 9,
+    "content": "Full article content about prompt engineering..."
+  }
+]
