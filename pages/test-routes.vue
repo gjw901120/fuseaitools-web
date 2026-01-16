@@ -14,11 +14,11 @@
 <script setup>
 // SEO 优化
 useHead({
-  title: '路由测试 - SimplyAI Tools',
+  title: 'Route Testing - FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: '测试所有工具的路由功能是否正常工作。'
+      content: 'Test whether all tool routing functions work properly.'
     }
   ]
 })

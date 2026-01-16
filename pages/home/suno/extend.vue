@@ -12,15 +12,15 @@ const router = useRouter()
 
 // SEO 优化
 useHead({
-  title: 'Suno 音乐延长 - AI音乐延长工具 | SimplyAI Tools',
+  title: 'Suno Music Extension - AI Music Extension Tool | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: '使用Suno模型延长现有音乐作品，支持自定义参数模式，可以控制延长部分的音乐风格和内容。'
+      content: 'Extend existing music works using Suno model, supporting custom parameter mode, can control music style and content of the extended part.'
     },
     {
       name: 'keywords',
-      content: 'Suno, AI音乐延长, 音乐扩展, 人工智能, 音乐创作, AI工具'
+      content: 'Suno, AI music extension, music expansion, artificial intelligence, music creation, AI tools'
     }
   ]
 })

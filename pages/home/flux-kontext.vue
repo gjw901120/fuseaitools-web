@@ -1,32 +1,37 @@
 <template>
-  <div class="tool-page">
-    <FluxKontextTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <FluxKontextTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
 import FluxKontextTool from '~/components/tools/FluxKontextTool.vue'
 
+import { useToolSEO } from '~/composables/useToolSEO'
+
 // SEO 优化
-useHead({
-  title: 'Flux Kontext - AI图像生成工具 | SimplyAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: '使用Flux Kontext模型生成高质量AI图像，支持图像生成和编辑两种模式，提供多种长宽比和输出格式选择。'
-    },
-    {
-      name: 'keywords',
-      content: 'Flux Kontext, AI图像生成, 图像编辑, 人工智能, 图像创作, AI工具'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'Flux Kontext',
+  description: 'Use Flux Kontext for free online. Generate high-quality AI images using Flux Kontext model, supporting both image generation and editing modes. Multiple aspect ratios, output formats, and creative styles available.',
+  category: 'image',
+  route: '/home/flux-kontext',
+  keywords: ['Flux Kontext', 'Flux', 'AI image generation', 'image editing', 'artificial intelligence', 'image creation', 'AI tools', 'Flux AI', 'image generator', 'AI art'],
+  applicationCategory: 'GraphicsApplication',
+  offers: {
+    price: '0',
+    priceCurrency: 'USD'
+  }
 })
+
+useHead(seoConfig)
 </script>
 
 <style scoped>
 .tool-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 </style>
 

@@ -9,15 +9,15 @@ import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 
 // SEO 优化
 useHead({
-  title: 'ElevenLabs Multilingual v2 - 多语言语音合成 | SimplyAI Tools',
+  title: 'ElevenLabs Multilingual v2 - Multilingual Voice Synthesis | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: 'ElevenLabs Multilingual v2模型，支持100+种语言的AI语音合成，适合国际内容创作，高质量多语言语音生成工具。'
+      content: 'ElevenLabs Multilingual v2 model, supporting AI voice synthesis in 100+ languages, suitable for international content creation, high-quality multilingual voice generation tool.'
     },
     {
       name: 'keywords',
-      content: 'ElevenLabs Multilingual v2, 多语言语音合成, AI语音, 国际语音, 多语言TTS, 语音生成'
+      content: 'ElevenLabs Multilingual v2, multilingual voice synthesis, AI voice, international voice, multilingual TTS, voice generation'
     }
   ]
 })

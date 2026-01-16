@@ -66,7 +66,7 @@
               :max-files="5"
               :max-file-size="10 * 1024 * 1024"
               additional-hint="Upload reference images to guide generation direction"
-              theme-color="#764ba2"
+              theme-color="#667eea"
               @update:files="handleImagineFilesUpdate"
             />
           </div>
@@ -93,7 +93,7 @@
               :max-files="5"
               :max-file-size="10 * 1024 * 1024"
               additional-hint="Upload 2-5 images for creative blending"
-              theme-color="#764ba2"
+              theme-color="#667eea"
               @update:files="handleBlendFilesUpdate"
             />
               </div>
@@ -146,7 +146,7 @@
               :multiple="false"
               :max-file-size="10 * 1024 * 1024"
               additional-hint="Upload image to get AI-generated text description"
-              theme-color="#764ba2"
+              theme-color="#667eea"
               @update:files="handleDescribeFileUpdate"
             />
               </div>
@@ -173,7 +173,7 @@
               :multiple="false"
               :max-file-size="10 * 1024 * 1024"
               additional-hint="Upload image containing the face to extract"
-              theme-color="#764ba2"
+              theme-color="#667eea"
               @update:files="handleSourceFileUpdate"
             />
             </div>
@@ -188,7 +188,7 @@
               :multiple="false"
               :max-file-size="10 * 1024 * 1024"
               additional-hint="Upload image to replace face"
-              theme-color="#764ba2"
+              theme-color="#667eea"
               @update:files="handleTargetFileUpdate"
             />
           </div>
@@ -201,17 +201,6 @@
             </button>
           </div>
         </form>
-        
-        <!-- 使用提示 -->
-        <div class="tips-panel">
-          <h4>💡 Usage Tips</h4>
-          <ul class="tips-list">
-            <li><strong>Imagine:</strong> Describe the image you want in English, the more detailed the better</li>
-            <li><strong>Blend:</strong> Select 2-5 images for creative blending</li>
-            <li><strong>Describe:</strong> Upload image to get AI-generated text description</li>
-            <li><strong>Swap Face:</strong> Replace face from one image to another</li>
-          </ul>
-        </div>
       </div>
 
       <div class="results-display-panel">
@@ -261,6 +250,26 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Usage Tips -->
+    <div class="usage-tips">
+      <div class="tip-item">
+        <span class="tip-icon">🎨</span>
+        <span><strong>Imagine:</strong> Describe the image you want in English, the more detailed the better</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🔄</span>
+        <span><strong>Blend:</strong> Select 2-5 images for creative blending</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📝</span>
+        <span><strong>Describe:</strong> Upload image to get AI-generated text description</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">👤</span>
+        <span><strong>Swap Face:</strong> Replace face from one image to another</span>
       </div>
     </div>
   </div>
@@ -596,11 +605,11 @@ const getResultType = (data) => {
 }
 
 .function-tab.active {
-  background: #764ba2;
-  border-color: #764ba2;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .function-icon {
@@ -621,7 +630,7 @@ const getResultType = (data) => {
 
 .function-icon i {
   font-size: 15px;
-  color: #764ba2;
+  color: #667eea;
 }
 
 .function-tab.active .function-icon i {
@@ -669,7 +678,7 @@ const getResultType = (data) => {
 }
 
 .function-info-icon:hover {
-  color: #764ba2;
+  color: #667eea;
 }
 
 .function-tab.active .function-info-icon:hover {
@@ -788,11 +797,6 @@ const getResultType = (data) => {
   overflow-y: auto;
 }
 
-.config-panel .tips-panel {
-  padding: 20px;
-  border-top: 1px solid #e2e8f0;
-  margin-top: 20px;
-}
 
 .config-header h4 {
   font-size: 16px;
@@ -830,13 +834,13 @@ const getResultType = (data) => {
 
 .mode-tab:hover {
   background: #f8fafc;
-  border-color: #764ba2;
-  color: #764ba2;
+  border-color: #667eea;
+  color: #667eea;
 }
 
 .mode-tab.active {
-  background: #764ba2;
-  border-color: #764ba2;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
 }
 
@@ -873,7 +877,7 @@ const getResultType = (data) => {
 }
 
 .task-option:hover {
-  border-color: #764ba2;
+  border-color: #667eea;
   background: #f8fafc;
 }
 
@@ -890,12 +894,12 @@ const getResultType = (data) => {
 }
 
 .option-label i {
-  color: #764ba2;
+  color: #667eea;
 }
 
 .task-option:has(input:checked) {
-  background: #764ba2;
-  border-color: #764ba2;
+  background: #667eea;
+  border-color: #667eea;
 }
 
 .task-option:has(input:checked) .option-label {
@@ -933,8 +937,8 @@ const getResultType = (data) => {
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #764ba2;
-  box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .form-group textarea {
@@ -979,7 +983,7 @@ const getResultType = (data) => {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #764ba2;
+  background: #667eea;
   cursor: pointer;
 }
 
@@ -987,7 +991,7 @@ const getResultType = (data) => {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #764ba2;
+  background: #667eea;
   cursor: pointer;
   border: none;
 }
@@ -996,7 +1000,7 @@ const getResultType = (data) => {
   min-width: 40px;
   text-align: center;
   font-weight: 600;
-  color: #764ba2;
+  color: #667eea;
 }
 
 /* 选择器样式 */
@@ -1077,7 +1081,7 @@ const getResultType = (data) => {
 .btn-primary {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #764ba2, #667eea);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border: none;
   border-radius: 12px;
@@ -1093,7 +1097,7 @@ const getResultType = (data) => {
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(118, 75, 162, 0.3);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:disabled {
@@ -1192,8 +1196,8 @@ const getResultType = (data) => {
 .result-type {
   font-size: 12px;
   font-weight: 600;
-  color: #764ba2;
-  background: rgba(118, 75, 162, 0.1);
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
   padding: 4px 8px;
   border-radius: 4px;
 }
@@ -1217,7 +1221,7 @@ const getResultType = (data) => {
 
 .file-count {
   font-size: 12px;
-  color: #764ba2;
+  color: #667eea;
   font-weight: 500;
   margin-top: 4px;
 }
@@ -1327,54 +1331,49 @@ const getResultType = (data) => {
   font-size: 16px;
   color: #64748b;
   padding: 8px 16px;
-  background: rgba(118, 75, 162, 0.1);
+  background: rgba(102, 126, 234, 0.1);
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 .feature-item:hover {
-  background: rgba(118, 75, 162, 0.15);
+  background: rgba(102, 126, 234, 0.15);
   transform: translateY(-2px);
 }
 
 .feature-item i {
-  color: #764ba2;
+  color: #667eea;
   width: 20px;
   font-size: 18px;
 }
 
 /* 提示面板 */
-.tips-panel {
-  background: white;
+/* Usage Tips - Horizontal layout like Suno */
+.usage-tips {
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
-.section-split {
-  height: 1px;
-  background: #e2e8f0;
-  margin: 16px 0;
-}
-
-.tips-panel h4 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 12px 0;
-}
-
-.tips-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tips-list li {
-  font-size: 12px;
-  color: #64748b;
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
-  line-height: 1.5;
+  font-size: 14px;
+  color: #64748b;
 }
 
-.tips-list strong {
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.tip-item strong {
   color: #374151;
 }
 
@@ -1405,15 +1404,15 @@ const getResultType = (data) => {
 
 .ratio-tab:hover {
   background: #f8fafc;
-  border-color: #764ba2;
+  border-color: #667eea;
   color: #374151;
 }
 
 .ratio-tab.active {
-  background: #764ba2;
-  border-color: #764ba2;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
-  box-shadow: 0 2px 4px rgba(118, 75, 162, 0.3);
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
 }
 
 /* 响应式设计 */

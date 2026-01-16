@@ -6,7 +6,7 @@
         <div class="hero-content">
           <h1 class="hero-title">AI News & Updates</h1>
           <p class="hero-subtitle">
-            Stay updated with the latest AI trends, product updates, and industry insights from SimplyAI Tools.
+            Stay updated with the latest AI trends, product updates, and industry insights from FuseAI Tools.
           </p>
         </div>
       </div>
@@ -115,10 +115,10 @@
 <script setup>
 // SEO配置 - 静态外壳的SEO信息
 useHead({
-  title: 'AI News & Updates - SimplyAI Tools',
+  title: 'AI News & Updates - FuseAI Tools',
   meta: [
-    { name: 'description', content: 'Stay updated with the latest AI trends, product updates, and industry insights from SimplyAI Tools.' },
-    { name: 'keywords', content: 'AI news, artificial intelligence updates, AI trends, SimplyAI tools news' }
+    { name: 'description', content: 'Stay updated with the latest AI trends, product updates, and industry insights from FuseAI Tools.' },
+    { name: 'keywords', content: 'AI news, artificial intelligence updates, AI trends, FuseAI tools news' }
   ]
 })
 

@@ -12,15 +12,15 @@ const router = useRouter()
 
 // SEO 优化
 useHead({
-  title: 'Suno 伴奏生成 - AI伴奏生成工具 | SimplyAI Tools',
+  title: 'Suno Accompaniment Generation - AI Accompaniment Generation Tool | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: '使用Suno模型为现有音频添加背景伴奏，通过包含标签和排除标签控制音乐风格，无需提示词。'
+      content: 'Add background accompaniment to existing audio using Suno model, control music style through include and exclude tags, no prompts needed.'
     },
     {
       name: 'keywords',
-      content: 'Suno, AI伴奏生成, 伴奏制作, 人工智能, 音乐创作, AI工具'
+      content: 'Suno, AI accompaniment generation, accompaniment production, artificial intelligence, music creation, AI tools'
     }
   ]
 })

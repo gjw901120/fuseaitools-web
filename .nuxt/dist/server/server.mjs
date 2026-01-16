@@ -1,1 +1,1 @@
-export { default } from "file:///C:/project/simplyaitools-web/node_modules/nuxt/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"
+export { default } from "file:///C:/project/fuseaitools-web/node_modules/nuxt/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"

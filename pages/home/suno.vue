@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-page">
-    <SunoTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <SunoTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
@@ -10,26 +12,29 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
+import { useToolSEO } from '~/composables/useToolSEO'
+
 // SEO 优化
-useHead({
-  title: 'Suno - AI音乐生成工具 | SimplyAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: '使用Suno AI模型生成高质量音乐，支持多种风格和自定义参数，从简化模式到高级自定义模式，满足不同音乐创作需求。'
-    },
-    {
-      name: 'keywords',
-      content: 'Suno, AI音乐生成, 音乐创作, 人工智能, 音乐制作, AI工具, 音乐合成'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'Suno',
+  description: 'Use Suno for free online. Generate high-quality music using Suno AI model, supporting multiple styles, custom parameters, music extension, audio cover, and vocal generation. From simplified mode to advanced custom mode.',
+  category: 'audio',
+  route: '/home/suno',
+  keywords: ['Suno', 'AI music generation', 'music creation', 'artificial intelligence', 'music production', 'AI tools', 'music synthesis', 'AI music', 'music generator', 'audio generation'],
+  applicationCategory: 'AudioApplication',
+  offers: {
+    price: '0',
+    priceCurrency: 'USD'
+  }
 })
+
+useHead(seoConfig)
 </script>
 
 <style scoped>
 .tool-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 </style>
 

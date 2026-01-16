@@ -1,32 +1,37 @@
 <template>
-  <div class="tool-page">
-    <MidjourneyTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <MidjourneyTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
 import MidjourneyTool from '~/components/tools/MidjourneyTool.vue'
 
+import { useToolSEO } from '~/composables/useToolSEO'
+
 // SEO 优化
-useHead({
-  title: 'Midjourney - 专业AI图像生成工具 | SimplyAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: 'Midjourney专业AI图像生成工具，创造高质量艺术作品，支持多种风格和创意表达，艺术家和设计师的首选工具。'
-    },
-    {
-      name: 'keywords',
-      content: 'Midjourney, AI图像生成, 艺术创作, AI绘画, 创意设计, 专业图像生成'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'Midjourney',
+  description: 'Use Midjourney for free online. Professional AI image generation tool creating high-quality artworks, illustrations, and creative designs. Supports multiple styles, aspect ratios, and artistic expressions. Perfect for artists and designers.',
+  category: 'image',
+  route: '/home/midjourney',
+  keywords: ['Midjourney', 'AI image generation', 'art creation', 'AI painting', 'creative design', 'professional image generation', 'AI art', 'digital art', 'image creator'],
+  applicationCategory: 'GraphicsApplication',
+  offers: {
+    price: '0',
+    priceCurrency: 'USD'
+  }
 })
+
+useHead(seoConfig)
 </script>
 
 <style scoped>
 .tool-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 </style>
 

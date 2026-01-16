@@ -12,8 +12,8 @@
   },
   {
     "id": 2,
-    "slug": "simplyai-tools-claude4-integration",
-    "title": "SimplyAI Tools Now Supports Claude 4 Integration",
+    "slug": "fuseai-tools-claude4-integration",
+    "title": "FuseAI Tools Now Supports Claude 4 Integration",
     "excerpt": "We are excited to announce the integration of Claude 4 into our platform, providing users with access to Anthropic's latest AI model.",
     "category": "Image",
     "image": "/images/news/claude4-integration.jpg",
@@ -122,9 +122,9 @@
   },
   {
     "id": 12,
-    "slug": "simplyai-tools-platform-updates-december-2023",
-    "title": "SimplyAI Tools Platform Updates: December 2023",
-    "excerpt": "Check out the latest features and improvements added to the SimplyAI Tools platform this month.",
+    "slug": "fuseai-tools-platform-updates-december-2023",
+    "title": "FuseAI Tools Platform Updates: December 2023",
+    "excerpt": "Check out the latest features and improvements added to the FuseAI Tools platform this month.",
     "category": "Image",
     "image": "/images/news/platform-updates-dec.jpg",
     "publishDate": "2023-12-18",

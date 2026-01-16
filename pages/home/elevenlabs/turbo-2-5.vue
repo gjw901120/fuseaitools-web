@@ -9,15 +9,15 @@ import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 
 // SEO 优化
 useHead({
-  title: 'ElevenLabs Turbo 2.5 - 快速语音合成 | SimplyAI Tools',
+  title: 'ElevenLabs Turbo 2.5 - Fast Voice Synthesis | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: 'ElevenLabs Turbo 2.5专为速度优化，生成速度快3倍，适合实时应用和批量处理，高效的AI语音合成工具。'
+      content: 'ElevenLabs Turbo 2.5 optimized for speed, 3x faster generation, suitable for real-time applications and batch processing, efficient AI voice synthesis tool.'
     },
     {
       name: 'keywords',
-      content: 'ElevenLabs Turbo 2.5, 快速语音合成, 实时语音, 批量处理, 高速TTS, 语音生成'
+      content: 'ElevenLabs Turbo 2.5, fast voice synthesis, real-time voice, batch processing, high-speed TTS, voice generation'
     }
   ]
 })

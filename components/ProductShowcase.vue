@@ -152,8 +152,10 @@ const toolCategories = [
 .showcase-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 42px; /* 60px * 0.7 */
   align-items: start;
+  max-width: 84%; /* 缩小整体宽度30% */
+  margin: 0 auto;
 }
 
 .section-title {
@@ -167,7 +169,7 @@ const toolCategories = [
 .models-grid {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.4rem; /* 2rem * 0.7 */
 }
 
 .model-category h3 {
@@ -187,12 +189,13 @@ const toolCategories = [
 .model-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  gap: 0.525rem; /* 0.75rem * 0.7 */
+  padding: 0.525rem 0.7rem; /* 0.75rem * 0.7, 1rem * 0.7 */
   background: white;
-  border-radius: 8px;
+  border-radius: 5.6px; /* 8px * 0.7 */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  font-size: 0.875rem; /* 缩小字体 */
 }
 
 .model-item:hover {
@@ -202,12 +205,13 @@ const toolCategories = [
 
 .model-item i {
   color: #667eea;
-  width: 20px;
+  width: 14px; /* 20px * 0.7 */
+  font-size: 0.875rem; /* 缩小图标大小 */
 }
 
 .tools-grid {
   display: grid;
-  gap: 2rem;
+  gap: 1.4rem; /* 2rem * 0.7 */
 }
 
 @media (max-width: 1024px) {

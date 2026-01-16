@@ -3,11 +3,35 @@ import type { Serialize, Simplify } from "nitropack/types";
 declare module "nitropack/types" {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/chat/chatgpt': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/chatgpt.post').default>>>>
+    }
+    '/api/chat/claude': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/claude.post').default>>>>
+    }
+    '/api/chat/deepseek': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/deepseek.post').default>>>>
+    }
+    '/api/chat/gemini': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/gemini.post').default>>>>
+    }
+    '/api/common/models/tree': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/models/tree.get').default>>>>
+    }
     '/api/news/:slug': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/[slug].get').default>>>>
     }
     '/api/news': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/index.get').default>>>>
+    }
+    '/api/user/login-by-email': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/login-by-email.post').default>>>>
+    }
+    '/api/user/send-email-code': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/send-email-code.post').default>>>>
+    }
+    '/sitemap.xml': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/sitemap.xml.get').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/handlers/renderer').default>>>>

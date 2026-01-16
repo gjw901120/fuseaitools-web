@@ -15,17 +15,24 @@ interface _GlobalComponents {
       'AppFooter': typeof import("../components/AppFooter.vue")['default']
     'AppHeader': typeof import("../components/AppHeader.vue")['default']
     'AudioUpload': typeof import("../components/AudioUpload.vue")['default']
+    'Breadcrumb': typeof import("../components/Breadcrumb.vue")['default']
+    'ChatInterface': typeof import("../components/ChatInterface.vue")['default']
     'FAQSection': typeof import("../components/FAQSection.vue")['default']
     'FeatureCard': typeof import("../components/FeatureCard.vue")['default']
     'FeatureGrid': typeof import("../components/FeatureGrid.vue")['default']
     'FileUpload': typeof import("../components/FileUpload.vue")['default']
     'HeroSection': typeof import("../components/HeroSection.vue")['default']
+    'HomeLayout': typeof import("../components/HomeLayout.vue")['default']
     'ImageGallery': typeof import("../components/ImageGallery.vue")['default']
+    'LoginModal': typeof import("../components/LoginModal.vue")['default']
     'PricingCard': typeof import("../components/PricingCard.vue")['default']
     'PricingSection': typeof import("../components/PricingSection.vue")['default']
     'ProductDropdown': typeof import("../components/ProductDropdown.vue")['default']
     'ProductShowcase': typeof import("../components/ProductShowcase.vue")['default']
+    'Toast': typeof import("../components/Toast.vue")['default']
+    'ToastContainer': typeof import("../components/ToastContainer.vue")['default']
     'ToolCategory': typeof import("../components/ToolCategory.vue")['default']
+    'VerifyCodeModal': typeof import("../components/VerifyCodeModal.vue")['default']
     'ToolsElevenLabsTool': typeof import("../components/tools/ElevenLabsTool.vue")['default']
     'ToolsFluxKontextTool': typeof import("../components/tools/FluxKontextTool.vue")['default']
     'ToolsGPT4oImageTool': typeof import("../components/tools/GPT4oImageTool.vue")['default']
@@ -65,17 +72,24 @@ interface _GlobalComponents {
       'LazyAppFooter': LazyComponent<typeof import("../components/AppFooter.vue")['default']>
     'LazyAppHeader': LazyComponent<typeof import("../components/AppHeader.vue")['default']>
     'LazyAudioUpload': LazyComponent<typeof import("../components/AudioUpload.vue")['default']>
+    'LazyBreadcrumb': LazyComponent<typeof import("../components/Breadcrumb.vue")['default']>
+    'LazyChatInterface': LazyComponent<typeof import("../components/ChatInterface.vue")['default']>
     'LazyFAQSection': LazyComponent<typeof import("../components/FAQSection.vue")['default']>
     'LazyFeatureCard': LazyComponent<typeof import("../components/FeatureCard.vue")['default']>
     'LazyFeatureGrid': LazyComponent<typeof import("../components/FeatureGrid.vue")['default']>
     'LazyFileUpload': LazyComponent<typeof import("../components/FileUpload.vue")['default']>
     'LazyHeroSection': LazyComponent<typeof import("../components/HeroSection.vue")['default']>
+    'LazyHomeLayout': LazyComponent<typeof import("../components/HomeLayout.vue")['default']>
     'LazyImageGallery': LazyComponent<typeof import("../components/ImageGallery.vue")['default']>
+    'LazyLoginModal': LazyComponent<typeof import("../components/LoginModal.vue")['default']>
     'LazyPricingCard': LazyComponent<typeof import("../components/PricingCard.vue")['default']>
     'LazyPricingSection': LazyComponent<typeof import("../components/PricingSection.vue")['default']>
     'LazyProductDropdown': LazyComponent<typeof import("../components/ProductDropdown.vue")['default']>
     'LazyProductShowcase': LazyComponent<typeof import("../components/ProductShowcase.vue")['default']>
+    'LazyToast': LazyComponent<typeof import("../components/Toast.vue")['default']>
+    'LazyToastContainer': LazyComponent<typeof import("../components/ToastContainer.vue")['default']>
     'LazyToolCategory': LazyComponent<typeof import("../components/ToolCategory.vue")['default']>
+    'LazyVerifyCodeModal': LazyComponent<typeof import("../components/VerifyCodeModal.vue")['default']>
     'LazyToolsElevenLabsTool': LazyComponent<typeof import("../components/tools/ElevenLabsTool.vue")['default']>
     'LazyToolsFluxKontextTool': LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
     'LazyToolsGPT4oImageTool': LazyComponent<typeof import("../components/tools/GPT4oImageTool.vue")['default']>
@@ -121,17 +135,24 @@ declare module 'vue' {
 export const AppFooter: typeof import("../components/AppFooter.vue")['default']
 export const AppHeader: typeof import("../components/AppHeader.vue")['default']
 export const AudioUpload: typeof import("../components/AudioUpload.vue")['default']
+export const Breadcrumb: typeof import("../components/Breadcrumb.vue")['default']
+export const ChatInterface: typeof import("../components/ChatInterface.vue")['default']
 export const FAQSection: typeof import("../components/FAQSection.vue")['default']
 export const FeatureCard: typeof import("../components/FeatureCard.vue")['default']
 export const FeatureGrid: typeof import("../components/FeatureGrid.vue")['default']
 export const FileUpload: typeof import("../components/FileUpload.vue")['default']
 export const HeroSection: typeof import("../components/HeroSection.vue")['default']
+export const HomeLayout: typeof import("../components/HomeLayout.vue")['default']
 export const ImageGallery: typeof import("../components/ImageGallery.vue")['default']
+export const LoginModal: typeof import("../components/LoginModal.vue")['default']
 export const PricingCard: typeof import("../components/PricingCard.vue")['default']
 export const PricingSection: typeof import("../components/PricingSection.vue")['default']
 export const ProductDropdown: typeof import("../components/ProductDropdown.vue")['default']
 export const ProductShowcase: typeof import("../components/ProductShowcase.vue")['default']
+export const Toast: typeof import("../components/Toast.vue")['default']
+export const ToastContainer: typeof import("../components/ToastContainer.vue")['default']
 export const ToolCategory: typeof import("../components/ToolCategory.vue")['default']
+export const VerifyCodeModal: typeof import("../components/VerifyCodeModal.vue")['default']
 export const ToolsElevenLabsTool: typeof import("../components/tools/ElevenLabsTool.vue")['default']
 export const ToolsFluxKontextTool: typeof import("../components/tools/FluxKontextTool.vue")['default']
 export const ToolsGPT4oImageTool: typeof import("../components/tools/GPT4oImageTool.vue")['default']
@@ -171,17 +192,24 @@ export const NuxtRouteAnnouncer: typeof import("../node_modules/nuxt/dist/app/co
 export const LazyAppFooter: LazyComponent<typeof import("../components/AppFooter.vue")['default']>
 export const LazyAppHeader: LazyComponent<typeof import("../components/AppHeader.vue")['default']>
 export const LazyAudioUpload: LazyComponent<typeof import("../components/AudioUpload.vue")['default']>
+export const LazyBreadcrumb: LazyComponent<typeof import("../components/Breadcrumb.vue")['default']>
+export const LazyChatInterface: LazyComponent<typeof import("../components/ChatInterface.vue")['default']>
 export const LazyFAQSection: LazyComponent<typeof import("../components/FAQSection.vue")['default']>
 export const LazyFeatureCard: LazyComponent<typeof import("../components/FeatureCard.vue")['default']>
 export const LazyFeatureGrid: LazyComponent<typeof import("../components/FeatureGrid.vue")['default']>
 export const LazyFileUpload: LazyComponent<typeof import("../components/FileUpload.vue")['default']>
 export const LazyHeroSection: LazyComponent<typeof import("../components/HeroSection.vue")['default']>
+export const LazyHomeLayout: LazyComponent<typeof import("../components/HomeLayout.vue")['default']>
 export const LazyImageGallery: LazyComponent<typeof import("../components/ImageGallery.vue")['default']>
+export const LazyLoginModal: LazyComponent<typeof import("../components/LoginModal.vue")['default']>
 export const LazyPricingCard: LazyComponent<typeof import("../components/PricingCard.vue")['default']>
 export const LazyPricingSection: LazyComponent<typeof import("../components/PricingSection.vue")['default']>
 export const LazyProductDropdown: LazyComponent<typeof import("../components/ProductDropdown.vue")['default']>
 export const LazyProductShowcase: LazyComponent<typeof import("../components/ProductShowcase.vue")['default']>
+export const LazyToast: LazyComponent<typeof import("../components/Toast.vue")['default']>
+export const LazyToastContainer: LazyComponent<typeof import("../components/ToastContainer.vue")['default']>
 export const LazyToolCategory: LazyComponent<typeof import("../components/ToolCategory.vue")['default']>
+export const LazyVerifyCodeModal: LazyComponent<typeof import("../components/VerifyCodeModal.vue")['default']>
 export const LazyToolsElevenLabsTool: LazyComponent<typeof import("../components/tools/ElevenLabsTool.vue")['default']>
 export const LazyToolsFluxKontextTool: LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
 export const LazyToolsGPT4oImageTool: LazyComponent<typeof import("../components/tools/GPT4oImageTool.vue")['default']>

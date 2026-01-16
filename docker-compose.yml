@@ -1,0 +1,35 @@
+services:
+  fuseaitools-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fuseaitools-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+      - NITRO_PRESET=node-server
+      # API 基础路径（根据实际情况修改）
+      # 如果后端 API 在同一网络，可以使用服务名
+      # - NUXT_PUBLIC_API_BASE=http://api-service:8080/api
+      # 或者使用本地地址
+      - NUXT_PUBLIC_API_BASE=http://127.0.0.1:8080/api
+    restart: unless-stopped
+    networks:
+      - fuseaitools-network
+    # 如果需要持久化数据或日志，可以取消注释下面的 volumes 配置
+    # volumes:
+    #   - ./logs:/app/logs
+    #   - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  fuseaitools-network:
+    driver: bridge

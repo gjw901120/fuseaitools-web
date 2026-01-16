@@ -220,10 +220,10 @@ const toolRouteMap = {
 
 // SEO优化
 useHead({
-  title: 'AI工具聚合平台 - SimplyAI',
+  title: 'AI Tools Platform - FuseAI',
   meta: [
-    { name: 'description', content: '发现并使用最先进的AI工具，提升您的工作效率和创造力。包含500+精选AI工具，涵盖写作、设计、编程、数据分析等领域。' },
-    { name: 'keywords', content: 'AI工具,人工智能,AI应用,工作效率,工具推荐,SimplyAI' }
+    { name: 'description', content: 'Discover and use the most advanced AI tools to enhance your work efficiency and creativity. Includes 500+ curated AI tools covering writing, design, programming, data analysis and more.' },
+    { name: 'keywords', content: 'AI tools, artificial intelligence, AI applications, work efficiency, tool recommendations, FuseAI' }
   ]
 })
 
@@ -240,14 +240,7 @@ const isLoading = ref(false)
 const inputMessage = ref('')
 const isWebSearchEnabled = ref(false)
 const uploadedFiles = ref([])
-const chatMessages = ref([
-  {
-    id: 1,
-    role: 'assistant',
-    text: '您好！我是ChatGPT，很高兴为您服务。有什么可以帮助您的吗？',
-    timestamp: new Date(Date.now() - 5 * 60 * 1000)
-  }
-])
+const chatMessages = ref([])
 
 // 导航项目
 const navItems = ref([
@@ -881,6 +874,12 @@ loadHistoryData()
 
 // 监听路由变化，同步侧边栏导航状态
 watch(() => route.path, (newPath) => {
+  // 如果访问的是 /home，默认跳转到 /home/gpt
+  if (newPath === '/home') {
+    router.replace('/home/gpt')
+    return
+  }
+  
   // 根据路由路径找到对应的工具
   const routeToToolMap = {
     '/home/veo3': 'Veo3',

@@ -12,15 +12,15 @@ const router = useRouter()
 
 // SEO 优化
 useHead({
-  title: 'Suno 音频扩展 - AI音频扩展工具 | SimplyAI Tools',
+  title: 'Suno Audio Expansion - AI Audio Expansion Tool | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: '使用Suno模型基于上传的音频文件进行扩展创作，支持自定义参数模式，可以控制扩展部分的音乐风格和内容。'
+      content: 'Expand and create based on uploaded audio files using Suno model, supporting custom parameter mode, can control music style and content of the expanded part.'
     },
     {
       name: 'keywords',
-      content: 'Suno, AI音频扩展, 音频扩展, 人工智能, 音乐创作, AI工具'
+      content: 'Suno, AI audio expansion, audio extension, artificial intelligence, music creation, AI tools'
     }
   ]
 })

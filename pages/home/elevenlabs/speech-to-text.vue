@@ -9,15 +9,15 @@ import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 
 // SEO 优化
 useHead({
-  title: 'ElevenLabs Speech-to-Text - AI语音识别 | SimplyAI Tools',
+  title: 'ElevenLabs Speech-to-Text - AI Speech Recognition | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: 'ElevenLabs Speech-to-Text高精度语音识别，支持多种音频格式，最大200MB，支持说话人识别和音频事件标记。'
+      content: 'ElevenLabs Speech-to-Text high-precision speech recognition, supporting multiple audio formats, up to 200MB, supporting speaker identification and audio event tagging.'
     },
     {
       name: 'keywords',
-      content: 'ElevenLabs Speech-to-Text, AI语音识别, 语音转文本, 音频转录, 说话人识别, 语音识别'
+      content: 'ElevenLabs Speech-to-Text, AI speech recognition, speech-to-text, audio transcription, speaker identification, voice recognition'
     }
   ]
 })

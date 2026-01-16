@@ -43,7 +43,7 @@
               <i class="fas fa-code"></i>
             </div>
             <div class="app-info">
-              <h4>SimplyAI Code</h4>
+              <h4>FuseAI Code</h4>
               <p>Programming assistant for VSCode and JetBrains</p>
             </div>
           </div>

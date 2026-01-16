@@ -12,15 +12,15 @@ const router = useRouter()
 
 // SEO 优化
 useHead({
-  title: 'Suno 音频覆盖 - AI音频覆盖工具 | SimplyAI Tools',
+  title: 'Suno Audio Cover - AI Audio Cover Tool | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: '使用Suno模型基于上传的音频文件进行覆盖创作，支持自定义模式，可以控制音乐风格、歌词内容等参数。'
+      content: 'Create covers based on uploaded audio files using Suno model, supporting custom mode, can control music style, lyrics content and other parameters.'
     },
     {
       name: 'keywords',
-      content: 'Suno, AI音频覆盖, 音频创作, 人工智能, 音乐创作, AI工具'
+      content: 'Suno, AI audio cover, audio creation, artificial intelligence, music creation, AI tools'
     }
   ]
 })

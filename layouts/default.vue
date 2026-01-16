@@ -14,6 +14,9 @@
     <div class="layout-footer">
       <AppFooter />
     </div>
+
+    <!-- Toast 通知容器 -->
+    <ToastContainer />
   </div>
 </template>
 

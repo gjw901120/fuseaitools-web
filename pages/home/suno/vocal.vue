@@ -12,15 +12,15 @@ const router = useRouter()
 
 // SEO 优化
 useHead({
-  title: 'Suno 人声生成 - AI人声生成工具 | SimplyAI Tools',
+  title: 'Suno Vocal Generation - AI Vocal Generation Tool | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: '使用Suno模型为现有音频添加人声演唱，通过提示词指导演唱内容和风格，支持音乐风格和排除标签控制。'
+      content: 'Add vocal singing to existing audio using Suno model, guided by prompts for singing content and style, supporting music style and exclusion tag control.'
     },
     {
       name: 'keywords',
-      content: 'Suno, AI人声生成, 人声制作, 人工智能, 音乐创作, AI工具'
+      content: 'Suno, AI vocal generation, vocal production, artificial intelligence, music creation, AI tools'
     }
   ]
 })

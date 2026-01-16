@@ -161,7 +161,7 @@
               upload-text="Click to upload images"
               :upload-hint="getUploadHint()"
               :additional-hint="getImageUploadHint()"
-              theme-color="#ef4444"
+              theme-color="#3b82f6"
               :max-files="formData.generationType === 'FIRST_AND_LAST_FRAMES_2_VIDEO' ? 2 : 3"
               :max-file-size="10 * 1024 * 1024"
                 accept="image/*" 
@@ -649,11 +649,11 @@ const generateVideo = async () => {
       const data = await response.json()
       result.value = data
     } else {
-      throw new Error('生成失败')
+      throw new Error('Generation failed')
     }
   } catch (error) {
-    console.error('生成失败:', error)
-    // 模拟成功结果用于演示
+    console.error('Generation failed:', error)
+      // Simulate success result for demo
     result.value = {
       taskId: 'veo3_' + Date.now(),
       videoUrl: 'https://example.com/generated-video.mp4',
@@ -697,11 +697,11 @@ const extendVideo = async () => {
       result.value = data
       extendPrompt.value = ''
     } else {
-      throw new Error('扩展失败')
+      throw new Error('Extension failed')
     }
   } catch (error) {
-    console.error('扩展失败:', error)
-    alert('视频扩展失败，请重试')
+    console.error('Extension failed:', error)
+    alert('Video extension failed, please try again')
   }
 }
 
@@ -718,11 +718,11 @@ const get1080PVideo = async () => {
       const data = await response.json()
       result.value.videoUrl = data.videoUrl
     } else {
-      throw new Error('获取1080P视频失败')
+      throw new Error('Failed to get 1080P video')
     }
   } catch (error) {
-    console.error('获取1080P视频失败:', error)
-    alert('获取1080P视频失败，请重试')
+    console.error('Failed to get 1080P video:', error)
+    alert('Failed to get 1080P video, please try again')
   }
 }
 
@@ -849,7 +849,7 @@ const shareVideo = () => {
 }
 
 .required {
-  color: #ef4444;
+  color: #3b82f6;
 }
 
 .form-input,
@@ -864,8 +864,8 @@ const shareVideo = () => {
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-hint {
@@ -886,7 +886,7 @@ const shareVideo = () => {
 .checkbox-label input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #ef4444;
+  accent-color: #3b82f6;
 }
 
 /* 模式选择区域 */
@@ -929,13 +929,13 @@ const shareVideo = () => {
 }
 
 .mode-tab:hover {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .mode-tab.active {
-  border-color: #ef4444;
-  background: #ef4444;
+  border-color: #3b82f6;
+  background: #3b82f6;
   color: white;
 }
 
@@ -970,7 +970,7 @@ const shareVideo = () => {
 }
 
 .mode-info-icon:hover {
-  color: #ef4444;
+  color: #3b82f6;
 }
 
 .mode-tab.active .mode-info-icon:hover {
@@ -1015,13 +1015,13 @@ const shareVideo = () => {
 }
 
 .option-tab:hover {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .option-tab.active {
-  border-color: #ef4444;
-  background: #ef4444;
+  border-color: #3b82f6;
+  background: #3b82f6;
   color: white;
 }
 
@@ -1031,7 +1031,7 @@ const shareVideo = () => {
 
 /* 生成按钮 */
 .generate-btn {
-  background: #ef4444;
+  background: #3b82f6;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -1047,7 +1047,7 @@ const shareVideo = () => {
 }
 
 .generate-btn:hover:not(:disabled) {
-  background: #dc2626;
+  background: #2563eb;
   transform: translateY(-1px);
 }
 
@@ -1246,23 +1246,24 @@ const shareVideo = () => {
   cursor: not-allowed;
 }
 
-/* 使用提示 */
+/* Usage Tips - Horizontal layout like Suno */
 .usage-tips {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 12px;
-  margin-top: 24px;
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
 .tip-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
-  background: #f8fafc;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #6b7280;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.tip-item:last-child {
+  margin-bottom: 0;
 }
 
 .tip-icon {
@@ -1316,9 +1317,6 @@ const shareVideo = () => {
     font-size: 11px;
   }
   
-  .usage-tips {
-    grid-template-columns: 1fr;
-  }
   
   .video-actions {
     flex-direction: column;

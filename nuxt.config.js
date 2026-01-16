@@ -3,7 +3,9 @@ export default defineNuxtConfig({
   ssr: true,
   
   nitro: {
-    preset: 'static',
+    // 根据环境变量决定使用静态或服务器模式
+    // Docker 运行时使用 node-server，否则使用 static
+    preset: process.env.NITRO_PRESET || 'static',
     prerender: {
       crawlLinks: true,
       routes: [
@@ -44,7 +46,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'SimplyAITools: The All-in-One AI Platform',
+      title: 'FuseAITools: The All-in-One AI Platform',
       htmlAttrs: {
         lang: 'en'
       },
@@ -55,7 +57,11 @@ export default defineNuxtConfig({
         { name: 'keywords', content: 'all-in-one platform, chat models, video models, image models, radio models, simply ai tools' }
       ],
       link: [
+        { rel: 'shortcut icon', href: '/favicon.ico' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon.ico' },
         {
           rel: 'stylesheet',
           href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
@@ -79,7 +85,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: '/api'
+      apiBase: process.env.NODE_ENV === 'production' 
+        ? 'https://www.fuseaitools.com/api' 
+        : 'http://127.0.0.1:8080/api'
     }
   }
 })

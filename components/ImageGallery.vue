@@ -7,69 +7,72 @@
       </div>
       
       <div class="gallery-categories">
-        <!-- Category Tabs Row -->
-        <div class="category-tabs-row">
-          <div class="category-tab">Chat</div>
-          <div class="category-tab">Image</div>
-          <div class="category-tab">Audio</div>
-          <div class="category-tab">Video</div>
-        </div>
-
-        <!-- Category Content Grid -->
-        <div class="category-content-grid">
-          <!-- Chat Column -->
-          <div class="category-column">
-            <div class="category-row">
-              <NuxtLink :to="item.route" class="gallery-item" v-for="item in chatModels" :key="item.title" @click="scrollToTop">
-                <div class="logo-card">
-                  <div class="logo-wrapper">
-                    <img :src="item.logo" :alt="item.title" class="model-logo" />
+        <div class="categories-list">
+          <!-- Chat Row -->
+          <div class="category-row-item">
+            <div class="category-label chat-label">Chat</div>
+            <div class="category-items">
+              <article v-for="item in chatModels" :key="item.title">
+                <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
+                  <div class="logo-card">
+                    <div class="logo-wrapper">
+                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                    </div>
+                    <h3 class="model-title">{{ item.title }}</h3>
                   </div>
-                  <h3 class="model-title">{{ item.title }}</h3>
-                </div>
-              </NuxtLink>
+                </NuxtLink>
+              </article>
             </div>
           </div>
 
-          <!-- Image Column -->
-          <div class="category-column">
-            <div class="category-row">
-              <NuxtLink :to="item.route" class="gallery-item" v-for="item in imageModels" :key="item.title" @click="scrollToTop">
-                <div class="logo-card">
-                  <div class="logo-wrapper">
-                    <img :src="item.logo" :alt="item.title" class="model-logo" />
+          <!-- Image Row -->
+          <div class="category-row-item">
+            <div class="category-label image-label">Image</div>
+            <div class="category-items">
+              <article v-for="item in imageModels" :key="item.title">
+                <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
+                  <div class="logo-card">
+                    <div class="logo-wrapper">
+                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                    </div>
+                    <h3 class="model-title">{{ item.title }}</h3>
                   </div>
-                  <h3 class="model-title">{{ item.title }}</h3>
-                </div>
-              </NuxtLink>
+                </NuxtLink>
+              </article>
             </div>
           </div>
 
-          <!-- Audio Column -->
-          <div class="category-column">
-            <div class="category-row">
-              <NuxtLink :to="item.route" class="gallery-item" v-for="item in audioModels" :key="item.title" @click="scrollToTop">
-                <div class="logo-card">
-                  <div class="logo-wrapper">
-                    <img :src="item.logo" :alt="item.title" class="model-logo" />
+          <!-- Audio Row -->
+          <div class="category-row-item">
+            <div class="category-label audio-label">Audio</div>
+            <div class="category-items">
+              <article v-for="item in audioModels" :key="item.title">
+                <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
+                  <div class="logo-card">
+                    <div class="logo-wrapper">
+                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                    </div>
+                    <h3 class="model-title">{{ item.title }}</h3>
                   </div>
-                  <h3 class="model-title">{{ item.title }}</h3>
-                </div>
-              </NuxtLink>
+                </NuxtLink>
+              </article>
             </div>
           </div>
 
-          <!-- Video Column -->
-          <div class="category-column">
-            <div class="category-row">
-              <NuxtLink :to="item.route" class="gallery-item" v-for="item in videoModels" :key="item.title" @click="scrollToTop">
-                <div class="logo-card">
-                  <div class="logo-wrapper">
-                    <img :src="item.logo" :alt="item.title" class="model-logo" />
+          <!-- Video Row -->
+          <div class="category-row-item">
+            <div class="category-label video-label">Video</div>
+            <div class="category-items">
+              <article v-for="item in videoModels" :key="item.title">
+                <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
+                  <div class="logo-card">
+                    <div class="logo-wrapper">
+                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                    </div>
+                    <h3 class="model-title">{{ item.title }}</h3>
                   </div>
-                  <h3 class="model-title">{{ item.title }}</h3>
-                </div>
-              </NuxtLink>
+                </NuxtLink>
+              </article>
             </div>
           </div>
         </div>
@@ -81,23 +84,15 @@
 
 <script setup>
 const scrollToTop = () => {
-  // 立即滚动到顶部
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'instant'
-  })
-  
-  // 使用 nextTick 确保在 DOM 更新后滚动
-  nextTick(() => {
-    setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'instant'
-      })
-    }, 50)
-  })
+  // 在路由跳转后滚动到顶部
+  // 使用 setTimeout 确保在路由跳转完成后执行
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    })
+  }, 100)
 }
 
 const chatModels = ref([
@@ -211,88 +206,125 @@ const videoModels = ref([
 .gallery-categories {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 21px; /* 30px * 0.7 */
 }
 
-.category-tabs-row {
+.categories-list {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   gap: 20px;
-  flex-wrap: wrap;
 }
 
-.category-tab {
-  display: inline-block;
-  padding: 10px 32px;
-  background: #667eea;
-  color: white;
-  border-radius: 20px;
-  font-size: 1.1rem;
+.category-row-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.category-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 17.28px 28.8px;
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 11.52px;
+  font-size: 1.296rem;
   font-weight: 600;
   text-transform: capitalize;
-  flex: 1;
-  min-width: 120px;
   text-align: center;
+  min-width: 144px;
+  flex-shrink: 0;
+  min-height: 115.2px;
+  box-sizing: border-box;
 }
 
-.category-content-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-  align-items: start;
+.chat-label {
+  background: #dbeafe; /* 蓝色 */
+  color: #1e40af;
+  border-left: 4px solid #3b82f6;
 }
 
-.category-column {
+.image-label {
+  background: #fef3c7; /* 黄色 */
+  color: #92400e;
+  border-left: 4px solid #f59e0b;
+}
+
+.audio-label {
+  background: #fce7f3; /* 粉色 */
+  color: #9f1239;
+  border-left: 4px solid #ec4899;
+}
+
+.video-label {
+  background: #d1fae5; /* 绿色 */
+  color: #065f46;
+  border-left: 4px solid #10b981;
+}
+
+.category-items {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 20px; /* 间隔加大2倍：10px * 2 */
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
 }
 
-.category-row {
+.category-items article {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: stretch;
+  margin: 0;
+  padding: 0;
 }
 
 .gallery-item {
   position: relative;
-  border-radius: 16px;
+  border-radius: 11.52px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 淡化阴影，增强融合度 */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
-  max-width: 100%;
+  width: 172.8px; /* 固定宽度，再放大20% */
+  height: 115.2px; /* 固定高度，再放大20% */
+  flex: 0 0 172.8px; /* 固定大小，不伸缩，再放大20% */
   text-decoration: none;
   display: block;
+  cursor: pointer; /* 确保鼠标指针显示为手型 */
+  pointer-events: auto; /* 确保可以点击 */
 }
 
 .gallery-item:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px); /* 减小悬停时的移动距离 */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); /* 淡化悬停阴影 */
 }
 
 .logo-card {
-  background: white;
-  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.6); /* 淡化白色背景，增加透明度 */
+  backdrop-filter: blur(10px); /* 添加毛玻璃效果，增强融合度 */
+  padding: 8px 6px; /* 压缩内边距以适应固定尺寸 */
   text-align: center;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.15); /* 淡化边框 */
 }
 
 .logo-wrapper {
-  width: 120px;
-  height: 120px;
+  width: 40px; /* 缩小 logo 大小 */
+  height: 40px; /* 缩小 logo 大小 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  background: #f8fafc;
-  border-radius: 16px;
-  padding: 20px;
+  margin-bottom: 4px; /* 减小 logo 和文字的间隔 */
+  background: rgba(248, 250, 252, 0.5); /* 淡化背景，增加透明度 */
+  border-radius: 6px;
+  padding: 6px; /* 压缩内边距 */
 }
 
 .model-logo {
@@ -302,10 +334,10 @@ const videoModels = ref([
 }
 
 .model-title {
-  font-size: 1.3rem;
+  font-size: 0.8rem; /* 压缩字体 */
   font-weight: 600;
   color: #1a1a1a;
-  margin-bottom: 8px;
+  margin: 0; /* 移除底部边距 */
 }
 
 

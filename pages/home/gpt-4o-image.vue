@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-page">
-    <GPT4oImageTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <GPT4oImageTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
@@ -15,25 +17,28 @@ const switchToMain = () => {
   router.push('/home/gpt-4o-image')
 }
 
+import { useToolSEO } from '~/composables/useToolSEO'
+
 // SEO 优化
-useHead({
-  title: 'GPT 4o Image - AI图像生成工具 | SimplyAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: '使用OpenAI的GPT 4o Image模型生成高质量AI图像，支持多种风格和场景，简单易用的图像生成工具。'
-    },
-    {
-      name: 'keywords',
-      content: 'GPT 4o Image, AI图像生成, OpenAI, 人工智能, 图像创作, AI工具'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'GPT 4o Image',
+  description: 'Use GPT 4o Image for free online. Generate high-quality AI images using OpenAI\'s GPT 4o Image model, supporting multiple styles, scenes, and creative expressions. Easy-to-use image generation tool with advanced AI capabilities.',
+  category: 'image',
+  route: '/home/gpt-4o-image',
+  keywords: ['GPT 4o Image', 'GPT-4o Image', 'AI image generation', 'OpenAI', 'artificial intelligence', 'image creation', 'AI tools', 'DALL-E', 'image generator', 'AI art'],
+  applicationCategory: 'GraphicsApplication',
+  offers: {
+    price: '0',
+    priceCurrency: 'USD'
+  }
 })
+
+useHead(seoConfig)
 </script>
 
 <style scoped>
 .tool-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 </style>

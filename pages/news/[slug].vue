@@ -236,7 +236,7 @@ const relatedArticles = computed(() => {
 watch(article, (newArticle) => {
   if (newArticle) {
 useHead({
-      title: `${newArticle.title} - SimplyAI Tools News`,
+      title: `${newArticle.title} - FuseAI Tools News`,
   meta: [
         { name: 'description', content: newArticle.excerpt || '' },
         { name: 'keywords', content: `${newArticle.category}, AI news, ${newArticle.title}` },
@@ -244,14 +244,14 @@ useHead({
         { property: 'og:description', content: newArticle.excerpt || '' },
         { property: 'og:image', content: newArticle.image || '' },
         { property: 'og:type', content: 'article' },
-        { property: 'og:url', content: `https://simplyaitools.com/news/${newArticle.slug || ''}` },
+        { property: 'og:url', content: `https://fuseaitools.com/news/${newArticle.slug || ''}` },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: newArticle.title || '' },
         { name: 'twitter:description', content: newArticle.excerpt || '' },
         { name: 'twitter:image', content: newArticle.image || '' }
       ],
       link: [
-        { rel: 'canonical', href: `https://simplyaitools.com/news/${newArticle.slug || ''}` }
+        { rel: 'canonical', href: `https://fuseaitools.com/news/${newArticle.slug || ''}` }
       ],
       script: [
         {
@@ -266,19 +266,19 @@ useHead({
             "dateModified": newArticle.publishDate || '',
             "author": {
               "@type": "Organization",
-              "name": "SimplyAI Tools"
+              "name": "FuseAI Tools"
             },
             "publisher": {
               "@type": "Organization",
-              "name": "SimplyAI Tools",
+              "name": "FuseAI Tools",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://simplyaitools.com/favicon.ico"
+                "url": "https://fuseaitools.com/favicon.ico"
               }
             },
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `https://simplyaitools.com/news/${newArticle.slug || ''}`
+              "@id": `https://fuseaitools.com/news/${newArticle.slug || ''}`
             },
             "articleSection": newArticle.category || '',
             "wordCount": (newArticle.readTime || 0) * 200

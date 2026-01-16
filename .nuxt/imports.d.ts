@@ -29,6 +29,11 @@ export { withCtx, withDirectives, withKeys, withMemo, withModifiers, withScopeId
 export { requestIdleCallback, cancelIdleCallback } from '#app/compat/idle-callback';
 export { setInterval } from '#app/compat/interval';
 export { useAI } from '../composables/useAI';
+export { useApi } from '../composables/useApi';
+export { useAuth } from '../composables/useAuth';
+export { useHomeLayout } from '../composables/useHomeLayout';
 export { useMjApi } from '../composables/useMjApi';
+export { useToast } from '../composables/useToast';
+export { useToolSEO } from '../composables/useToolSEO';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';

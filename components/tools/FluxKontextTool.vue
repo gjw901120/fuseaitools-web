@@ -91,7 +91,7 @@
               :multiple="false"
               :max-file-size="10 * 1024 * 1024"
               additional-hint="Must be a valid image file for edit mode"
-              theme-color="#f59e0b"
+              theme-color="#667eea"
               @update:files="handleInputImage"
             />
           </div>
@@ -485,7 +485,7 @@ const clearResults = () => {
 
 .action-btn:hover {
   background: #e5e7eb;
-  color: #f59e0b;
+  color: #667eea;
 }
 
 .main-content {
@@ -551,8 +551,8 @@ const clearResults = () => {
 
 .form-input:focus {
   outline: none;
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .form-hint {
@@ -588,7 +588,7 @@ const clearResults = () => {
 
 .mode-btn.active {
   background: white;
-  color: #f59e0b;
+  color: #667eea;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -604,7 +604,7 @@ const clearResults = () => {
 .checkbox-label input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #f59e0b;
+  accent-color: #667eea;
 }
 
 .form-slider {
@@ -624,7 +624,7 @@ const clearResults = () => {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: #667eea;
   cursor: pointer;
 }
 
@@ -683,10 +683,10 @@ const clearResults = () => {
 }
 
 .tab-option.active {
-  background: #f59e0b;
-  border-color: #f59e0b;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
-  box-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 1px 2px rgba(102, 126, 234, 0.3);
 }
 
 .tab-option.active .tab-label {
@@ -695,7 +695,7 @@ const clearResults = () => {
 
 .tab-option:hover:not(.active) {
   background: #f8fafc;
-  border-color: #f59e0b;
+  border-color: #667eea;
 }
 
 .generate-btn-container {
@@ -707,14 +707,14 @@ const clearResults = () => {
 .generate-btn {
   width: 100%;
   padding: 12px 24px;
-  background: #f59e0b;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -722,8 +722,8 @@ const clearResults = () => {
 }
 
 .generate-btn:hover:not(:disabled) {
-  background: #d97706;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
 .generate-btn:disabled {
@@ -863,7 +863,7 @@ const clearResults = () => {
 
 .image-overlay .action-btn:hover {
   background: white;
-  color: #f59e0b;
+  color: #667eea;
 }
 
 .image-info {

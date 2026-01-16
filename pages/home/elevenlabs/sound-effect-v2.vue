@@ -9,15 +9,15 @@ import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 
 // SEO 优化
 useHead({
-  title: 'ElevenLabs Sound Effect v2 - AI音效生成 | SimplyAI Tools',
+  title: 'ElevenLabs Sound Effect v2 - AI Sound Effect Generation | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: 'ElevenLabs Sound Effect v2 AI驱动的音效生成，支持循环播放、时长控制、多种输出格式，适合游戏、视频制作。'
+      content: 'ElevenLabs Sound Effect v2 AI-driven sound effect generation, supporting loop playback, duration control, multiple output formats, suitable for games and video production.'
     },
     {
       name: 'keywords',
-      content: 'ElevenLabs Sound Effect v2, AI音效生成, 音效制作, 游戏音效, 视频音效, AI音效'
+      content: 'ElevenLabs Sound Effect v2, AI sound effect generation, sound effect production, game sound effects, video sound effects, AI sound effects'
     }
   ]
 })

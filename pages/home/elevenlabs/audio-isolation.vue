@@ -9,15 +9,15 @@ import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 
 // SEO 优化
 useHead({
-  title: 'ElevenLabs Audio Isolation - AI音频分离 | SimplyAI Tools',
+  title: 'ElevenLabs Audio Isolation - AI Audio Separation | FuseAI Tools',
   meta: [
     {
       name: 'description',
-      content: 'ElevenLabs Audio Isolation智能分离人声和背景音乐，支持多种音频格式，最大10MB，适用于音频后期处理。'
+      content: 'ElevenLabs Audio Isolation intelligently separates vocals and background music, supporting multiple audio formats, up to 10MB, suitable for audio post-processing.'
     },
     {
       name: 'keywords',
-      content: 'ElevenLabs Audio Isolation, AI音频分离, 人声提取, 背景音乐分离, 音频后期, 音频处理'
+      content: 'ElevenLabs Audio Isolation, AI audio separation, vocal extraction, background music separation, audio post-processing, audio processing'
     }
   ]
 })

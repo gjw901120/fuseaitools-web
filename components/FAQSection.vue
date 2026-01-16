@@ -6,7 +6,7 @@
       </div>
       
       <div class="faq-list">
-        <div 
+        <article 
           v-for="(item, index) in faqItems" 
           :key="index"
           class="faq-item"
@@ -20,40 +20,64 @@
           </div>
           
           <div v-if="item.isOpen" class="faq-answer">
-            <p>{{ item.answer }}</p>
+            <div class="faq-content" v-html="item.answer"></div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 // FAQ数据
 const faqItems = ref([
   {
-    question: "What is SimplyAI?",
-    answer: "SimplyAI is a platform that integrates multiple AI models, designed to be your one-stop platform for easily using various AI tools, including chat, image generation, audio processing, video generation, and more.",
+    question: "What is FuseAI?",
+    answer: "<p>FuseAI is an integrated artificial intelligence platform that brings together various cutting-edge AI tools, including chat, image generation, audio processing, and video creation. The platform's objective is to enable users to easily access and utilize the most comprehensive AI capabilities from a single location.</p>",
     isOpen: true
   },
   {
-    question: "How do I use SimplyAI?",
-    answer: "After registering a SimplyAI account, you can access over 50 AI models and tools on the platform. You can use the chat feature for conversations, image generation tools to create images, audio tools to process sound, or video tools to generate video content.",
+    question: "How to use FuseAI?",
+    answer: "<p>Users can access the platform simply by completing registration. Upon registration, users can enjoy over 50 professional AI models and tools. FuseAI is designed to meet various needs, whether it's getting inspiration through intelligent dialogue, creating visual works with text-to-image tools, processing and optimizing audio, or generating high-quality video content.</p>",
     isOpen: false
   },
   {
-    question: "Is SimplyAI free?",
-    answer: "SimplyAI offers a free version that includes basic AI conversation features. We also provide a paid premium version with more advanced features and higher usage limits.",
+    question: "Is FuseAI free?",
+    answer: "<p>Yes, FuseAI offers flexible experience plans:</p><ul><li><strong>Free Experience:</strong> Users who register receive 100 points, which allows them to experience all models on the site without barriers.</li><li><strong>Paid Plans:</strong> There are multiple subscription plans designed to provide more substantial point quotas and exclusive discounts, catering to high-frequency and professional users.</li><li><strong>Additional Option:</strong> The platform also supports direct top-up of points for on-demand usage.</li></ul>",
     isOpen: false
   },
   {
-    question: "How does SimplyAI work?",
-    answer: "SimplyAI integrates multiple AI models including ChatGPT, Claude, Gemini, and others, as well as image generation tools like Midjourney and Flux Kontext, audio tools like Suno and Elevenlabs, and video generation tools like Veo3, Runway, Luma, and Sora, providing you with comprehensive AI capabilities.",
+    question: "How does FuseAI work?",
+    answer: "<p>The core of FuseAI lies in its powerful model integration. It seamlessly integrates industry-leading AI technologies, providing examples for different functionalities:</p><ul><li><strong>Dialogue and Reasoning:</strong> ChatGPT, Claude, Gemini, etc.</li><li><strong>Image Generation:</strong> Midjourney, Flux Kontext, etc.</li><li><strong>Audio Processing:</strong> Suno, ElevenLabs, etc.</li><li><strong>Video Generation:</strong> Veo3, Runway, Luma, Sora, etc.</li></ul><p>Through a unified, user-friendly interface, we integrate these scattered cutting-edge capabilities into a coherent workflow, providing you with a one-stop AI solution.</p>",
     isOpen: false
   }
 ])
+
+// FAQ 结构化数据
+const faqSchema = computed(() => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.value.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+}))
+
+// 添加 FAQ 结构化数据到页面 head
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(faqSchema.value)
+    }
+  ]
+})
 
 // 切换FAQ展开/收起状态
 const toggleFAQ = (index) => {
@@ -82,13 +106,16 @@ const toggleFAQ = (index) => {
 }
 
 .faq-list {
-  max-width: 800px;
+  max-width: 1040px;
   margin: 0 auto;
 }
 
 .faq-item {
   border-bottom: 1px solid #e5e7eb;
   transition: all 0.3s ease;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .faq-item:last-child {
@@ -144,11 +171,41 @@ const toggleFAQ = (index) => {
   animation: slideDown 0.3s ease-out;
 }
 
-.faq-answer p {
+.faq-content {
   font-size: 1rem;
   color: #4b5563;
-  line-height: 1.6;
-  margin: 0;
+  line-height: 1.8;
+}
+
+.faq-content p {
+  margin: 0.75rem 0;
+  color: #4b5563;
+  line-height: 1.8;
+}
+
+.faq-content p:first-child {
+  margin-top: 0;
+}
+
+.faq-content p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-content ul {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.faq-content li {
+  margin: 0.5rem 0;
+  color: #4b5563;
+  line-height: 1.8;
+}
+
+.faq-content strong {
+  font-weight: 600;
+  color: #1f2937;
 }
 
 @keyframes slideDown {

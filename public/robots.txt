@@ -8,19 +8,37 @@ Allow: /pricing
 Allow: /tools
 Allow: /news
 
-# AI工具页面
+# AI工具页面 - Chat
+Allow: /home/gpt
+Allow: /home/deepseek
+Allow: /home/claude
+Allow: /home/gemini
+
+# AI工具页面 - Image
 Allow: /home/gpt-4o-image
+Allow: /home/midjourney
+Allow: /home/flux-kontext
+Allow: /home/nano-banana
+
+# AI工具页面 - Audio
 Allow: /home/elevenlabs
 Allow: /home/elevenlabs/multilingual-v2
 Allow: /home/elevenlabs/turbo-2-5
 Allow: /home/elevenlabs/speech-to-text
 Allow: /home/elevenlabs/sound-effect-v2
 Allow: /home/elevenlabs/audio-isolation
-Allow: /home/nano-banana
-Allow: /home/midjourney
+Allow: /home/suno
+Allow: /home/suno/extend
+Allow: /home/suno/cover
+Allow: /home/suno/expand
+Allow: /home/suno/accompaniment
+Allow: /home/suno/vocal
+
+# AI工具页面 - Video
 Allow: /home/veo3
 Allow: /home/runway
 Allow: /home/luma
+Allow: /home/sora
 
 # 静态资源
 Allow: /assets/
@@ -34,7 +52,7 @@ Disallow: /_nuxt/
 Disallow: /admin/
 
 # Sitemap
-Sitemap: https://simplyaitools.com/sitemap.xml
+Sitemap: https://fuseaitools.com/sitemap.xml
 
 
 

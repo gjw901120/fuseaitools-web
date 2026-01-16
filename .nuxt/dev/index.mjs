@@ -3,40 +3,40 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getResponseStatusText } from 'file://C:/project/simplyaitools-web/node_modules/h3/dist/index.mjs';
-import { escapeHtml } from 'file://C:/project/simplyaitools-web/node_modules/@vue/shared/dist/shared.cjs.js';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getHeader, setHeader, getResponseStatusText } from 'file://C:/project/fuseaitools-web/node_modules/h3/dist/index.mjs';
+import { escapeHtml } from 'file://C:/project/fuseaitools-web/node_modules/@vue/shared/dist/shared.cjs.js';
 import { promises, readFileSync } from 'node:fs';
-import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/project/simplyaitools-web/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://C:/project/simplyaitools-web/node_modules/ufo/dist/index.mjs';
-import { renderToString } from 'file://C:/project/simplyaitools-web/node_modules/vue/server-renderer/index.mjs';
-import { klona } from 'file://C:/project/simplyaitools-web/node_modules/klona/dist/index.mjs';
-import defu, { defuFn } from 'file://C:/project/simplyaitools-web/node_modules/defu/dist/defu.mjs';
-import destr, { destr as destr$1 } from 'file://C:/project/simplyaitools-web/node_modules/destr/dist/index.mjs';
-import { snakeCase } from 'file://C:/project/simplyaitools-web/node_modules/scule/dist/index.mjs';
-import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://C:/project/simplyaitools-web/node_modules/unhead/dist/server.mjs';
-import { stringify, uneval } from 'file://C:/project/simplyaitools-web/node_modules/devalue/index.js';
-import { isVNode, toValue, isRef } from 'file://C:/project/simplyaitools-web/node_modules/vue/index.mjs';
-import { DeprecationsPlugin, PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file://C:/project/simplyaitools-web/node_modules/unhead/dist/plugins.mjs';
-import { createHooks } from 'file://C:/project/simplyaitools-web/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file://C:/project/simplyaitools-web/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://C:/project/simplyaitools-web/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file://C:/project/simplyaitools-web/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file://C:/project/simplyaitools-web/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file://C:/project/simplyaitools-web/node_modules/ohash/dist/index.mjs';
-import { toRouteMatcher, createRouter } from 'file://C:/project/simplyaitools-web/node_modules/radix3/dist/index.mjs';
+import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/project/fuseaitools-web/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://C:/project/fuseaitools-web/node_modules/ufo/dist/index.mjs';
+import { renderToString } from 'file://C:/project/fuseaitools-web/node_modules/vue/server-renderer/index.mjs';
+import { klona } from 'file://C:/project/fuseaitools-web/node_modules/klona/dist/index.mjs';
+import defu, { defuFn } from 'file://C:/project/fuseaitools-web/node_modules/defu/dist/defu.mjs';
+import destr, { destr as destr$1 } from 'file://C:/project/fuseaitools-web/node_modules/destr/dist/index.mjs';
+import { snakeCase } from 'file://C:/project/fuseaitools-web/node_modules/scule/dist/index.mjs';
+import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://C:/project/fuseaitools-web/node_modules/unhead/dist/server.mjs';
+import { stringify, uneval } from 'file://C:/project/fuseaitools-web/node_modules/devalue/index.js';
+import { isVNode, toValue, isRef } from 'file://C:/project/fuseaitools-web/node_modules/vue/index.mjs';
+import { DeprecationsPlugin, PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file://C:/project/fuseaitools-web/node_modules/unhead/dist/plugins.mjs';
+import { createHooks } from 'file://C:/project/fuseaitools-web/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file://C:/project/fuseaitools-web/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://C:/project/fuseaitools-web/node_modules/node-mock-http/dist/index.mjs';
+import { createStorage, prefixStorage } from 'file://C:/project/fuseaitools-web/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file://C:/project/fuseaitools-web/node_modules/unstorage/drivers/fs.mjs';
+import { digest } from 'file://C:/project/fuseaitools-web/node_modules/ohash/dist/index.mjs';
+import { toRouteMatcher, createRouter } from 'file://C:/project/fuseaitools-web/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
-import consola, { consola as consola$1 } from 'file://C:/project/simplyaitools-web/node_modules/consola/dist/index.mjs';
-import { ErrorParser } from 'file://C:/project/simplyaitools-web/node_modules/youch-core/build/index.js';
-import { Youch } from 'file://C:/project/simplyaitools-web/node_modules/youch/build/index.js';
-import { SourceMapConsumer } from 'file://C:/project/simplyaitools-web/node_modules/source-map/source-map.js';
+import consola, { consola as consola$1 } from 'file://C:/project/fuseaitools-web/node_modules/consola/dist/index.mjs';
+import { ErrorParser } from 'file://C:/project/fuseaitools-web/node_modules/youch-core/build/index.js';
+import { Youch } from 'file://C:/project/fuseaitools-web/node_modules/youch/build/index.js';
+import { SourceMapConsumer } from 'file://C:/project/fuseaitools-web/node_modules/source-map/source-map.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { getContext } from 'file://C:/project/simplyaitools-web/node_modules/unctx/dist/index.mjs';
-import { captureRawStackTrace, parseRawStackTrace } from 'file://C:/project/simplyaitools-web/node_modules/errx/dist/index.js';
+import { getContext } from 'file://C:/project/fuseaitools-web/node_modules/unctx/dist/index.mjs';
+import { captureRawStackTrace, parseRawStackTrace } from 'file://C:/project/fuseaitools-web/node_modules/errx/dist/index.js';
 import { fileURLToPath } from 'node:url';
-import { dirname as dirname$1, resolve as resolve$1 } from 'file://C:/project/simplyaitools-web/node_modules/pathe/dist/index.mjs';
-import { walkResolver } from 'file://C:/project/simplyaitools-web/node_modules/unhead/dist/utils.mjs';
+import { dirname as dirname$1, resolve as resolve$1 } from 'file://C:/project/fuseaitools-web/node_modules/pathe/dist/index.mjs';
+import { walkResolver } from 'file://C:/project/fuseaitools-web/node_modules/unhead/dist/utils.mjs';
 
-const serverAssets = [{"baseName":"server","dir":"C:/project/simplyaitools-web/server/assets"}];
+const serverAssets = [{"baseName":"server","dir":"C:/project/fuseaitools-web/server/assets"}];
 
 const assets$1 = createStorage();
 
@@ -48,11 +48,11 @@ const storage = createStorage({});
 
 storage.mount('/assets', assets$1);
 
-storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"C:/project/simplyaitools-web","watchOptions":{"ignored":[null]}}));
-storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"C:/project/simplyaitools-web/server","watchOptions":{"ignored":[null]}}));
-storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"C:/project/simplyaitools-web/.nuxt"}));
-storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"C:/project/simplyaitools-web/.nuxt/cache"}));
-storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"C:/project/simplyaitools-web/.data/kv"}));
+storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"C:/project/fuseaitools-web","watchOptions":{"ignored":[null]}}));
+storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"C:/project/fuseaitools-web/server","watchOptions":{"ignored":[null]}}));
+storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"C:/project/fuseaitools-web/.nuxt"}));
+storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"C:/project/fuseaitools-web/.nuxt/cache"}));
+storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"C:/project/fuseaitools-web/.data/kv"}));
 
 function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
@@ -648,7 +648,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "apiBase": "/api"
+    "apiBase": "http://127.0.0.1:8080/api"
   }
 };
 const envOptions = {
@@ -1014,15 +1014,15 @@ if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
 window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
 `;
 
-const _nLYBRKlVv_TMAFLvzytUWvCSpxwB8iG5EmhMDazYtg = (function(nitro) {
+const _yKfkBnlgr_QRBXTJ32FyYNKAUZra9TMuwX9rc3uOGM = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
     htmlContext.head.push(`<script>${script}<\/script>`);
   });
 });
 
-const rootDir = "C:/project/simplyaitools-web";
+const rootDir = "C:/project/fuseaitools-web";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, Suno and Midjourney. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis."},{"name":"keywords","content":"all-in-one platform, chat models, video models, image models, radio models, simply ai tools"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"}],"style":[],"script":[],"noscript":[],"title":"SimplyAITools: The All-in-One AI Platform","htmlAttrs":{"lang":"en"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, Suno and Midjourney. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis."},{"name":"keywords","content":"all-in-one platform, chat models, video models, image models, radio models, simply ai tools"}],"link":[{"rel":"shortcut icon","href":"/favicon.ico"},{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"32x32","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"16x16","href":"/favicon.ico"},{"rel":"apple-touch-icon","sizes":"180x180","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"}],"style":[],"script":[],"noscript":[],"title":"FuseAITools: The All-in-One AI Platform","htmlAttrs":{"lang":"en"}};
 
 const appRootTag = "div";
 
@@ -1039,7 +1039,7 @@ const devReducers = {
   URL: (data) => data instanceof URL ? data.toString() : void 0
 };
 const asyncContext = getContext("nuxt-dev", { asyncContext: true, AsyncLocalStorage });
-const _E83sCSiTefkXz0PDlYrb8bZqhfsVkceq6aaSC3SOQ = (nitroApp) => {
+const _x97qlr_3HNtLjE9TgMFJOrXi5_dH8bELYiZ02jASNI = (nitroApp) => {
   const handler = nitroApp.h3App.handler;
   nitroApp.h3App.handler = (event) => {
     return asyncContext.callAsync({ logs: [], event }, () => handler(event));
@@ -1109,8 +1109,8 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _nLYBRKlVv_TMAFLvzytUWvCSpxwB8iG5EmhMDazYtg,
-_E83sCSiTefkXz0PDlYrb8bZqhfsVkceq6aaSC3SOQ
+  _yKfkBnlgr_QRBXTJ32FyYNKAUZra9TMuwX9rc3uOGM,
+_x97qlr_3HNtLjE9TgMFJOrXi5_dH8bELYiZ02jASNI
 ];
 
 const assets = {};
@@ -1138,7 +1138,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _t8T5JS = eventHandler((event) => {
+const _2WG9IA = eventHandler((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -1276,8 +1276,8 @@ function publicAssetsURL(...path) {
 
 const APP_ROOT_OPEN_TAG = `<${appRootTag}${propsToString(appRootAttrs)}>`;
 const APP_ROOT_CLOSE_TAG = `</${appRootTag}>`;
-const getServerEntry = () => import('file://C:/project/simplyaitools-web/.nuxt/dist/server/server.mjs').then((r) => r.default || r);
-const getClientManifest = () => import('file://C:/project/simplyaitools-web/.nuxt/dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
+const getServerEntry = () => import('file://C:/project/fuseaitools-web/.nuxt/dist/server/server.mjs').then((r) => r.default || r);
+const getClientManifest = () => import('file://C:/project/fuseaitools-web/.nuxt/dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
 const getSSRRenderer = lazyCachedFunction(async () => {
   const manifest = await getClientManifest();
   if (!manifest) {
@@ -1523,17 +1523,33 @@ async function getIslandContext(event) {
   return ctx;
 }
 
-const _lazy_6ekpUd = () => Promise.resolve().then(function () { return _slug__get$1; });
-const _lazy_oY35IL = () => Promise.resolve().then(function () { return index_get$1; });
-const _lazy_9bprAC = () => Promise.resolve().then(function () { return renderer$1; });
+const _lazy_9_jlhG = () => Promise.resolve().then(function () { return chatgpt_post$1; });
+const _lazy_MRVyyM = () => Promise.resolve().then(function () { return claude_post$1; });
+const _lazy_2WjzW0 = () => Promise.resolve().then(function () { return deepseek_post$1; });
+const _lazy_xBiUVd = () => Promise.resolve().then(function () { return gemini_post$1; });
+const _lazy_eQ36Mn = () => Promise.resolve().then(function () { return tree_get$1; });
+const _lazy_MTnLsG = () => Promise.resolve().then(function () { return _slug__get$1; });
+const _lazy_Rqaiw_ = () => Promise.resolve().then(function () { return index_get$1; });
+const _lazy_FeFrNq = () => Promise.resolve().then(function () { return loginByEmail_post$1; });
+const _lazy_qjMUPF = () => Promise.resolve().then(function () { return sendEmailCode_post$1; });
+const _lazy_38TWWp = () => Promise.resolve().then(function () { return sitemap_xml_get$1; });
+const _lazy_T022gR = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
-  { route: '', handler: _t8T5JS, lazy: false, middleware: true, method: undefined },
-  { route: '/api/news/:slug', handler: _lazy_6ekpUd, lazy: true, middleware: false, method: "get" },
-  { route: '/api/news', handler: _lazy_oY35IL, lazy: true, middleware: false, method: "get" },
-  { route: '/__nuxt_error', handler: _lazy_9bprAC, lazy: true, middleware: false, method: undefined },
+  { route: '', handler: _2WG9IA, lazy: false, middleware: true, method: undefined },
+  { route: '/api/chat/chatgpt', handler: _lazy_9_jlhG, lazy: true, middleware: false, method: "post" },
+  { route: '/api/chat/claude', handler: _lazy_MRVyyM, lazy: true, middleware: false, method: "post" },
+  { route: '/api/chat/deepseek', handler: _lazy_2WjzW0, lazy: true, middleware: false, method: "post" },
+  { route: '/api/chat/gemini', handler: _lazy_xBiUVd, lazy: true, middleware: false, method: "post" },
+  { route: '/api/common/models/tree', handler: _lazy_eQ36Mn, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news/:slug', handler: _lazy_MTnLsG, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news', handler: _lazy_Rqaiw_, lazy: true, middleware: false, method: "get" },
+  { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
+  { route: '/sitemap.xml', handler: _lazy_38TWWp, lazy: true, middleware: false, method: "get" },
+  { route: '/__nuxt_error', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_9bprAC, lazy: true, middleware: false, method: undefined }
+  { route: '/**', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {
@@ -1864,6 +1880,238 @@ const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: styles
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const chatgpt_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/chat/chatgpt";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
+    const headers = {
+      "Content-Type": "application/json",
+      "Accept": clientAccept
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+      console.log("Forwarding Authorization header to backend");
+    } else {
+      console.warn("No Authorization header found in request");
+    }
+    console.log("Proxying request to:", backendUrl);
+    console.log("Request body:", JSON.stringify(body));
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    console.log("Backend response status:", response.status);
+    if (!response.ok) {
+      setResponseStatus(event, response.status);
+      const errorData = await response.json().catch(() => ({ error: "Request failed" }));
+      console.error("Backend error:", errorData);
+      return errorData;
+    }
+    setHeader(event, "Content-Type", "application/json");
+    setHeader(event, "Cache-Control", "no-cache");
+    setHeader(event, "Connection", "keep-alive");
+    setHeader(event, "Transfer-Encoding", "chunked");
+    console.log("Streaming response to client");
+    return response.body;
+  } catch (error) {
+    console.error("Stream proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to stream chat: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const chatgpt_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: chatgpt_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const claude_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/chat/claude";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
+    const headers = {
+      "Content-Type": "application/json",
+      "Accept": clientAccept
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+      console.log("Forwarding Authorization header to backend");
+    } else {
+      console.warn("No Authorization header found in request");
+    }
+    console.log("Proxying request to:", backendUrl);
+    console.log("Request body:", JSON.stringify(body));
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    console.log("Backend response status:", response.status);
+    if (!response.ok) {
+      setResponseStatus(event, response.status);
+      const errorData = await response.json().catch(() => ({ error: "Request failed" }));
+      console.error("Backend error:", errorData);
+      return errorData;
+    }
+    setHeader(event, "Content-Type", "application/json");
+    setHeader(event, "Cache-Control", "no-cache");
+    setHeader(event, "Connection", "keep-alive");
+    setHeader(event, "Transfer-Encoding", "chunked");
+    console.log("Streaming response to client");
+    return response.body;
+  } catch (error) {
+    console.error("Stream proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to stream chat: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const claude_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: claude_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const deepseek_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/chat/deepseek";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
+    const headers = {
+      "Content-Type": "application/json",
+      "Accept": clientAccept
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+      console.log("Forwarding Authorization header to backend");
+    } else {
+      console.warn("No Authorization header found in request");
+    }
+    console.log("Proxying request to:", backendUrl);
+    console.log("Request body:", JSON.stringify(body));
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    console.log("Backend response status:", response.status);
+    if (!response.ok) {
+      setResponseStatus(event, response.status);
+      const errorData = await response.json().catch(() => ({ error: "Request failed" }));
+      console.error("Backend error:", errorData);
+      return errorData;
+    }
+    setHeader(event, "Content-Type", "application/json");
+    setHeader(event, "Cache-Control", "no-cache");
+    setHeader(event, "Connection", "keep-alive");
+    setHeader(event, "Transfer-Encoding", "chunked");
+    console.log("Streaming response to client");
+    return response.body;
+  } catch (error) {
+    console.error("Stream proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to stream chat: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const deepseek_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: deepseek_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const gemini_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/chat/gemini";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
+    const headers = {
+      "Content-Type": "application/json",
+      "Accept": clientAccept
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+      console.log("Forwarding Authorization header to backend");
+    } else {
+      console.warn("No Authorization header found in request");
+    }
+    console.log("Proxying request to:", backendUrl);
+    console.log("Request body:", JSON.stringify(body));
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    console.log("Backend response status:", response.status);
+    if (!response.ok) {
+      setResponseStatus(event, response.status);
+      const errorData = await response.json().catch(() => ({ error: "Request failed" }));
+      console.error("Backend error:", errorData);
+      return errorData;
+    }
+    setHeader(event, "Content-Type", "application/json");
+    setHeader(event, "Cache-Control", "no-cache");
+    setHeader(event, "Connection", "keep-alive");
+    setHeader(event, "Transfer-Encoding", "chunked");
+    console.log("Streaming response to client");
+    return response.body;
+  } catch (error) {
+    console.error("Stream proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to stream chat: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const gemini_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: gemini_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const tree_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const targetUrl = `${apiBase}/common/models/tree`;
+  const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) {
+    headers["Authorization"] = authHeader;
+  }
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "GET",
+      headers
+    });
+    return response;
+  } catch (error) {
+    console.error("Proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch models"
+    });
+  }
+});
+
+const tree_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: tree_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const _slug__get = defineEventHandler(async (event) => {
   try {
     const slug = getRouterParam(event, "slug");
@@ -1937,6 +2185,272 @@ const index_get = defineEventHandler(async (event) => {
 const index_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: index_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const loginByEmail_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/user/login-by-email";
+  try {
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to login by email"
+    });
+  }
+});
+
+const loginByEmail_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: loginByEmail_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const sendEmailCode_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/user/send-email-code";
+  try {
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to send email code"
+    });
+  }
+});
+
+const sendEmailCode_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: sendEmailCode_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const sitemap_xml_get = defineEventHandler((event) => {
+  setHeader(event, "Content-Type", "application/xml");
+  const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+  const baseUrl = "https://fuseaitools.com";
+  const pages = [
+    // Main pages
+    {
+      loc: "/",
+      lastmod: currentDate,
+      changefreq: "daily",
+      priority: "1.0"
+    },
+    {
+      loc: "/home",
+      lastmod: currentDate,
+      changefreq: "daily",
+      priority: "0.9"
+    },
+    {
+      loc: "/about",
+      lastmod: currentDate,
+      changefreq: "monthly",
+      priority: "0.6"
+    },
+    {
+      loc: "/pricing",
+      lastmod: currentDate,
+      changefreq: "monthly",
+      priority: "0.7"
+    },
+    {
+      loc: "/tools",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/news",
+      lastmod: currentDate,
+      changefreq: "daily",
+      priority: "0.5"
+    },
+    // Chat AI Tools
+    {
+      loc: "/home/gpt",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/deepseek",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/claude",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/gemini",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    // Image Generation Tools
+    {
+      loc: "/home/gpt-4o-image",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/midjourney",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/flux-kontext",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/nano-banana",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    // Audio Processing Tools
+    {
+      loc: "/home/elevenlabs",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/elevenlabs/multilingual-v2",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/elevenlabs/turbo-2-5",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/elevenlabs/speech-to-text",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/elevenlabs/sound-effect-v2",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/elevenlabs/audio-isolation",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/suno",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/suno/extend",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/suno/cover",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/suno/expand",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/suno/accompaniment",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/suno/vocal",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    // Video Generation Tools
+    {
+      loc: "/home/veo3",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/runway",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/luma",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/sora",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    }
+  ];
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages.map((page) => `  <url>
+    <loc>${baseUrl}${page.loc}</loc>
+    <lastmod>${page.lastmod}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`).join("\n")}
+</urlset>`;
+  return sitemap;
+});
+
+const sitemap_xml_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: sitemap_xml_get
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {

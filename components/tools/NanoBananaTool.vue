@@ -13,15 +13,37 @@
       </div>
     </div>
 
+    <!-- Function Selection Section -->
+    <div class="function-selection-section">
+      <div class="function-tabs">
+        <div 
+          v-for="func in functionOptions" 
+          :key="func.id"
+          class="function-tab"
+          :class="{ active: activeTab === func.id }"
+          @click="activeTab = func.id"
+        >
+          <div class="function-icon">
+            <i :class="func.icon"></i>
+          </div>
+          <div class="function-info">
+            <div class="function-name">{{ func.name }}</div>
+            <div class="function-description">{{ func.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content Area: Left (1/3) and Right (2/3) -->
     <div class="main-content">
       <!-- Left: Parameter Configuration Panel -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>Nano Banana Configuration</h4>
+          <h4>{{ activeTab === 'nano-banana' ? 'Nano Banana Configuration' : 'Nano Banana Pro Configuration' }}</h4>
         </div>
 
-        <form class="config-form" @submit.prevent="generateImage">
+        <!-- Nano Banana Form -->
+        <form v-if="activeTab === 'nano-banana'" class="config-form" @submit.prevent="generateImage">
           <!-- 模式选择 -->
           <div class="form-group">
             <label>Generation Mode *</label>
@@ -58,7 +80,7 @@
               upload-text="Click to upload image"
               upload-hint="Supports JPG, PNG, WEBP formats, maximum 10MB"
               additional-hint="Upload images to edit, up to 10 images"
-              theme-color="#ef4444"
+              theme-color="#667eea"
               :max-files="10"
               :max-file-size="10 * 1024 * 1024"
               accept="image/jpeg,image/png,image/webp"
@@ -209,20 +231,104 @@
           </button>
         </form>
 
-        <!-- Usage Tips -->
-        <div class="tips-panel">
-          <h4>Usage Tips</h4>
-          <ul>
-            <li><strong>Mode Selection:</strong> Text to Image is suitable for creating from scratch, Image to Image is suitable for editing existing images</li>
-            <li><strong>Image Upload:</strong> Image to Image mode supports uploading up to 10 images in JPG/PNG/WEBP format</li>
-            <li><strong>Detailed Description:</strong> Provide detailed image descriptions or editing requirements for better results</li>
-            <li><strong>Character Limit:</strong> Prompt supports up to 5000 characters</li>
-            <li><strong>Format Selection:</strong> PNG supports transparent background, JPEG files are smaller</li>
-            <li><strong>Size Selection:</strong> Choose the appropriate aspect ratio for the best visual effect</li>
-            <li><strong>Auto Size:</strong> Select auto to let AI automatically determine the best aspect ratio</li>
-            <li><strong>Lightweight:</strong> Nano Banana is optimized for fast generation</li>
-          </ul>
-        </div>
+        <!-- Nano Banana Pro Form -->
+        <form v-if="activeTab === 'nano-banana-pro'" class="config-form" @submit.prevent="generateImagePro">
+          <!-- 提示词输入 -->
+          <div class="form-group">
+            <label>Prompt *</label>
+            <textarea
+              v-model="proFormData.prompt"
+              placeholder="A text description of the image you want to generate"
+              rows="6"
+              maxlength="20000"
+              class="form-input"
+              required
+            ></textarea>
+            <div class="char-count">{{ proFormData.prompt.length }}/20000</div>
+            <div class="input-hint">Provide detailed image description, supports up to 20000 characters</div>
+          </div>
+
+          <!-- 图片上传 -->
+          <div class="form-group">
+            <label>Input Images (Optional)</label>
+            <UploadImage
+              input-id="nano-banana-pro-image-upload"
+              label=""
+              upload-icon="fas fa-cloud-upload-alt"
+              upload-text="Click to upload images"
+              upload-hint="Supports JPG, PNG, WEBP formats, maximum 30MB per image"
+              additional-hint="Upload up to 8 images as reference or for transformation"
+              theme-color="#667eea"
+              :max-files="8"
+              :max-file-size="30 * 1024 * 1024"
+              accept="image/jpeg,image/png,image/webp"
+              :multiple="true"
+              @update:files="handleProImageUpdate"
+            />
+          </div>
+
+          <!-- 宽高比选择 -->
+          <div class="form-group">
+            <label>Aspect Ratio</label>
+            <div class="tab-group">
+              <div 
+                v-for="ratio in aspectRatios"
+                :key="ratio"
+                class="tab-option"
+                :class="{ active: proFormData.aspect_ratio === ratio }"
+                @click="proFormData.aspect_ratio = ratio"
+              >
+                <span>{{ ratio }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 分辨率选择 -->
+          <div class="form-group">
+            <label>Resolution</label>
+            <div class="tab-group">
+              <div 
+                v-for="res in resolutions"
+                :key="res"
+                class="tab-option"
+                :class="{ active: proFormData.resolution === res }"
+                @click="proFormData.resolution = res"
+              >
+                <span>{{ res }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 输出格式选择 -->
+          <div class="form-group">
+            <label>Output Format</label>
+            <div class="tab-group">
+              <div 
+                class="tab-option"
+                :class="{ active: proFormData.output_format === 'png' }"
+                @click="proFormData.output_format = 'png'"
+              >
+                <i class="fas fa-file-image"></i>
+                <span>PNG</span>
+              </div>
+              <div 
+                class="tab-option"
+                :class="{ active: proFormData.output_format === 'jpg' }"
+                @click="proFormData.output_format = 'jpg'"
+              >
+                <i class="fas fa-file-image"></i>
+                <span>JPG</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 生成按钮 -->
+          <button type="submit" :disabled="isGenerating || !canGeneratePro" class="generate-btn">
+            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-magic"></i>
+            {{ isGenerating ? 'Generating...' : 'Generate Image' }}
+          </button>
+        </form>
       </div>
 
       <!-- Right: Image Display Area -->
@@ -289,6 +395,68 @@
         </div>
       </div>
     </div>
+
+    <!-- Usage Tips -->
+    <div class="usage-tips" v-if="activeTab === 'nano-banana'">
+      <div class="tip-item">
+        <span class="tip-icon">🎨</span>
+        <span><strong>Mode Selection:</strong> Text to Image is suitable for creating from scratch, Image to Image is suitable for editing existing images</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📤</span>
+        <span><strong>Image Upload:</strong> Image to Image mode supports uploading up to 10 images in JPG/PNG/WEBP format</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">✍️</span>
+        <span><strong>Detailed Description:</strong> Provide detailed image descriptions or editing requirements for better results</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📝</span>
+        <span><strong>Character Limit:</strong> Prompt supports up to 5000 characters</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🖼️</span>
+        <span><strong>Format Selection:</strong> PNG supports transparent background, JPEG files are smaller</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📐</span>
+        <span><strong>Size Selection:</strong> Choose the appropriate aspect ratio for the best visual effect</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🔀</span>
+        <span><strong>Auto Size:</strong> Select auto to let AI automatically determine the best aspect ratio</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">⚡</span>
+        <span><strong>Lightweight:</strong> Nano Banana is optimized for fast generation</span>
+      </div>
+    </div>
+    <div class="usage-tips" v-if="activeTab === 'nano-banana-pro'">
+      <div class="tip-item">
+        <span class="tip-icon">✍️</span>
+        <span><strong>Prompt:</strong> Provide detailed image descriptions, supports up to 20000 characters for complex scenes</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🖼️</span>
+        <span><strong>Input Images:</strong> Upload up to 8 images as reference or for transformation, max 30MB per image</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📐</span>
+        <span><strong>Aspect Ratio:</strong> Choose the appropriate aspect ratio for your use case, or select "auto" for automatic selection</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎯</span>
+        <span><strong>Resolution:</strong> Select 1K, 2K, or 4K resolution based on your quality requirements</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">💾</span>
+        <span><strong>Output Format:</strong> PNG supports transparent background, JPG files are smaller in size</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">⭐</span>
+        <span><strong>Pro Features:</strong> Nano Banana Pro offers enhanced image generation capabilities with higher quality output</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -299,6 +467,26 @@ import UploadImage from './common/UploadImage.vue'
 
 const router = useRouter()
 
+// Tab state
+const activeTab = ref('nano-banana')
+
+// Function options configuration
+const functionOptions = ref([
+  {
+    id: 'nano-banana',
+    name: 'Nano Banana',
+    description: 'Lightweight Image Generation',
+    icon: 'fas fa-banana'
+  },
+  {
+    id: 'nano-banana-pro',
+    name: 'Nano Banana Pro',
+    description: 'Advanced Image Generation',
+    icon: 'fas fa-star'
+  }
+])
+
+// Nano Banana form data
 const formData = reactive({
   mode: 'text-to-image', // 'text-to-image' 或 'image-to-image'
   prompt: '',
@@ -306,6 +494,21 @@ const formData = reactive({
   output_format: 'png',
   image_size: '1:1'
 })
+
+// Nano Banana Pro form data
+const proFormData = reactive({
+  prompt: '',
+  image_input: [], // Array of image URLs
+  aspect_ratio: '1:1',
+  resolution: '1K',
+  output_format: 'png'
+})
+
+// Aspect ratios for Pro
+const aspectRatios = ['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9', '21:9', 'auto']
+
+// Resolutions for Pro
+const resolutions = ['1K', '2K', '4K']
 
 const isGenerating = ref(false)
 const generatedImages = ref([])
@@ -319,6 +522,10 @@ const canGenerate = computed(() => {
   }
   
   return true
+})
+
+const canGeneratePro = computed(() => {
+  return proFormData.prompt.trim().length > 0
 })
 
 // 方法
@@ -341,6 +548,16 @@ const handleImageUpdate = (files) => {
     formData.image_urls = files.map(file => URL.createObjectURL(file))
   } else {
     formData.image_urls = []
+  }
+}
+
+const handleProImageUpdate = (files) => {
+  if (files && files.length > 0) {
+    // For Pro, we need to upload files and get URLs
+    // For now, using object URLs as placeholder
+    proFormData.image_input = files.map(file => URL.createObjectURL(file))
+  } else {
+    proFormData.image_input = []
   }
 }
 
@@ -390,6 +607,58 @@ const copyImageUrl = async (image) => {
   }
 }
 
+const generateImagePro = async () => {
+  if (!canGeneratePro.value) return
+
+  isGenerating.value = true
+  
+  try {
+    // Build payload according to API spec
+    const payload = {
+      input: {
+        prompt: proFormData.prompt
+      }
+    }
+
+    // Add optional fields
+    if (proFormData.image_input && proFormData.image_input.length > 0) {
+      payload.input.image_input = proFormData.image_input
+    }
+    if (proFormData.aspect_ratio) {
+      payload.input.aspect_ratio = proFormData.aspect_ratio
+    }
+    if (proFormData.resolution) {
+      payload.input.resolution = proFormData.resolution
+    }
+    if (proFormData.output_format) {
+      payload.input.output_format = proFormData.output_format
+    }
+
+    // TODO: Call actual API endpoint
+    // For now, simulate API call
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    
+    // Mock generated image
+    const mockImage = {
+      id: Date.now(),
+      url: `https://via.placeholder.com/800x800/ef4444/ffffff?text=Nano+Banana+Pro+Generated`,
+      prompt: proFormData.prompt,
+      aspect_ratio: proFormData.aspect_ratio,
+      resolution: proFormData.resolution,
+      output_format: proFormData.output_format,
+      timestamp: new Date().toLocaleTimeString()
+    }
+    
+    generatedImages.value.unshift(mockImage)
+    
+  } catch (error) {
+    console.error('Failed to generate image:', error)
+    alert('Failed to generate image, please try again')
+  } finally {
+    isGenerating.value = false
+  }
+}
+
 const clearResults = () => {
   generatedImages.value = []
 }
@@ -410,9 +679,9 @@ const clearResults = () => {
 .tool-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 20px;
 }
 
 .header-left {
@@ -430,7 +699,7 @@ const clearResults = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ef4444;
+  background: #667eea;
   color: white;
   font-size: 20px;
 }
@@ -452,6 +721,128 @@ const clearResults = () => {
   margin: 0;
   font-size: 14px;
   color: #6b7280;
+}
+
+/* Function Selection Section */
+.function-selection-section {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 20px 30px;
+}
+
+.function-tabs {
+  display: grid;
+  grid-template-columns: 25% 25%;
+  gap: 8px;
+  justify-content: start;
+}
+
+.function-tab {
+  display: flex;
+  align-items: center;
+  padding: 6px 9px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 63px;
+}
+
+.function-tab:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.function-tab.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.function-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.function-tab.active .function-icon {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.function-icon i {
+  font-size: 15px;
+  color: #667eea;
+}
+
+.function-tab.active .function-icon i {
+  color: white;
+}
+
+.function-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.function-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 1px;
+  color: #1e293b;
+}
+
+.function-tab.active .function-name {
+  color: white;
+}
+
+.function-description {
+  font-size: 10.5px;
+  color: #64748b;
+  line-height: 1.1;
+}
+
+.function-tab.active .function-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Function Selection Section Responsive */
+@media (max-width: 768px) {
+  .function-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .function-tab {
+    height: auto;
+    padding: 4.5px 6px;
+  }
+  
+  .function-icon {
+    width: 27px;
+    height: 27px;
+    margin-right: 4.5px;
+  }
+  
+  .function-icon i {
+    font-size: 12px;
+  }
+  
+  .function-name {
+    font-size: 12px;
+  }
+  
+  .function-description {
+    font-size: 9px;
+  }
 }
 
 .main-content {
@@ -514,8 +905,8 @@ const clearResults = () => {
 
 .form-input:focus, textarea:focus {
   outline: none;
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .char-count {
@@ -559,7 +950,7 @@ const clearResults = () => {
 }
 
 .mode-btn.active {
-  background: #ef4444;
+  background: #667eea;
   color: white;
 }
 
@@ -600,15 +991,15 @@ const clearResults = () => {
 
 .tab-option:hover {
   background: #f8fafc;
-  border-color: #ef4444;
-  color: #ef4444;
+  border-color: #667eea;
+  color: #667eea;
 }
 
 .tab-option.active {
-  background: #ef4444;
-  border-color: #ef4444;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .tab-option i {
@@ -618,7 +1009,7 @@ const clearResults = () => {
 .generate-btn {
   width: 100%;
   padding: 16px 24px;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border: none;
   border-radius: 12px;
@@ -634,7 +1025,7 @@ const clearResults = () => {
 
 .generate-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
 .generate-btn:disabled {
@@ -650,40 +1041,32 @@ const clearResults = () => {
   margin-left: 4px;
 }
 
-.tips-panel {
-  margin-top: 24px;
-  padding: 20px;
-  background: #fef2f2;
-  border-radius: 12px;
+/* Usage Tips - Horizontal layout like Suno */
+.usage-tips {
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
-.tips-panel h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 12px 0;
-}
-
-.tips-panel ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tips-panel li {
-  padding: 4px 0;
-  color: #4b5563;
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
   font-size: 14px;
+  color: #64748b;
 }
 
-.tips-panel li::before {
-  content: '•';
-  color: #ef4444;
-  font-weight: bold;
-  margin-right: 8px;
+.tip-item:last-child {
+  margin-bottom: 0;
 }
 
-.tips-panel strong {
+.tip-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.tip-item strong {
   color: #374151;
 }
 
@@ -833,7 +1216,7 @@ const clearResults = () => {
 .empty-state {
   text-align: center;
   color: #64748b;
-  max-width: 500px;
+  max-width: 200px;
   min-height: 60vh;
   display: flex;
   flex-direction: column;
@@ -874,13 +1257,13 @@ const clearResults = () => {
   font-size: 16px;
   color: #64748b;
   padding: 8px 16px;
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(102, 126, 234, 0.1);
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 .feature-item i {
-  color: #ef4444;
+  color: #667eea;
   width: 20px;
   font-size: 18px;
 }

@@ -75,7 +75,7 @@
             :max-files="5"
             :max-file-size="10 * 1024 * 1024"
             additional-hint="Upload reference images to guide generation direction"
-            theme-color="#10b981"
+            theme-color="#667eea"
             @update:files="handleReferenceImages"
           />
 
@@ -90,7 +90,7 @@
             :multiple="false"
             :max-file-size="10 * 1024 * 1024"
             additional-hint="Black areas will be modified, white areas will be preserved"
-            theme-color="#10b981"
+            theme-color="#667eea"
             @update:files="handleMaskImage"
           />
 
@@ -138,18 +138,6 @@
             {{ isGenerating ? 'Generating...' : 'Generate Image' }}
           </button>
         </form>
-
-        <!-- Usage Tips -->
-        <div class="tips-panel">
-          <h4>Usage Tips</h4>
-          <ul>
-            <li>Provide detailed descriptive prompts for better results</li>
-            <li>Upload reference images to guide generation direction</li>
-            <li>Use masks to precisely control image editing areas</li>
-            <li>Support multiple aspect ratios, choose the appropriate ratio</li>
-            <li>Enable the fallback mechanism to improve generation success rate</li>
-          </ul>
-        </div>
       </div>
 
       <!-- Right: Image Display Area -->
@@ -211,6 +199,30 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Usage Tips -->
+    <div class="usage-tips">
+      <div class="tip-item">
+        <span class="tip-icon">✨</span>
+        <span>Provide detailed descriptive prompts for better results</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🖼️</span>
+        <span>Upload reference images to guide generation direction</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎭</span>
+        <span>Use masks to precisely control image editing areas</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📐</span>
+        <span>Support multiple aspect ratios, choose the appropriate ratio</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🔄</span>
+        <span>Enable the fallback mechanism to improve generation success rate</span>
       </div>
     </div>
   </div>
@@ -535,37 +547,33 @@ const clearResults = () => {
 }
 
 
-.tips-panel {
-  margin-top: 24px;
-  padding: 20px;
-  background: #f0f4ff;
-  border-radius: 12px;
+/* Usage Tips - Horizontal layout like Suno */
+.usage-tips {
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
-.tips-panel h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 12px 0;
-}
-
-.tips-panel ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tips-panel li {
-  padding: 4px 0;
-  color: #4b5563;
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
   font-size: 14px;
+  color: #64748b;
 }
 
-.tips-panel li::before {
-  content: '•';
-  color: #667eea;
-  font-weight: bold;
-  margin-right: 8px;
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.tip-item strong {
+  color: #374151;
 }
 
 .image-display-panel {
@@ -803,6 +811,7 @@ const clearResults = () => {
   .image-showcase {
     grid-template-columns: 1fr;
   }
+  
 }
 </style>
 

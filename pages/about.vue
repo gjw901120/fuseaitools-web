@@ -4,7 +4,7 @@
     <section class="hero-section">
       <div class="simply-container">
         <div class="hero-content">
-          <h1 class="hero-title">About Simply AI Tools</h1>
+          <h1 class="hero-title">About Fuse AI Tools</h1>
           <p class="hero-subtitle">
             A platform that collects various practical AI tools, committed to providing users with the best AI tool experience.
           </p>
@@ -17,7 +17,7 @@
       <div class="simply-container">
         <div class="content-wrapper">
           <h2>Our Mission</h2>
-          <p>Simply AI Tools is committed to providing users with the most comprehensive and practical AI tool collection, enabling everyone to easily use artificial intelligence technology to improve work efficiency and creativity.</p>
+          <p>Fuse AI Tools is committed to providing users with the most comprehensive and practical AI tool collection, enabling everyone to easily use artificial intelligence technology to improve work efficiency and creativity.</p>
           
           <h2>Why Choose Us</h2>
           <ul>

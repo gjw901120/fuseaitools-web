@@ -6,7 +6,7 @@
         <div class="footer-section">
           <div class="logo">
             <i class="fas fa-robot"></i>
-            <span>SimplyAI</span>
+            <span>FuseAI</span>
           </div>
           <p class="company-description">
             Your intelligent AI assistant for work, learning, and creativity.

@@ -148,7 +148,7 @@
               id="waterMark"
               v-model="formData.waterMark"
               type="text"
-              placeholder="simplyai"
+              placeholder="fuseai"
             />
             <div class="form-help">
               Video watermark text content. Empty string means no watermark, non-empty string will display the specified watermark text in the bottom-right corner of the video.
@@ -243,7 +243,7 @@
               id="aleph-waterMark"
               v-model="alephFormData.waterMark"
               type="text"
-              placeholder="simplyai"
+              placeholder="fuseai"
               maxlength="20"
             />
             <div class="form-help">
@@ -421,7 +421,7 @@
               id="extend-waterMark"
               v-model="extendFormData.waterMark"
               type="text"
-              placeholder="simplyai"
+              placeholder="fuseai"
               maxlength="20"
             />
             <div class="form-help">
@@ -441,40 +441,6 @@
             </button>
           </div>
         </form>
-        
-        <!-- 使用提示 -->
-        <div class="tips-panel" v-if="activeTab === 'generate'">
-          <h4>💡 Usage Tips</h4>
-          <ul class="tips-list">
-            <li><strong>Detailed Description:</strong> Include details like scenes, actions, camera movement, lighting, etc.</li>
-            <li><strong>Cinematic Terms:</strong> Use professional terms like "close-up", "wide shot", "tracking shot"</li>
-            <li><strong>Style Specification:</strong> Such as "sci-fi style", "romantic comedy", "action film"</li>
-            <li><strong>Duration Limit:</strong> 10-second videos do not support 1080p resolution</li>
-            <li><strong>Reference Image:</strong> Providing an image URL can add animation effects to existing images</li>
-          </ul>
-        </div>
-
-        <!-- Aleph Usage Tips -->
-        <div class="tips-panel" v-if="activeTab === 'aleph'">
-          <h4>💡 Aleph Usage Tips</h4>
-          <ul class="tips-list">
-            <li><strong>Transformation Description:</strong> Focus on describing the style changes and effect transformations you want</li>
-            <li><strong>Motion Effects:</strong> Use camera movement terminology to enhance video dynamics</li>
-            <li><strong>Temporal Control:</strong> Control transformation rhythm through temporal elements (gradually, suddenly, etc.)</li>
-            <li><strong>Video Requirements:</strong> Ensure video URL is accessible via HTTPS and file size does not exceed 10MB</li>
-          </ul>
-        </div>
-
-        <!-- Extend Usage Tips -->
-        <div class="tips-panel" v-if="activeTab === 'extend'">
-          <h4>💡 Extend Usage Tips</h4>
-          <ul class="tips-list">
-            <li><strong>Continuation Description:</strong> Describe what should happen next in the video sequence</li>
-            <li><strong>Consistency:</strong> Maintain visual and narrative consistency with the original video</li>
-            <li><strong>Dynamic Actions:</strong> Specify movements, actions, and developments clearly</li>
-            <li><strong>Quality Selection:</strong> Choose resolution based on your needs - 720p for faster generation, 1080p for higher quality</li>
-          </ul>
-        </div>
       </div>
 
       <!-- 右侧：视频展示区域 (2/3) -->
@@ -542,6 +508,70 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- 使用提示 - 底部横排展示 -->
+    <div class="usage-tips" v-if="activeTab === 'generate'">
+      <div class="tip-item">
+        <span class="tip-icon">📝</span>
+        <span><strong>Detailed Description:</strong> Include details like scenes, actions, camera movement, lighting, etc.</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎬</span>
+        <span><strong>Cinematic Terms:</strong> Use professional terms like "close-up", "wide shot", "tracking shot"</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎨</span>
+        <span><strong>Style Specification:</strong> Such as "sci-fi style", "romantic comedy", "action film"</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">⏱️</span>
+        <span><strong>Duration Limit:</strong> 10-second videos do not support 1080p resolution</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🖼️</span>
+        <span><strong>Reference Image:</strong> Providing an image URL can add animation effects to existing images</span>
+      </div>
+    </div>
+
+    <!-- Aleph Usage Tips -->
+    <div class="usage-tips" v-if="activeTab === 'aleph'">
+      <div class="tip-item">
+        <span class="tip-icon">🔄</span>
+        <span><strong>Transformation Description:</strong> Focus on describing the style changes and effect transformations you want</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📹</span>
+        <span><strong>Motion Effects:</strong> Use camera movement terminology to enhance video dynamics</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">⏰</span>
+        <span><strong>Temporal Control:</strong> Control transformation rhythm through temporal elements (gradually, suddenly, etc.)</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎥</span>
+        <span><strong>Video Requirements:</strong> Ensure video URL is accessible via HTTPS and file size does not exceed 10MB</span>
+      </div>
+    </div>
+
+    <!-- Extend Usage Tips -->
+    <div class="usage-tips" v-if="activeTab === 'extend'">
+      <div class="tip-item">
+        <span class="tip-icon">➡️</span>
+        <span><strong>Continuation Description:</strong> Describe what should happen next in the video sequence</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🔗</span>
+        <span><strong>Consistency:</strong> Maintain visual and narrative consistency with the original video</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">⚡</span>
+        <span><strong>Dynamic Actions:</strong> Specify movements, actions, and developments clearly</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎯</span>
+        <span><strong>Quality Selection:</strong> Choose resolution based on your needs - 720p for faster generation, 1080p for higher quality</span>
       </div>
     </div>
   </div>
@@ -709,7 +739,7 @@ const generateVideo = async () => {
       id: Date.now(),
       url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
       thumbnail: 'https://via.placeholder.com/320x180/3b82f6/ffffff?text=Runway+Video',
-      duration: `${formData.duration}秒`,
+      duration: `${formData.duration} seconds`,
       resolution: formData.quality,
       aspectRatio: formData.aspectRatio,
       prompt: formData.prompt,
@@ -724,7 +754,7 @@ const generateVideo = async () => {
     formData.waterMark = ''
     
   } catch (error) {
-    console.error('生成视频失败:', error)
+    console.error('Video generation failed:', error)
   } finally {
     isGenerating.value = false
   }
@@ -732,12 +762,12 @@ const generateVideo = async () => {
 
 const downloadVideo = (video) => {
   // 实现下载逻辑
-  console.log('下载视频:', video)
+  console.log('Download video:', video)
 }
 
 const shareVideo = (video) => {
   // 实现分享逻辑
-  console.log('分享视频:', video)
+  console.log('Share video:', video)
 }
 
 const clearResults = () => {
@@ -1580,36 +1610,41 @@ const generateExtendVideo = async () => {
   font-size: 18px;
 }
 
-/* 提示面板 */
-.tips-panel {
-  background: white;
+/* Usage Tips - Horizontal layout like Suno */
+.usage-tips {
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
-.tips-panel h4 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 12px 0;
-}
-
-.tips-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tips-list li {
-  font-size: 12px;
-  color: #64748b;
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
-  line-height: 1.5;
+  font-size: 14px;
+  color: #64748b;
 }
 
-.tips-list strong {
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.tip-item strong {
   color: #374151;
 }
 
 /* 响应式设计 */
+@media (max-width: 768px) {
+  .usage-tips {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 1024px) {
   .main-content {
     flex-direction: column;

@@ -49,7 +49,7 @@
               <div v-else class="uploaded-content">
                 <div class="uploaded-video-container">
                   <video :src="referenceVideo" class="uploaded-video" controls>
-                    您的浏览器不支持视频播放
+                    Your browser does not support video playback
                   </video>
                   <button 
                     @click="clearReferenceVideo"
@@ -102,18 +102,6 @@
             </button>
           </div>
         </form>
-        
-        <!-- 使用提示 -->
-        <div class="tips-panel">
-          <h4>💡 Usage Tips</h4>
-          <ul class="tips-list">
-            <li><strong>English Description:</strong> All prompts must be in English, ensure description is accurate and clear</li>
-            <li><strong>Detailed Description:</strong> Specifically describe the visual elements to add or modify</li>
-            <li><strong>Video Requirements:</strong> Input video maximum 500MB, maximum 10 seconds</li>
-            <li><strong>Format Support:</strong> Supports MP4, MOV, AVI formats</li>
-            <li><strong>3D Effects:</strong> Focus on 3D scenes and three-dimensional visual effects</li>
-          </ul>
-        </div>
       </div>
 
       <!-- 右侧：视频展示区域 (2/3) -->
@@ -137,7 +125,7 @@
             >
               <div class="video-player">
                 <video controls :src="video.url" :poster="video.thumbnail">
-                  您的浏览器不支持视频播放
+                  Your browser does not support video playback
                 </video>
               </div>
               <div class="video-details">
@@ -181,6 +169,30 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- 使用提示 - 底部横排展示 -->
+    <div class="usage-tips">
+      <div class="tip-item">
+        <span class="tip-icon">🌐</span>
+        <span><strong>English Description:</strong> All prompts must be in English, ensure description is accurate and clear</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📝</span>
+        <span><strong>Detailed Description:</strong> Specifically describe the visual elements to add or modify</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎥</span>
+        <span><strong>Video Requirements:</strong> Input video maximum 500MB, maximum 10 seconds</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📁</span>
+        <span><strong>Format Support:</strong> Supports MP4, MOV, AVI formats</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎬</span>
+        <span><strong>3D Effects:</strong> Focus on 3D scenes and three-dimensional visual effects</span>
       </div>
     </div>
   </div>
@@ -392,7 +404,7 @@ const clearResults = () => {
 }
 
 .cost-badge {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
@@ -432,8 +444,8 @@ const clearResults = () => {
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-group textarea {
@@ -452,7 +464,7 @@ const clearResults = () => {
 
 .validate-btn {
   padding: 12px 16px;
-  background: #8b5cf6;
+  background: #3b82f6;
   color: white;
   border: none;
   border-radius: 8px;
@@ -464,7 +476,7 @@ const clearResults = () => {
 }
 
 .validate-btn:hover:not(:disabled) {
-  background: #7c3aed;
+  background: #2563eb;
 }
 
 .validate-btn:disabled {
@@ -514,13 +526,13 @@ const clearResults = () => {
 }
 
 .upload-area:hover {
-  border-color: #8b5cf6;
-  background: #faf5ff;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .upload-area.has-files {
-  border-color: #10b981;
-  background: #f0fdf4;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .upload-content {
@@ -536,14 +548,14 @@ const clearResults = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #8b5cf6;
+  background: #3b82f6;
   border-radius: 50%;
   color: white;
   font-size: 20px;
 }
 
 .upload-area.has-files .upload-icon {
-  background: #10b981;
+  background: #3b82f6;
 }
 
 .upload-text {
@@ -590,7 +602,7 @@ const clearResults = () => {
   height: 120px;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid #10b981;
+  border: 2px solid #3b82f6;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -610,7 +622,7 @@ const clearResults = () => {
 .uploaded-text .upload-title {
   font-size: 16px;
   font-weight: 600;
-  color: #10b981;
+  color: #3b82f6;
   margin: 0;
 }
 
@@ -652,7 +664,7 @@ const clearResults = () => {
 .btn-primary {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
   border: none;
   border-radius: 12px;
@@ -668,7 +680,7 @@ const clearResults = () => {
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
 }
 
 .btn-primary:disabled {
@@ -756,7 +768,7 @@ const clearResults = () => {
 }
 
 .video-watermark {
-  background: #8b5cf6;
+  background: #3b82f6;
   color: white;
   padding: 2px 6px;
   border-radius: 4px;
@@ -834,48 +846,48 @@ const clearResults = () => {
   font-size: 16px;
   color: #64748b;
   padding: 8px 16px;
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(59, 130, 246, 0.1);
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 .feature-item:hover {
-  background: rgba(139, 92, 246, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   transform: translateY(-2px);
 }
 
 .feature-item i {
-  color: #8b5cf6;
+  color: #3b82f6;
   width: 20px;
   font-size: 18px;
 }
 
-/* 提示面板 */
-.tips-panel {
-  background: white;
+/* Usage Tips - Horizontal layout like Suno */
+.usage-tips {
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
-.tips-panel h4 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 12px 0;
-}
-
-.tips-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tips-list li {
-  font-size: 12px;
-  color: #64748b;
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
-  line-height: 1.5;
+  font-size: 14px;
+  color: #64748b;
 }
 
-.tips-list strong {
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.tip-item strong {
   color: #374151;
 }
 
@@ -924,6 +936,7 @@ const clearResults = () => {
     flex: 1;
     min-width: 120px;
   }
+
 }
 </style>
 

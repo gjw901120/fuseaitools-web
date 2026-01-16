@@ -4,8 +4,8 @@
       <div class="hero-content">
         <div class="hero-text">
           <h1 class="hero-title">
-            Your Intelligent AI Assistant
-            <span class="gradient-text">for Everything</span>
+            FuseAI Tools - All-in-One AI Platform
+            <span class="gradient-text">50+ AI Models & Tools</span>
           </h1>
           <p class="hero-description">
             Access over 50 AI models and tools in one platform, ranging from Chat to Image, Audio, and Video<br>
@@ -34,7 +34,7 @@
                 <span class="control yellow"></span>
                 <span class="control green"></span>
               </div>
-              <div class="window-title">SimplyAI Chat</div>
+              <div class="window-title">FuseAI Chat</div>
             </div>
             <div class="chat-messages">
               <div class="message user-message">

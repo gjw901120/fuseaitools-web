@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-page">
-    <NanoBananaTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <NanoBananaTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
@@ -15,25 +17,28 @@ const switchToMain = () => {
   router.push('/home/nano-banana')
 }
 
+import { useToolSEO } from '~/composables/useToolSEO'
+
 // SEO 优化
-useHead({
-  title: 'Nano Banana - 轻量级AI图像生成 | SimplyAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: 'Nano Banana轻量级AI图像生成工具，快速生成高质量图像，支持多种尺寸和格式，简单易用的图像创作平台。'
-    },
-    {
-      name: 'keywords',
-      content: 'Nano Banana, AI图像生成, 轻量级图像, AI创作, 图像生成工具, 快速生成'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'Nano Banana',
+  description: 'Use Nano Banana for free online. Lightweight AI image generation tool that quickly generates high-quality images. Supports multiple sizes, formats, and styles. Fast and easy-to-use image creation platform.',
+  category: 'image',
+  route: '/home/nano-banana',
+  keywords: ['Nano Banana', 'AI image generation', 'lightweight image', 'AI creation', 'image generation tool', 'fast generation', 'quick image generator', 'AI art', 'image creator'],
+  applicationCategory: 'GraphicsApplication',
+  offers: {
+    price: '0',
+    priceCurrency: 'USD'
+  }
 })
+
+useHead(seoConfig)
 </script>
 
 <style scoped>
 .tool-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 </style>
