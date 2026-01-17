@@ -1,5 +1,5 @@
-# 使用官方 Node.js 18 作为基础镜像
-FROM node:18-alpine AS base
+# 使用官方 Node.js 20 LTS 作为基础镜像
+FROM node:20-alpine AS base
 
 # 安装必要的依赖
 RUN apk add --no-cache libc6-compat wget
@@ -39,7 +39,8 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nuxtjs
 
 # 复制构建产物和必要文件
-COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./
+# 注意：需要保持 .output 目录结构
+COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 COPY --from=builder --chown=nuxtjs:nodejs /app/public ./public
 COPY --from=builder --chown=nuxtjs:nodejs /app/package.json ./package.json
 

@@ -3,6 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # 使用本地镜像，不强制拉取（构建脚本会先拉取镜像）
+      pull: false
+      # 注意：使用 build.bat / build.sh 脚本进行构建
+      # 脚本会先拉取镜像，然后禁用 BuildKit 进行构建
     container_name: fuseaitools-web
     ports:
       - "3000:3000"

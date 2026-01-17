@@ -8,11 +8,13 @@ export default defineNuxtConfig({
     preset: process.env.NITRO_PRESET || 'static',
     prerender: {
       crawlLinks: true,
+      // 如果路由不存在，不抛出错误（适用于 node-server preset）
+      failOnError: false,
       routes: [
         '/',
         '/about',
         '/pricing',
-        '/tools',
+        // '/tools', // 已移除，因为页面不存在
         '/news',
         '/home/gpt-4o-image',
         '/home/flux-kontext',
