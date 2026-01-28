@@ -3,7 +3,7 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getHeader, setHeader, getResponseStatusText } from 'file://C:/project/fuseaitools-web/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getHeader, setHeader, readMultipartFormData, getResponseStatusText } from 'file://C:/project/fuseaitools-web/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://C:/project/fuseaitools-web/node_modules/@vue/shared/dist/shared.cjs.js';
 import { promises, readFileSync } from 'node:fs';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/project/fuseaitools-web/node_modules/vue-bundle-renderer/dist/runtime.mjs';
@@ -1527,6 +1527,7 @@ const _lazy_9_jlhG = () => Promise.resolve().then(function () { return chatgpt_p
 const _lazy_MRVyyM = () => Promise.resolve().then(function () { return claude_post$1; });
 const _lazy_2WjzW0 = () => Promise.resolve().then(function () { return deepseek_post$1; });
 const _lazy_xBiUVd = () => Promise.resolve().then(function () { return gemini_post$1; });
+const _lazy_XVNUbh = () => Promise.resolve().then(function () { return batchUpload_post$1; });
 const _lazy_eQ36Mn = () => Promise.resolve().then(function () { return tree_get$1; });
 const _lazy_MTnLsG = () => Promise.resolve().then(function () { return _slug__get$1; });
 const _lazy_Rqaiw_ = () => Promise.resolve().then(function () { return index_get$1; });
@@ -1541,6 +1542,7 @@ const handlers = [
   { route: '/api/chat/claude', handler: _lazy_MRVyyM, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/deepseek', handler: _lazy_2WjzW0, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/gemini', handler: _lazy_xBiUVd, lazy: true, middleware: false, method: "post" },
+  { route: '/api/common/batch-upload', handler: _lazy_XVNUbh, lazy: true, middleware: false, method: "post" },
   { route: '/api/common/models/tree', handler: _lazy_eQ36Mn, lazy: true, middleware: false, method: "get" },
   { route: '/api/news/:slug', handler: _lazy_MTnLsG, lazy: true, middleware: false, method: "get" },
   { route: '/api/news', handler: _lazy_Rqaiw_, lazy: true, middleware: false, method: "get" },
@@ -2078,6 +2080,63 @@ const gemini_post = defineEventHandler(async (event) => {
 const gemini_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: gemini_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const batchUpload_post = defineEventHandler(async (event) => {
+  const formData = await readMultipartFormData(event);
+  if (!formData || formData.length === 0) {
+    throw createError({
+      statusCode: 400,
+      message: "No files provided"
+    });
+  }
+  const backendUrl = "http://127.0.0.1:8080/api/common/batch-upload";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const forwardFormData = new FormData();
+    formData.forEach((item) => {
+      if (item.filename) {
+        const blob = new Blob([item.data], { type: item.type || "application/octet-stream" });
+        forwardFormData.append("file", blob, item.filename);
+      }
+    });
+    const headers = {
+      "Accept": "application/json"
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+      console.log("Forwarding Authorization header to backend");
+    } else {
+      console.warn("No Authorization header found in request");
+    }
+    console.log("Proxying batch upload request to:", backendUrl, `Files: ${formData.length}`);
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: forwardFormData
+    });
+    console.log("Backend response status:", response.status);
+    if (!response.ok) {
+      setResponseStatus(event, response.status);
+      const errorData = await response.json().catch(() => ({ error: "Upload failed" }));
+      console.error("Backend upload error:", errorData);
+      return errorData;
+    }
+    const data = await response.json();
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Upload proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to upload files: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const batchUpload_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: batchUpload_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const tree_get = defineEventHandler(async (event) => {

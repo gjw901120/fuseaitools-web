@@ -1,4 +1,16 @@
 /* 基础样式设置 */
+html,
+body,
+#__nuxt {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
 :root {
     --container-padding: 4rem;
     --section-spacing: 4rem;

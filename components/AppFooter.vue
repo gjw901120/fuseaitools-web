@@ -19,10 +19,7 @@
       <div class="footer-bottom">
         <div class="footer-bottom-content">
           <div class="copyright">
-            <p>&copy; 2025 BUTTERFLY EFFECT PTE. LTD. All rights reserved.</p>
-            <p class="trademark">
-              CHATGPT is a registered trademark of OPENAI OPCO, LLC.
-            </p>
+            <p>&copy; 2026 Fuse Tech . LTD. All rights reserved.</p>
           </div>
         </div>
       </div>

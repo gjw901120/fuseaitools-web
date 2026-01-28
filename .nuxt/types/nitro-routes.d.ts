@@ -15,6 +15,9 @@ declare module "nitropack/types" {
     '/api/chat/gemini': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/gemini.post').default>>>>
     }
+    '/api/common/batch-upload': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/batch-upload.post').default>>>>
+    }
     '/api/common/models/tree': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/models/tree.get').default>>>>
     }

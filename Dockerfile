@@ -10,6 +10,7 @@ FROM base AS deps
 # 复制 package 文件
 COPY package.json package-lock.json* ./
 # 安装依赖
+# 注意：npm 警告（如 deprecated）来自间接依赖，不影响功能
 RUN npm ci
 
 # 构建阶段

@@ -144,23 +144,7 @@ useHead({
   ]
 })
 
-// 检查 URL 中是否有 token 参数
-onMounted(() => {
-  const token = route.query.token
-  
-  if (token) {
-    // 解析并保存 token
-    const success = login(token)
-    
-    if (success) {
-      // 登录成功，移除 URL 中的 token 参数
-      router.replace({ path: route.path, query: {} })
-    } else {
-      // 登录失败，也移除 token 参数
-      router.replace({ path: route.path, query: {} })
-    }
-  }
-})
+// 注意：token 处理已移至 plugins/auth.client.js，在所有页面自动处理
 </script>
 
 <style scoped>

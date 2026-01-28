@@ -5,7 +5,7 @@
       :key="toast.id"
       :message="toast.message"
       :type="toast.type"
-      :duration="0"
+      :duration="toast.duration || 5000"
       @close="removeToast(toast.id)"
     />
   </div>
@@ -23,12 +23,14 @@ watch(toasts, (newToasts) => {
 <style scoped>
 .toast-wrapper {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10001;
   pointer-events: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
   max-width: 500px;
   width: auto;
@@ -41,10 +43,10 @@ watch(toasts, (newToasts) => {
 
 @media (max-width: 640px) {
   .toast-wrapper {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    max-width: none;
+    left: 50%;
+    right: auto;
+    width: calc(100% - 40px);
+    max-width: 500px;
   }
 }
 </style>

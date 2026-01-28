@@ -1,5 +1,10 @@
 /**
  * 用户认证状态管理（单例模式）
+ * 
+ * Token 过期时间：30 天
+ * - Token 由后端生成，过期时间由后端 JWT 的 exp 字段决定
+ * - 前端会检查 token 是否过期，过期后自动清除
+ * - Token 保存在 localStorage 中，保留 30 天
  */
 // 全局状态，确保所有组件共享同一个状态
 const globalUser = ref(null)
@@ -43,6 +48,7 @@ export const useAuth = () => {
   }
 
   // 检查 token 是否过期
+  // Token 过期时间：30 天（由后端 JWT 的 exp 字段决定）
   const isTokenExpired = (jwtToken) => {
     try {
       const payload = JSON.parse(atob(jwtToken.split('.')[1]))
@@ -51,7 +57,8 @@ export const useAuth = () => {
       
       // exp 是秒级时间戳，需要转换为毫秒
       const expirationTime = exp * 1000
-      return Date.now() >= expirationTime
+      const isExpired = Date.now() >= expirationTime
+      return isExpired
     } catch (e) {
       return true
     }
@@ -102,9 +109,19 @@ export const useAuth = () => {
     }
 
     // 保存到 localStorage
+    // Token 保留 30 天（过期时间由后端 JWT 的 exp 字段决定）
     if (process.client) {
       localStorage.setItem('auth_token', jwtToken)
       localStorage.setItem('auth_user', JSON.stringify(user.value))
+      
+      // 记录登录时间（可选，用于调试）
+      if (process.dev) {
+        const payload = parseJWT(jwtToken)
+        if (payload?.exp) {
+          const expirationDate = new Date(payload.exp * 1000)
+          console.log(`登录成功，Token 有效期至: ${expirationDate.toLocaleString('zh-CN')}`)
+        }
+      }
     }
 
     return true

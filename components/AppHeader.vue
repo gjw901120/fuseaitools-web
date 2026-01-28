@@ -1,5 +1,15 @@
 <template>
   <header class="app-header">
+    <!-- Top banner -->
+    <!-- 登录后隐藏横幅（ClientOnly 避免水合不一致） -->
+    <ClientOnly>
+      <div v-if="!isAuthenticated" class="top-banner">
+        <div class="top-banner-content">
+          Sign up and get 100 credits — use all models on the platform for free.
+        </div>
+      </div>
+    </ClientOnly>
+
     <div class="simply-container">
       <div class="header-content">
         <div class="logo">
@@ -200,6 +210,31 @@ onMounted(() => {
   position: sticky;
   top: 0;
   z-index: 1000;
+}
+
+.top-banner {
+  width: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: #fff;
+}
+
+.top-banner-content {
+  /* 横幅贴边：与上端/两侧无间隔 */
+  padding: 1.125rem 0; /* 再 +50% */
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+.top-banner-content :deep(a) {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.top-banner-content :deep(a:hover) {
+  opacity: 0.9;
 }
 
 .header-content {
@@ -467,6 +502,11 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .top-banner-content {
+    font-size: 0.875rem;
+    padding: 1.0125rem 0; /* 再 +50% */
+  }
+
   .nav, .header-actions {
     display: none;
   }

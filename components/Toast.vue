@@ -3,13 +3,15 @@
     <div v-if="isVisible" class="toast-container" :class="typeClass">
       <div class="toast-content">
         <div class="toast-icon">
-          <i v-if="type === 'error'" class="fas fa-exclamation-circle"></i>
+          <span v-if="type === 'error'" class="toast-emoji">😔</span>
           <i v-else-if="type === 'success'" class="fas fa-check-circle"></i>
           <i v-else-if="type === 'warning'" class="fas fa-exclamation-triangle"></i>
           <i v-else class="fas fa-info-circle"></i>
         </div>
-        <div class="toast-message">{{ message }}</div>
-        <button class="toast-close" @click="close">
+        <div class="toast-message-wrapper">
+          <div class="toast-message">{{ message }}</div>
+        </div>
+        <button class="toast-close" @click="close" aria-label="Close">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -73,35 +75,33 @@ onUnmounted(() => {
 <style scoped>
 .toast-container {
   position: relative;
-  min-width: 300px;
+  min-width: 320px;
   max-width: 500px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  animation: slideInRight 0.3s ease;
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  width: 100%;
 }
 
 .toast-content {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 28px;
 }
 
 .toast-icon {
-  font-size: 20px;
+  font-size: 24px;
   flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.toast-emoji {
+  font-size: 32px;
+  display: block;
+  line-height: 1;
 }
 
 .toast-error .toast-icon {
@@ -120,11 +120,20 @@ onUnmounted(() => {
   color: #3b82f6;
 }
 
-.toast-message {
+.toast-message-wrapper {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-message {
   font-size: 0.9375rem;
-  line-height: 1.5;
-  color: #1f2937;
+  line-height: 1.6;
+  color: #374151;
+  text-align: center;
+  width: 100%;
 }
 
 .toast-close {
@@ -147,7 +156,8 @@ onUnmounted(() => {
 
 /* 类型特定的边框颜色 */
 .toast-error {
-  border-left: 4px solid #ef4444;
+  border: 2px solid #fee2e2;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
 }
 
 .toast-success {
@@ -163,28 +173,40 @@ onUnmounted(() => {
 }
 
 /* 动画 */
-.toast-enter-active,
+.toast-enter-active {
+  animation: toastEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .toast-leave-active {
-  transition: all 0.3s ease;
+  animation: toastLeave 0.3s ease-in;
 }
 
-.toast-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
+@keyframes toastEnter {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.toast-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
+@keyframes toastLeave {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
 }
 
 @media (max-width: 640px) {
   .toast-container {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    min-width: auto;
-    max-width: none;
+    min-width: 280px;
+    max-width: calc(100vw - 40px);
   }
 }
 </style>
