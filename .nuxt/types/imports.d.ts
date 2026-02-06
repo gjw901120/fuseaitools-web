@@ -24,6 +24,7 @@ declare global {
   const definePayloadReviver: typeof import('../../node_modules/nuxt/dist/app/composables/payload')['definePayloadReviver']
   const effect: typeof import('../../node_modules/vue')['effect']
   const effectScope: typeof import('../../node_modules/vue')['effectScope']
+  const fetchWithCache: typeof import('../../composables/useApiCache')['fetchWithCache']
   const getAppManifest: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']
   const getCurrentInstance: typeof import('../../node_modules/vue')['getCurrentInstance']
   const getCurrentScope: typeof import('../../node_modules/vue')['getCurrentScope']
@@ -95,6 +96,7 @@ declare global {
   const updateAppConfig: typeof import('../../node_modules/nuxt/dist/app/config')['updateAppConfig']
   const useAI: typeof import('../../composables/useAI')['useAI']
   const useApi: typeof import('../../composables/useApi')['useApi']
+  const useApiCache: typeof import('../../composables/useApiCache')['useApiCache']
   const useAppConfig: typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']
   const useAsyncData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useAsyncData']
   const useAttrs: typeof import('../../node_modules/vue')['useAttrs']
@@ -115,10 +117,12 @@ declare global {
   const useLoadingIndicator: typeof import('../../node_modules/nuxt/dist/app/composables/loading-indicator')['useLoadingIndicator']
   const useMjApi: typeof import('../../composables/useMjApi')['useMjApi']
   const useModel: typeof import('../../node_modules/vue')['useModel']
+  const useModelPrice: typeof import('../../composables/useModelPrice')['useModelPrice']
   const useNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']
   const useNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']
   const useNuxtDevTools: typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']
   const usePreviewMode: typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']
+  const useRecordPolling: typeof import('../../composables/useRecordPolling')['useRecordPolling']
   const useRequestEvent: typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']
   const useRequestFetch: typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestFetch']
   const useRequestHeader: typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestHeader']
@@ -212,6 +216,7 @@ declare module 'vue' {
     readonly definePayloadReviver: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/payload')['definePayloadReviver']>
     readonly effect: UnwrapRef<typeof import('../../node_modules/vue')['effect']>
     readonly effectScope: UnwrapRef<typeof import('../../node_modules/vue')['effectScope']>
+    readonly fetchWithCache: UnwrapRef<typeof import('../../composables/useApiCache')['fetchWithCache']>
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
@@ -283,6 +288,7 @@ declare module 'vue' {
     readonly updateAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/config')['updateAppConfig']>
     readonly useAI: UnwrapRef<typeof import('../../composables/useAI')['useAI']>
     readonly useApi: UnwrapRef<typeof import('../../composables/useApi')['useApi']>
+    readonly useApiCache: UnwrapRef<typeof import('../../composables/useApiCache')['useApiCache']>
     readonly useAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']>
     readonly useAsyncData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useAsyncData']>
     readonly useAttrs: UnwrapRef<typeof import('../../node_modules/vue')['useAttrs']>
@@ -303,10 +309,12 @@ declare module 'vue' {
     readonly useLoadingIndicator: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/loading-indicator')['useLoadingIndicator']>
     readonly useMjApi: UnwrapRef<typeof import('../../composables/useMjApi')['useMjApi']>
     readonly useModel: UnwrapRef<typeof import('../../node_modules/vue')['useModel']>
+    readonly useModelPrice: UnwrapRef<typeof import('../../composables/useModelPrice')['useModelPrice']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
     readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>
     readonly usePreviewMode: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']>
+    readonly useRecordPolling: UnwrapRef<typeof import('../../composables/useRecordPolling')['useRecordPolling']>
     readonly useRequestEvent: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']>
     readonly useRequestFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestFetch']>
     readonly useRequestHeader: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestHeader']>

@@ -20,6 +20,7 @@
         </div>
 
         <form class="config-form" @submit.prevent="generateImage">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 模式选择 -->
           <div class="form-group">
             <label class="form-label">Mode Selection *</label>
@@ -83,6 +84,7 @@
           <!-- 编辑模式：上传图片 -->
           <div class="form-group" v-if="mode === 'edit'">
             <UploadImage
+              ref="inputImageUploadRef"
               input-id="flux-kontext-input-image"
               label="Upload Image *"
               upload-icon="fas fa-cloud-upload-alt"
@@ -94,6 +96,9 @@
               theme-color="#667eea"
               @update:files="handleInputImage"
             />
+            <div v-if="isUploadingImage" class="uploading-hint">
+              <i class="fas fa-spinner fa-spin"></i> Uploading image...
+            </div>
           </div>
 
           <!-- 长宽比选择 -->
@@ -258,9 +263,10 @@
               <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-magic"></i>
               {{ isGenerating ? 'Generating...' : 'Generate Image' }}
-              <span class="price-tag">($0.05)</span>
+              <span class="price-tag">{{ fluxKontextPriceText }}</span>
             </button>
           </div>
+          </fieldset>
         </form>
       </div>
 
@@ -269,7 +275,7 @@
         <div class="result-header">
           <h4>Generation Result</h4>
           <button 
-            v-if="generatedImages.length > 0" 
+            v-if="!isDetailView && generatedImages.length > 0" 
             @click="clearResults" 
             class="clear-btn"
           >
@@ -279,14 +285,51 @@
         </div>
 
         <div class="result-content">
+          <!-- 详情页：status 2 展示 outputUrls -->
+          <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-grid">
+            <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
+              <div class="image-container">
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <div class="image-overlay">
+                  <button @click="downloadImage(image)" class="action-btn">
+                    <i class="fas fa-download"></i>
+                  </button>
+                  <button @click="copyImageUrl(image)" class="action-btn">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="image-info">
+                <div class="image-meta">
+                  <span class="image-size">{{ image.aspectRatio }}</span>
+                  <span class="image-format">{{ image.format.toUpperCase() }}</span>
+                </div>
+                <div class="image-prompt">{{ image.prompt }}</div>
+              </div>
+            </div>
+          </div>
+          <!-- 详情页：status 3 失败 -->
+          <div v-else-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <!-- 详情页：其他 -->
+          <div v-else-if="isDetailView" class="detail-loading-state">
+            <p>No output images</p>
+          </div>
           <!-- 空状态 -->
-          <div v-if="generatedImages.length === 0" class="empty-state">
+          <div v-else-if="generatedImages.length === 0" class="empty-state">
             <i class="fas fa-image"></i>
             <p>No image generated yet</p>
             <span>Configure parameters and click "Generate Image" to start creating</span>
           </div>
 
-          <!-- 图像结果 -->
+          <!-- 图像结果（非详情页） -->
           <div v-else class="image-grid">
             <div 
               v-for="(image, index) in generatedImages" 
@@ -320,18 +363,40 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import UploadImage from '../tools/common/UploadImage.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
+const route = useRoute()
+const { token } = useAuth()
+const { showError } = useToast()
+const { post } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 
-// 表单数据
+onMounted(() => { fetchPrices() })
+
+// 价格：Model Version flux_kontext_pro / flux_kontext_max 分别对应不同 credits
+const fluxKontextPriceText = computed(() => {
+  const modelKey = formData.model === 'flux-kontext-max' ? 'flux_kontext_max' : 'flux_kontext_pro'
+  const credits = getPrice(modelKey)
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+
+// 表单数据（与后端 DTO 对应）
 const formData = reactive({
   prompt: '',
   enableTranslation: true,
   inputImage: '',
   inputImageFile: null,
+  imageUrl: '', // 编辑模式上传后的 URL
   aspectRatio: '16:9',
   outputFormat: 'jpeg',
   promptUpsampling: false,
@@ -343,51 +408,230 @@ const formData = reactive({
 // 状态管理
 const mode = ref('generate') // 'generate' 或 'edit'
 const isGenerating = ref(false)
+const isUploadingImage = ref(false)
 const generatedImages = ref([])
+const inputImageUploadRef = ref(null)
 
-// 处理上传的输入图片
-const handleInputImage = (files) => {
-  if (files && files.length > 0) {
-    formData.inputImageFile = files[0]
-    formData.inputImage = URL.createObjectURL(files[0])
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const aspectRatioReverseMap = {
+  RATIO_21_9: '21:9', RATIO_16_9: '16:9', RATIO_4_3: '4:3',
+  RATIO_1_1: '1:1', RATIO_3_4: '3:4', RATIO_9_16: '9:16'
+}
+
+const detailOutputImages = computed(() => {
+  if (!detailData.value || !Array.isArray(detailData.value.outputUrls)) return []
+  const urls = detailData.value.outputUrls
+  const od = detailData.value.originalData || {}
+  const aspectRatio = aspectRatioReverseMap[od.aspectRatio] || od.aspectRatio || '16:9'
+  const format = (od.outputFormat || 'JPEG').toLowerCase() === 'png' ? 'png' : 'jpeg'
+  const prompt = od.prompt || ''
+  return urls.map((url, i) => ({
+    url: typeof url === 'string' ? url : url?.url ?? url?.imageUrl ?? '',
+    aspectRatio,
+    format,
+    prompt
+  })).filter(img => img.url)
+})
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  if (o.prompt != null) formData.prompt = o.prompt
+  if (typeof o.enableTranslation === 'boolean') formData.enableTranslation = o.enableTranslation
+  if (o.imageUrl) {
+    formData.imageUrl = o.imageUrl
+    mode.value = 'edit'
   } else {
+    mode.value = 'generate'
+  }
+  if (o.aspectRatio) formData.aspectRatio = aspectRatioReverseMap[o.aspectRatio] || o.aspectRatio || formData.aspectRatio
+  if (o.outputFormat) formData.outputFormat = (o.outputFormat || 'JPEG').toLowerCase() === 'png' ? 'png' : 'jpeg'
+  if (typeof o.promptUpsampling === 'boolean') formData.promptUpsampling = o.promptUpsampling
+  if (o.model) formData.model = o.model === 'flux_kontext_max' ? 'flux-kontext-max' : (o.model === 'flux_kontext_pro' ? 'flux-kontext-pro' : formData.model)
+  if (o.safetyTolerance != null) formData.safetyTolerance = Number(o.safetyTolerance) ?? 2
+  if (o.watermark != null) formData.watermark = String(o.watermark || '')
+}
+
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((result) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = result
+        if (result?.originalData) fillFormFromOriginalData(result.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+// 编辑模式：上传输入图片并得到 imageUrl
+const handleInputImage = async (files) => {
+  if (!files || files.length === 0) {
     formData.inputImageFile = null
     formData.inputImage = ''
+    formData.imageUrl = ''
+    inputImageUploadRef.value?.clearFiles?.()
+    return
+  }
+  const file = files[0] || files
+  const fileObj = Array.isArray(file) ? file[0] : file
+  if (!fileObj) {
+    formData.imageUrl = ''
+    return
+  }
+  formData.inputImageFile = fileObj
+  formData.inputImage = URL.createObjectURL(fileObj)
+  isUploadingImage.value = true
+  try {
+    const formDataUpload = new FormData()
+    formDataUpload.append('file', fileObj)
+    const headers = { Accept: 'application/json' }
+    const authToken = getAuthToken()
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+    const response = await fetch('/api/common/batch-upload', {
+      method: 'POST',
+      headers,
+      body: formDataUpload,
+      credentials: 'include'
+    })
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
+        ? errorData.errorMessage.trim()
+        : (typeof errorData?.message === 'string' && errorData.message.trim())
+          ? errorData.message.trim()
+          : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+      throw new Error(msg)
+    }
+    const data = await response.json()
+    const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+    if (Array.isArray(urls) && urls[0]) {
+      formData.imageUrl = urls[0]
+    } else {
+      throw new Error('Invalid response: file URL not found')
+    }
+  } catch (error) {
+    console.error('Input image upload error:', error)
+    showError(error.message || 'Failed to upload image', 5000)
+    formData.imageUrl = ''
+    formData.inputImageFile = null
+    formData.inputImage = ''
+    inputImageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingImage.value = false
   }
 }
 
 // 计算属性
 const canGenerate = computed(() => {
   if (!formData.prompt.trim()) return false
-  if (mode.value === 'edit' && !formData.inputImageFile) return false
+  if (mode.value === 'edit') return !!formData.imageUrl
   return true
 })
+
+// 映射前端值到后端枚举
+const aspectRatioMap = {
+  '21:9': 'RATIO_21_9',
+  '16:9': 'RATIO_16_9',
+  '4:3': 'RATIO_4_3',
+  '1:1': 'RATIO_1_1',
+  '3:4': 'RATIO_3_4',
+  '9:16': 'RATIO_9_16'
+}
+const outputFormatMap = { jpeg: 'JPEG', png: 'PNG' }
+// Model Version：接口使用连字符 flux-kontext-pro / flux-kontext-max
 
 // 生成图像
 const generateImage = async () => {
   if (!canGenerate.value) return
+  if (mode.value === 'edit' && !formData.imageUrl) {
+    showError('Please upload an image for edit mode')
+    return
+  }
+  const promptTrim = formData.prompt.trim()
+  if (promptTrim.length > 5000) {
+    showError('Prompt cannot exceed 5000 characters')
+    return
+  }
 
   isGenerating.value = true
-  
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // 模拟生成结果
-    const mockImage = {
-      url: `https://via.placeholder.com/800x600/f59e0b/ffffff?text=Flux+Kontext+${Date.now()}`,
+    // 编辑模式必填 imageUrl（已上传）；生成模式传空，若后端对生成也要求 imageUrl 需后端改为可选或传占位
+    const requestBody = {
+      prompt: promptTrim,
+      enableTranslation: !!formData.enableTranslation,
+      imageUrl: mode.value === 'edit' ? formData.imageUrl : '',
+      aspectRatio: aspectRatioMap[formData.aspectRatio] || 'RATIO_16_9',
+      outputFormat: outputFormatMap[formData.outputFormat] || 'JPEG',
+      promptUpsampling: !!formData.promptUpsampling,
+      model: formData.model || 'flux-kontext-pro',
+      safetyTolerance: Number(formData.safetyTolerance) ?? 2,
+      watermark: (formData.watermark && String(formData.watermark).trim()) || undefined
+    }
+    if (requestBody.watermark && requestBody.watermark.length > 100) {
+      showError('Watermark identifier cannot exceed 100 characters')
+      return
+    }
+    const data = await post('/api/image/flux-kontext/generate', requestBody)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`/home/flux-kontext?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    let urls = data?.outputUrls
+    if (!Array.isArray(urls) || urls.length === 0) {
+      const single = data?.url ?? data?.imageUrl
+      if (single) urls = [single]
+    }
+    const url = Array.isArray(urls) && urls[0] ? (typeof urls[0] === 'string' ? urls[0] : urls[0]?.url ?? urls[0]?.imageUrl) : null
+    if (!url || typeof url !== 'string') {
+      showError('No image URL in response')
+      return
+    }
+    const newImage = {
+      url,
       prompt: formData.prompt,
       aspectRatio: formData.aspectRatio,
       format: formData.outputFormat,
       model: formData.model,
       timestamp: new Date()
     }
-    
-    generatedImages.value.unshift(mockImage)
-    
+    generatedImages.value.unshift(newImage)
   } catch (error) {
     console.error('生成图像失败:', error)
-    alert('生成图像失败，请重试')
+    showError(error.message || '生成图像失败，请重试')
   } finally {
     isGenerating.value = false
   }
@@ -524,6 +768,12 @@ const clearResults = () => {
   flex: 1;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -559,6 +809,15 @@ const clearResults = () => {
   font-size: 12px;
   color: #6b7280;
   line-height: 1.4;
+}
+
+.uploading-hint {
+  font-size: 12px;
+  color: #667eea;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .mode-switch {
@@ -785,6 +1044,14 @@ const clearResults = () => {
 .clear-btn:hover {
   background: #dc2626;
 }
+
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
 
 .empty-state {
   text-align: center;

@@ -155,9 +155,11 @@
 </template>
 
 <script setup>
-import { ref, nextTick, inject, computed, onMounted } from 'vue'
+import { ref, nextTick, inject, computed, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import { useAuth } from '~/composables/useAuth'
+import { fetchWithCache } from '~/composables/useApiCache'
 
 const props = defineProps({
   toolName: {
@@ -182,6 +184,7 @@ const props = defineProps({
 const addToUsageHistory = inject('addToUsageHistory', null)
 
 const config = useRuntimeConfig()
+const route = useRoute()
 const { token, user } = useAuth()
 
 // 计算用户头像
@@ -224,6 +227,57 @@ const modelsData = ref(null)
 const loadingModels = ref(false)
 const conversationId = ref('')
 const isStreaming = ref(false)
+const chatDetailLoading = ref(false)
+
+// 仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+
+async function loadChatDetailByRecordId(recordId) {
+  if (!recordId || !process.client) return
+  chatDetailLoading.value = true
+  try {
+    const url = `/api/records/chat-detail?record-id=${encodeURIComponent(recordId)}`
+    const authToken = getAuthToken()
+    const headers = { 'Content-Type': 'application/json', Accept: 'application/json' }
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+    const response = await fetch(url, { method: 'GET', headers, credentials: 'include' })
+    const raw = await response.json().catch(() => null)
+    if (!raw || typeof raw !== 'object') return
+    const errorCode = raw.errorCode ?? raw.error_code
+    const data = raw.data
+    if (errorCode !== '00000' || !data || typeof data !== 'object') return
+    const list = data.messageList
+    if (Array.isArray(list) && list.length > 0) {
+      chatMessages.value = list.map((item, i) => ({
+        id: `msg-${recordId}-${i}-${Date.now()}`,
+        role: item.role === 'assistant' ? 'assistant' : 'user',
+        text: item.message != null ? String(item.message) : '',
+        fileUrls: Array.isArray(item.fileUrls) ? [...item.fileUrls] : [],
+        timestamp: new Date()
+      }))
+    }
+    if (data.conversionId != null && data.conversionId !== '') {
+      conversationId.value = String(data.conversionId)
+    }
+    nextTick(() => scrollToBottom())
+  } catch (e) {
+    console.error('Load chat detail failed:', e)
+  } finally {
+    chatDetailLoading.value = false
+  }
+}
+
+watch(
+  () => route.query['record-id'],
+  (recordId) => {
+    if (recordId) loadChatDetailByRecordId(recordId)
+    else {
+      chatMessages.value = []
+      conversationId.value = ''
+    }
+  },
+  { immediate: true }
+)
 
 // 计算可用的模型列表（只显示指定分类下的 CHAT 类型模型）
 const availableModels = computed(() => {
@@ -275,141 +329,54 @@ const currentModelInfo = computed(() => {
   }) || null
 })
 
-// 获取模型列表
+// 获取模型列表（先读本地 1 小时缓存，无有效缓存时请求 /api/common/models/tree 并写入缓存）
 const fetchModels = async () => {
   if (!props.modelCategory) return
-  
-  // 确保只在客户端执行
   if (!process.client) {
     console.warn('fetchModels: Skipping on server side')
     return
   }
-  
   try {
     loadingModels.value = true
-    
-    // 优先使用 Nuxt 代理 API，避免 CORS 问题
-    const useProxy = true
-    let url
-    
-    if (useProxy) {
-      // 使用 Nuxt 代理 API
-      url = '/api/common/models/tree'
-      console.log('Using proxy API:', url)
-    } else {
-      // 直接调用外部 API
-      const apiBase = config.public.apiBase
-      url = `${apiBase}/common/models/tree`
-      console.log('Using direct API:', url)
-      console.log('API Base:', apiBase)
-    }
-    
-    // 获取认证 token
+    const url = '/api/common/models/tree'
     const authToken = getAuthToken()
-    
-    // 构建请求头
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-    
-    // 如果已登录，添加 Authorization 头
-    if (authToken) {
-      headers['Authorization'] = `Bearer ${authToken}`
-    }
-    
-    // 使用原生 fetch API 确保在客户端正常工作
-    let response
-    try {
-      response = await fetch(url, {
-        method: 'GET',
-        headers: headers,
-        credentials: 'include',
-        mode: 'cors'
-      })
-    } catch (fetchError) {
-      console.error('Fetch network error:', fetchError)
-      // 如果是 CORS 错误且使用直接 API，尝试不使用 credentials
-      if (!useProxy && fetchError.message && fetchError.message.includes('CORS')) {
-        console.log('Retrying without credentials...')
-        response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          mode: 'cors'
-        })
-      } else {
-        throw fetchError
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+
+    const result = await fetchWithCache('api_common_models_tree', async () => {
+      const response = await fetch(url, { method: 'GET', headers, credentials: 'include', mode: 'cors' })
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
       }
-    }
-    
-    console.log('Response status:', response.status)
-    console.log('Response headers:', Object.fromEntries(response.headers.entries()))
-    
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('Response error text:', errorText)
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
-    }
-    
-    // 检查响应内容类型
-    const contentType = response.headers.get('content-type')
-    console.log('Response content-type:', contentType)
-    
-    let result
-    try {
-      result = await response.json()
-    } catch (jsonError) {
-      const text = await response.text()
-      console.error('JSON parse error:', jsonError)
-      console.error('Response text:', text)
-      throw new Error(`Failed to parse JSON response: ${jsonError.message}`)
-    }
-    
-    console.log('API response:', result)
-    
-    // 检查响应结构，支持 errorCode (驼峰) 和 error_code (下划线) 两种格式
-    const errorCode = result?.errorCode || result?.error_code
-    const errorMessage = result?.errorMessage || result?.error_message
-    const userTip = result?.userTip || result?.user_tip
-    
+      const data = await response.json()
+      const errorCode = data?.errorCode ?? data?.error_code
+      if (data && typeof data === 'object' && errorCode !== undefined && errorCode !== '00000') {
+        throw new Error(data?.userTip || data?.errorMessage || data?.error_message || 'Request failed')
+      }
+      if (data?.errorCode === '00000' && (!data?.data || typeof data?.data !== 'object')) {
+        throw new Error('Invalid response data structure')
+      }
+      return data
+    })
+
+    const errorCode = result?.errorCode ?? result?.error_code
     if (result && typeof result === 'object' && errorCode !== undefined) {
-      if (errorCode === '00000') {
-        // 验证数据结构
-        if (result.data && typeof result.data === 'object') {
-          modelsData.value = result.data
-          console.log('Models data received:', result.data)
-        } else {
-          console.error('Invalid data structure:', result.data)
-          modelsData.value = null
-          throw new Error('Invalid response data structure')
-        }
-      } else {
-        const errorMsg = userTip || errorMessage || 'Request failed'
-        console.error('API returned error code:', errorCode, errorMsg)
+      if (errorCode === '00000' && result.data && typeof result.data === 'object') {
+        modelsData.value = result.data
+        console.log('Models data received:', result.data)
+      } else if (errorCode !== '00000') {
         modelsData.value = null
-        throw new Error(errorMsg)
       }
+    } else if (result && typeof result === 'object') {
+      modelsData.value = result
+      console.log('Models data received (direct):', result)
     } else {
-      // 如果响应结构不符合预期，验证后使用
-      if (result && typeof result === 'object') {
-        modelsData.value = result
-        console.log('Models data received (direct):', result)
-      } else {
-        console.error('Invalid response structure:', result)
-        modelsData.value = null
-        throw new Error('Invalid response structure')
-      }
+      modelsData.value = null
     }
-    
-    // 等待下一个 tick 确保 computed 属性已更新
+
     await nextTick()
-    
     console.log('Available models:', availableModels.value)
-    
-    // 如果有可用模型，默认选择第一个
     if (availableModels.value.length > 0) {
       selectedModel.value = availableModels.value[0].id
       console.log('Default model selected:', selectedModel.value)
@@ -418,13 +385,6 @@ const fetchModels = async () => {
     }
   } catch (error) {
     console.error('Failed to fetch models:', error)
-    console.error('Error details:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-      cause: error.cause
-    })
-    // 不显示弹出提醒，只记录错误日志
   } finally {
     loadingModels.value = false
   }
@@ -685,27 +645,34 @@ const handleFileUpload = async () => {
       })
       
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
-        throw new Error(errorData.error || errorData.message || 'Upload failed')
+        const errorData = await response.json().catch(() => ({}))
+        // 优先使用后端 errorMessage（结构：{ errorCode, errorMessage, type, data }）；代理层可能包装为 { message } 也兼容
+        const msg =
+          (errorData && typeof errorData.errorMessage === 'string' && errorData.errorMessage.trim())
+            ? errorData.errorMessage.trim()
+            : (typeof errorData?.message === 'string' && errorData.message.trim())
+              ? errorData.message.trim()
+              : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+        throw new Error(msg)
       }
       
       const data = await response.json()
+
+      // 200 但业务失败（errorCode !== '00000'）也按失败处理，抛出后端 errorMessage
+      if (data && data.errorCode && String(data.errorCode) !== '00000') {
+        const msg = (typeof data.errorMessage === 'string' && data.errorMessage.trim())
+          ? data.errorMessage.trim()
+          : (data.userTip || data.message || 'Upload failed')
+        throw new Error(msg)
+      }
       
-      // 处理统一标准响应结构：
-      // {
-      //   "errorCode": "00000",
-      //   "errorMessage": "Everything ok",
-      //   "data": { "urls": [...] }
-      // }
-      // 从 data.urls 中提取数组并赋值给 fileUrls
+      // 处理统一标准响应结构：data.data.urls
       let urls = []
-      if (data.errorCode && data.data && data.data.urls && Array.isArray(data.data.urls)) {
+      if (data.data && data.data.urls && Array.isArray(data.data.urls)) {
         urls = data.data.urls
       } else if (data.fileUrls && Array.isArray(data.fileUrls)) {
-        // 兼容旧格式
         urls = data.fileUrls
       } else if (data.data && Array.isArray(data.data)) {
-        // 兼容旧格式
         urls = data.data
       }
       
@@ -728,11 +695,18 @@ const handleFileUpload = async () => {
         
         console.log('Files uploaded successfully:', urls)
       } else {
-        throw new Error('Invalid response: fileUrls not found')
+        const msg = (data && typeof data.errorMessage === 'string' && data.errorMessage.trim())
+          ? data.errorMessage.trim()
+          : 'Invalid response: fileUrls not found'
+        throw new Error(msg)
       }
     } catch (error) {
       console.error('File upload error:', error)
       showError(error.message || 'Failed to upload files', 5000)
+      // 清空 input 的 value，否则部分浏览器再次选择同一文件不会触发 onchange，导致“无法再次上传”
+      if (e && e.target && e.target.type === 'file') {
+        e.target.value = ''
+      }
     }
   }
   
@@ -824,6 +798,8 @@ const sendMessage = async () => {
     uploadedFiles.value = []
   } catch (error) {
     console.error('Stream request error:', error)
+    // 确保失败后能再次发起请求（发送按钮、上传等）
+    isStreaming.value = false
     // 显示错误提示（如果流式内部已弹框，则不重复弹）
     if (!error?.__handled) {
       showError(error.message || 'sorry！Service is busy. Please try again later.', 5000)
@@ -907,22 +883,29 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
   
   // 使用代理 API
   const url = getChatApiUrl(props.modelCategory)
-  
-  // 发送流式请求
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(requestBody),
-    credentials: 'include',
-    mode: 'cors'
-  })
-  
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`)
-  }
-  
-  // 读取流式响应（SSE 格式）
-  const reader = response.body.getReader()
+
+  try {
+    // 发送流式请求
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(requestBody),
+      credentials: 'include',
+      mode: 'cors'
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}))
+      const msg = errorBody?.errorMessage || errorBody?.message || `HTTP error! status: ${response.status}`
+      throw new Error(msg)
+    }
+
+    if (!response.body) {
+      throw new Error('Response body is empty')
+    }
+
+    // 读取流式响应（SSE 格式）
+    const reader = response.body.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
   let currentEvent = null
@@ -1172,6 +1155,10 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
   // 如果流式内部已处理业务错误，向上抛出，触发 sendMessage 的回滚逻辑（避免清空 fileUrls 等）
   if (handledError) {
     throw handledError
+  }
+  } finally {
+    // 确保异常或提前退出时也能恢复发送按钮，避免“无法再发起请求”
+    isStreaming.value = false
   }
 }
 

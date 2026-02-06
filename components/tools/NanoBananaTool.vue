@@ -44,6 +44,7 @@
 
         <!-- Nano Banana Form -->
         <form v-if="activeTab === 'nano-banana'" class="config-form" @submit.prevent="generateImage">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 模式选择 -->
           <div class="form-group">
             <label>Generation Mode *</label>
@@ -70,10 +71,11 @@
             </div>
           </div>
 
-          <!-- 图片上传（仅在图生图模式显示） -->
+          <!-- 图片上传（仅在图生图/编辑模式显示，1-10 张） -->
           <div class="form-group" v-if="formData.mode === 'image-to-image'">
-            <label>Upload Image *</label>
+            <label>Upload Image * (1-10)</label>
             <UploadImage
+              ref="editImageUploadRef"
               input-id="nano-banana-image-upload"
               label=""
               upload-icon="fas fa-cloud-upload-alt"
@@ -87,6 +89,9 @@
               :multiple="true"
               @update:files="handleImageUpdate"
             />
+            <div v-if="isUploadingEdit" class="uploading-hint">
+              <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
           </div>
 
           <!-- 提示词输入 -->
@@ -227,12 +232,14 @@
             <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else :class="formData.mode === 'image-to-image' ? 'fas fa-images' : 'fas fa-magic'"></i>
             {{ isGenerating ? 'Generating...' : (formData.mode === 'image-to-image' ? 'Generate from Image' : 'Generate Image') }}
-            <span class="price-tag">($0.03)</span>
+            <span v-if="nanoBananaPriceText" class="price-tag">{{ nanoBananaPriceText }}</span>
           </button>
+          </fieldset>
         </form>
 
         <!-- Nano Banana Pro Form -->
         <form v-if="activeTab === 'nano-banana-pro'" class="config-form" @submit.prevent="generateImagePro">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 提示词输入 -->
           <div class="form-group">
             <label>Prompt *</label>
@@ -240,18 +247,19 @@
               v-model="proFormData.prompt"
               placeholder="A text description of the image you want to generate"
               rows="6"
-              maxlength="20000"
+              maxlength="5000"
               class="form-input"
               required
             ></textarea>
-            <div class="char-count">{{ proFormData.prompt.length }}/20000</div>
-            <div class="input-hint">Provide detailed image description, supports up to 20000 characters</div>
+            <div class="char-count">{{ proFormData.prompt.length }}/5000</div>
+            <div class="input-hint">Provide detailed image description, supports up to 5000 characters</div>
           </div>
 
-          <!-- 图片上传 -->
+          <!-- 图片上传（必填 1-10 张） -->
           <div class="form-group">
-            <label>Input Images (Optional)</label>
+            <label>Input Images * (1-10)</label>
             <UploadImage
+              ref="proImageUploadRef"
               input-id="nano-banana-pro-image-upload"
               label=""
               upload-icon="fas fa-cloud-upload-alt"
@@ -265,6 +273,9 @@
               :multiple="true"
               @update:files="handleProImageUpdate"
             />
+            <div v-if="isUploadingPro" class="uploading-hint">
+              <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
           </div>
 
           <!-- 宽高比选择 -->
@@ -308,16 +319,16 @@
                 :class="{ active: proFormData.output_format === 'png' }"
                 @click="proFormData.output_format = 'png'"
               >
-                <i class="fas fa-file-image"></i>
+                  <i class="fas fa-file-image"></i>
                 <span>PNG</span>
               </div>
               <div 
                 class="tab-option"
-                :class="{ active: proFormData.output_format === 'jpg' }"
-                @click="proFormData.output_format = 'jpg'"
+                :class="{ active: proFormData.output_format === 'jpeg' }"
+                @click="proFormData.output_format = 'jpeg'"
               >
-                <i class="fas fa-file-image"></i>
-                <span>JPG</span>
+                  <i class="fas fa-file-image"></i>
+                <span>JPEG</span>
               </div>
             </div>
           </div>
@@ -327,7 +338,9 @@
             <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else class="fas fa-magic"></i>
             {{ isGenerating ? 'Generating...' : 'Generate Image' }}
+            <span v-if="nanoBananaProPriceText" class="price-tag">{{ nanoBananaProPriceText }}</span>
           </button>
+          </fieldset>
         </form>
       </div>
 
@@ -335,7 +348,7 @@
       <div class="image-display-panel">
         <div class="image-header">
           <h4>Image Preview</h4>
-          <div class="image-actions" v-if="generatedImages.length > 0">
+          <div class="image-actions" v-if="!isDetailView && generatedImages.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
             </button>
@@ -343,7 +356,45 @@
         </div>
         
         <div class="image-container">
-          <div v-if="generatedImages.length > 0" class="image-showcase">
+          <!-- 详情页：status 2 展示 outputUrls -->
+          <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-showcase">
+            <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
+              <div class="image-wrapper">
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <div class="image-overlay">
+                  <button @click="downloadImage(image)" class="action-btn">
+                    <i class="fas fa-download"></i>
+                  </button>
+                  <button @click="copyImageUrl(image)" class="action-btn">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="image-info">
+                <div class="image-meta">
+                  <span class="image-size">{{ image.image_size }}</span>
+                  <span class="image-format">{{ (image.output_format || 'png').toUpperCase() }}</span>
+                </div>
+                <div class="image-time">{{ image.timestamp }}</div>
+              </div>
+            </div>
+          </div>
+          <!-- 详情页：status 3 失败 -->
+          <div v-else-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <!-- 详情页：其他 -->
+          <div v-else-if="isDetailView" class="detail-loading-state">
+            <p>No output images</p>
+          </div>
+          <!-- 非详情页：本地生成结果 -->
+          <div v-else-if="generatedImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in generatedImages" :key="index" class="image-item">
               <div class="image-wrapper">
                 <img :src="image.url" :alt="`Generated image ${index + 1}`" />
@@ -461,11 +512,21 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
+const route = useRoute()
+const { token } = useAuth()
+const { showError } = useToast()
+const { post } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 // Tab state
 const activeTab = ref('nano-banana')
@@ -476,7 +537,7 @@ const functionOptions = ref([
     id: 'nano-banana',
     name: 'Nano Banana',
     description: 'Lightweight Image Generation',
-    icon: 'fas fa-banana'
+    icon: 'fas fa-image'
   },
   {
     id: 'nano-banana-pro',
@@ -486,11 +547,11 @@ const functionOptions = ref([
   }
 ])
 
-// Nano Banana form data
+// Nano Banana form data（文生图 + 编辑/图生图）
 const formData = reactive({
-  mode: 'text-to-image', // 'text-to-image' 或 'image-to-image'
+  mode: 'text-to-image', // 'text-to-image' -> /generate, 'image-to-image' -> /edit
   prompt: '',
-  image_urls: [], // 图生图模式下的图片URL数组
+  image_urls: [], // 编辑模式：上传后的 URL 数组（1-10）
   output_format: 'png',
   image_size: '1:1'
 })
@@ -498,34 +559,174 @@ const formData = reactive({
 // Nano Banana Pro form data
 const proFormData = reactive({
   prompt: '',
-  image_input: [], // Array of image URLs
+  image_input: [], // 上传后的 URL 数组，必填 1-10
   aspect_ratio: '1:1',
   resolution: '1K',
   output_format: 'png'
 })
 
-// Aspect ratios for Pro
+// Aspect ratios for Pro（与后端 imageSize 一致）
 const aspectRatios = ['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9', '21:9', 'auto']
 
 // Resolutions for Pro
 const resolutions = ['1K', '2K', '4K']
 
 const isGenerating = ref(false)
+const isUploadingEdit = ref(false)
+const isUploadingPro = ref(false)
 const generatedImages = ref([])
+const editImageUploadRef = ref(null)
+const proImageUploadRef = ref(null)
+
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const detailOutputImages = computed(() => {
+  if (!detailData.value || !Array.isArray(detailData.value.outputUrls)) return []
+  const urls = detailData.value.outputUrls
+  const od = detailData.value.originalData || {}
+  const size = od.imageSize || od.image_size || '1:1'
+  const fmt = od.outputFormat || od.output_format || 'png'
+  return urls.map((url, i) => ({
+    id: `detail-${i}`,
+    url: typeof url === 'string' ? url : url?.url ?? url?.imageUrl ?? '',
+    image_size: size,
+    output_format: fmt,
+    timestamp: new Date().toLocaleTimeString()
+  })).filter(img => img.url)
+})
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  if (o.model === 'nano-banana-pro' || o.imageInput || o.image_input != null || o.resolution) {
+    activeTab.value = 'nano-banana-pro'
+    if (o.prompt != null) proFormData.prompt = o.prompt
+    if (Array.isArray(o.imageInput)) proFormData.image_input = [...o.imageInput]
+    else if (Array.isArray(o.image_input)) proFormData.image_input = [...o.image_input]
+    if (o.aspect_ratio) proFormData.aspect_ratio = o.aspect_ratio
+    if (o.imageSize) proFormData.aspect_ratio = o.imageSize
+    if (o.resolution) proFormData.resolution = o.resolution
+    if (o.outputFormat) proFormData.output_format = o.outputFormat === 'jpeg' ? 'jpg' : (o.outputFormat || 'png')
+    if (o.output_format) proFormData.output_format = o.output_format === 'jpeg' ? 'jpg' : (o.output_format || 'png')
+  } else {
+    activeTab.value = 'nano-banana'
+    if (o.mode) formData.mode = o.mode
+    if (o.prompt != null) formData.prompt = o.prompt
+    if (Array.isArray(o.imageUrls)) formData.image_urls = [...o.imageUrls]
+    if (Array.isArray(o.image_urls)) formData.image_urls = [...o.image_urls]
+    if (o.outputFormat) formData.output_format = o.outputFormat === 'jpg' ? 'jpeg' : (o.outputFormat || 'png')
+    if (o.output_format) formData.output_format = o.output_format === 'jpg' ? 'jpeg' : (o.output_format || 'png')
+    if (o.imageSize) formData.image_size = o.imageSize
+    if (o.image_size) formData.image_size = o.image_size
+  }
+}
+
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((result) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = result
+        if (result?.originalData) fillFormFromOriginalData(result.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+onMounted(() => { fetchPrices() })
+
+const nanoBananaPriceText = computed(() => {
+  const credits = formData.mode === 'image-to-image' ? getPrice('nano-banana-edit') : getPrice('nano-banana')
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+const nanoBananaProPriceText = computed(() => {
+  const credits = getPrice('nano-banana-pro', {
+    quality: proFormData.resolution,
+    duration: 0,
+    size: '',
+    batchSize: 1,
+    speed: 'none',
+    scene: 'generate'
+  })
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+const uploadFilesToUrls = async (files, onProgress) => {
+  if (!files || files.length === 0) return []
+  const formDataUpload = new FormData()
+  const fileList = Array.isArray(files) ? files : [files]
+  fileList.forEach(f => formDataUpload.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls) || urls.length === 0) throw new Error('Invalid response: file URLs not found')
+  return urls
+}
 
 // 计算属性
 const canGenerate = computed(() => {
   if (!formData.prompt.trim()) return false
-  
-  if (formData.mode === 'image-to-image') {
-    return formData.image_urls.length > 0
-  }
-  
+  if (formData.mode === 'image-to-image') return formData.image_urls.length >= 1 && formData.image_urls.length <= 10
   return true
 })
 
 const canGeneratePro = computed(() => {
-  return proFormData.prompt.trim().length > 0
+  const promptOk = proFormData.prompt.trim().length > 0
+  const imagesOk = proFormData.image_input.length >= 1 && proFormData.image_input.length <= 10
+  return promptOk && imagesOk
 })
 
 // 方法
@@ -543,49 +744,124 @@ const getPromptHint = () => {
   return 'Provide detailed image content description, supports up to 5000 characters'
 }
 
-const handleImageUpdate = (files) => {
-  if (files && files.length > 0) {
-    formData.image_urls = files.map(file => URL.createObjectURL(file))
-  } else {
+// 编辑模式：上传图片得到 imageUrls（1-10）
+const handleImageUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
     formData.image_urls = []
+    editImageUploadRef.value?.clearFiles?.()
+    return
+  }
+  const fileList = Array.isArray(files) ? files : [files]
+  if (fileList.length > 10) {
+    showError('Image files must contain 1 to 10 images')
+    return
+  }
+  isUploadingEdit.value = true
+  try {
+    formData.image_urls = await uploadFilesToUrls(fileList)
+  } catch (error) {
+    console.error('Edit images upload error:', error)
+    showError(error.message || 'Failed to upload images')
+    formData.image_urls = []
+    editImageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingEdit.value = false
   }
 }
 
-const handleProImageUpdate = (files) => {
-  if (files && files.length > 0) {
-    // For Pro, we need to upload files and get URLs
-    // For now, using object URLs as placeholder
-    proFormData.image_input = files.map(file => URL.createObjectURL(file))
-  } else {
+// Pro：上传图片得到 imageInput（1-10）
+const handleProImageUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
     proFormData.image_input = []
+    proImageUploadRef.value?.clearFiles?.()
+    return
+  }
+  const fileList = Array.isArray(files) ? files : [files]
+  if (fileList.length > 10) {
+    showError('Image files must contain 1 to 10 images')
+    return
+  }
+  isUploadingPro.value = true
+  try {
+    proFormData.image_input = await uploadFilesToUrls(fileList)
+  } catch (error) {
+    console.error('Pro images upload error:', error)
+    showError(error.message || 'Failed to upload images')
+    proFormData.image_input = []
+    proImageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingPro.value = false
   }
 }
 
 const generateImage = async () => {
   if (!canGenerate.value) return
-
+  const promptTrim = formData.prompt.trim()
+  if (promptTrim.length > 5000) {
+    showError('Prompt cannot exceed 5000 characters')
+    return
+  }
   isGenerating.value = true
-  
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // 模拟生成的图像
-    const mockImage = {
-      id: Date.now(),
-      url: `https://via.placeholder.com/800x800/ef4444/ffffff?text=Nano+Banana+${formData.mode === 'image-to-image' ? 'Image-to-Image' : 'Generated'}`,
-      prompt: formData.prompt,
-      mode: formData.mode,
-      output_format: formData.output_format,
-      image_size: formData.image_size,
-      timestamp: new Date().toLocaleTimeString()
+    if (formData.mode === 'text-to-image') {
+      const body = {
+        model: 'nano-banana',
+        prompt: promptTrim,
+        outputFormat: formData.output_format,
+        imageSize: formData.image_size
+      }
+      const data = await post('/api/image/nano-banana/generate', body)
+      const recordId = data?.recordId ?? data?.data?.recordId
+      if (recordId) {
+        router.push(`/home/nano-banana?record-id=${encodeURIComponent(recordId)}`)
+        return
+      }
+      const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
+      if (url && typeof url === 'string') {
+        generatedImages.value.unshift({
+          id: Date.now(),
+          url,
+          prompt: formData.prompt,
+          mode: formData.mode,
+          output_format: formData.output_format,
+          image_size: formData.image_size,
+          timestamp: new Date().toLocaleTimeString()
+        })
+      } else {
+        showError('No image URL in response')
+      }
+    } else {
+      const body = {
+        model: 'nano-banana-edit',
+        prompt: promptTrim,
+        imageUrls: formData.image_urls,
+        outputFormat: formData.output_format,
+        imageSize: formData.image_size
+      }
+      const data = await post('/api/image/nano-banana/edit', body)
+      const recordId = data?.recordId ?? data?.data?.recordId
+      if (recordId) {
+        router.push(`/home/nano-banana?record-id=${encodeURIComponent(recordId)}`)
+        return
+      }
+      const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
+      if (url && typeof url === 'string') {
+        generatedImages.value.unshift({
+          id: Date.now(),
+          url,
+          prompt: formData.prompt,
+          mode: formData.mode,
+          output_format: formData.output_format,
+          image_size: formData.image_size,
+          timestamp: new Date().toLocaleTimeString()
+        })
+      } else {
+        showError('No image URL in response')
+      }
     }
-    
-    generatedImages.value.unshift(mockImage)
-    
   } catch (error) {
     console.error('Failed to generate image:', error)
-    alert('Failed to generate image, please try again')
+    showError(error.message || 'Failed to generate image, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -609,51 +885,49 @@ const copyImageUrl = async (image) => {
 
 const generateImagePro = async () => {
   if (!canGeneratePro.value) return
-
+  const promptTrim = proFormData.prompt.trim()
+  if (promptTrim.length > 5000) {
+    showError('Prompt cannot exceed 5000 characters')
+    return
+  }
+  if (proFormData.image_input.length < 1 || proFormData.image_input.length > 10) {
+    showError('Image files must contain 1 to 10 images')
+    return
+  }
   isGenerating.value = true
-  
   try {
-    // Build payload according to API spec
-    const payload = {
-      input: {
-        prompt: proFormData.prompt
-      }
-    }
-
-    // Add optional fields
-    if (proFormData.image_input && proFormData.image_input.length > 0) {
-      payload.input.image_input = proFormData.image_input
-    }
-    if (proFormData.aspect_ratio) {
-      payload.input.aspect_ratio = proFormData.aspect_ratio
-    }
-    if (proFormData.resolution) {
-      payload.input.resolution = proFormData.resolution
-    }
-    if (proFormData.output_format) {
-      payload.input.output_format = proFormData.output_format
-    }
-
-    // TODO: Call actual API endpoint
-    // For now, simulate API call
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // Mock generated image
-    const mockImage = {
-      id: Date.now(),
-      url: `https://via.placeholder.com/800x800/ef4444/ffffff?text=Nano+Banana+Pro+Generated`,
-      prompt: proFormData.prompt,
-      aspect_ratio: proFormData.aspect_ratio,
+    const outputFormat = proFormData.output_format === 'jpg' ? 'jpeg' : proFormData.output_format
+    const body = {
+      model: 'nano-banana-pro',
+      prompt: promptTrim,
+      imageInput: proFormData.image_input,
       resolution: proFormData.resolution,
-      output_format: proFormData.output_format,
-      timestamp: new Date().toLocaleTimeString()
+      outputFormat,
+      imageSize: proFormData.aspect_ratio
     }
-    
-    generatedImages.value.unshift(mockImage)
-    
+    const data = await post('/api/image/nano-banana-pro/generate', body)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`/home/nano-banana?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
+    if (url && typeof url === 'string') {
+      generatedImages.value.unshift({
+        id: Date.now(),
+        url,
+        prompt: proFormData.prompt,
+        aspect_ratio: proFormData.aspect_ratio,
+        resolution: proFormData.resolution,
+        output_format: proFormData.output_format,
+        timestamp: new Date().toLocaleTimeString()
+      })
+    } else {
+      showError('No image URL in response')
+    }
   } catch (error) {
     console.error('Failed to generate image:', error)
-    alert('Failed to generate image, please try again')
+    showError(error.message || 'Failed to generate image, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -881,6 +1155,12 @@ const clearResults = () => {
   overflow-y: auto;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 .form-group {
   margin-bottom: 24px;
 }
@@ -959,6 +1239,15 @@ const clearResults = () => {
   font-size: 12px;
   color: #64748b;
   line-height: 1.4;
+}
+
+.uploading-hint {
+  font-size: 12px;
+  color: #667eea;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .tab-group {
@@ -1212,6 +1501,21 @@ const clearResults = () => {
   border-radius: 4px;
   font-weight: 500;
 }
+
+.detail-loading-state,
+.detail-failure-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
 
 .empty-state {
   text-align: center;

@@ -70,23 +70,30 @@
       </div>
 
       <form class="config-form" @submit.prevent="generateVideo">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 视频扩展模式特有字段 -->
           <div v-if="formData.generationType === 'VIDEO_EXTEND'" class="form-group">
-                          <label for="taskId" class="form-label">
-               Original Task <span class="required">*</span>
+            <label for="taskId" class="form-label">
+              Original Task <span class="required">*</span>
             </label>
-            <select
-              id="taskId"
-              v-model="formData.taskId"
-              class="form-input"
-              required
-            >
-              <option value="">Please select original task</option>
-              <option value="task_001_video_generation">Task 001 - Product Promo Video</option>
-              <option value="task_002_video_generation">Task 002 - Educational Demo Video</option>
-            </select>
-                          <div class="form-hint">
-               Select the original video generation task to extend. Note: Videos after 1080P generation cannot be extended
+            <div class="select-with-arrow">
+              <select
+                id="taskId"
+                v-model="formData.taskId"
+                class="form-input"
+                required
+                :disabled="loadingExtendList"
+              >
+                <option value="">Please select original task</option>
+                <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+            </div>
+            <div v-if="!loadingExtendList && extendList.length === 0" class="form-hint input-hint-warn">
+              Only tasks completed with Veo3 video generation can be used.
+            </div>
+            <div v-else class="form-hint">
+              Select the original video generation task to extend. Note: Videos after 1080P generation cannot be extended
             </div>
           </div>
 
@@ -102,9 +109,11 @@
             v-model="formData.prompt"
             class="form-input"
             rows="4"
-              :placeholder="getPromptPlaceholder()"
+            :placeholder="getPromptPlaceholder()"
+            maxlength="1000"
             required
           ></textarea>
+          <div class="char-count" v-if="formData.prompt">{{ formData.prompt.length }}/1000</div>
           <div class="form-hint">
               {{ getPromptHint() }}
           </div>
@@ -152,7 +161,8 @@
               <span class="required">*</span>
               <span v-if="formData.generationType === 'FIRST_AND_LAST_FRAMES_2_VIDEO'" class="mode-hint">(1-2 images)</span>
               <span v-if="formData.generationType === 'REFERENCE_2_VIDEO'" class="mode-hint">(1-3 images)</span>
-          </label>
+            </label>
+            <span v-if="isUploadingImages" class="form-hint">Uploading images...</span>
             <UploadImage
               ref="imageUploadRef"
               input-id="veo3-image-upload"
@@ -170,8 +180,8 @@
             />
         </div>
 
-        <!-- 模型选择 - 非视频扩展模式和Image to Video模式显示 -->
-        <div v-if="formData.generationType !== 'VIDEO_EXTEND' && formData.generationType !== 'REFERENCE_2_VIDEO'" class="form-group">
+        <!-- 模型选择 - 非视频扩展模式显示（含 Text to Video、First And Last Frames、Image to Video） -->
+        <div v-if="formData.generationType !== 'VIDEO_EXTEND'" class="form-group">
           <label class="form-label">Model Type</label>
           <div class="option-tabs two-columns">
             <button 
@@ -281,22 +291,36 @@
           </div>
         </div>
 
-        <!-- 生成按钮 -->
+        <!-- 生成按钮（与 Runway 一致） -->
+        <div class="form-actions">
           <button
             type="submit"
-            class="generate-btn"
-            :disabled="!canGenerate"
+            class="btn-primary"
+            :disabled="!canGenerate || isGenerating"
           >
-            <i class="fas fa-play"></i>
-            Generate Video
-            <span class="price-tag">($3.2)</span>
+            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-play"></i>
+            {{ isGenerating ? 'Generating...' : 'Generate Video' }}
+            <span v-if="veo3PriceText" class="price-tag">{{ veo3PriceText }}</span>
           </button>
+        </div>
+          </fieldset>
       </form>
       </div>
 
       <!-- 右侧：结果展示区域 -->
       <div class="result-panel">
-        <div v-if="!result" class="empty-state">
+        <!-- 详情页：status 3 失败 -->
+        <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+          <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+          <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+        </div>
+        <!-- 详情页：status 1 或加载中 -->
+        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+          <i class="fas fa-spinner fa-spin detail-spinner"></i>
+          <p>Generating...</p>
+        </div>
+        <div v-else-if="!displayResult" class="empty-state">
           <!-- 预览视频 - Video Extend 模式不显示 -->
           <div v-if="formData.generationType !== 'VIDEO_EXTEND'" class="preview-video-container">
             <video 
@@ -316,8 +340,8 @@
           <div class="video-result">
               <div class="video-player">
               <video 
-                v-if="result.videoUrl"
-                :src="result.videoUrl" 
+                v-if="displayResult.videoUrl"
+                :src="displayResult.videoUrl" 
                 controls 
                 class="video-element"
               ></video>
@@ -328,15 +352,15 @@
             </div>
             
             <div class="video-info">
-              <h5>{{ result.taskId || 'Video Generation Task' }}</h5>
+              <h5>{{ displayResult.taskId || 'Video Generation Task' }}</h5>
                 <div class="video-meta">
-                <span><i class="fas fa-clock"></i> {{ result.duration || 'Unknown duration' }}</span>
-                <span><i class="fas fa-expand"></i> {{ result.aspectRatio || '16:9' }}</span>
-                <span><i class="fas fa-cog"></i> {{ result.model || 'veo3_fast' }}</span>
+                <span><i class="fas fa-clock"></i> {{ displayResult.duration || 'Unknown duration' }}</span>
+                <span><i class="fas fa-expand"></i> {{ displayResult.aspectRatio || '16:9' }}</span>
+                <span><i class="fas fa-cog"></i> {{ displayResult.model || 'veo3_fast' }}</span>
                 </div>
             </div>
 
-            <!-- 操作按钮 -->
+            <!-- 操作按钮（详情页不显示扩展） -->
                 <div class="video-actions">
               <button @click="downloadVideo" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -346,15 +370,15 @@
                     <i class="fas fa-share"></i>
                 Share Video
               </button>
-              <button v-if="result.taskId" @click="get1080PVideo" class="action-btn">
+              <button v-if="!isDetailView && displayResult.taskId" @click="get1080PVideo" class="action-btn">
                 <i class="fas fa-hd-video"></i>
                 Get 1080P
                   </button>
             </div>
           </div>
           
-          <!-- 视频扩展功能 -->
-          <div v-if="result.taskId" class="video-extend">
+          <!-- 视频扩展功能（仅非详情页） -->
+          <div v-if="!isDetailView && displayResult.taskId" class="video-extend">
             <h6>Video Extension</h6>
             <div class="extend-form">
               <textarea
@@ -400,11 +424,64 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, inject, watch } from 'vue'
+import { ref, reactive, computed, inject, watch, onMounted } from 'vue'
 import UploadImage from './common/UploadImage.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
+import { useRouter, useRoute } from 'vue-router'
 
-// 注入父组件的函数
+const router = useRouter()
+const route = useRoute()
 const addToUsageHistory = inject('addToUsageHistory')
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+onMounted(() => { fetchPrices() })
+const { token } = useAuth()
+const { showError } = useToast()
+const { post, get } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+/** 上传多文件到 batch-upload，返回 URL 数组 */
+const uploadFilesToUrls = async (files) => {
+  if (!files || (Array.isArray(files) ? files.length === 0 : !files)) return []
+  const list = Array.isArray(files) ? files : [files]
+  const formDataUpload = new FormData()
+  list.forEach(f => formDataUpload.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage?.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message?.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls)) throw new Error('Invalid response: file URLs not found')
+  return urls
+}
 
 // 表单数据
 const formData = reactive({
@@ -419,78 +496,147 @@ const formData = reactive({
   taskId: ''
 })
 
+// Video Extend：Original Task 从 extend-list 拉取（model=veo3），提交值为 taskId
+const EXTEND_LIST_MODEL = 'veo3'
+const extendList = ref([])
+const loadingExtendList = ref(false)
+const fetchExtendList = async () => {
+  loadingExtendList.value = true
+  try {
+    const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
+    extendList.value = Array.isArray(data) ? data : []
+  } catch {
+    extendList.value = []
+  } finally {
+    loadingExtendList.value = false
+  }
+}
+watch(() => formData.generationType, (type) => {
+  if (type === 'VIDEO_EXTEND') fetchExtendList()
+}, { immediate: true })
+
 // 结果数据
 const result = ref(null)
+const isGenerating = ref(false)
 const extendPrompt = ref('')
 const imageUploadRef = ref(null)
+const isUploadingImages = ref(false)
 
-// 监听生成模式变化
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+const detailDelayTimer = ref(null)
+const displayResult = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
+    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
+    const od = detailData.value.originalData || {}
+    return { videoUrl: url, taskId: detailData.value.taskId ?? od.taskId, ...od }
+  }
+  return result.value
+})
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  Object.keys(formData).forEach(k => { if (originalData[k] !== undefined && k in formData) formData[k] = originalData[k] })
+}
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((res) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) { console.error('Load record detail failed:', e) }
+}
+watch(() => route.query['record-id'], (recordId) => {
+  if (detailDelayTimer.value) { clearTimeout(detailDelayTimer.value); detailDelayTimer.value = null }
+  if (recordId) {
+    detailDelayTimer.value = setTimeout(() => {
+      detailDelayTimer.value = null
+      loadDetailByRecordId(recordId)
+    }, DETAIL_DELAY_MS)
+  } else {
+    detailData.value = null
+  }
+}, { immediate: true })
+
+// 价格：Video Extend -> veo3_extend；Text/First And Last Frames/Image to Video -> veo3(Standard) / veo3_fast(Fast)
+const veo3PriceText = computed(() => {
+  const key = formData.generationType === 'VIDEO_EXTEND' ? 'veo3_extend' : (formData.model || 'veo3_fast')
+  const credits = getPrice(key)
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+
+// 默认占位图文件名（仅用于展示，不参与上传与提交）
+const DEFAULT_PLACEHOLDER_NAMES = ['veo3_start.webp', 'veo3_end.webp', 'veo3_i2v_one.webp', 'veo3_i2v_two.webp', 'veo3_i2v_three.webp']
+
+// 监听生成模式变化：清空后按模式加载默认占位图（仅展示）或重置
 watch(() => formData.generationType, async (newType) => {
-  // 先清空已有图片
   if (imageUploadRef.value) {
     imageUploadRef.value.clearFiles()
   }
-  
+  formData.imageUrls = []
+
   if (newType === 'FIRST_AND_LAST_FRAMES_2_VIDEO') {
-    // 自动加载默认图片
     try {
       const startResponse = await fetch('/tools-example/veo3_start.webp')
       const endResponse = await fetch('/tools-example/veo3_end.webp')
-      
       if (startResponse.ok && endResponse.ok) {
         const startBlob = await startResponse.blob()
         const endBlob = await endResponse.blob()
-        
         const startFile = new File([startBlob], 'veo3_start.webp', { type: 'image/webp' })
         const endFile = new File([endBlob], 'veo3_end.webp', { type: 'image/webp' })
-        
         await loadImagesToComponent([startFile, endFile])
       }
     } catch (error) {
-      console.error('Failed to load default images:', error)
+      console.error('Failed to load default placeholder images:', error)
     }
   } else if (newType === 'REFERENCE_2_VIDEO') {
-    // Image to Video 模式：自动设置为 fast 模型和 16:9 宽高比
     formData.model = 'veo3_fast'
     formData.aspectRatio = '16:9'
-    // 自动加载默认图片
     try {
       const oneResponse = await fetch('/tools-example/veo3_i2v_one.webp')
       const twoResponse = await fetch('/tools-example/veo3_i2v_two.webp')
       const threeResponse = await fetch('/tools-example/veo3_i2v_three.webp')
-      
       if (oneResponse.ok && twoResponse.ok && threeResponse.ok) {
         const oneBlob = await oneResponse.blob()
         const twoBlob = await twoResponse.blob()
         const threeBlob = await threeResponse.blob()
-        
         const oneFile = new File([oneBlob], 'veo3_i2v_one.webp', { type: 'image/webp' })
         const twoFile = new File([twoBlob], 'veo3_i2v_two.webp', { type: 'image/webp' })
         const threeFile = new File([threeBlob], 'veo3_i2v_three.webp', { type: 'image/webp' })
-        
         await loadImagesToComponent([oneFile, twoFile, threeFile])
       }
     } catch (error) {
-      console.error('Failed to load default images:', error)
+      console.error('Failed to load default placeholder images:', error)
     }
   } else if (newType === 'TEXT_2_VIDEO') {
-    // 切换到文本模式时清空图片
-    formData.imageUrls = []
+    // 文本模式无需图片
   } else if (newType === 'VIDEO_EXTEND') {
-    // 切换到视频扩展模式时清空结果（包括预览视频）
     result.value = null
   }
 })
 
-// 辅助函数：将图片加载到组件
+// 将占位图加载到上传组件内仅做展示（会触发 update:files，由 handleImageUpdate 识别为占位不提交）
 const loadImagesToComponent = async (files) => {
   try {
-    // 使用 DataTransfer 创建 FileList
     const dataTransfer = new DataTransfer()
     files.forEach(file => dataTransfer.items.add(file))
-    
-    // 将文件添加到 input
-    if (imageUploadRef.value && imageUploadRef.value.$el) {
+    if (imageUploadRef.value?.$el) {
       const input = imageUploadRef.value.$el.querySelector('input[type="file"]')
       if (input) {
         input.files = dataTransfer.files
@@ -498,7 +644,7 @@ const loadImagesToComponent = async (files) => {
       }
     }
   } catch (error) {
-    console.error('Failed to load images to component:', error)
+    console.error('Failed to load placeholder images into component:', error)
   }
 }
 
@@ -523,17 +669,34 @@ const canGenerate = computed(() => {
   return true
 })
 
-// 图片上传处理
-const handleImageUpdate = (files) => {
-  if (files && files.length > 0) {
-    // 将文件转换为URL
-    formData.imageUrls = files.map(file => URL.createObjectURL(file))
-  } else {
+// 图片上传处理：仅当用户主动选择图片时才上传并写入 imageUrls；默认占位图仅展示不提交
+const handleImageUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
     formData.imageUrls = []
+    return
   }
-  
-  // 触发事件通知父组件（如果使用 UploadImage 组件）
-  // emit('update:files', files)
+  const list = Array.isArray(files) ? files : [files]
+  // 若全是默认占位图文件名，视为仅占位展示，不调用上传接口、不写入可提交字段
+  const isOnlyPlaceholders = list.every(f => DEFAULT_PLACEHOLDER_NAMES.includes(f.name))
+  if (isOnlyPlaceholders) {
+    formData.imageUrls = []
+    return
+  }
+  const maxCount = formData.generationType === 'FIRST_AND_LAST_FRAMES_2_VIDEO' ? 2 : 3
+  if (list.length > maxCount) {
+    showError(`Maximum ${maxCount} image(s) for this mode`)
+    return
+  }
+  isUploadingImages.value = true
+  try {
+    formData.imageUrls = await uploadFilesToUrls(list)
+  } catch (e) {
+    showError(e.message || 'Failed to upload images')
+    formData.imageUrls = []
+    imageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingImages.value = false
+  }
 }
 
 // 获取图片上传提示信息
@@ -586,122 +749,92 @@ const getPreviewVideoSrc = () => {
   return '/tools-example/veo3_t2v.mp4'
 }
 
+// 种子取值范围 10000-99999
+const clampSeeds = (v) => {
+  if (v == null || v === '') return undefined
+  const n = Number(v)
+  if (Number.isNaN(n)) return undefined
+  return Math.min(99999, Math.max(10000, Math.floor(n)))
+}
+
+const resolveVideoResult = (data) => {
+  if (data?.taskId || data?.videoUrl || (Array.isArray(data?.outputUrls) && data.outputUrls.length)) return data
+  return data
+}
+
 // 生成视频
 const generateVideo = async () => {
-  // 添加到使用历史
-  if (addToUsageHistory) {
-    addToUsageHistory('Veo3')
+  if (addToUsageHistory) addToUsageHistory('Veo3')
+
+  const promptTrim = formData.prompt?.trim()
+  if (!promptTrim || promptTrim.length > 1000) {
+    showError('Prompt is required and must be 1-1000 characters')
+    return
   }
-  
+
+  isGenerating.value = true
   try {
-    let apiEndpoint = ''
-    let requestData = {}
-
     if (formData.generationType === 'VIDEO_EXTEND') {
-      // 视频扩展模式
-      apiEndpoint = '/api/veo3/extend'
-      requestData = {
-        taskId: formData.taskId,
-        prompt: formData.prompt
+      const body = {
+        taskId: formData.taskId.trim(),
+        prompt: promptTrim,
+        seeds: clampSeeds(formData.seeds),
+        watermark: formData.watermark?.trim() || undefined
       }
-      
-      // 添加可选参数
-      if (formData.watermark) {
-        requestData.watermark = formData.watermark
-      }
-      if (formData.seeds) {
-        requestData.seeds = formData.seeds
-      }
+      const data = await post('/api/video/veo/extend', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      result.value = resolveVideoResult(data)
     } else {
-      // 其他生成模式
-      apiEndpoint = '/api/veo3/generate'
-      requestData = {
-      prompt: formData.prompt,
-      model: formData.model,
-      aspectRatio: formData.aspectRatio,
-        enableTranslation: formData.enableTranslation
+      const body = {
+        prompt: promptTrim,
+        model: formData.model || 'veo3_fast',
+        generationType: formData.generationType,
+        enableTranslation: formData.enableTranslation != null ? !!formData.enableTranslation : true,
+        imageUrls: (formData.imageUrls && formData.imageUrls.length > 0) ? formData.imageUrls : undefined,
+        aspectRatio: formData.aspectRatio || '16:9',
+        watermark: formData.watermark?.trim() || undefined,
+        seeds: clampSeeds(formData.seeds)
       }
-
-      // 添加可选参数
-      if (formData.imageUrls.length > 0) {
-        requestData.imageUrls = formData.imageUrls
-      }
-      if (formData.generationType) {
-        requestData.generationType = formData.generationType
-      }
-      if (formData.watermark) {
-        requestData.watermark = formData.watermark
-      }
-      if (formData.seeds) {
-        requestData.seeds = formData.seeds
-      }
-    }
-
-    const response = await fetch(apiEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestData)
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      result.value = data
-    } else {
-      throw new Error('Generation failed')
+      const data = await post('/api/video/veo/generate', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      result.value = resolveVideoResult(data)
     }
   } catch (error) {
     console.error('Generation failed:', error)
-      // Simulate success result for demo
-    result.value = {
-      taskId: 'veo3_' + Date.now(),
-      videoUrl: 'https://example.com/generated-video.mp4',
-      duration: '0:10',
-      aspectRatio: formData.aspectRatio,
-      model: formData.model
-    }
+    showError(error?.message || 'Request failed')
+  } finally {
+    isGenerating.value = false
   }
 }
 
-// 扩展视频
+// 扩展视频（结果面板内使用 result.taskId）
 const extendVideo = async () => {
   if (!result.value?.taskId || !extendPrompt.value.trim()) return
-
+  const promptTrim = extendPrompt.value.trim()
+  if (promptTrim.length > 1000) {
+    showError('Extension prompt must be 1-1000 characters')
+    return
+  }
+  isGenerating.value = true
   try {
-    const requestData = {
+    const body = {
       taskId: result.value.taskId,
-      prompt: extendPrompt.value
+      prompt: promptTrim,
+      seeds: clampSeeds(formData.seeds),
+      watermark: formData.watermark?.trim() || undefined
     }
-
-    if (formData.watermark) {
-      requestData.watermark = formData.watermark
-    }
-    if (formData.seeds) {
-      requestData.seeds = formData.seeds
-    }
-    if (formData.callBackUrl) {
-      requestData.callBackUrl = formData.callBackUrl
-    }
-
-    const response = await fetch('/api/veo3/extend', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestData)
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      result.value = data
-      extendPrompt.value = ''
-    } else {
-      throw new Error('Extension failed')
-    }
+    const data = await post('/api/video/veo/extend', body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+    result.value = resolveVideoResult(data)
+    extendPrompt.value = ''
   } catch (error) {
     console.error('Extension failed:', error)
-    alert('Video extension failed, please try again')
+    showError(error?.message || 'Request failed')
+  } finally {
+    isGenerating.value = false
   }
 }
 
@@ -728,9 +861,9 @@ const get1080PVideo = async () => {
 
 // 下载视频
 const downloadVideo = () => {
-  if (result.value?.videoUrl) {
-  const link = document.createElement('a')
-    link.href = result.value.videoUrl
+  if (displayResult.value?.videoUrl) {
+    const link = document.createElement('a')
+    link.href = displayResult.value.videoUrl
     link.download = `veo3-video-${Date.now()}.mp4`
   link.click()
   }
@@ -738,15 +871,15 @@ const downloadVideo = () => {
 
 // 分享视频
 const shareVideo = () => {
-  if (navigator.share && result.value) {
+  if (navigator.share && displayResult.value) {
     navigator.share({
       title: 'Veo3 Generated Video',
       text: 'Check out the video I generated using Veo3',
-      url: result.value.videoUrl
+      url: displayResult.value.videoUrl
     })
   } else {
     // 复制链接到剪贴板
-    navigator.clipboard.writeText(result.value.videoUrl)
+    navigator.clipboard.writeText(displayResult.value.videoUrl)
     alert('Video link copied to clipboard')
   }
 }
@@ -827,6 +960,12 @@ const shareVideo = () => {
   color: #1f2937;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* 表单样式 */
 .config-form {
   display: flex;
@@ -872,6 +1011,10 @@ const shareVideo = () => {
   font-size: 12px;
   color: #6b7280;
   line-height: 1.4;
+}
+
+.input-hint-warn {
+  color: #b45309;
 }
 
 .checkbox-label {
@@ -1029,37 +1172,44 @@ const shareVideo = () => {
   font-size: 14px;
 }
 
-/* 生成按钮 */
-.generate-btn {
-  background: #3b82f6;
+/* 生成按钮区域（与 Runway 一致） */
+.form-actions {
+  margin-top: 24px;
+  padding-bottom: 20px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  transition: all 0.3s ease;
 }
 
-.generate-btn:hover:not(:disabled) {
-  background: #2563eb;
-  transform: translateY(-1px);
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
 }
 
-.generate-btn:disabled {
-  background: #9ca3af;
+.btn-primary:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 .price-tag {
-  font-size: 14px;
-  opacity: 0.9;
+  font-size: 12px;
+  opacity: 0.8;
+  margin-left: 4px;
 }
 
 /* 结果面板 */
@@ -1074,6 +1224,14 @@ const shareVideo = () => {
   flex-direction: column;
   min-height: 0;
 }
+
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
 
 .empty-state {
   display: flex;

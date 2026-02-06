@@ -43,7 +43,7 @@
           <h4>Music Generation Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generateMusic">
-
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 模式选择（仅在音乐生成时显示） -->
           <div class="form-group" v-if="formData.function === 'generate'">
             <label class="form-label">Mode Selection *</label>
@@ -73,33 +73,42 @@
           <!-- 模型选择 -->
           <div class="form-group">
             <label for="model" class="form-label">Model Version *</label>
-            <select id="model" v-model="formData.model" class="form-input model-select" required>
-              <option value="V3_5">V3.5 - Better song structure, max 4 minutes</option>
-              <option value="V4">V4 - Improved vocal quality, max 4 minutes</option>
-              <option value="V4_5">V4.5 - Smarter prompts, max 8 minutes</option>
-              <option value="V4_5PLUS">V4.5+ - Richer timbre, max 8 minutes</option>
-              <option value="V5">V5 - Superior music expressiveness, faster generation</option>
-            </select>
+            <div class="select-with-arrow">
+              <select id="model" v-model="formData.model" class="form-input model-select" required>
+                <option value="V3_5">V3.5 - Better song structure, max 4 minutes</option>
+                <option value="V4">V4 - Improved vocal quality, max 4 minutes</option>
+                <option value="V4_5">V4.5 - Smarter prompts, max 8 minutes</option>
+                <option value="V4_5PLUS">V4.5+ - Richer timbre, max 8 minutes</option>
+                <option value="V5">V5 - Superior music expressiveness, faster generation</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+            </div>
           </div>
 
           <!-- 音乐延长功能特定字段 -->
           <template v-if="formData.function === 'extend'">
-            <!-- 音频ID -->
+            <!-- 音频ID：来自 /api/records/extend-list?model=suno_generate，提交值为 taskId -->
             <div class="form-group">
               <label for="audio-id" class="form-label">
                 Audio ID <span class="required">*</span>
               </label>
-              <select 
-                id="audio-id"
-                v-model="formData.audioId" 
-                class="form-input" 
-                required
-              >
-                <option value="">Please select audio</option>
-                <option value="e231a1b2-c3d4-e5f6-7890-123456789abc">Sample Audio 1 - Pop Music</option>
-                <option value="f342b2c3-d4e5-f6g7-8901-234567890def">Sample Audio 2 - Classical Music</option>
-              </select>
-              <div class="form-hint">
+              <div class="select-with-arrow">
+                <select
+                  id="audio-id"
+                  v-model="formData.audioId"
+                  class="form-input"
+                  required
+                  :disabled="loadingExtendList"
+                >
+                  <option value="">Please select audio</option>
+                  <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div v-if="!loadingExtendList && extendList.length === 0" class="form-hint input-hint-warn">
+                Only tasks completed with Suno Music Generation can be used.
+              </div>
+              <div v-else class="form-hint">
                 Unique identifier for the audio track to extend. All extension requests require this parameter.
               </div>
             </div>
@@ -160,6 +169,7 @@
               <label class="form-label">
                 Upload Audio File <span class="required">*</span>
               </label>
+              <span v-if="isUploadingCover" class="form-hint">Uploading audio...</span>
               <UploadAudio
                 input-id="audio-upload"
                 label="Upload audio file"
@@ -183,6 +193,7 @@
               <label class="form-label">
                 Upload Audio File <span class="required">*</span>
               </label>
+              <span v-if="isUploadingExpand" class="form-hint">Uploading audio...</span>
               <UploadAudio
                 input-id="expand-audio-upload"
                 label="Upload audio file"
@@ -242,6 +253,7 @@
               <label class="form-label">
                 Source Audio File <span class="required">*</span>
               </label>
+              <span v-if="isUploadingAccompaniment" class="form-hint">Uploading audio...</span>
               <UploadAudio
                 input-id="accompaniment-audio-upload"
                 label="Source audio file"
@@ -321,6 +333,7 @@
               <label for="vocal-audio-upload" class="form-label">
                 Source Audio File <span class="required">*</span>
               </label>
+              <span v-if="isUploadingVocal" class="form-hint">Uploading audio...</span>
               <UploadAudio
                 input-id="vocal-audio-upload"
                 label="Source audio file"
@@ -477,11 +490,14 @@
             <!-- 人声性别（仅在非纯音乐时显示，且非extend功能或extend且defaultParamFlag为true时） -->
             <div class="form-group" v-if="(formData.function !== 'extend' && !formData.instrumental) || (formData.function === 'extend' && formData.defaultParamFlag)">
               <label for="vocal-gender" class="form-label">Vocal Gender</label>
-              <select id="vocal-gender" v-model="formData.vocalGender" class="form-input">
-                <option value="">Not specified</option>
-                <option value="m">Male</option>
-                <option value="f">Female</option>
-              </select>
+              <div class="select-with-arrow">
+                <select id="vocal-gender" v-model="formData.vocalGender" class="form-input">
+                  <option value="">Not specified</option>
+                  <option value="m">Male</option>
+                  <option value="f">Female</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+              </div>
               <div class="form-hint">
                 Vocal gender preference. Optional. 'm' for male, 'f' for female. According to practice, this parameter can only strengthen probability but cannot guarantee compliance.
               </div>
@@ -573,10 +589,12 @@
           </template>
 
           <!-- 生成按钮 -->
-          <button type="submit" class="generate-btn" :disabled="!canGenerate">
-            <i :class="getButtonIcon()"></i> 
-            {{ getButtonText() }} ($0.10)
+          <button type="submit" class="generate-btn" :disabled="!canGenerate || isGenerating">
+            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+            <i v-else :class="getButtonIcon()"></i> 
+            {{ isGenerating ? 'Generating...' : getButtonText() }}{{ sunoPriceText }}
           </button>
+          </fieldset>
         </form>
       </div>
 
@@ -584,7 +602,7 @@
       <div class="result-panel">
         <div class="result-header">
           <h4>Generation Result</h4>
-          <div class="result-actions" v-if="result">
+          <div class="result-actions" v-if="!isDetailView && displayResult">
             <button class="action-btn" @click="downloadResult" title="Download">
               <i class="fas fa-download"></i>
             </button>
@@ -595,22 +613,32 @@
         </div>
 
         <div class="result-content">
-          <!-- 空状态 -->
-          <div v-if="!result" class="empty-state">
+          <!-- 详情页：status 3 失败 -->
+          <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <!-- 空状态（非详情页且无结果） -->
+          <div v-else-if="!displayResult" class="empty-state">
             <i class="fas fa-music"></i>
             <p>No music generated yet</p>
             <span>Configure parameters and click "Generate Music" to start creating</span>
           </div>
 
-          <!-- 结果展示 -->
+          <!-- 结果展示（含详情页 status 2） -->
           <div v-else class="music-result">
             <div class="music-player">
               <div class="music-info">
-                <h5>{{ result.title || 'Generated Music' }}</h5>
-                <p>{{ result.style || 'Unknown Style' }}</p>
+                <h5>{{ displayResult.title || 'Generated Music' }}</h5>
+                <p>{{ displayResult.style || 'Unknown Style' }}</p>
                 <div class="music-meta">
-                  <span><i class="fas fa-clock"></i> {{ result.duration || 'Unknown Duration' }}</span>
-                  <span><i class="fas fa-user"></i> {{ result.model || 'Suno' }}</span>
+                  <span><i class="fas fa-clock"></i> {{ displayResult.duration || 'Unknown Duration' }}</span>
+                  <span><i class="fas fa-user"></i> {{ displayResult.model || 'Suno' }}</span>
                 </div>
               </div>
               <div class="player-controls">
@@ -626,7 +654,7 @@
             
             <audio 
               ref="audioPlayer"
-              :src="result.audioUrl" 
+              :src="displayResult.audioUrl" 
               @timeupdate="updateProgress"
               @loadedmetadata="setDuration"
               @ended="onAudioEnded"
@@ -663,12 +691,79 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadAudio from './common/UploadAudio.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
 const route = useRoute()
+const { token } = useAuth()
+const { showError } = useToast()
+const { post, get } = useApi()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+
+onMounted(() => { fetchPrices() })
+
+// 功能与价格 key 对应：Music Extension→suno_extend, Audio Expansion→suno_upload_extend, Vocal Generation→suno_add_vocals, Audio Cover→suno_upload_cover, Music Generation→suno_generate, Accompaniment→suno_add_instrumental
+const SUNO_MODEL_KEY = {
+  generate: 'suno_generate',
+  extend: 'suno_extend',
+  expand: 'suno_upload_extend',
+  vocal: 'suno_add_vocals',
+  cover: 'suno_upload_cover',
+  accompaniment: 'suno_add_instrumental'
+}
+const sunoPriceText = computed(() => {
+  const key = SUNO_MODEL_KEY[formData.function]
+  if (!key) return ''
+  const credits = getPrice(key)
+  const str = formatCredits(credits)
+  return str ? ` (${str})` : ''
+})
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+const uploadAudioToUrl = async (file) => {
+  if (!file) return ''
+  const formDataUpload = new FormData()
+  formDataUpload.append('file', file)
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls) || !urls[0]) throw new Error('Invalid response: file URL not found')
+  return urls[0]
+}
 
 // 表单数据
 const formData = reactive({
@@ -704,7 +799,22 @@ const formData = reactive({
   vocalNegativeTags: ''
 })
 
-// 监听路由变化，同步功能选择状态
+// Music Extension：Audio ID 从 extend-list 拉取（model=suno_generate），提交值为 taskId
+const EXTEND_LIST_MODEL = 'suno_generate'
+const extendList = ref([])
+const loadingExtendList = ref(false)
+const fetchExtendList = async () => {
+  loadingExtendList.value = true
+  try {
+    const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
+    extendList.value = Array.isArray(data) ? data : []
+  } catch {
+    extendList.value = []
+  } finally {
+    loadingExtendList.value = false
+  }
+}
+// 监听路由变化，同步功能选择状态；仅当路由为 extend 时拉取 extend-list，避免与 switchFunction 重复触发两次请求
 watch(() => route.path, (newPath) => {
   const routeToFunctionMap = {
     '/home/suno': 'generate',
@@ -714,11 +824,76 @@ watch(() => route.path, (newPath) => {
     '/home/suno/accompaniment': 'accompaniment',
     '/home/suno/vocal': 'vocal'
   }
-  
   const functionId = routeToFunctionMap[newPath]
   if (functionId) {
     formData.function = functionId
+    if (functionId === 'extend') fetchExtendList()
   }
+}, { immediate: true })
+
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const detailResult = computed(() => {
+  if (!detailData.value || detailData.value.status !== 2 || !Array.isArray(detailData.value.outputUrls) || !detailData.value.outputUrls[0]) return null
+  const od = detailData.value.originalData || {}
+  return {
+    audioUrl: typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url,
+    title: od.title || 'Generated Music',
+    style: od.style || '',
+    model: od.model || formData.model,
+    duration: detailData.value.duration
+  }
+})
+
+const displayResult = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailResult.value) return detailResult.value
+  return result.value
+})
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  const keys = ['prompt', 'customMode', 'instrumental', 'model', 'style', 'title', 'negativeTags', 'vocalGender', 'audioId', 'defaultParamFlag', 'continueAt', 'expandDefaultParamFlag', 'expandContinueAt', 'accompanimentTitle', 'accompanimentTags', 'accompanimentNegativeTags', 'vocalTitle', 'vocalStyle', 'vocalNegativeTags']
+  keys.forEach(k => { if (o[k] !== undefined) formData[k] = o[k] })
+  if (o.function) formData.function = o.function
+  if (o.styleWeight != null) formData.styleWeight = Number(o.styleWeight) ?? 0.65
+  if (o.weirdnessConstraint != null) formData.weirdnessConstraint = Number(o.weirdnessConstraint) ?? 0.65
+  if (o.audioWeight != null) formData.audioWeight = Number(o.audioWeight) ?? 0.65
+}
+
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((resultData) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = resultData
+        if (resultData?.originalData) fillFormFromOriginalData(resultData.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
 }, { immediate: true })
 
 // 功能选项
@@ -787,14 +962,23 @@ const switchFunction = (functionId) => {
 }
 
 
-// 上传文件相关
+// 上传文件相关（File 用于展示，fileUrl 用于 API）
 const uploadedFile = ref(null)
 const expandUploadedFile = ref(null)
 const accompanimentUploadedFile = ref(null)
 const vocalUploadedFile = ref(null)
+const coverFileUrl = ref('')
+const expandFileUrl = ref('')
+const accompanimentFileUrl = ref('')
+const vocalFileUrl = ref('')
+const isUploadingCover = ref(false)
+const isUploadingExpand = ref(false)
+const isUploadingAccompaniment = ref(false)
+const isUploadingVocal = ref(false)
 
 // 结果数据
 const result = ref(null)
+const isGenerating = ref(false)
 const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -838,45 +1022,27 @@ const canGenerate = computed(() => {
     }
     // If defaultParamFlag is false, only audioId is needed (already checked above)
   } else if (formData.function === 'cover') {
-    if (!uploadedFile.value) {
-      return false
-    }
-    if (!formData.style.trim() || !formData.title.trim()) {
-      return false
-    }
-    if (!formData.instrumental && !formData.prompt.trim()) {
-      return false
-    }
+    if (!coverFileUrl.value) return false
+    if (!formData.style.trim() || !formData.title.trim()) return false
+    if (!formData.instrumental && !formData.prompt.trim()) return false
   } else if (formData.function === 'expand') {
-    if (!expandUploadedFile.value) {
-      return false
-    }
+    if (!expandFileUrl.value) return false
     if (formData.expandDefaultParamFlag) {
-      if (!formData.style.trim() || !formData.title.trim()) {
-        return false
-      }
-      if (!formData.instrumental && !formData.prompt.trim()) {
-        return false
-      }
-      if (formData.expandContinueAt <= 0) {
-        return false
-      }
+      if (!formData.style.trim() || !formData.title.trim()) return false
+      if (!formData.instrumental && !formData.prompt.trim()) return false
+      if (formData.expandContinueAt <= 0) return false
     }
   } else if (formData.function === 'accompaniment') {
-    if (!accompanimentUploadedFile.value || 
-        !formData.accompanimentTitle.trim() || 
-        !formData.accompanimentTags.trim() || 
-        !formData.accompanimentNegativeTags.trim()) {
-      return false
-    }
+    if (!accompanimentFileUrl.value ||
+        !formData.accompanimentTitle.trim() ||
+        !formData.accompanimentTags.trim() ||
+        !formData.accompanimentNegativeTags.trim()) return false
   } else if (formData.function === 'vocal') {
-    if (!vocalUploadedFile.value || 
-        !formData.vocalTitle.trim() || 
-        !formData.vocalStyle.trim() || 
+    if (!vocalFileUrl.value ||
+        !formData.vocalTitle.trim() ||
+        !formData.vocalStyle.trim() ||
         !formData.vocalNegativeTags.trim() ||
-        !formData.prompt.trim()) {
-      return false
-    }
+        !formData.prompt.trim()) return false
   } else {
     // 音乐生成模式
     if (!formData.prompt.trim()) {
@@ -1025,90 +1191,211 @@ const getStyleMaxLength = () => {
   return limits[formData.model]
 }
 
-// 新的事件处理函数
-const handleCoverAudioUpdate = (files) => {
-  if (files && files.length > 0) {
-    formData.uploadedFile = files[0]
-  } else {
-    formData.uploadedFile = null
+const handleCoverAudioUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    coverFileUrl.value = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  uploadedFile.value = file
+  isUploadingCover.value = true
+  try {
+    coverFileUrl.value = await uploadAudioToUrl(file)
+  } catch (e) {
+    showError(e.message || 'Failed to upload audio')
+    coverFileUrl.value = ''
+    uploadedFile.value = null
+  } finally {
+    isUploadingCover.value = false
   }
 }
 
-// 音频扩展上传处理函数
-const handleExpandAudioUpdate = (files) => {
-  if (files && files.length > 0) {
-    formData.expandUploadedFile = files[0]
-  } else {
-    formData.expandUploadedFile = null
+const handleExpandAudioUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    expandFileUrl.value = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  expandUploadedFile.value = file
+  isUploadingExpand.value = true
+  try {
+    expandFileUrl.value = await uploadAudioToUrl(file)
+  } catch (e) {
+    showError(e.message || 'Failed to upload audio')
+    expandFileUrl.value = ''
+    expandUploadedFile.value = null
+  } finally {
+    isUploadingExpand.value = false
   }
 }
 
-// 伴奏生成上传处理函数
-const handleAccompanimentAudioUpdate = (files) => {
-  if (files && files.length > 0) {
-    accompanimentUploadedFile.value = files[0]
-  } else {
+const handleAccompanimentAudioUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    accompanimentFileUrl.value = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  accompanimentUploadedFile.value = file
+  isUploadingAccompaniment.value = true
+  try {
+    accompanimentFileUrl.value = await uploadAudioToUrl(file)
+  } catch (e) {
+    showError(e.message || 'Failed to upload audio')
+    accompanimentFileUrl.value = ''
     accompanimentUploadedFile.value = null
+  } finally {
+    isUploadingAccompaniment.value = false
   }
 }
 
-// 人声生成上传处理函数
-const handleVocalAudioUpdate = (files) => {
-  if (files && files.length > 0) {
-    vocalUploadedFile.value = files[0]
-  } else {
+const handleVocalAudioUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    vocalFileUrl.value = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  vocalUploadedFile.value = file
+  isUploadingVocal.value = true
+  try {
+    vocalFileUrl.value = await uploadAudioToUrl(file)
+  } catch (e) {
+    showError(e.message || 'Failed to upload audio')
+    vocalFileUrl.value = ''
     vocalUploadedFile.value = null
+  } finally {
+    isUploadingVocal.value = false
   }
 }
+
+const toNum = (v) => (v != null && v !== '') ? Number(v) : undefined
+const clamp01 = (v) => v == null ? undefined : Math.min(1, Math.max(0, Number(v)))
+
+const resolveAudioUrl = (data) => data?.audioUrl ?? data?.data?.audioUrl ?? data?.outputUrls?.[0] ?? (Array.isArray(data?.outputUrls) && data.outputUrls[0] ? data.outputUrls[0] : null)
 
 const generateMusic = async () => {
+  isGenerating.value = true
   try {
-    let apiEndpoint = '/api/suno/generate'
-    if (formData.function === 'extend') {
-      apiEndpoint = '/api/suno/extend'
-    } else if (formData.function === 'cover') {
-      apiEndpoint = '/api/suno/cover'
-    } else if (formData.function === 'expand') {
-      apiEndpoint = '/api/suno/expand'
-    } else if (formData.function === 'accompaniment') {
-      apiEndpoint = '/api/suno/accompaniment'
-    } else if (formData.function === 'vocal') {
-      apiEndpoint = '/api/suno/vocal'
-    }
-    
-    // 模拟API调用
-    const response = await fetch(apiEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      result.value = {
-        title: formData.title || formData.accompanimentTitle || formData.vocalTitle || getDefaultTitle(),
-        style: formData.style || formData.vocalStyle || 'Unknown Style',
+    if (formData.function === 'generate') {
+      const body = {
+        prompt: formData.prompt.trim(),
+        customMode: !!formData.customMode,
+        instrumental: !!formData.instrumental,
         model: formData.model,
-        audioUrl: data.audioUrl || 'https://example.com/generated-music.mp3',
-        duration: '3:45',
-        function: formData.function
+        style: formData.style?.trim() || undefined,
+        title: formData.title?.trim() || undefined,
+        negativeTags: formData.negativeTags?.trim() || undefined,
+        vocalGender: formData.vocalGender || undefined,
+        styleWeight: clamp01(formData.styleWeight),
+        weirdnessConstraint: clamp01(formData.weirdnessConstraint),
+        audioWeight: clamp01(formData.audioWeight)
       }
-    } else {
-      throw new Error('Generation failed')
+      const data = await post('/api/audio/suno/generate', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { title: formData.title || getDefaultTitle(), style: formData.style, model: formData.model, audioUrl, duration: data?.duration, function: 'generate' }
+    } else if (formData.function === 'extend') {
+      const body = {
+        defaultParamFlag: !!formData.defaultParamFlag,
+        audioId: formData.audioId.trim(),
+        model: formData.model,
+        prompt: formData.prompt?.trim() || undefined,
+        style: formData.style?.trim() || undefined,
+        title: formData.title?.trim() || undefined,
+        continueAt: formData.continueAt > 0 ? formData.continueAt : undefined,
+        negativeTags: formData.negativeTags?.trim() || undefined,
+        vocalGender: formData.vocalGender || undefined,
+        styleWeight: clamp01(formData.styleWeight),
+        weirdnessConstraint: clamp01(formData.weirdnessConstraint),
+        audioWeight: clamp01(formData.audioWeight)
+      }
+      const data = await post('/api/audio/suno/extend', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { title: formData.title || getDefaultTitle(), style: formData.style, model: formData.model, audioUrl, duration: data?.duration, function: 'extend' }
+    } else if (formData.function === 'cover') {
+      const body = {
+        fileUrl: coverFileUrl.value,
+        customMode: !!formData.customMode,
+        instrumental: !!formData.instrumental,
+        model: formData.model,
+        prompt: formData.prompt?.trim() || undefined,
+        style: formData.style?.trim() || undefined,
+        title: formData.title?.trim() || undefined,
+        negativeTags: formData.negativeTags?.trim() || undefined,
+        vocalGender: formData.vocalGender || undefined,
+        styleWeight: clamp01(formData.styleWeight),
+        weirdnessConstraint: clamp01(formData.weirdnessConstraint),
+        audioWeight: clamp01(formData.audioWeight)
+      }
+      const data = await post('/api/audio/suno/upload-cover', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { title: formData.title || getDefaultTitle(), style: formData.style, model: formData.model, audioUrl, duration: data?.duration, function: 'cover' }
+    } else if (formData.function === 'expand') {
+      const body = {
+        fileUrl: expandFileUrl.value,
+        defaultParamFlag: !!formData.expandDefaultParamFlag,
+        model: formData.model,
+        instrumental: formData.instrumental,
+        prompt: formData.prompt?.trim() || undefined,
+        style: formData.style?.trim() || undefined,
+        title: formData.title?.trim() || undefined,
+        continueAt: formData.expandContinueAt > 0 ? formData.expandContinueAt : undefined,
+        negativeTags: formData.negativeTags?.trim() || undefined,
+        vocalGender: formData.vocalGender || undefined,
+        styleWeight: clamp01(formData.styleWeight),
+        weirdnessConstraint: clamp01(formData.weirdnessConstraint),
+        audioWeight: clamp01(formData.audioWeight)
+      }
+      const data = await post('/api/audio/suno/upload-extend', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { title: formData.title || getDefaultTitle(), style: formData.style, model: formData.model, audioUrl, duration: data?.duration, function: 'expand' }
+    } else if (formData.function === 'accompaniment') {
+      const body = {
+        fileUrl: accompanimentFileUrl.value,
+        title: formData.accompanimentTitle.trim(),
+        negativeTags: formData.accompanimentNegativeTags.trim(),
+        tags: formData.accompanimentTags.trim(),
+        model: formData.model,
+        vocalGender: formData.vocalGender || undefined,
+        styleWeight: clamp01(formData.styleWeight),
+        weirdnessConstraint: clamp01(formData.weirdnessConstraint),
+        audioWeight: clamp01(formData.audioWeight)
+      }
+      const data = await post('/api/audio/suno/add-instrumental', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { title: formData.accompanimentTitle, style: '', model: formData.model, audioUrl, duration: data?.duration, function: 'accompaniment' }
+    } else if (formData.function === 'vocal') {
+      const body = {
+        prompt: formData.prompt.trim(),
+        title: formData.vocalTitle.trim(),
+        negativeTags: formData.vocalNegativeTags.trim(),
+        style: formData.vocalStyle.trim(),
+        fileUrl: vocalFileUrl.value,
+        model: formData.model,
+        vocalGender: formData.vocalGender || undefined,
+        styleWeight: clamp01(formData.styleWeight),
+        weirdnessConstraint: clamp01(formData.weirdnessConstraint),
+        audioWeight: clamp01(formData.audioWeight)
+      }
+      const data = await post('/api/audio/suno/add-vocals', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { title: formData.vocalTitle, style: formData.vocalStyle, model: formData.model, audioUrl, duration: data?.duration, function: 'vocal' }
     }
   } catch (error) {
     console.error('Failed to generate music:', error)
-    // 模拟成功结果用于演示
-    result.value = {
-      title: formData.title || formData.accompanimentTitle || formData.vocalTitle || getDefaultTitle(),
-      style: formData.style || formData.vocalStyle || 'Unknown Style',
-      model: formData.model,
-      audioUrl: 'https://example.com/generated-music.mp3',
-      duration: '3:45',
-      function: formData.function
-    }
+    showError(error?.message || 'Request failed')
+  } finally {
+    isGenerating.value = false
   }
 }
 
@@ -1450,6 +1737,12 @@ const shareResult = () => {
   overflow-y: auto;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 .form-group {
   margin-bottom: 20px;
   width: 100%;
@@ -1520,12 +1813,23 @@ const shareResult = () => {
   border-color: #10b981;
 }
 
+/* 下拉框使用全局 .select-with-arrow 统一样式，仅保留 Suno 宽度 */
+.suno-tool .select-with-arrow {
+  width: 90%;
+  max-width: 90%;
+}
+.suno-tool .select-with-arrow select,
+.suno-tool .select-with-arrow .form-input {
+  width: 100%;
+  max-width: none;
+}
+
 #prompt {
   background: transparent;
 }
 
 .model-select {
-  width: 90%;
+  width: 100%;
 }
 
 .form-hint {
@@ -1533,6 +1837,10 @@ const shareResult = () => {
   font-size: 12px;
   color: #64748b;
   line-height: 1.4;
+}
+
+.input-hint-warn {
+  color: #b45309;
 }
 
 .char-count {
@@ -1766,6 +2074,14 @@ const shareResult = () => {
   padding: 20px;
   overflow-y: auto;
 }
+
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
 
 .empty-state {
   display: flex;

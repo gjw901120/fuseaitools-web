@@ -1523,31 +1523,103 @@ async function getIslandContext(event) {
   return ctx;
 }
 
+const _lazy_cHoRar = () => Promise.resolve().then(function () { return audioIsolation_post$1; });
+const _lazy_7_nDw1 = () => Promise.resolve().then(function () { return soundEffectV2_post$1; });
+const _lazy_J3BPZG = () => Promise.resolve().then(function () { return speechToText_post$1; });
+const _lazy_hmLe3_ = () => Promise.resolve().then(function () { return textToSpeech_post$1; });
+const _lazy_RVFVuq = () => Promise.resolve().then(function () { return addInstrumental_post$1; });
+const _lazy_oW5mok = () => Promise.resolve().then(function () { return addVocals_post$1; });
+const _lazy_cZyyQR = () => Promise.resolve().then(function () { return extend_post$5; });
+const _lazy_mnZvgB = () => Promise.resolve().then(function () { return generate_post$j; });
+const _lazy_NpQTCQ = () => Promise.resolve().then(function () { return uploadCover_post$1; });
+const _lazy_wcOIaV = () => Promise.resolve().then(function () { return uploadExtend_post$1; });
 const _lazy_9_jlhG = () => Promise.resolve().then(function () { return chatgpt_post$1; });
 const _lazy_MRVyyM = () => Promise.resolve().then(function () { return claude_post$1; });
 const _lazy_2WjzW0 = () => Promise.resolve().then(function () { return deepseek_post$1; });
 const _lazy_xBiUVd = () => Promise.resolve().then(function () { return gemini_post$1; });
 const _lazy_XVNUbh = () => Promise.resolve().then(function () { return batchUpload_post$1; });
+const _lazy_Vz7ILQ = () => Promise.resolve().then(function () { return price_get$1; });
 const _lazy_eQ36Mn = () => Promise.resolve().then(function () { return tree_get$1; });
+const _lazy_67lOnD = () => Promise.resolve().then(function () { return generate_post$h; });
+const _lazy_eKX6sF = () => Promise.resolve().then(function () { return generate_post$f; });
+const _lazy_qqfBr2 = () => Promise.resolve().then(function () { return generate_post$d; });
+const _lazy_FTuawy = () => Promise.resolve().then(function () { return edit_post$1; });
+const _lazy_guMvLE = () => Promise.resolve().then(function () { return generate_post$b; });
+const _lazy_0wwS49 = () => Promise.resolve().then(function () { return blend_post$1; });
+const _lazy_cv5vHn = () => Promise.resolve().then(function () { return describe_post$1; });
+const _lazy_3ymEXI = () => Promise.resolve().then(function () { return imagine_post$1; });
+const _lazy_U1Y3Se = () => Promise.resolve().then(function () { return swapFace_post$1; });
+const _lazy_S4BDJq = () => Promise.resolve().then(function () { return upscale_post$1; });
+const _lazy_Y1HcS7 = () => Promise.resolve().then(function () { return vary_post$1; });
 const _lazy_MTnLsG = () => Promise.resolve().then(function () { return _slug__get$1; });
 const _lazy_Rqaiw_ = () => Promise.resolve().then(function () { return index_get$1; });
+const _lazy_8_gnv6 = () => Promise.resolve().then(function () { return chatDetail_get$1; });
+const _lazy_io_H72 = () => Promise.resolve().then(function () { return detail_get$1; });
+const _lazy_S_bw0Y = () => Promise.resolve().then(function () { return extendList_get$1; });
+const _lazy_EU3ogi = () => Promise.resolve().then(function () { return list_get$1; });
 const _lazy_FeFrNq = () => Promise.resolve().then(function () { return loginByEmail_post$1; });
 const _lazy_qjMUPF = () => Promise.resolve().then(function () { return sendEmailCode_post$1; });
+const _lazy_jQelEb = () => Promise.resolve().then(function () { return generate_post$9; });
+const _lazy_Aq6nFl = () => Promise.resolve().then(function () { return aleph_post$1; });
+const _lazy_TashgN = () => Promise.resolve().then(function () { return extend_post$3; });
+const _lazy_p973yV = () => Promise.resolve().then(function () { return generate_post$7; });
+const _lazy_VnAtz4 = () => Promise.resolve().then(function () { return generate_post$5; });
+const _lazy_eP3eSa = () => Promise.resolve().then(function () { return storyboard_post$1; });
+const _lazy_zvAFYZ = () => Promise.resolve().then(function () { return generate_post$3; });
+const _lazy_PgSmd9 = () => Promise.resolve().then(function () { return watermarkRemover_post$1; });
+const _lazy_5PmXRt = () => Promise.resolve().then(function () { return extend_post$1; });
+const _lazy_nwJeW1 = () => Promise.resolve().then(function () { return generate_post$1; });
 const _lazy_38TWWp = () => Promise.resolve().then(function () { return sitemap_xml_get$1; });
 const _lazy_T022gR = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _2WG9IA, lazy: false, middleware: true, method: undefined },
+  { route: '/api/audio/elevenLabs/audio-isolation', handler: _lazy_cHoRar, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/elevenLabs/sound-effect-v2', handler: _lazy_7_nDw1, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/elevenLabs/speech-to-text', handler: _lazy_J3BPZG, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/elevenLabs/text-to-speech', handler: _lazy_hmLe3_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/suno/add-instrumental', handler: _lazy_RVFVuq, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/suno/add-vocals', handler: _lazy_oW5mok, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/suno/extend', handler: _lazy_cZyyQR, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/suno/generate', handler: _lazy_mnZvgB, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/suno/upload-cover', handler: _lazy_NpQTCQ, lazy: true, middleware: false, method: "post" },
+  { route: '/api/audio/suno/upload-extend', handler: _lazy_wcOIaV, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/chatgpt', handler: _lazy_9_jlhG, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/claude', handler: _lazy_MRVyyM, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/deepseek', handler: _lazy_2WjzW0, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/gemini', handler: _lazy_xBiUVd, lazy: true, middleware: false, method: "post" },
   { route: '/api/common/batch-upload', handler: _lazy_XVNUbh, lazy: true, middleware: false, method: "post" },
+  { route: '/api/common/models/price', handler: _lazy_Vz7ILQ, lazy: true, middleware: false, method: "get" },
   { route: '/api/common/models/tree', handler: _lazy_eQ36Mn, lazy: true, middleware: false, method: "get" },
+  { route: '/api/image/flux-kontext/generate', handler: _lazy_67lOnD, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/gpt4o-image/generate', handler: _lazy_eKX6sF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/nano-banana-pro/generate', handler: _lazy_qqfBr2, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/nano-banana/edit', handler: _lazy_FTuawy, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/nano-banana/generate', handler: _lazy_guMvLE, lazy: true, middleware: false, method: "post" },
+  { route: '/api/midjourney/blend', handler: _lazy_0wwS49, lazy: true, middleware: false, method: "post" },
+  { route: '/api/midjourney/describe', handler: _lazy_cv5vHn, lazy: true, middleware: false, method: "post" },
+  { route: '/api/midjourney/imagine', handler: _lazy_3ymEXI, lazy: true, middleware: false, method: "post" },
+  { route: '/api/midjourney/swap-face', handler: _lazy_U1Y3Se, lazy: true, middleware: false, method: "post" },
+  { route: '/api/midjourney/upscale', handler: _lazy_S4BDJq, lazy: true, middleware: false, method: "post" },
+  { route: '/api/midjourney/vary', handler: _lazy_Y1HcS7, lazy: true, middleware: false, method: "post" },
   { route: '/api/news/:slug', handler: _lazy_MTnLsG, lazy: true, middleware: false, method: "get" },
   { route: '/api/news', handler: _lazy_Rqaiw_, lazy: true, middleware: false, method: "get" },
+  { route: '/api/records/chat-detail', handler: _lazy_8_gnv6, lazy: true, middleware: false, method: "get" },
+  { route: '/api/records/detail', handler: _lazy_io_H72, lazy: true, middleware: false, method: "get" },
+  { route: '/api/records/extend-list', handler: _lazy_S_bw0Y, lazy: true, middleware: false, method: "get" },
+  { route: '/api/records/list', handler: _lazy_EU3ogi, lazy: true, middleware: false, method: "get" },
   { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/luma/generate', handler: _lazy_jQelEb, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/runway/aleph', handler: _lazy_Aq6nFl, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/runway/extend', handler: _lazy_TashgN, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/runway/generate', handler: _lazy_p973yV, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/sora-pro/generate', handler: _lazy_VnAtz4, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/sora-pro/storyboard', handler: _lazy_eP3eSa, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/sora/generate', handler: _lazy_zvAFYZ, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/sora/watermark-remover', handler: _lazy_PgSmd9, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/veo/extend', handler: _lazy_5PmXRt, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/veo/generate', handler: _lazy_nwJeW1, lazy: true, middleware: false, method: "post" },
   { route: '/sitemap.xml', handler: _lazy_38TWWp, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
@@ -1882,6 +1954,226 @@ const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: styles
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const audioIsolation_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/audio-isolation";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("ElevenLabs audio-isolation proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const audioIsolation_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: audioIsolation_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const soundEffectV2_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/sound-effect-v2";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("ElevenLabs sound-effect-v2 proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const soundEffectV2_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: soundEffectV2_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const speechToText_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/speech-to-text";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("ElevenLabs speech-to-text proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const speechToText_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: speechToText_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const textToSpeech_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/text-to-speech";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("ElevenLabs text-to-speech proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const textToSpeech_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: textToSpeech_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const addInstrumental_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/add-instrumental";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Suno add-instrumental proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const addInstrumental_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: addInstrumental_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const addVocals_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/add-vocals";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Suno add-vocals proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const addVocals_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: addVocals_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const extend_post$4 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/extend";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Suno extend proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const extend_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: extend_post$4
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$i = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Suno generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$j = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$i
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const uploadCover_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/upload-cover";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Suno upload-cover proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const uploadCover_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: uploadCover_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const uploadExtend_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/upload-extend";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Suno upload-extend proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const uploadExtend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: uploadExtend_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const chatgpt_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const backendUrl = "http://127.0.0.1:8080/api/chat/chatgpt";
@@ -2094,12 +2386,24 @@ const batchUpload_post = defineEventHandler(async (event) => {
   try {
     const authHeader = getHeader(event, "authorization");
     const forwardFormData = new FormData();
-    formData.forEach((item) => {
-      if (item.filename) {
+    let filePartCount = 0;
+    formData.forEach((item, index) => {
+      var _a, _b;
+      const isFilePart = item.name === "file" || item.filename;
+      const hasData = item.data && ((_b = (_a = item.data.length) != null ? _a : item.data.byteLength) != null ? _b : 0) > 0;
+      if (isFilePart && hasData) {
         const blob = new Blob([item.data], { type: item.type || "application/octet-stream" });
-        forwardFormData.append("file", blob, item.filename);
+        const filename = item.filename && item.filename.trim() ? item.filename : `file_${index}`;
+        forwardFormData.append("file", blob, filename);
+        filePartCount += 1;
       }
     });
+    if (filePartCount === 0) {
+      throw createError({
+        statusCode: 400,
+        message: "No file part in request. Ensure form field name is 'file' and multipart body is sent."
+      });
+    }
     const headers = {
       "Accept": "application/json"
     };
@@ -2117,10 +2421,13 @@ const batchUpload_post = defineEventHandler(async (event) => {
     });
     console.log("Backend response status:", response.status);
     if (!response.ok) {
-      setResponseStatus(event, response.status);
-      const errorData = await response.json().catch(() => ({ error: "Upload failed" }));
+      const errorData = await response.json().catch(() => ({}));
       console.error("Backend upload error:", errorData);
-      return errorData;
+      const msg = errorData && typeof errorData.errorMessage === "string" && errorData.errorMessage.trim() ? errorData.errorMessage.trim() : (errorData == null ? void 0 : errorData.message) || (errorData == null ? void 0 : errorData.userTip) || (errorData == null ? void 0 : errorData.error) || "Upload failed";
+      throw createError({
+        statusCode: response.status,
+        message: msg
+      });
     }
     const data = await response.json();
     setResponseStatus(event, response.status);
@@ -2137,6 +2444,36 @@ const batchUpload_post = defineEventHandler(async (event) => {
 const batchUpload_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: batchUpload_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const price_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const targetUrl = `${apiBase}/common/models/price`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "GET",
+      headers
+    });
+    return response;
+  } catch (error) {
+    console.error("Price proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch price"
+    });
+  }
+});
+
+const price_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: price_get
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const tree_get = defineEventHandler(async (event) => {
@@ -2169,6 +2506,272 @@ const tree_get = defineEventHandler(async (event) => {
 const tree_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: tree_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$g = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/image/flux-kontext/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Flux Kontext generate proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Image generation failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const generate_post$h = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$g
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$e = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/image/gpt4o-image/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("GPT4o image generate proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Image generation failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const generate_post$f = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$e
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$c = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/image/nano-banana-pro/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Nano Banana Pro generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$d = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$c
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const edit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/image/nano-banana/edit";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Nano Banana edit proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const edit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: edit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$a = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/image/nano-banana/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Nano Banana generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$b = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$a
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const blend_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/midjourney/blend";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Midjourney blend proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const blend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: blend_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const describe_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/midjourney/describe";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Midjourney describe proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const describe_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: describe_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const imagine_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/midjourney/imagine";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Midjourney imagine proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imagine_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imagine_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const swapFace_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/midjourney/swap-face";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Midjourney swap-face proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const swapFace_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: swapFace_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const upscale_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/midjourney/upscale";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Midjourney upscale proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const upscale_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: upscale_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const vary_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/midjourney/vary";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Midjourney vary proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const vary_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: vary_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const _slug__get = defineEventHandler(async (event) => {
@@ -2246,6 +2849,141 @@ const index_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePropert
   default: index_get
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const chatDetail_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const query = getQuery$1(event);
+  const recordId = query["record-id"] || query.recordId;
+  if (!recordId || typeof recordId !== "string") {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Missing record-id"
+    });
+  }
+  const targetUrl = `${apiBase}/records/chat-detail?record-id=${encodeURIComponent(recordId)}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Records chat-detail proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch chat record detail"
+    });
+  }
+});
+
+const chatDetail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: chatDetail_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const detail_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const query = getQuery$1(event);
+  const recordId = query["record-id"] || query.recordId;
+  if (!recordId || typeof recordId !== "string") {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Missing record-id"
+    });
+  }
+  const targetUrl = `${apiBase}/records/detail?record-id=${encodeURIComponent(recordId)}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Records detail proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch record detail"
+    });
+  }
+});
+
+const detail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: detail_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const extendList_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const query = getQuery$1(event);
+  const model = query.model != null ? String(query.model) : "";
+  if (!model) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Missing model"
+    });
+  }
+  const targetUrl = `${apiBase}/records/extend-list?model=${encodeURIComponent(model)}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Records extend-list proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch extend list"
+    });
+  }
+});
+
+const extendList_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: extendList_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const list_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const query = getQuery$1(event);
+  const page = query.page != null ? String(query.page) : "1";
+  const size = query.size != null ? String(query.size) : "10";
+  const targetUrl = `${apiBase}/records/list?page=${encodeURIComponent(page)}&size=${encodeURIComponent(size)}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Records list proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch history"
+    });
+  }
+});
+
+const list_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: list_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const loginByEmail_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const backendUrl = "http://127.0.0.1:8080/api/user/login-by-email";
@@ -2302,6 +3040,226 @@ const sendEmailCode_post = defineEventHandler(async (event) => {
 const sendEmailCode_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: sendEmailCode_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$8 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/luma/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Luma generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$9 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$8
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const aleph_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/runway/aleph";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Runway aleph proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const aleph_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: aleph_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const extend_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/runway/extend";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Runway extend proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const extend_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: extend_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$6 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/runway/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Runway generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$6
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$4 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/sora-pro/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Sora Pro generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$4
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const storyboard_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/sora-pro/storyboard";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Sora Pro storyboard proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const storyboard_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: storyboard_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/sora/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Sora generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const watermarkRemover_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/sora/watermark-remover";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Sora watermark-remover proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const watermarkRemover_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: watermarkRemover_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const extend_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/veo/extend";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Veo extend proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const extend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: extend_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const backendUrl = "http://127.0.0.1:8080/api/video/veo/generate";
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Veo generate proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const generate_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const sitemap_xml_get = defineEventHandler((event) => {

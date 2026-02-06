@@ -1,12 +1,7 @@
 <template>
   <HomeLayout>
     <div class="tool-page">
-      <ClientOnly>
-        <RunwayTool />
-        <template #fallback>
-          <div style="padding: 20px; text-align: center;">Loading Runway Tool...</div>
-        </template>
-      </ClientOnly>
+      <RunwayTool />
     </div>
   </HomeLayout>
 </template>

@@ -153,8 +153,9 @@ const validateAndAddFiles = (files) => {
     } else {
       uploadedFiles.value = validFiles
     }
-    
-    emit('update:files', props.multiple ? uploadedFiles.value : uploadedFiles.value[0])
+    // 统一 emit 数组，便于父组件一致处理（单文件时为 [file]）
+    const out = props.multiple ? [...uploadedFiles.value] : (uploadedFiles.value.length ? [uploadedFiles.value[0]] : [])
+    emit('update:files', out)
     emit('file-added', validFiles)
   }
 }
@@ -198,8 +199,8 @@ const getFileIcon = (file) => {
 const removeFile = (index) => {
   const removedFile = uploadedFiles.value[index]
   uploadedFiles.value.splice(index, 1)
-  
-  emit('update:files', props.multiple ? uploadedFiles.value : uploadedFiles.value[0] || null)
+  const out = props.multiple ? [...uploadedFiles.value] : (uploadedFiles.value.length ? [uploadedFiles.value[0]] : [])
+  emit('update:files', out)
   emit('file-removed', removedFile)
 }
 
@@ -208,7 +209,7 @@ const clearFiles = () => {
   if (fileInput.value) {
     fileInput.value.value = ''
   }
-  emit('update:files', props.multiple ? [] : null)
+  emit('update:files', [])
 }
 
 const formatFileSize = (bytes) => {

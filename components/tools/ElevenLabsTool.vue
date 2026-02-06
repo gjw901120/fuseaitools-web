@@ -43,38 +43,48 @@
           <h4>{{ getConfigTitle() }}</h4>
         </div>
         <form class="config-form" @submit.prevent="generateContent">
-
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 文本转语音功能 -->
           <template v-if="formData.function === 'multilingual-v2' || formData.function === 'turbo-2-5'">
-            <!-- 语音选择 -->
+            <!-- 语音选择（下拉内带播放，必选） -->
             <div class="form-group">
-              <label for="voice" class="form-label">Voice</label>
-              <select id="voice" v-model="formData.voice" class="form-input">
-                <option value="">Not specified</option>
-                <option value="Rachel">Rachel</option>
-                <option value="Aria">Aria</option>
-                <option value="Roger">Roger</option>
-                <option value="Sarah">Sarah</option>
-                <option value="Laura">Laura</option>
-                <option value="Charlie">Charlie</option>
-                <option value="George">George</option>
-                <option value="Callum">Callum</option>
-                <option value="River">River</option>
-                <option value="Liam">Liam</option>
-                <option value="Charlotte">Charlotte</option>
-                <option value="Alice">Alice</option>
-                <option value="Matilda">Matilda</option>
-                <option value="Will">Will</option>
-                <option value="Jessica">Jessica</option>
-                <option value="Eric">Eric</option>
-                <option value="Chris">Chris</option>
-                <option value="Brian">Brian</option>
-                <option value="Daniel">Daniel</option>
-                <option value="Lily">Lily</option>
-                <option value="Bill">Bill</option>
-              </select>
+              <label class="form-label">Voice <span class="required">*</span></label>
+              <div class="voice-dropdown" ref="voiceDropdownRef">
+                <button
+                  type="button"
+                  class="voice-dropdown-trigger"
+                  :class="{ open: voiceDropdownOpen }"
+                  @click="voiceDropdownOpen = !voiceDropdownOpen"
+                >
+                  <span class="voice-trigger-label">
+                    {{ selectedVoiceLabel }}
+                  </span>
+                  <i class="fas fa-chevron-down voice-trigger-arrow"></i>
+                </button>
+                <div v-show="voiceDropdownOpen" class="voice-dropdown-panel">
+                  <div
+                    v-for="v in elevenlabsVoices"
+                    :key="v.id"
+                    class="voice-option"
+                    :class="{ active: formData.voice === v.id }"
+                    @click="formData.voice = v.id; voiceDropdownOpen = false"
+                  >
+                    <span class="voice-option-label">{{ getVoiceOptionLabel(v) }}</span>
+                    <button
+                      type="button"
+                      class="voice-option-play"
+                      :title="'Play ' + v.name"
+                      :disabled="voicePreviewLoading && playingVoiceId === v.id"
+                      @click.stop="playVoicePreviewFor(v.id)"
+                    >
+                      <i v-if="voicePreviewLoading && playingVoiceId === v.id" class="fas fa-spinner fa-spin"></i>
+                      <i v-else class="fas fa-volume-up"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="form-hint">
-                Optional. The voice to use for speech generation
+                Required. Select a voice for speech generation. Click the speaker icon to play a sample.
               </div>
             </div>
 
@@ -242,8 +252,8 @@
               </div>
             </div>
 
-            <!-- 语言代码（仅Turbo 2.5） -->
-            <div class="form-group" v-if="formData.function === 'turbo-2-5'">
+            <!-- 语言代码（Multilingual v2 / Turbo 2.5） -->
+            <div class="form-group" v-if="formData.function === 'multilingual-v2' || formData.function === 'turbo-2-5'">
               <label for="language-code" class="form-label">Language Code</label>
               <input 
                 id="language-code"
@@ -254,22 +264,25 @@
                 maxlength="500"
               >
               <div class="form-hint">
-                Optional. Language code (ISO 639-1) to enforce a language for the model. Only Turbo v2.5 and Flash v2.5 support language enforcement.
+                Optional. Language code (ISO 639-1) to enforce a language for the model.
               </div>
             </div>
 
             <!-- 输出格式 -->
             <div class="form-group">
               <label for="output-format" class="form-label">Output Format</label>
-              <select id="output-format" v-model="formData.outputFormat" class="form-input">
-                <option value="mp3_44100_128">MP3 (44.1kHz, 128kbps)</option>
-                <option value="mp3_44100_192">MP3 (44.1kHz, 192kbps)</option>
-                <option value="mp3_44100_320">MP3 (44.1kHz, 320kbps)</option>
-                <option value="pcm_16000">PCM (16kHz)</option>
-                <option value="pcm_22050">PCM (22.05kHz)</option>
-                <option value="pcm_24000">PCM (24kHz)</option>
-                <option value="pcm_44100">PCM (44.1kHz)</option>
-              </select>
+              <div class="select-with-arrow">
+                <select id="output-format" v-model="formData.outputFormat" class="form-input">
+                  <option value="mp3_44100_128">MP3 (44.1kHz, 128kbps)</option>
+                  <option value="mp3_44100_192">MP3 (44.1kHz, 192kbps)</option>
+                  <option value="mp3_44100_320">MP3 (44.1kHz, 320kbps)</option>
+                  <option value="pcm_16000">PCM (16kHz)</option>
+                  <option value="pcm_22050">PCM (22.05kHz)</option>
+                  <option value="pcm_24000">PCM (24kHz)</option>
+                  <option value="pcm_44100">PCM (44.1kHz)</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+              </div>
               <div class="form-hint">
                 Select audio output format and quality
               </div>
@@ -283,6 +296,7 @@
               <label class="form-label">
                 Upload Audio File <span class="required">*</span>
               </label>
+              <span v-if="isUploadingSpeech" class="form-hint">Uploading audio...</span>
               <UploadAudio
                 input-id="speech-audio-upload"
                 label="Upload audio file"
@@ -300,19 +314,22 @@
             <!-- 语言选择 -->
             <div class="form-group">
               <label for="language" class="form-label">Language</label>
-              <select id="language" v-model="formData.language" class="form-input">
-                <option value="auto">Auto Detect</option>
-                <option value="en">English</option>
-                <option value="zh">Chinese</option>
-                <option value="ja">Japanese</option>
-                <option value="ko">Korean</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>
-                <option value="it">Italian</option>
-                <option value="pt">Portuguese</option>
-                <option value="ru">Russian</option>
-              </select>
+              <div class="select-with-arrow">
+                <select id="language" v-model="formData.language" class="form-input">
+                  <option value="auto">Auto Detect</option>
+                  <option value="en">English</option>
+                  <option value="zh">Chinese</option>
+                  <option value="ja">Japanese</option>
+                  <option value="ko">Korean</option>
+                  <option value="es">Spanish</option>
+                  <option value="fr">French</option>
+                  <option value="de">German</option>
+                  <option value="it">Italian</option>
+                  <option value="pt">Portuguese</option>
+                  <option value="ru">Russian</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+              </div>
               <div class="form-hint">
                 Select the main language of the audio, or use auto detect
               </div>
@@ -362,14 +379,14 @@
                 class="form-input" 
                 rows="4" 
                 placeholder="Describe the sound effect you want, e.g.: rain, footsteps, doorbell..."
-                maxlength="1000"
+                maxlength="5000"
                 required
               ></textarea>
               <div class="form-hint">
                 Describe the sound effect characteristics and usage in detail
               </div>
               <div class="char-count">
-                {{ formData.soundDescription.length }}/1000
+                {{ formData.soundDescription.length }}/5000
               </div>
             </div>
 
@@ -382,12 +399,12 @@
                 type="number" 
                 class="form-input" 
                 placeholder="e.g.: 5"
-                min="1"
-                max="30"
-                step="1"
+                min="0.5"
+                max="22"
+                step="0.5"
               >
               <div class="form-hint">
-                Duration of the sound effect, maximum 30 seconds
+                Duration of the sound effect, 0.5–22 seconds
               </div>
             </div>
 
@@ -426,6 +443,26 @@
                 <span>Intense (1)</span>
               </div>
             </div>
+
+            <!-- 输出格式 (codec_sample_rate_bitrate) -->
+            <div class="form-group">
+              <label for="sound-effect-output-format" class="form-label">Output Format</label>
+              <div class="select-with-arrow">
+                <select id="sound-effect-output-format" v-model="formData.outputFormat" class="form-input">
+                  <option value="mp3_44100_128">MP3 (44.1kHz, 128kbps)</option>
+                  <option value="mp3_44100_192">MP3 (44.1kHz, 192kbps)</option>
+                  <option value="mp3_44100_320">MP3 (44.1kHz, 320kbps)</option>
+                  <option value="pcm_16000">PCM (16kHz)</option>
+                  <option value="pcm_22050">PCM (22.05kHz)</option>
+                  <option value="pcm_24000">PCM (24kHz)</option>
+                  <option value="pcm_44100">PCM (44.1kHz)</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div class="form-hint">
+                Optional. Output format of the generated audio (codec_sample_rate_bitrate).
+              </div>
+            </div>
           </template>
 
           <!-- 音频分离功能 -->
@@ -435,6 +472,7 @@
               <label class="form-label">
                 Upload Audio File <span class="required">*</span>
               </label>
+              <span v-if="isUploadingIsolation" class="form-hint">Uploading audio...</span>
               <UploadAudio
                 input-id="isolation-audio-upload"
                 label="Upload audio file"
@@ -448,48 +486,15 @@
                 @update:files="handleIsolationAudioUpdate"
               />
             </div>
-
-            <!-- 分离类型 -->
-            <div class="form-group">
-              <label for="isolation-type" class="form-label">Isolation Type *</label>
-              <select id="isolation-type" v-model="formData.isolationType" class="form-input" required>
-                <option value="vocals">Vocals Isolation</option>
-                <option value="instrumental">Background Music Isolation</option>
-                <option value="drums">Drums Isolation</option>
-                <option value="bass">Bass Isolation</option>
-                <option value="other">Other Instruments</option>
-              </select>
-              <div class="form-hint">
-                Select the audio element to isolate
-              </div>
-            </div>
-
-            <!-- 分离强度 -->
-            <div class="form-group">
-              <label for="isolation-strength" class="form-label">
-                Isolation Strength ({{ formData.isolationStrength }})
-              </label>
-              <input 
-                id="isolation-strength"
-                v-model.number="formData.isolationStrength" 
-                type="range" 
-                min="0" 
-                max="1" 
-                step="0.1"
-                class="form-slider"
-              >
-              <div class="slider-labels">
-                <span>Light (0)</span>
-                <span>Complete (1)</span>
-              </div>
-            </div>
           </template>
 
           <!-- 生成按钮 -->
-          <button type="submit" class="generate-btn" :disabled="!canGenerate">
-            <i :class="getButtonIcon()"></i> 
-            {{ getButtonText() }} ({{ getButtonPrice() }})
+          <button type="submit" class="generate-btn" :disabled="!canGenerate || isGenerating">
+            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+            <i v-else :class="getButtonIcon()"></i> 
+            {{ isGenerating ? 'Generating...' : getButtonText() }} ({{ getButtonPrice() }})
           </button>
+          </fieldset>
         </form>
       </div>
 
@@ -497,7 +502,7 @@
       <div class="result-panel">
         <div class="result-header">
           <h4>Generation Result</h4>
-          <div class="result-actions" v-if="result">
+          <div class="result-actions" v-if="!isDetailView && displayResult">
             <button class="action-btn" @click="downloadResult" title="Download">
               <i class="fas fa-download"></i>
             </button>
@@ -508,14 +513,24 @@
         </div>
 
         <div class="result-content">
+          <!-- 详情页：status 3 失败 -->
+          <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
           <!-- 空状态 -->
-          <div v-if="!result" class="empty-state">
+          <div v-else-if="!displayResult" class="empty-state">
             <i :class="getEmptyStateIcon()"></i>
             <p>{{ getEmptyStateTitle() }}</p>
             <span>{{ getEmptyStateDescription() }}</span>
           </div>
 
-          <!-- 结果展示 -->
+          <!-- 结果展示（含详情页 status 2） -->
           <div v-else class="result-display">
             <!-- 语音合成结果 -->
             <div v-if="formData.function === 'multilingual-v2' || formData.function === 'turbo-2-5'" class="speech-result">
@@ -524,8 +539,8 @@
                   <h5>{{ getVoiceName(formData.voiceId) }}</h5>
                   <p>{{ formData.function === 'multilingual-v2' ? 'Multilingual v2' : 'Turbo 2.5' }}</p>
                   <div class="speech-meta">
-                    <span><i class="fas fa-clock"></i> {{ result.duration || 'Unknown Duration' }}</span>
-                    <span><i class="fas fa-file-audio"></i> {{ result.format || 'MP3' }}</span>
+                    <span><i class="fas fa-clock"></i> {{ displayResult.duration || 'Unknown Duration' }}</span>
+                    <span><i class="fas fa-file-audio"></i> {{ displayResult.format || 'MP3' }}</span>
                   </div>
                 </div>
                 <div class="player-controls">
@@ -541,7 +556,7 @@
               
               <audio 
                 ref="textToSpeechPlayer"
-                :src="result.audioUrl" 
+                :src="displayResult.audioUrl" 
                 @timeupdate="updateTextToSpeechProgress"
                 @loadedmetadata="setTextToSpeechDuration"
                 @ended="onTextToSpeechEnded"
@@ -574,7 +589,7 @@
                   <h5>{{ formData.soundDescription }}</h5>
                   <p>Generated Sound Effect</p>
                   <div class="sound-meta">
-                    <span><i class="fas fa-clock"></i> {{ result.duration || 'Unknown Duration' }}</span>
+                    <span><i class="fas fa-clock"></i> {{ displayResult.duration || 'Unknown Duration' }}</span>
                     <span><i class="fas fa-volume-up"></i> Sound Effect</span>
                   </div>
                 </div>
@@ -591,7 +606,7 @@
               
               <audio 
                 ref="soundEffectPlayer"
-                :src="result.audioUrl" 
+                :src="displayResult.audioUrl" 
                 @timeupdate="updateSoundEffectProgress"
                 @loadedmetadata="setSoundEffectDuration"
                 @ended="onSoundEffectEnded"
@@ -623,7 +638,7 @@
               
               <audio 
                 ref="isolationPlayer"
-                :src="result.audioUrl" 
+                :src="displayResult.audioUrl" 
                 @timeupdate="updateIsolationProgress"
                 @loadedmetadata="setIsolationDuration"
                 @ended="onIsolationEnded"
@@ -651,16 +666,67 @@
       </div>
       <div class="tip-item">
         <span class="tip-icon">✂️</span>
-        <span>Audio Isolation: Intelligently isolate vocals and background music, supports multiple audio element isolation</span>
+        <span>AI Audio Isolation: Intelligently isolate vocals and background music</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onBeforeUnmount } from 'vue'
 import AudioUpload from '../AudioUpload.vue'
 import UploadAudio from './common/UploadAudio.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useRecordPolling } from '~/composables/useRecordPolling'
+import elevenlabsVoices from '~/data/elevenlabs-voices.js'
+
+const router = useRouter()
+const route = useRoute()
+const { token } = useAuth()
+const { showError } = useToast()
+const { post } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+/** 上传音频到 batch-upload，返回单个 URL */
+const uploadAudioToUrl = async (file) => {
+  if (!file) return ''
+  const formDataUpload = new FormData()
+  formDataUpload.append('file', file)
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage?.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message?.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls) || !urls[0]) throw new Error('Invalid response: file URL not found')
+  return urls[0]
+}
 
 // 表单数据
 const formData = reactive({
@@ -678,7 +744,7 @@ const formData = reactive({
   timestamps: false,
   previous_text: '',
   next_text: '',
-  language_code: '', // 仅Turbo 2.5支持
+  language_code: '', // Multilingual v2 / Turbo 2.5
   outputFormat: 'mp3_44100_128',
   // 语音转文本相关
   language: 'auto',
@@ -728,24 +794,57 @@ const functionOptions = ref([
   },
   {
     id: 'audio-isolation',
-    name: 'Audio Isolation',
-    description: 'AI Audio Isolation',
+    name: 'AI Audio Isolation',
+    description: 'Intelligently isolate vocals and background music',
     detailDescription: 'Intelligently isolate vocals and background music, supports multiple audio formats, maximum 10MB, suitable for audio post-processing',
     icon: 'fas fa-cut'
   }
 ])
 
-// 监听 function 变化，自动设置 model
-watch(() => formData.function, (newFunction) => {
-  if (newFunction === 'multilingual-v2') {
-    formData.model = 'elevenlabs/text-to-speech-multilingual-v2'
-  } else if (newFunction === 'turbo-2-5') {
-    formData.model = 'elevenlabs/text-to-speech-turbo-2-5'
+const voiceDropdownOpen = ref(false)
+const voiceDropdownRef = ref(null)
+const playingVoiceId = ref(null)
+
+// 点击外部关闭 Voice 下拉
+let voiceDropdownClickOutside = null
+watch(voiceDropdownOpen, (open) => {
+  if (voiceDropdownClickOutside) {
+    document.removeEventListener('click', voiceDropdownClickOutside)
+    voiceDropdownClickOutside = null
   }
+  if (open) {
+    voiceDropdownClickOutside = (e) => {
+      if (voiceDropdownRef.value && !voiceDropdownRef.value.contains(e.target)) {
+        voiceDropdownOpen.value = false
+      }
+    }
+    setTimeout(() => document.addEventListener('click', voiceDropdownClickOutside), 0)
+  }
+})
+onBeforeUnmount(() => {
+  if (voiceDropdownClickOutside) document.removeEventListener('click', voiceDropdownClickOutside)
+})
+
+watch(() => formData.function, (newFunction) => {
+  const modelMap = {
+    'multilingual-v2': 'elevenlabs_text_to_speech_multilingual',
+    'turbo-2-5': 'elevenlabs_text_to_speech_turbo',
+    'speech-to-text': 'elevenlabs_speech_to_text',
+    'sound-effect-v2': 'elevenlabs_audio_isolation',
+    'audio-isolation': 'elevenlabs_sound_effect'
+  }
+  formData.model = modelMap[newFunction] || ''
 }, { immediate: true })
+
+// 上传后的音频 URL（speech-to-text / audio-isolation）
+const speechFileUrl = ref('')
+const isolationFileUrl = ref('')
+const isUploadingSpeech = ref(false)
+const isUploadingIsolation = ref(false)
 
 // 结果数据
 const result = ref(null)
+const isGenerating = ref(false)
 const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -778,16 +877,19 @@ const soundEffectProgress = ref(0)
 const isolationProgress = ref(0)
 const textToSpeechProgress = ref(0)
 
+const voicePreviewLoading = ref(false)
+const voicePreviewAudio = ref(null)
+
 // 计算属性
 const canGenerate = computed(() => {
   if (formData.function === 'multilingual-v2' || formData.function === 'turbo-2-5') {
-    return formData.text.trim().length > 0
+    return formData.text.trim().length > 0 && (formData.voice || '').trim().length > 0
   } else if (formData.function === 'speech-to-text') {
-    return formData.uploadedSpeechFile !== null
+    return !!speechFileUrl.value
   } else if (formData.function === 'sound-effect-v2') {
     return formData.soundDescription.trim().length > 0
   } else if (formData.function === 'audio-isolation') {
-    return formData.uploadedIsolationFile !== null
+    return !!isolationFileUrl.value
   }
   return false
 })
@@ -805,7 +907,7 @@ const getConfigTitle = () => {
     'turbo-2-5': 'Text-to-Speech Turbo 2.5 Configuration',
     'speech-to-text': 'Speech-to-Text Configuration',
     'sound-effect-v2': 'Sound Effect v2 Configuration',
-    'audio-isolation': 'Audio Isolation Configuration'
+    'audio-isolation': 'AI Audio Isolation Configuration'
   }
   return titles[formData.function] || 'Configuration'
 }
@@ -834,11 +936,11 @@ const getButtonText = () => {
 
 const getButtonPrice = () => {
   const prices = {
-    'multilingual-v2': '$0.18/1K chars',
-    'turbo-2-5': '$0.15/1K chars',
-    'speech-to-text': '$0.10/minute',
-    'sound-effect-v2': '$0.05/second',
-    'audio-isolation': '$0.15/minute'
+    'multilingual-v2': '20/1K chars',
+    'turbo-2-5': '10/1K chars',
+    'speech-to-text': '6/minute',
+    'sound-effect-v2': '24/minute',
+    'audio-isolation': '20/minute'
   }
   return prices[formData.function] || ''
 }
@@ -876,19 +978,51 @@ const getEmptyStateDescription = () => {
   return descriptions[formData.function] || 'Start Using'
 }
 
+const getVoiceOptionLabel = (v) => {
+  if (!v.description || v.description.trim() === '') return v.name
+  return `${v.name} – ${v.description}`
+}
+
+const selectedVoiceLabel = computed(() => {
+  if (!formData.voice) return 'Select voice'
+  const v = elevenlabsVoices.find((x) => x.id === formData.voice)
+  return v ? getVoiceOptionLabel(v) : formData.voice
+})
+
 const getVoiceName = (voiceId) => {
-  const voiceMap = {
-    '21m00Tcm4TlvDq8ikWAM': 'Rachel',
-    'AZnzlk1XvdvUeBnXmlld': 'Domi',
-    'EXAVITQu4vr4xnSDxMaL': 'Bella',
-    'ErXwobaYiN019PkySvjV': 'Antoni',
-    'MF3mGyEYCl7XYWbV9V6O': 'Elli',
-    'TxGEqnHWrfWFTfGW9XjX': 'Josh',
-    'VR6AewLTigWG4xSOukaG': 'Arnold',
-    'pNInz6obpgDQGcFmaJgB': 'Adam',
-    'yoZ06aMxZJJ28mfd3POQ': 'Sam'
+  if (!voiceId) return 'Unknown Voice'
+  const v = elevenlabsVoices.find((item) => item.id === voiceId)
+  return v ? v.name : voiceId
+}
+
+// 与 scripts/download-elevenlabs-previews.cjs 一致：本地试听路径
+const getPreviewPath = (voiceId) => {
+  if (!voiceId) return ''
+  const safe = String(voiceId).replace(/[^a-zA-Z0-9._-]/g, '_')
+  return `/elevenlabs-previews/${safe}.mp3`
+}
+
+const playVoicePreviewFor = (voiceId) => {
+  if (!voiceId) return
+  if (voicePreviewAudio.value) {
+    try { voicePreviewAudio.value.pause() } catch (_) {}
+    voicePreviewAudio.value = null
   }
-  return voiceMap[voiceId] || 'Unknown Voice'
+  playingVoiceId.value = voiceId
+  voicePreviewLoading.value = true
+  const audioUrl = getPreviewPath(voiceId)
+  const audio = new Audio(audioUrl)
+  voicePreviewAudio.value = audio
+  const clear = () => {
+    voicePreviewLoading.value = false
+    if (playingVoiceId.value === voiceId) playingVoiceId.value = null
+  }
+  audio.play().catch((e) => {
+    clear()
+    showError(e?.message || 'Playback failed')
+  })
+  audio.onended = clear
+  audio.onerror = () => { clear(); showError('Preview file not found') }
 }
 
 const getIsolationTypeName = (type) => {
@@ -902,64 +1036,179 @@ const getIsolationTypeName = (type) => {
   return typeMap[type] || 'Audio Isolation'
 }
 
-// 文件上传处理
-const handleSpeechAudioUpdate = (files) => {
-  if (files && files.length > 0) {
-    formData.uploadedSpeechFile = files[0]
-  } else {
+// 文件上传处理：上传到 batch-upload 后保存 URL
+const handleSpeechAudioUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    speechFileUrl.value = ''
     formData.uploadedSpeechFile = null
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  formData.uploadedSpeechFile = file
+  isUploadingSpeech.value = true
+  try {
+    speechFileUrl.value = await uploadAudioToUrl(file)
+  } catch (e) {
+    showError(e.message || 'Failed to upload audio')
+    speechFileUrl.value = ''
+    formData.uploadedSpeechFile = null
+  } finally {
+    isUploadingSpeech.value = false
   }
 }
 
-const handleIsolationAudioUpdate = (files) => {
-  if (files && files.length > 0) {
-    formData.uploadedIsolationFile = files[0]
-  } else {
+const handleIsolationAudioUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    isolationFileUrl.value = ''
     formData.uploadedIsolationFile = null
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  formData.uploadedIsolationFile = file
+  isUploadingIsolation.value = true
+  try {
+    isolationFileUrl.value = await uploadAudioToUrl(file)
+  } catch (e) {
+    showError(e.message || 'Failed to upload audio')
+    isolationFileUrl.value = ''
+    formData.uploadedIsolationFile = null
+  } finally {
+    isUploadingIsolation.value = false
   }
 }
+
+const clamp01 = (v) => v == null ? undefined : Math.min(1, Math.max(0, Number(v)))
+const clampSpeed = (v) => v == null ? 1 : Math.min(1.2, Math.max(0.7, Number(v)))
+const clampDurationSec = (v) => v == null ? undefined : Math.min(22, Math.max(0.5, Number(v)))
+
+const resolveAudioUrl = (data) => data?.audioUrl ?? data?.data?.audioUrl ?? data?.outputUrls?.[0] ?? (Array.isArray(data?.outputUrls) && data.outputUrls[0] ? data.outputUrls[0] : null)
+
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const displayResult = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
+    const od = detailData.value.originalData || {}
+    const audioUrl = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
+    return { ...od, audioUrl, transcript: detailData.value.transcript ?? od.transcript }
+  }
+  return result.value
+})
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  Object.keys(formData).forEach(k => { if (o[k] !== undefined && k in formData) formData[k] = o[k] })
+  if (o.voiceSettings && typeof o.voiceSettings === 'object') Object.assign(formData.voiceSettings, o.voiceSettings)
+  if (o.function) formData.function = o.function
+}
+
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((res) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) { console.error('Load record detail failed:', e) }
+  finally { if (loadingRecordId.value === recordId) loadingRecordId.value = null }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
 
 const generateContent = async () => {
-  try {
-    let apiEndpoint = ''
-    switch (formData.function) {
-      case 'text-to-speech':
-        apiEndpoint = '/api/elevenlabs/text-to-speech'
-        break
-      case 'speech-to-text':
-        apiEndpoint = '/api/elevenlabs/speech-to-text'
-        break
-      case 'sound-effect':
-        apiEndpoint = '/api/elevenlabs/sound-effect'
-        break
-      case 'audio-isolation':
-        apiEndpoint = '/api/elevenlabs/audio-isolation'
-        break
+  if (formData.function === 'multilingual-v2' || formData.function === 'turbo-2-5') {
+    if (!(formData.voice || '').trim()) {
+      showError('Please select a voice')
+      return
     }
-    
-    const response = await fetch(apiEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
+  } else if (formData.function === 'speech-to-text') {
+    if (!speechFileUrl.value) {
+      showError('Please upload an audio file')
+      return
+    }
+  }
+  isGenerating.value = true
+  try {
+    if (formData.function === 'multilingual-v2' || formData.function === 'turbo-2-5') {
+      const body = {
+        model: formData.model,
+        text: formData.text.trim(),
+        voice: formData.voice?.trim() || undefined,
+        stability: clamp01(formData.voiceSettings?.stability),
+        similarityBoost: clamp01(formData.voiceSettings?.similarity_boost),
+        style: clamp01(formData.voiceSettings?.style),
+        speed: clampSpeed(formData.voiceSettings?.speed),
+        timestamps: !!formData.timestamps,
+        previousText: formData.previous_text?.trim() || undefined,
+        nextText: formData.next_text?.trim() || undefined,
+        languageCode: formData.language_code?.trim() || undefined
+      }
+      const data = await post('/api/audio/elevenLabs/text-to-speech', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { ...data, audioUrl }
+    } else if (formData.function === 'speech-to-text') {
+      const body = {
+        model: formData.model,
+        audioUrl: speechFileUrl.value,
+        languageCode: (formData.language && formData.language !== 'auto') ? formData.language : undefined,
+        tagAudioEvents: !!formData.audioEvents,
+        diarize: !!formData.speakerIdentification
+      }
+      const data = await post('/api/audio/elevenLabs/speech-to-text', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
       result.value = data
-    } else {
-      throw new Error('Generation failed')
+    } else if (formData.function === 'sound-effect-v2') {
+      const body = {
+        model: formData.model,
+        text: formData.soundDescription.trim(),
+        loop: !!formData.loop,
+        durationSeconds: clampDurationSec(formData.duration),
+        promptInfluence: clamp01(formData.intensity),
+        outputFormat: formData.outputFormat || 'mp3_44100_128'
+      }
+      const data = await post('/api/audio/elevenLabs/sound-effect-v2', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { ...data, audioUrl }
+    } else if (formData.function === 'audio-isolation') {
+      const body = {
+        model: formData.model,
+        audioUrl: isolationFileUrl.value
+      }
+      const data = await post('/api/audio/elevenLabs/audio-isolation', body)
+      const rid = data?.recordId ?? data?.data?.recordId
+      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      const audioUrl = resolveAudioUrl(data)
+      result.value = { ...data, audioUrl }
     }
   } catch (error) {
     console.error('Generation failed:', error)
-    // 模拟成功结果用于演示
-    result.value = {
-      audioUrl: 'https://example.com/generated-content.mp3',
-      duration: '0:15',
-      format: 'MP3',
-      transcript: 'This is a simulated recognition result text...'
-    }
+    showError(error?.message || 'Request failed')
+  } finally {
+    isGenerating.value = false
   }
 }
 
@@ -1093,24 +1342,24 @@ const formatTime = (time) => {
 }
 
 const downloadResult = () => {
-  if (result.value?.audioUrl) {
+  if (displayResult.value?.audioUrl) {
     const link = document.createElement('a')
-    link.href = result.value.audioUrl
+    link.href = displayResult.value.audioUrl
     link.download = `elevenlabs-${formData.function}.mp3`
     link.click()
   }
 }
 
 const shareResult = () => {
-  if (navigator.share && result.value) {
+  if (navigator.share && displayResult.value) {
     navigator.share({
       title: `ElevenLabs ${getButtonText()}`,
       text: `听听我使用ElevenLabs生成的内容`,
-      url: result.value.audioUrl
+      url: displayResult.value.audioUrl
     })
   } else {
     // 复制链接到剪贴板
-    navigator.clipboard.writeText(result.value.audioUrl)
+    navigator.clipboard.writeText(displayResult.value.audioUrl)
     alert('链接已复制到剪贴板')
   }
 }
@@ -1323,6 +1572,12 @@ const shareResult = () => {
   overflow-y: auto;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 .form-group {
   margin-bottom: 20px;
   width: 100%;
@@ -1356,6 +1611,126 @@ const shareResult = () => {
 .form-input:focus {
   outline: none;
   border-color: #6366f1;
+}
+
+/* Voice 下拉（选项内播放按钮） */
+.voice-dropdown {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.voice-dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  text-align: left;
+}
+
+.voice-dropdown-trigger:hover,
+.voice-dropdown-trigger.open {
+  border-color: #6366f1;
+}
+
+.voice-trigger-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.voice-trigger-arrow {
+  flex-shrink: 0;
+  margin-left: 8px;
+  font-size: 12px;
+  color: #64748b;
+  transition: transform 0.2s;
+}
+
+.voice-dropdown-trigger.open .voice-trigger-arrow {
+  transform: rotate(180deg);
+}
+
+.voice-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+}
+
+.voice-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.voice-option:last-child {
+  border-bottom: none;
+}
+
+.voice-option:hover {
+  background: #f8fafc;
+}
+
+.voice-option.active {
+  background: #eef2ff;
+  color: #6366f1;
+}
+
+.voice-option-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.voice-option-play {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.voice-option-play:hover:not(:disabled) {
+  background: #5a67d8;
+}
+
+.voice-option-play:disabled {
+  opacity: 0.8;
+  cursor: default;
 }
 
 .form-hint {
@@ -1535,6 +1910,14 @@ const shareResult = () => {
   padding: 20px;
   overflow-y: auto;
 }
+
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
 
 .empty-state {
   display: flex;

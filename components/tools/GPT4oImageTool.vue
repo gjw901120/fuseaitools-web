@@ -22,6 +22,7 @@
         </div>
 
         <form class="config-form" @submit.prevent="generateImage">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 图片尺寸选择 -->
           <div class="form-group">
             <label>Image Aspect Ratio *</label>
@@ -62,63 +63,26 @@
               class="form-input"
               required
             ></textarea>
-            <div class="input-hint">At least one of fileUrl/filesUrl and prompt is required</div>
+            <div class="input-hint">At least one of Reference Images and prompt is required</div>
           </div>
 
           <!-- 文件上传 -->
-          <UploadImage
-            input-id="gpt4o-reference-images"
-            label="Reference Images (Optional)"
-            upload-icon="fas fa-cloud-upload-alt"
-            upload-text="Click to upload reference images"
-            upload-hint="Supports .jfif, .jpeg, .jpg, .png, .webp (max 5 images)"
-            :max-files="5"
-            :max-file-size="10 * 1024 * 1024"
-            additional-hint="Upload reference images to guide generation direction"
-            theme-color="#667eea"
-            @update:files="handleReferenceImages"
-          />
-
-          <!-- 蒙版图片 -->
-          <UploadImage
-            v-if="uploadedFiles.length === 1"
-            input-id="gpt4o-mask-image"
-            label="Mask Image (Optional)"
-            upload-icon="fas fa-mask"
-            upload-text="Upload mask image"
-            upload-hint="Supports .jfif, .jpeg, .jpg, .png, .webp"
-            :multiple="false"
-            :max-file-size="10 * 1024 * 1024"
-            additional-hint="Black areas will be modified, white areas will be preserved"
-            theme-color="#667eea"
-            @update:files="handleMaskImage"
-          />
-
-          <!-- 生成变体数量 -->
           <div class="form-group">
-            <label>Number of Variants</label>
-            <div class="tab-group">
-              <div 
-                class="tab-option"
-                :class="{ active: formData.nVariants === '1' }"
-                @click="formData.nVariants = '1'"
-              >
-                <span>1</span>
-              </div>
-              <div 
-                class="tab-option"
-                :class="{ active: formData.nVariants === '2' }"
-                @click="formData.nVariants = '2'"
-              >
-                <span>2</span>
-              </div>
-              <div 
-                class="tab-option"
-                :class="{ active: formData.nVariants === '4' }"
-                @click="formData.nVariants = '4'"
-              >
-                <span>4</span>
-              </div>
+            <UploadImage
+              ref="referenceImagesUploadRef"
+              input-id="gpt4o-reference-images"
+              label="Reference Images (Optional)"
+              upload-icon="fas fa-cloud-upload-alt"
+              upload-text="Click to upload reference images"
+              upload-hint="Supports .jfif, .jpeg, .jpg, .png, .webp (max 5 images)"
+              :max-files="5"
+              :max-file-size="10 * 1024 * 1024"
+              additional-hint="Upload reference images to guide generation direction"
+              theme-color="#667eea"
+              @update:files="handleReferenceImages"
+            />
+            <div v-if="isUploadingRefs" class="uploading-hint">
+              <i class="fas fa-spinner fa-spin"></i> Uploading reference images...
             </div>
           </div>
 
@@ -135,8 +99,9 @@
           <button type="submit" :disabled="isGenerating || !formData.prompt.trim()" class="generate-btn">
             <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else class="fas fa-magic"></i>
-            {{ isGenerating ? 'Generating...' : 'Generate Image' }}
+            {{ isGenerating ? 'Generating...' : 'Generate Image' }}{{ gpt4oImagePriceText }}
           </button>
+          </fieldset>
         </form>
       </div>
 
@@ -144,7 +109,7 @@
       <div class="image-display-panel">
         <div class="image-header">
           <h4>Image Preview</h4>
-          <div class="image-actions" v-if="generatedImages.length > 0">
+          <div class="image-actions" v-if="!isDetailView && generatedImages.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
             </button>
@@ -152,7 +117,42 @@
         </div>
         
         <div class="image-container">
-          <div v-if="generatedImages.length > 0" class="image-showcase">
+          <!-- 详情页：status 2 展示 outputUrls -->
+          <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-showcase">
+            <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
+              <div class="image-wrapper">
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <div class="image-overlay">
+                  <button @click="downloadImage(image)" class="action-btn">
+                    <i class="fas fa-download"></i>
+                  </button>
+                  <button @click="copyImageUrl(image)" class="action-btn">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="image-info">
+                <span class="image-size">{{ image.size }}</span>
+                <span class="image-time">{{ image.timestamp }}</span>
+              </div>
+            </div>
+          </div>
+          <!-- 详情页：status 3 失败提示 -->
+          <div v-else-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <!-- 详情页：其他（如 status 2 但无图） -->
+          <div v-else-if="isDetailView" class="detail-loading-state">
+            <p>No output images</p>
+          </div>
+          <!-- 非详情页：本地生成结果 -->
+          <div v-else-if="!isDetailView && generatedImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in generatedImages" :key="index" class="image-item">
               <div class="image-wrapper">
                 <img :src="image.url" :alt="`Generated image ${index + 1}`" />
@@ -172,8 +172,8 @@
             </div>
           </div>
           
-          <!-- Empty State -->
-          <div v-else class="empty-state">
+          <!-- Empty State（仅非详情页且无结果时） -->
+          <div v-else-if="!isDetailView" class="empty-state">
             <div class="empty-icon">
               <i class="fas fa-image"></i>
             </div>
@@ -213,10 +213,6 @@
         <span>Upload reference images to guide generation direction</span>
       </div>
       <div class="tip-item">
-        <span class="tip-icon">🎭</span>
-        <span>Use masks to precisely control image editing areas</span>
-      </div>
-      <div class="tip-item">
         <span class="tip-icon">📐</span>
         <span>Support multiple aspect ratios, choose the appropriate ratio</span>
       </div>
@@ -229,85 +225,234 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import UploadImage from './common/UploadImage.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
+const route = useRoute()
+const { token } = useAuth()
+const { showError } = useToast()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+
+onMounted(() => { fetchPrices() })
+
+// 价格：GPT 4o Image 对应模型 key GPT_4o_image
+const gpt4oImagePriceText = computed(() => {
+  const credits = getPrice('GPT_4o_image')
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
 
 const formData = reactive({
   size: '1:1',
   prompt: '',
   filesUrl: [],
-  maskUrl: '',
-  nVariants: '1',
   isEnhance: false
 })
 
 const isGenerating = ref(false)
+const isUploadingRefs = ref(false)
 const generatedImages = ref([])
 const uploadedFiles = ref([])
-const maskFile = ref(null)
+const referenceImagesUploadRef = ref(null)
 
-const handleReferenceImages = (files) => {
-  if (Array.isArray(files)) {
-    uploadedFiles.value = files.map(file => ({
-      name: file.name,
-      file: file,
-      url: URL.createObjectURL(file)
-    }))
-    formData.filesUrl = files.map(file => file.name) // 在实际应用中，这里应该是上传后的URL
-  } else {
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+const handleReferenceImages = async (files) => {
+  if (!Array.isArray(files) || files.length === 0) {
     uploadedFiles.value = []
     formData.filesUrl = []
+    return
+  }
+
+  isUploadingRefs.value = true
+  try {
+    const formDataUpload = new FormData()
+    files.forEach(file => formDataUpload.append('file', file))
+
+    const headers = { Accept: 'application/json' }
+    const authToken = getAuthToken()
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+
+    const response = await fetch('/api/common/batch-upload', {
+      method: 'POST',
+      headers,
+      body: formDataUpload,
+      credentials: 'include'
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      // 优先使用后端 errorMessage（{ errorCode, errorMessage, type, data }）；代理抛出时在 message 里
+      const msg =
+        (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
+          ? errorData.errorMessage.trim()
+          : (typeof errorData?.message === 'string' && errorData.message.trim())
+            ? errorData.message.trim()
+            : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+      throw new Error(msg)
+    }
+
+    const data = await response.json()
+    let urls = []
+    if (data.errorCode === '00000' && data.data?.urls && Array.isArray(data.data.urls)) {
+      urls = data.data.urls
+    } else if (data.data?.urls && Array.isArray(data.data.urls)) {
+      urls = data.data.urls
+    } else if (data.fileUrls && Array.isArray(data.fileUrls)) {
+      urls = data.fileUrls
+    }
+
+    if (urls.length === 0) {
+      throw new Error('Invalid response: file URLs not found')
+    }
+
+    formData.filesUrl = urls
+    uploadedFiles.value = files.map((file, i) => ({
+      name: file.name,
+      file,
+      url: urls[i] || URL.createObjectURL(file)
+    }))
+  } catch (error) {
+    console.error('Reference images upload error:', error)
+    showError(error.message || 'Failed to upload reference images', 5000)
+    uploadedFiles.value = []
+    formData.filesUrl = []
+    // 上传失败时清空组件内显示的图片，用户可继续点击上传
+    referenceImagesUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingRefs.value = false
   }
 }
 
-const handleMaskImage = (file) => {
-  if (file) {
-    maskFile.value = {
-      name: file.name,
-      file: file,
-      url: URL.createObjectURL(file)
+const { post } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const detailLoading = ref(false)
+/** 防止同一 recordId 被连续触发两次请求（watch 可能连续触发） */
+const loadingRecordId = ref(null)
+
+const detailOutputImages = computed(() => {
+  if (!detailData.value || !Array.isArray(detailData.value.outputUrls)) return []
+  const urls = detailData.value.outputUrls
+  const size = detailData.value.originalData?.size || '1:1'
+  return urls.map((url, i) => ({
+    id: `detail-${i}`,
+    url: typeof url === 'string' ? url : url?.url ?? url?.imageUrl ?? '',
+    size,
+    timestamp: new Date().toLocaleTimeString(),
+    prompt: detailData.value.originalData?.prompt
+  })).filter(img => img.url)
+})
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  if (originalData.size) formData.size = originalData.size
+  if (typeof originalData.prompt === 'string') formData.prompt = originalData.prompt
+  if (Array.isArray(originalData.imageUrls)) formData.filesUrl = [...originalData.imageUrls]
+  if (typeof originalData.isEnhance === 'boolean') formData.isEnhance = originalData.isEnhance
+}
+
+function getRouteRecordId() {
+  return route.query['record-id'] || ''
+}
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailLoading.value = true
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((result) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = result
+        if (result?.originalData) fillFormFromOriginalData(result.originalData)
+      }).catch(() => {})
     }
-    formData.maskUrl = file.name // 在实际应用中，这里应该是上传后的URL
-  } else {
-    maskFile.value = null
-    formData.maskUrl = ''
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+    detailLoading.value = false
   }
 }
+
+watch(
+  () => route.query['record-id'],
+  (recordId) => {
+    if (recordId) loadDetailByRecordId(recordId)
+    else {
+      loadingRecordId.value = null
+      detailData.value = null
+    }
+  },
+  { immediate: true }
+)
 
 const generateImage = async () => {
-  if (!formData.prompt.trim() && formData.filesUrl.length === 0) {
-    alert('Please provide a prompt or upload an image')
+  if (!formData.prompt?.trim() && (!formData.filesUrl || formData.filesUrl.length === 0)) {
+    showError('At least one of Reference Images and prompt is required')
     return
   }
 
   isGenerating.value = true
-  
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // 模拟生成的图像
-    const mockImages = []
-    const variantCount = parseInt(formData.nVariants)
-    
-    for (let i = 0; i < variantCount; i++) {
-      mockImages.push({
-        id: Date.now() + i,
-        url: `https://via.placeholder.com/800x800/667eea/ffffff?text=GPT4o+Image+${i + 1}`,
-        size: formData.size,
-        timestamp: new Date().toLocaleTimeString(),
-        prompt: formData.prompt
-      })
+    const requestBody = {
+      size: formData.size,
+      imageUrls: Array.isArray(formData.filesUrl) ? formData.filesUrl : [],
+      prompt: formData.prompt?.trim() || '',
+      isEnhance: !!formData.isEnhance
     }
-    
-    generatedImages.value.unshift(...mockImages)
-    
+
+    const data = await post('/api/image/gpt4o-image/generate', requestBody)
+    const recordId = data?.recordId ?? data?.data?.recordId
+
+    if (recordId) {
+      router.push(`/home/gpt-4o-image?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+
+    let urls = data?.outputUrls ?? data?.urls ?? data?.data?.outputUrls ?? data?.images ?? (Array.isArray(data) ? data : [])
+    if (!Array.isArray(urls) || urls.length === 0) {
+      showError('No image URLs in response')
+      return
+    }
+
+    const newImages = urls.map((url, i) => ({
+      id: Date.now() + i,
+      url: typeof url === 'string' ? url : url?.url ?? url?.imageUrl ?? '',
+      size: formData.size,
+      timestamp: new Date().toLocaleTimeString(),
+      prompt: formData.prompt
+    })).filter(img => img.url)
+
+    generatedImages.value.unshift(...newImages)
   } catch (error) {
     console.error('Image generation failed:', error)
-    alert('Image generation failed, please try again')
+    showError(error.message || 'Image generation failed, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -429,6 +574,12 @@ const clearResults = () => {
   overflow-y: auto;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 .form-group {
   margin-bottom: 24px;
 }
@@ -460,6 +611,15 @@ const clearResults = () => {
   font-size: 12px;
   color: #6b7280;
   margin-top: 4px;
+}
+
+.uploading-hint {
+  font-size: 12px;
+  color: #667eea;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .tab-group {
@@ -760,6 +920,40 @@ const clearResults = () => {
   color: #667eea;
   width: 20px;
   font-size: 18px;
+}
+
+.detail-loading-state,
+.detail-failure-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+}
+
+.detail-spinner {
+  font-size: 48px;
+  color: #667eea;
+}
+
+.detail-loading-state p,
+.detail-failure-state p {
+  margin: 0;
+  font-size: 16px;
+  color: #64748b;
+}
+
+.detail-failure-state .failure-icon {
+  font-size: 56px;
+  color: #ef4444;
+}
+
+.detail-failure-state .failure-message {
+  max-width: 420px;
+  line-height: 1.6;
+  color: #374151;
 }
 
 /* Responsive Design */

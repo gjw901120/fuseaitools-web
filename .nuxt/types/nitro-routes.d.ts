@@ -3,6 +3,36 @@ import type { Serialize, Simplify } from "nitropack/types";
 declare module "nitropack/types" {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/audio/elevenLabs/audio-isolation': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/elevenLabs/audio-isolation.post').default>>>>
+    }
+    '/api/audio/elevenLabs/sound-effect-v2': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/elevenLabs/sound-effect-v2.post').default>>>>
+    }
+    '/api/audio/elevenLabs/speech-to-text': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/elevenLabs/speech-to-text.post').default>>>>
+    }
+    '/api/audio/elevenLabs/text-to-speech': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/elevenLabs/text-to-speech.post').default>>>>
+    }
+    '/api/audio/suno/add-instrumental': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/suno/add-instrumental.post').default>>>>
+    }
+    '/api/audio/suno/add-vocals': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/suno/add-vocals.post').default>>>>
+    }
+    '/api/audio/suno/extend': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/suno/extend.post').default>>>>
+    }
+    '/api/audio/suno/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/suno/generate.post').default>>>>
+    }
+    '/api/audio/suno/upload-cover': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/suno/upload-cover.post').default>>>>
+    }
+    '/api/audio/suno/upload-extend': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/audio/suno/upload-extend.post').default>>>>
+    }
     '/api/chat/chatgpt': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/chatgpt.post').default>>>>
     }
@@ -18,8 +48,44 @@ declare module "nitropack/types" {
     '/api/common/batch-upload': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/batch-upload.post').default>>>>
     }
+    '/api/common/models/price': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/models/price.get').default>>>>
+    }
     '/api/common/models/tree': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/models/tree.get').default>>>>
+    }
+    '/api/image/flux-kontext/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/generate.post').default>>>>
+    }
+    '/api/image/gpt4o-image/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt4o-image/generate.post').default>>>>
+    }
+    '/api/image/nano-banana-pro/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana-pro/generate.post').default>>>>
+    }
+    '/api/image/nano-banana/edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana/edit.post').default>>>>
+    }
+    '/api/image/nano-banana/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana/generate.post').default>>>>
+    }
+    '/api/midjourney/blend': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/blend.post').default>>>>
+    }
+    '/api/midjourney/describe': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/describe.post').default>>>>
+    }
+    '/api/midjourney/imagine': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/imagine.post').default>>>>
+    }
+    '/api/midjourney/swap-face': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/swap-face.post').default>>>>
+    }
+    '/api/midjourney/upscale': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/upscale.post').default>>>>
+    }
+    '/api/midjourney/vary': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/vary.post').default>>>>
     }
     '/api/news/:slug': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/[slug].get').default>>>>
@@ -27,11 +93,53 @@ declare module "nitropack/types" {
     '/api/news': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/index.get').default>>>>
     }
+    '/api/records/chat-detail': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/chat-detail.get').default>>>>
+    }
+    '/api/records/detail': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/detail.get').default>>>>
+    }
+    '/api/records/extend-list': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/extend-list.get').default>>>>
+    }
+    '/api/records/list': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/list.get').default>>>>
+    }
     '/api/user/login-by-email': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/login-by-email.post').default>>>>
     }
     '/api/user/send-email-code': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/send-email-code.post').default>>>>
+    }
+    '/api/video/luma/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/luma/generate.post').default>>>>
+    }
+    '/api/video/runway/aleph': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/runway/aleph.post').default>>>>
+    }
+    '/api/video/runway/extend': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/runway/extend.post').default>>>>
+    }
+    '/api/video/runway/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/runway/generate.post').default>>>>
+    }
+    '/api/video/sora-pro/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/sora-pro/generate.post').default>>>>
+    }
+    '/api/video/sora-pro/storyboard': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/sora-pro/storyboard.post').default>>>>
+    }
+    '/api/video/sora/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/sora/generate.post').default>>>>
+    }
+    '/api/video/sora/watermark-remover': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/sora/watermark-remover.post').default>>>>
+    }
+    '/api/video/veo/extend': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/veo/extend.post').default>>>>
+    }
+    '/api/video/veo/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/veo/generate.post').default>>>>
     }
     '/sitemap.xml': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/sitemap.xml.get').default>>>>

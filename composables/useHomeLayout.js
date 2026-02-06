@@ -5,7 +5,35 @@ export const useHomeLayout = () => {
   const router = useRouter()
   const route = useRoute()
 
-  // 工具名称到路由的映射
+  // API category -> 路由（历史记录点击跳转，仅用分类即可）
+  const categoryToRoute = {
+    'GPT': '/home/gpt',
+    'DeepSeek': '/home/deepseek',
+    'Deepseek': '/home/deepseek',
+    'Claude': '/home/claude',
+    'Gemini': '/home/gemini',
+    'Veo3': '/home/veo3',
+    'Runway': '/home/runway',
+    'Luma': '/home/luma',
+    'Midjourney': '/home/midjourney',
+    'GPT 4o Image': '/home/gpt-4o-image',
+    'Flux Kontext': '/home/flux-kontext',
+    'Nano Banana': '/home/nano-banana',
+    'Suno': '/home/suno',
+    'Elevenlabs': '/home/elevenlabs',
+    'ElevenLabs': '/home/elevenlabs',
+    'Sora': '/home/sora'
+  }
+
+  // API category -> 类型（用于图标）
+  const categoryToType = {
+    'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
+    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video',
+    'Midjourney': 'image', 'GPT 4o Image': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image',
+    'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
+  }
+
+  // 工具名称到路由的映射（导航用）
   const toolRouteMap = {
     'Veo3': '/home/veo3',
     'Runway': '/home/runway',
@@ -28,10 +56,11 @@ export const useHomeLayout = () => {
   const selectedCategory = ref(1)
   const selectedTool = ref(1)
 
-  // 分页相关
+  // 分页相关（历史记录 10 条一页）
   const currentPage = ref(1)
   const itemsPerPage = 10
   const isLoading = ref(false)
+  const historyHasMore = ref(true)
 
   // 导航项目
   const navItems = ref([
@@ -201,175 +230,47 @@ export const useHomeLayout = () => {
     }
   ])
 
-  // 所有历史记录数据
-  const allHistoryData = [
-    {
-      id: 1,
-      toolName: 'ChatGPT',
-      type: 'chat',
-      timestamp: new Date(Date.now() - 30 * 60 * 1000),
-      duration: '15 minutes',
-      status: 'completed',
-      icon: 'fas fa-comments',
-      description: 'Chat generation - Write product introduction copy'
-    },
-    {
-      id: 2,
-      toolName: 'Midjourney',
-      type: 'image',
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      duration: '8分钟',
-      status: 'completed',
-      icon: 'fas fa-image',
-      description: 'Image generation - Create brand logo design'
-    },
-    {
-      id: 3,
-      toolName: 'ElevenLabs',
-      type: 'audio',
-      timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
-      duration: '12分钟',
-      status: 'completed',
-      icon: 'fas fa-microphone',
-      description: 'Voice synthesis - Create podcast introduction audio'
-    },
-    {
-      id: 4,
-      toolName: 'Runway ML',
-      type: 'video',
-      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-      duration: '20分钟',
-      status: 'completed',
-      icon: 'fas fa-video',
-      description: 'Video editing - Create product demo video'
-    },
-    {
-      id: 5,
-      toolName: 'Claude',
-      type: 'chat',
-      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      duration: '25 minutes',
-      status: 'completed',
-      icon: 'fas fa-comments',
-      description: 'Chat analysis - Analyze user feedback data'
-    },
-    {
-      id: 6,
-      toolName: 'GPT 4o Image',
-      type: 'image',
-      timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-      duration: '10 minutes',
-      status: 'completed',
-      icon: 'fas fa-image',
-      description: 'Image generation - Create product promotional image'
-    },
-    {
-      id: 7,
-      toolName: 'Suno',
-      type: 'audio',
-      timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-      duration: '18 minutes',
-      status: 'completed',
-      icon: 'fas fa-microphone',
-      description: 'Music generation - Create background music'
-    },
-    {
-      id: 8,
-      toolName: 'Veo3',
-      type: 'video',
-      timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      duration: '22 minutes',
-      status: 'completed',
-      icon: 'fas fa-video',
-      description: 'Video generation - Create product demo video'
-    },
-    {
-      id: 9,
-      toolName: 'Deepseek',
-      type: 'chat',
-      timestamp: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
-      duration: '12分钟',
-      status: 'completed',
-      icon: 'fas fa-comments',
-      description: 'Chat generation - Code review and optimization'
-    },
-    {
-      id: 10,
-      toolName: 'Flux Kontext',
-      type: 'image',
-      timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      duration: '14 minutes',
-      status: 'completed',
-      icon: 'fas fa-image',
-      description: 'Image generation - Create concept art'
-    },
-    {
-      id: 11,
-      toolName: 'Luma',
-      type: 'video',
-      timestamp: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
-      duration: '16 minutes',
-      status: 'completed',
-      icon: 'fas fa-video',
-      description: '3D video generation - Create product showcase'
-    },
-    {
-      id: 12,
-      toolName: 'Gemini',
-      type: 'chat',
-      timestamp: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
-      duration: '8分钟',
-      status: 'completed',
-      icon: 'fas fa-comments',
-      description: 'Chat analysis - Analyze market trends'
-    },
-    {
-      id: 13,
-      toolName: 'Nano Banana',
-      type: 'image',
-      timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-      duration: '6 minutes',
-      status: 'completed',
-      icon: 'fas fa-image',
-      description: 'Image generation - Quick icon generation'
-    },
-    {
-      id: 14,
-      toolName: 'Sora',
-      type: 'video',
-      timestamp: new Date(Date.now() - 11 * 24 * 60 * 60 * 1000),
-      duration: '20分钟',
-      status: 'completed',
-      icon: 'fas fa-video',
-      description: 'Video generation - Create promotional video'
-    },
-    {
-      id: 15,
-      toolName: 'ChatGPT',
-      type: 'chat',
-      timestamp: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000),
-      duration: '30 minutes',
-      status: 'completed',
-      icon: 'fas fa-comments',
-      description: 'Chat generation - Write technical documentation'
-    }
-  ]
-
-  // 当前显示的历史记录
+  // 当前显示的历史记录（来自 API：recordId, category, model, title, gtmCreated）
   const usageHistory = ref([])
 
-  // 方法
+  // 方法：24 小时内显示相对时间（如 21 hours ago），超过 24 小时显示实际时间
   const formatTime = (timestamp) => {
+    if (!timestamp) return ''
+    const date = typeof timestamp === 'string' ? new Date(timestamp.replace(' ', 'T')) : timestamp
+    if (Number.isNaN(date.getTime())) return ''
     const now = new Date()
-    const diff = now - timestamp
+    const diff = now - date
+    const oneDayMs = 24 * 60 * 60 * 1000
+    if (diff >= oneDayMs) {
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+    }
     const minutes = Math.floor(diff / 60000)
     const hours = Math.floor(diff / 3600000)
-    const days = Math.floor(diff / 86400000)
-    
-    if (days > 0) return `${days} days ago`
-    if (hours > 0) return `${hours} hours ago`
-    if (minutes > 0) return `${minutes} minutes ago`
+    if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`
+    if (minutes > 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`
     return 'Just now'
+  }
+
+  // 根据 category 取路由（历史项点击跳转；无 recordId 时只跳工具页）
+  const getHistoryItemRoute = (record) => {
+    const category = (record.category || record.toolName || '').trim()
+    const path = categoryToRoute[category] || categoryToRoute[record.model]
+    if (!path) return null
+    const recordId = record.recordId || (typeof record.id === 'string' ? record.id : null)
+    if (!recordId) return path
+    return `${path}?record-id=${encodeURIComponent(recordId)}`
+  }
+
+  const navigateToHistoryItem = (record) => {
+    const path = getHistoryItemRoute(record)
+    if (path) router.push(path)
   }
 
   const getToolCount = (type) => {
@@ -395,11 +296,9 @@ export const useHomeLayout = () => {
     return tool || allTools.value[0]
   }
 
-  const selectCategory = (categoryId) => {
+  const selectCategory = async (categoryId) => {
     selectedCategory.value = categoryId
     const tools = getCurrentTools()
-    selectedTool.value = tools.length > 0 ? tools[0].id : null
-
     const selectedNav = navItems.value.find(nav => nav.id === categoryId)
     if (!selectedNav) return
 
@@ -411,63 +310,103 @@ export const useHomeLayout = () => {
     }
 
     const defaultToolName = defaultToolByCategory[selectedNav.type]
-    if (defaultToolName && toolRouteMap[defaultToolName]) {
-      const defaultTool = allTools.value.find(t => t.name === defaultToolName)
-      if (defaultTool) {
-        selectedTool.value = defaultTool.id
-        router.push(toolRouteMap[defaultToolName])
-      }
-    } else if (tools.length > 0) {
-      const firstTool = tools[0]
-      if (firstTool && toolRouteMap[firstTool.name]) {
-        router.push(toolRouteMap[firstTool.name])
+    const defaultTool = defaultToolName ? allTools.value.find(t => t.name === defaultToolName) : null
+    const targetTool = defaultTool || (tools.length > 0 ? tools[0] : null)
+    const targetPath = targetTool && toolRouteMap[targetTool.name] ? toolRouteMap[targetTool.name] : null
+
+    selectedTool.value = targetTool ? targetTool.id : (tools.length > 0 ? tools[0].id : null)
+
+    if (targetPath) {
+      try {
+        await router.push(targetPath)
+      } catch (e) {
+        if (e?.name !== 'NavigationDuplicated' && e?.name !== 'NavigationAborted') throw e
       }
     }
   }
 
-  const selectTool = (toolId) => {
-    selectedTool.value = toolId
-    
+  const selectTool = async (toolId) => {
     const tool = allTools.value.find(t => t.id === toolId)
-    if (tool && toolRouteMap[tool.name]) {
-      router.push(toolRouteMap[tool.name])
+    if (!tool || !toolRouteMap[tool.name]) return
+    const targetPath = toolRouteMap[tool.name]
+    selectedTool.value = toolId
+    try {
+      await router.push(targetPath)
+    } catch (e) {
+      if (e?.name !== 'NavigationDuplicated' && e?.name !== 'NavigationAborted') throw e
     }
   }
 
-  // 加载历史记录数据
-  const loadHistoryData = () => {
-    const startIndex = (currentPage.value - 1) * itemsPerPage
-    const endIndex = startIndex + itemsPerPage
-    const newData = allHistoryData.slice(startIndex, endIndex)
-    
-    if (currentPage.value === 1) {
-      usageHistory.value = newData
-    } else {
-      usageHistory.value.push(...newData)
+  // 从 API 加载历史记录（10 条一页）
+  const getAuthToken = () => {
+    if (typeof window === 'undefined') return null
+    try {
+      const { token } = useAuth()
+      if (token?.value) return token.value
+      return localStorage.getItem('auth_token')
+    } catch {
+      return localStorage.getItem('auth_token')
+    }
+  }
+
+  const mapHistoryItem = (item) => {
+    const category = (item.category || '').trim()
+    const type = categoryToType[category] || 'chat'
+    return {
+      id: item.recordId,
+      recordId: item.recordId,
+      category: category,
+      model: item.model,
+      toolName: category,
+      type,
+      timestamp: item.gtmCreated,
+      description: item.title != null ? String(item.title) : '',
+      icon: getToolIcon(type),
+      status: 'completed'
+    }
+  }
+
+  const loadHistoryData = async () => {
+    if (typeof window === 'undefined') return
+    isLoading.value = true
+    try {
+      const url = `/api/records/list?page=${currentPage.value}&size=${itemsPerPage}`
+      const headers = { Accept: 'application/json' }
+      const token = getAuthToken()
+      if (token) headers['Authorization'] = `Bearer ${token}`
+      const response = await fetch(url, { method: 'GET', headers, credentials: 'include' })
+      const raw = await response.json().catch(() => null)
+      if (!raw || typeof raw !== 'object') {
+        historyHasMore.value = false
+        return
+      }
+      const errorCode = raw.errorCode ?? raw.error_code
+      const data = raw.data
+      const list = Array.isArray(data) ? data : []
+      const mapped = list.map(mapHistoryItem)
+      if (currentPage.value === 1) {
+        usageHistory.value = mapped
+      } else {
+        usageHistory.value.push(...mapped)
+      }
+      historyHasMore.value = list.length >= itemsPerPage
+    } catch (e) {
+      console.error('Load history failed:', e)
+      historyHasMore.value = false
+    } finally {
+      isLoading.value = false
     }
   }
 
   // 加载更多数据
   const loadMore = async () => {
-    if (isLoading.value) return
-    
-    isLoading.value = true
-    
-    await new Promise(resolve => setTimeout(resolve, 800))
-    
+    if (isLoading.value || !historyHasMore.value) return
     currentPage.value++
-    loadHistoryData()
-    
-    isLoading.value = false
+    await loadHistoryData()
   }
 
   // 检查是否还有更多数据
-  const hasMoreData = computed(() => {
-    return (currentPage.value * itemsPerPage) < allHistoryData.length
-  })
-
-  // 初始化加载数据
-  loadHistoryData()
+  const hasMoreData = computed(() => historyHasMore.value)
 
   // 同步路由到选中状态
   const syncRouteToSelection = () => {
@@ -568,17 +507,14 @@ export const useHomeLayout = () => {
     syncRouteToSelection()
   }, { immediate: true })
 
-  // 初始化选中的工具（仅在路由中没有匹配的工具时设置默认值）
+  // 初始化选中的工具 + 拉取历史记录
   onMounted(() => {
-    // 如果访问的是 /home，默认跳转到 /home/gpt
     if (route.path === '/home') {
       router.replace('/home/gpt')
       return
     }
-    
     const hasMatched = syncRouteToSelection()
     if (!hasMatched) {
-      // 默认选择 GPT 工具
       const gptTool = allTools.value.find(t => t.name === 'GPT')
       if (gptTool) {
         selectedTool.value = gptTool.id
@@ -586,14 +522,14 @@ export const useHomeLayout = () => {
         router.push('/home/gpt')
       } else {
         const tools = getCurrentTools()
-        if (tools.length > 0) {
-          selectedTool.value = tools[0].id
-        }
+        if (tools.length > 0) selectedTool.value = tools[0].id
       }
     }
+    loadHistoryData()
   })
 
   return {
+    route,
     selectedCategory,
     selectedTool,
     navItems,
@@ -608,7 +544,9 @@ export const useHomeLayout = () => {
     selectCategory,
     selectTool,
     loadMore,
-    addToUsageHistory
+    addToUsageHistory,
+    getHistoryItemRoute,
+    navigateToHistoryItem
   }
 }
 

@@ -34,18 +34,28 @@ export default defineEventHandler(async (event) => {
     // 获取请求头中的 Authorization
     const authHeader = getHeader(event, 'authorization')
     
-    // 构建 FormData 用于转发到后端
-    // 在 Node.js 环境中，使用全局 FormData（Node.js 18+ 支持）
+    // 构建 FormData 用于转发到后端（后端要求 @RequestParam("file") MultipartFile[]）
     const forwardFormData = new FormData()
-    formData.forEach((item) => {
-      if (item.filename) {
-        // 文件字段，使用 Blob 创建文件对象
-        // Node.js 18+ 支持 Blob 和 FormData
+    let filePartCount = 0
+    formData.forEach((item, index) => {
+      // 只转发 name 为 'file' 的部分，且需有数据；若无 filename 则用 file_0, file_1 等
+      const isFilePart = item.name === 'file' || item.filename
+      const hasData = item.data && (item.data.length ?? item.data.byteLength ?? 0) > 0
+      if (isFilePart && hasData) {
         const blob = new Blob([item.data], { type: item.type || 'application/octet-stream' })
-        forwardFormData.append('file', blob, item.filename)
+        const filename = item.filename && item.filename.trim() ? item.filename : `file_${index}`
+        forwardFormData.append('file', blob, filename)
+        filePartCount += 1
       }
     })
-    
+
+    if (filePartCount === 0) {
+      throw createError({
+        statusCode: 400,
+        message: "No file part in request. Ensure form field name is 'file' and multipart body is sent."
+      })
+    }
+
     // 构建请求头（不设置 Content-Type，让 fetch 自动设置 multipart/form-data 边界）
     const headers = {
       'Accept': 'application/json',
@@ -71,10 +81,16 @@ export default defineEventHandler(async (event) => {
     console.log('Backend response status:', response.status)
 
     if (!response.ok) {
-      setResponseStatus(event, response.status)
-      const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
+      const errorData = await response.json().catch(() => ({}))
       console.error('Backend upload error:', errorData)
-      return errorData
+      // 抛出异常，携带后端 errorMessage，便于前端统一展示
+      const msg = (errorData && typeof errorData.errorMessage === 'string' && errorData.errorMessage.trim())
+        ? errorData.errorMessage.trim()
+        : (errorData?.message || errorData?.userTip || errorData?.error || 'Upload failed')
+      throw createError({
+        statusCode: response.status,
+        message: msg
+      })
     }
 
     const data = await response.json()

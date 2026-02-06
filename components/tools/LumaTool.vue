@@ -20,6 +20,7 @@
         </div>
 
         <form class="config-form" @submit.prevent="modifyVideo">
+          <fieldset class="config-fieldset" :disabled="isGenerating">
           <!-- Prompt 输入 -->
           <div class="form-group">
             <label for="prompt">Modification Description *</label>
@@ -33,43 +34,39 @@
             
           </div>
 
-          <!-- 视频上传 -->
+          <!-- 视频上传：与 Runway Aleph 一致，上方小选择区，选择后立即上传，下方展示已上传视频 -->
           <div class="form-group">
             <label class="form-label">Input Video *</label>
-            <div class="upload-area" :class="{ 'has-files': referenceVideo }">
-              <div v-if="!referenceVideo" class="upload-content">
-                <div class="upload-icon">
-                  <i class="fas fa-video"></i>
-                </div>
-                <div class="upload-text">
-                  <p class="upload-title">Upload Input Video</p>
-                  <p class="upload-subtitle">Supports MP4, MOV, AVI formats, maximum 500MB</p>
+            <div class="luma-video-upload">
+              <div class="luma-video-trigger" :class="{ 'has-video': referenceVideo }">
+                <input
+                  ref="videoInputRef"
+                  type="file"
+                  accept="video/*"
+                  @change="handleVideoUpload"
+                  class="luma-video-file-input"
+                />
+                <div class="luma-video-trigger-inner">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>Click to upload video</span>
+                  <small>Supports MP4, MOV, AVI, max 500MB</small>
                 </div>
               </div>
-              <div v-else class="uploaded-content">
-                <div class="uploaded-video-container">
-                  <video :src="referenceVideo" class="uploaded-video" controls>
-                    Your browser does not support video playback
-                  </video>
-                  <button 
-                    @click="clearReferenceVideo"
-                    class="remove-video-btn"
-                    title="Delete Input Video"
-                  >
+              <div v-if="isUploadingVideo" class="luma-video-uploading">
+                <i class="fas fa-spinner fa-spin"></i> Uploading video...
+              </div>
+              <div v-if="referenceVideo && !isUploadingVideo" class="luma-video-display">
+                <div class="luma-video-preview-wrap">
+                  <video :src="referenceVideo" class="luma-video-preview" controls></video>
+                  <button type="button" class="luma-video-remove" title="Remove" @click="clearReferenceVideo">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
-                <div class="uploaded-text">
-                  <p class="upload-title">Input Video Selected</p>
-                  <p class="upload-subtitle">Click to re-select</p>
+                <div class="luma-video-meta" v-if="videoFile">
+                  <span class="luma-video-name">{{ videoFile.name }}</span>
+                  <span class="luma-video-size">{{ formatFileSize(videoFile.size) }}</span>
                 </div>
               </div>
-              <input
-                type="file" 
-                accept="video/*" 
-                @change="handleVideoUpload"
-                class="file-input"
-              />
             </div>
             <div class="form-hint">
               Input video for modification. Supports MP4, MOV, AVI formats, maximum 500MB, maximum 10 seconds.
@@ -94,13 +91,15 @@
             <button
               type="submit"
               class="btn-primary"
-              :disabled="!formData.prompt || !referenceVideo || isGenerating"
+              :disabled="!formData.prompt?.trim() || !uploadedVideoUrl || isGenerating"
             >
               <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-magic"></i>
-              {{ isGenerating ? 'Modifying...' : 'Modify Video ($1.5)' }}
+              {{ isGenerating ? 'Modifying...' : 'Modify Video' }}
+              <span v-if="lumaPriceText" class="price-tag">{{ lumaPriceText }}</span>
             </button>
           </div>
+          </fieldset>
         </form>
       </div>
 
@@ -199,13 +198,62 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, inject, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
-
-// 注入父组件的函数
+const route = useRoute()
 const addToUsageHistory = inject('addToUsageHistory')
+const { token } = useAuth()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+onMounted(() => { fetchPrices() })
+const { showError } = useToast()
+const { post } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+/** 上传单文件到 batch-upload，返回 URL */
+const uploadFileToUrl = async (file) => {
+  if (!file) return ''
+  const formDataUpload = new FormData()
+  formDataUpload.append('file', file)
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage?.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message?.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls) || !urls[0]) throw new Error('Invalid response: file URL not found')
+  return urls[0]
+}
 
 // Form data
 const formData = reactive({
@@ -214,80 +262,146 @@ const formData = reactive({
 })
 
 const referenceVideo = ref('')
+const videoFile = ref(null)
+const uploadedVideoUrl = ref(null)
+const isUploadingVideo = ref(false)
+const videoInputRef = ref(null)
 const isGenerating = ref(false)
+
+const formatFileSize = (bytes) => {
+  if (bytes == null || bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
 const generatedVideos = ref([])
 
-// 文件转Base64
-const fileToBase64 = (file) => new Promise((resolve, reject) => {
-  const reader = new FileReader()
-  reader.onload = () => resolve(String(reader.result))
-  reader.onerror = reject
-  reader.readAsDataURL(file)
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+const detailDelayTimer = ref(null)
+const displayVideos = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
+    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
+    return [{ id: 'detail', url, prompt: detailData.value.originalData?.prompt || '', createdAt: new Date().toISOString() }]
+  }
+  return generatedVideos.value
+})
+function fillFormFromOriginalData(o) { if (!o || typeof o !== 'object') return; Object.keys(formData).forEach(k => { if (o[k] !== undefined) formData[k] = o[k] }) }
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((res) => {
+      if (getRouteRecordId() !== recordId) return
+      detailData.value = res
+      if (res?.originalData) fillFormFromOriginalData(res.originalData)
+    }).catch(() => {})
+  } catch (e) { console.error('Load record detail failed:', e) }
+  finally { if (loadingRecordId.value === recordId) loadingRecordId.value = null }
+}
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+const lumaPriceText = computed(() => {
+  const credits = getPrice('Luma')
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
 })
 
-// 处理视频上传
+// 处理视频上传：选择后立即调用上传服务，与 Runway Aleph 一致
 const handleVideoUpload = async (e) => {
-  const file = e.target.files[0]
+  const file = e.target.files?.[0]
   if (!file) return
-  
-  try {
-    if (!file.type.startsWith('video/')) {
-      alert('Please select a valid video format')
-      return
-    }
-    if (file.size > 500 * 1024 * 1024) {
-      alert('Video size cannot exceed 500MB')
-      return
-    }
-    referenceVideo.value = await fileToBase64(file)
-  } catch (error) {
-    console.error('File conversion failed:', error)
-    alert('File processing failed, please try again')
+  if (!file.type.startsWith('video/')) {
+    showError('Please select a valid video format (MP4, MOV, AVI)')
+    e.target.value = ''
+    return
   }
+  if (file.size > 500 * 1024 * 1024) {
+    showError('Video size cannot exceed 500MB')
+    e.target.value = ''
+    return
+  }
+  videoFile.value = file
+  uploadedVideoUrl.value = null
+  referenceVideo.value = URL.createObjectURL(file)
+  isUploadingVideo.value = true
+  try {
+    uploadedVideoUrl.value = await uploadFileToUrl(file)
+  } catch (err) {
+    console.error('Luma video upload failed:', err)
+    showError(err?.message || 'Video upload failed')
+    if (referenceVideo.value && referenceVideo.value.startsWith('blob:')) {
+      URL.revokeObjectURL(referenceVideo.value)
+    }
+    referenceVideo.value = ''
+    videoFile.value = null
+  } finally {
+    isUploadingVideo.value = false
+  }
+  e.target.value = ''
 }
 
 // 清空参考视频
 const clearReferenceVideo = () => {
+  if (referenceVideo.value && referenceVideo.value.startsWith('blob:')) {
+    URL.revokeObjectURL(referenceVideo.value)
+  }
   referenceVideo.value = ''
+  videoFile.value = null
+  uploadedVideoUrl.value = null
+  if (videoInputRef.value) videoInputRef.value.value = ''
 }
 
 // Methods
 const modifyVideo = async () => {
-  if (!formData.prompt || !referenceVideo.value) return
-  
-  // 添加到使用历史
-  if (addToUsageHistory) {
-    addToUsageHistory('Luma')
-  }
-  
+  const promptTrim = formData.prompt?.trim()
+  if (!promptTrim || !uploadedVideoUrl.value) return
+  if (addToUsageHistory) addToUsageHistory('Luma')
+
   isGenerating.value = true
-  
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 4000))
-    
-    // 模拟生成结果
+    const videoUrl = uploadedVideoUrl.value
+    const body = {
+      prompt: promptTrim,
+      videoUrl,
+      watermark: formData.watermark?.trim() || undefined
+    }
+    const data = await post('/api/video/luma/generate', body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+    let payload = data?.data ?? data
     const newVideo = {
-      id: Date.now(),
-      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      thumbnail: 'https://via.placeholder.com/320x180/8b5cf6/ffffff?text=Luma+Video',
-      duration: '8 seconds',
-      size: '25MB',
+      id: payload.taskId || Date.now(),
+      url: payload.videoUrl || payload.url,
+      thumbnail: payload.thumbnail,
+      duration: payload.duration || '',
+      size: payload.size || '',
       watermark: formData.watermark || null,
       prompt: formData.prompt,
-      originalUrl: formData.videoUrl,
+      originalUrl: videoUrl,
       createdAt: new Date().toISOString()
     }
-    
     generatedVideos.value.unshift(newVideo)
-    
-    // 重置表单
     formData.prompt = ''
     formData.watermark = ''
-    referenceVideo.value = ''
-    
+    clearReferenceVideo()
   } catch (error) {
     console.error('Failed to modify video:', error)
+    showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -395,6 +509,12 @@ const clearResults = () => {
 .config-form {
   flex: 1;
   overflow-y: auto;
+}
+
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 .cost-info {
@@ -585,6 +705,132 @@ const clearResults = () => {
   height: 100%;
   opacity: 0;
   cursor: pointer;
+}
+
+/* Input Video：与 Runway Aleph 一致，小选择区 + 下方展示 */
+.luma-video-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.luma-video-trigger {
+  position: relative;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  transition: border-color 0.2s, background 0.2s;
+}
+.luma-video-trigger:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+.luma-video-trigger.has-video {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+}
+.luma-video-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.luma-video-trigger-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+}
+.luma-video-trigger-inner i {
+  font-size: 18px;
+  color: #64748b;
+}
+.luma-video-trigger-inner span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+.luma-video-trigger-inner small {
+  font-size: 11px;
+  color: #94a3b8;
+}
+.luma-video-uploading {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.luma-video-uploading i {
+  font-size: 14px;
+}
+.luma-video-display {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+.luma-video-preview-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+.luma-video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.luma-video-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #dc2626;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.luma-video-remove:hover {
+  background: #b91c1c;
+}
+.luma-video-meta {
+  padding: 10px 12px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #f8fafc;
+}
+.luma-video-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.luma-video-size {
+  font-size: 12px;
+  color: #64748b;
+  flex-shrink: 0;
 }
 
 /* 上传后的内容样式 */

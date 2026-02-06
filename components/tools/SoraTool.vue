@@ -59,8 +59,7 @@
         </div>
 
         <!-- 模式选择已移动至顶部 -->
-
-        
+        <fieldset class="config-fieldset" :disabled="isGenerating">
 
         <!-- Prompt (hidden for watermark-remover & pro-storyboard) -->
         <div class="form-group" v-if="!['watermark-remover','pro-storyboard'].includes(form.model)">
@@ -69,17 +68,19 @@
             id="prompt"
             v-model="form.input.prompt"
             rows="5"
-            maxlength="5000"
+            maxlength="10000"
             placeholder="The text prompt describing the desired video motion"
             required
           ></textarea>
-          <div class="char-count">{{ form.input.prompt.length }}/5000</div>
+          <div class="char-count">{{ form.input.prompt.length }}/10000</div>
         </div>
 
         <!-- Image Upload（image-to-video & pro-image-to-video 必填，storyboard 可选） -->
         <div class="form-group" v-if="['image-to-video','pro-image-to-video','pro-storyboard'].includes(form.model)">
           <label>Reference Images *</label>
+          <span v-if="isUploadingImages" class="form-hint">Uploading images...</span>
           <UploadImage
+            ref="imageUploadRef"
             input-id="sora-image-upload"
             label=""
             upload-icon="fas fa-cloud-upload-alt"
@@ -290,8 +291,10 @@
             <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else class="fas fa-play"></i>
             {{ isGenerating ? 'Submitting...' : 'Start Generation' }}
+            <span v-if="soraPriceText" class="price-tag">{{ soraPriceText }}</span>
           </button>
         </div>
+        </fieldset>
       </div>
 
       <!-- 右侧结果面板 -->
@@ -308,7 +311,7 @@
         <div class="video-container">
           <div v-if="results.length > 0" class="video-showcase">
             <div v-for="(item, idx) in results" :key="idx" class="video-showcase-item">
-              <pre class="payload-json">{{ item }}</pre>
+              <pre class="payload-json">{{ typeof item === 'object' ? JSON.stringify(item, null, 2) : item }}</pre>
             </div>
           </div>
           <div v-else class="empty-state">
@@ -325,10 +328,60 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import UploadImage from './common/UploadImage.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const isClient = typeof window !== 'undefined'
+const { token } = useAuth()
+const { showError } = useToast()
+const { post } = useApi()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { pollRecordDetail } = useRecordPolling()
+onMounted(() => { fetchPrices() })
+
+const getAuthToken = () => {
+  if (!isClient) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+const uploadFilesToUrls = async (files) => {
+  if (!files || (Array.isArray(files) ? files.length === 0 : !files)) return []
+  const list = Array.isArray(files) ? files : [files]
+  const formDataUpload = new FormData()
+  list.forEach(f => formDataUpload.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage?.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message?.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls)) throw new Error('Invalid response: file URLs not found')
+  return urls
+}
 
 const form = reactive({
   model: 'text-to-video',
@@ -344,9 +397,11 @@ const form = reactive({
   }
 })
 
+const imageUploadRef = ref(null)
 const imageUrlsText = ref('')
 const videoList = ref([])
 const isLoadingVideoList = ref(false)
+const isUploadingImages = ref(false)
 const scenes = ref([{ id: Date.now(), scene: '', duration: '7.5' }])
 const totalSceneDuration = computed(() => scenes.value.reduce((sum, s) => sum + (parseFloat(s.duration) || 0), 0))
 const framesSeconds = computed(() => Number(form.input.n_frames || 0))
@@ -358,15 +413,51 @@ const isGenerating = ref(false)
 let results = ref([])
 const shotsJson = ref('')
 
-const handleSoraImagesUpdate = (files) => {
-  if (!files || files.length === 0) {
+// 价格：Frames 表单字段 (n_frames) 映射为价格规则中的 duration；watermark-remover->sora-watermark-remover；pro-storyboard->sora-2-pro-storyboard(duration)；text/image->sora-2-*；pro-text/image->sora-2-pro-*(duration+size)
+const soraPriceText = computed(() => {
+  const model = form.model
+  const duration = Number(form.input.n_frames) || 10 // Frames -> duration
+  let credits = null
+  if (model === 'watermark-remover') {
+    credits = getPrice('sora-watermark-remover')
+  } else if (model === 'pro-storyboard') {
+    credits = getPrice('sora-2-pro-storyboard', { duration, scene: 'generate' })
+  } else if (model === 'text-to-video') {
+    credits = getPrice('sora-2-text-to-video')
+  } else if (model === 'image-to-video') {
+    credits = getPrice('sora-2-image-to-video')
+  } else if (model === 'pro-text-to-video') {
+    // sora-2-pro-text-to-video RULE：按 size 对应 size、duration 对应 Frames(n_frames) 匹配，取 credits
+    credits = getPrice('sora-2-pro-text-to-video', {
+      duration,
+      size: form.input.size || 'standard'
+    })
+  } else if (model === 'pro-image-to-video') {
+    // sora-2-pro-image-to-video RULE：同上，按 size + duration(Frames) 匹配
+    credits = getPrice('sora-2-pro-image-to-video', {
+      duration,
+      size: form.input.size || 'standard'
+    })
+  }
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+
+const handleSoraImagesUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
     form.input.image_urls = []
     return
   }
+  const list = Array.isArray(files) ? files : [files]
+  isUploadingImages.value = true
   try {
-    form.input.image_urls = Array.from(files).map(f => (typeof URL !== 'undefined' ? URL.createObjectURL(f) : ''))
+    form.input.image_urls = await uploadFilesToUrls(list)
   } catch (e) {
+    showError(e.message || 'Failed to upload images')
     form.input.image_urls = []
+    imageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingImages.value = false
   }
 }
 
@@ -423,31 +514,14 @@ const canSubmit = computed(() => {
   return true
 })
 
-const buildPayload = () => {
-  const payload = {
-    model: String(form.model),
-    input: {
-      // prompt may be omitted for watermark remover; keep conditional
-      ...(form.model !== 'watermark-remover' && { prompt: String(form.input.prompt) })
-    }
-  }
-  if (form.callBackUrl) payload.callBackUrl = String(form.callBackUrl)
-  if (form.input.aspect_ratio) payload.input.aspect_ratio = String(form.input.aspect_ratio)
-  if (form.input.n_frames) payload.input.n_frames = String(form.input.n_frames)
-  if (typeof form.input.remove_watermark === 'boolean') payload.input.remove_watermark = form.input.remove_watermark
-  if (['image-to-video','pro-image-to-video','pro-storyboard'].includes(form.model)) {
-    payload.input.image_urls = Array.isArray(form.input.image_urls) ? form.input.image_urls : []
-  }
-  if (form.model === 'watermark-remover' && form.input.video_url) {
-    payload.input.video_url = String(form.input.video_url)
-  }
-  if (['pro-text-to-video','pro-image-to-video'].includes(form.model) && form.input.size) {
-    payload.input.size = String(form.input.size)
-  }
-  if (form.model === 'pro-storyboard') {
-    payload.input.shots = scenes.value.map(s => ({ Scene: String(s.scene || ''), duration: Number(s.duration || 0) }))
-  }
-  return payload
+// 前端 model -> 后端 model 字符串
+const MODEL_MAP = {
+  'text-to-video': 'sora-2-text-to-video',
+  'image-to-video': 'sora-2-image-to-video',
+  'pro-text-to-video': 'sora-2-pro-text-to-video',
+  'pro-image-to-video': 'sora-2-pro-image-to-video',
+  'watermark-remover': 'sora-watermark-remover',
+  'pro-storyboard': 'sora-2-pro-storyboard'
 }
 
 const addScene = () => {
@@ -461,15 +535,78 @@ const removeScene = (idx) => {
 
 const onSubmit = async () => {
   if (!canSubmit.value) return
+  const promptTrim = form.input.prompt?.trim()
+  if (!['watermark-remover', 'pro-storyboard'].includes(form.model) && (!promptTrim || promptTrim.length > 10000)) {
+    showError('Prompt is required and cannot exceed 10000 characters')
+    return
+  }
+
   isGenerating.value = true
   try {
-    const payload = buildPayload()
-    // 此处应调用后端 API。为演示目的，先展示 payload
-    results.value.unshift(JSON.stringify(payload, null, 2))
-    // 重置部分字段
-    // form.input.prompt = ''
+    const backendModel = MODEL_MAP[form.model]
+    let data
+
+    if (form.model === 'watermark-remover') {
+      const videoUrl = form.input.video_url?.trim()
+      if (!videoUrl) {
+        showError('Video URL is required')
+        return
+      }
+      data = await post('/api/video/sora/watermark-remover', {
+        model: backendModel,
+        videoUrl
+      })
+    } else if (form.model === 'pro-storyboard') {
+      const shots = scenes.value.map(s => ({
+        duration: Number(s.duration) || 0,
+        scene: String(s.scene || '').trim()
+      }))
+      if (shots.some(s => !s.scene)) {
+        showError('Each shot must have a scene description')
+        return
+      }
+      const body = {
+        model: backendModel,
+        nFrames: String(form.input.n_frames || '10'),
+        aspectRatio: form.input.aspect_ratio || 'portrait',
+        shots,
+        imageUrls: (form.input.image_urls && form.input.image_urls.length > 0) ? form.input.image_urls : undefined,
+        callBackUrl: form.callBackUrl?.trim() || undefined
+      }
+      data = await post('/api/video/sora-pro/storyboard', body)
+    } else if (['pro-text-to-video', 'pro-image-to-video'].includes(form.model)) {
+      const body = {
+        model: backendModel,
+        prompt: promptTrim,
+        imageUrls: (form.input.image_urls && form.input.image_urls.length > 0) ? form.input.image_urls : undefined,
+        aspectRatio: form.input.aspect_ratio || 'portrait',
+        nFrames: String(form.input.n_frames || '10'),
+        size: form.input.size || 'standard',
+        removeWatermark: !!form.input.remove_watermark
+      }
+      data = await post('/api/video/sora-pro/generate', body)
+    } else {
+      // text-to-video / image-to-video
+      const body = {
+        model: backendModel,
+        prompt: promptTrim,
+        imageUrls: (form.input.image_urls && form.input.image_urls.length > 0) ? form.input.image_urls : undefined,
+        aspectRatio: form.input.aspect_ratio || 'portrait',
+        nFrames: String(form.input.n_frames || '10'),
+        removeWatermark: !!form.input.remove_watermark
+      }
+      data = await post('/api/video/sora/generate', body)
+    }
+
+    let payload = data?.data ?? data
+    if (data?.recordId && !(Array.isArray(payload?.outputUrls) && payload.outputUrls.length)) {
+      const detail = await pollRecordDetail(data.recordId)
+      payload = typeof payload === 'object' ? { ...payload, ...detail } : detail
+    }
+    results.value.unshift(typeof payload === 'object' ? payload : { raw: payload })
   } catch (e) {
     console.error(e)
+    showError(e?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -511,6 +648,7 @@ const onSubmit = async () => {
 .config-header { padding: 0 0 20px 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .config-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: #1e293b; }
 .config-form { flex: 1; overflow-y: auto; }
+.config-fieldset { border: none; margin: 0; padding: 0; }
 
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; }

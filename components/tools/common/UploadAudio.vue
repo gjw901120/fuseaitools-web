@@ -35,6 +35,7 @@
           <span class="file-size">{{ formatFileSize(uploadedFile.size) }}</span>
         </div>
         <button 
+          type="button"
           @click="clearFile"
           class="remove-btn"
           title="删除文件"
@@ -46,6 +47,7 @@
       <!-- 音频播放控制 -->
       <div class="audio-player">
         <button 
+          type="button"
           @click="togglePlay"
           class="play-pause-btn"
           :class="{ playing: isPlaying }"

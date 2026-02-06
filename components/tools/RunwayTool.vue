@@ -35,6 +35,7 @@
 
         <!-- Generate Tab 表单 -->
         <form v-if="activeTab === 'generate'" class="config-form" @submit.prevent="generateVideo">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- Prompt 输入 -->
           <div class="form-group">
             <label for="prompt">Video Description *</label>
@@ -106,10 +107,12 @@
               10-second videos do not support 1080p resolution
             </div>
           </div>
+          </fieldset>
 
-          <!-- 参考图像上传 -->
+          <!-- 参考图像上传：放在 fieldset 外，选择后立即调用上传接口 -->
           <div class="form-group">
             <label class="form-label">Reference Image</label>
+            <span v-if="isUploadingGenerateImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading image...</span>
             <UploadImage
               input-id="runway-image-upload"
               label=""
@@ -126,6 +129,7 @@
             />
           </div>
 
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- 宽高比选择 -->
           <div class="form-group" v-if="!formData.imageFile">
             <label>Video Aspect Ratio *</label>
@@ -164,13 +168,15 @@
               <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-video"></i>
               {{ isGenerating ? 'Generating...' : 'Generate Video' }}
-              <span class="price-tag">($2.8)</span>
+              <span v-if="runwayGeneratePriceText" class="price-tag">{{ runwayGeneratePriceText }}</span>
             </button>
           </div>
+          </fieldset>
         </form>
 
         <!-- Aleph Tab 表单 -->
         <form v-if="activeTab === 'aleph'" class="config-form" @submit.prevent="generateAlephVideo">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- Prompt 输入 -->
           <div class="form-group">
             <label for="aleph-prompt">Prompt *</label>
@@ -195,45 +201,40 @@
             </div>
           </div>
 
-          <!-- Video 上传 -->
+          <!-- Video 上传：与图片类似，上方小选择区，下方展示已上传视频 -->
           <div class="form-group">
             <label>Input Video *</label>
-            <div class="upload-area" :class="{ 'has-files': alephReferenceVideo }">
-              <div v-if="!alephReferenceVideo" class="upload-content">
-                <div class="upload-icon">
-                  <i class="fas fa-video"></i>
-                </div>
-                <div class="upload-text">
-                  <p class="upload-title">Upload Input Video</p>
-                  <p class="upload-subtitle">Supports MP4, MOV, AVI formats, maximum 10MB</p>
+            <div class="aleph-video-upload">
+              <div class="aleph-video-trigger" :class="{ 'has-video': alephReferenceVideo }">
+                <input
+                  ref="alephVideoInputRef"
+                  type="file"
+                  accept="video/*"
+                  @change="handleAlephVideoUpload"
+                  class="aleph-video-file-input"
+                />
+                <div class="aleph-video-trigger-inner">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>Click to upload video</span>
+                  <small>Supports MP4, MOV, AVI, max 10MB</small>
                 </div>
               </div>
-              <div v-else class="uploaded-content">
-                <div class="uploaded-video-container">
-                  <video :src="alephReferenceVideo" class="uploaded-video" controls>
-                    Your browser does not support video playback
-                  </video>
-                  <button 
-                    @click="clearAlephReferenceVideo"
-                    class="remove-video-btn"
-                    title="Delete Input Video"
-                  >
+              <div v-if="isUploadingAlephVideo" class="aleph-video-uploading">
+                <i class="fas fa-spinner fa-spin"></i> Uploading video...
+              </div>
+              <div v-if="alephReferenceVideo && !isUploadingAlephVideo" class="aleph-video-display">
+                <div class="aleph-video-preview-wrap">
+                  <video :src="alephReferenceVideo" class="aleph-video-preview" controls></video>
+                  <button type="button" class="aleph-video-remove" title="Remove" @click="clearAlephReferenceVideo">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
-                <div class="uploaded-text">
-                  <p class="upload-title">Input Video Selected</p>
-                  <p class="upload-subtitle">Click to re-select</p>
+                <div class="aleph-video-meta" v-if="alephFormData.videoFile">
+                  <span class="aleph-video-name">{{ alephFormData.videoFile.name }}</span>
+                  <span class="aleph-video-size">{{ formatFileSize(alephFormData.videoFile.size) }}</span>
                 </div>
               </div>
-              <input
-                type="file" 
-                accept="video/*" 
-                @change="handleAlephVideoUpload"
-                class="file-input"
-              />
             </div>
-            
           </div>
 
           <!-- Watermark 输入 -->
@@ -321,10 +322,12 @@
               Optional random seed for reproducible results. The same seed with the same parameters tends to generate consistent results.
             </div>
           </div>
+          </fieldset>
 
-          <!-- Reference Image 上传 -->
+          <!-- Reference Image 上传：放在 fieldset 外，选择后立即上传 -->
           <div class="form-group">
             <label class="form-label">Reference Image</label>
+            <span v-if="isUploadingAlephImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading image...</span>
             <UploadImage
               input-id="runway-aleph-image-upload"
               label=""
@@ -341,21 +344,25 @@
             />
           </div>
 
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <div class="form-actions">
             <button
               type="submit"
               class="btn-primary"
-              :disabled="!alephFormData.prompt || !alephFormData.videoFile || isGenerating"
+              :disabled="!alephFormData.prompt || !alephFormData.uploadedVideoUrl || isGenerating"
             >
               <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-video"></i>
               {{ isGenerating ? 'Generating...' : 'Generate Aleph Video' }}
+              <span v-if="runwayAlephPriceText" class="price-tag">{{ runwayAlephPriceText }}</span>
             </button>
           </div>
+          </fieldset>
         </form>
 
         <!-- Extend Tab 表单 -->
         <form v-if="activeTab === 'extend'" class="config-form" @submit.prevent="generateExtendVideo">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- Task 选择 -->
           <div class="form-group">
             <label for="extend-task">Task *</label>
@@ -381,9 +388,10 @@
               v-model="extendFormData.prompt"
               placeholder="Descriptive text that guides video continuation. Explain what actions, dynamics, or developments should happen next. Be specific but maintain consistency with the original video content."
               rows="5"
+              maxlength="1000"
               required
             ></textarea>
-            
+            <div class="char-count" v-if="extendFormData.prompt">{{ extendFormData.prompt.length }}/1000</div>
           </div>
 
           <!-- Quality 选择 -->
@@ -422,10 +430,10 @@
               v-model="extendFormData.waterMark"
               type="text"
               placeholder="fuseai"
-              maxlength="20"
+              maxlength="50"
             />
             <div class="form-help">
-              Optional watermark text displayed on the video. Empty string means no watermark, non-empty string will display the specified watermark text in the bottom-right corner of the video.
+              Optional watermark text (max 50 characters). Empty means no watermark; non-empty displays in the bottom-right corner of the video.
             </div>
           </div>
 
@@ -438,8 +446,10 @@
               <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-expand"></i>
               {{ isGenerating ? 'Generating...' : 'Generate Extend Video' }}
+              <span v-if="runwayExtendPriceText" class="price-tag">{{ runwayExtendPriceText }}</span>
             </button>
           </div>
+          </fieldset>
         </form>
       </div>
 
@@ -447,7 +457,7 @@
       <div class="result-panel">
         <div class="video-header">
           <h4>Video Preview</h4>
-          <div class="video-actions" v-if="generatedVideos.length > 0">
+          <div class="video-actions" v-if="!isDetailView && generatedVideos.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
             </button>
@@ -456,9 +466,19 @@
         
         <!-- 视频展示区域 -->
         <div class="video-container">
-          <div v-if="generatedVideos.length > 0" class="video-showcase">
+          <!-- 详情页：status 3 失败 -->
+          <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <div v-else-if="displayVideos.length > 0" class="video-showcase">
             <div
-              v-for="(video, index) in generatedVideos"
+              v-for="(video, index) in displayVideos"
               :key="index"
               class="video-showcase-item"
             >
@@ -578,12 +598,107 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, inject } from 'vue'
+import { ref, reactive, watch, inject, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
-// 客户端检查（放在最前面，避免在 SSR 时访问路由等客户端 API）
 const isClient = typeof window !== 'undefined'
+const { token } = useAuth()
+const { showError } = useToast()
+const { post } = useApi()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const route = isClient ? useRoute() : { query: {} }
+onMounted(() => { fetchPrices() })
+
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route?.query?.['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+const detailDelayTimer = ref(null)
+const displayVideos = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
+    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
+    return [{ id: 'detail', url, prompt: detailData.value.originalData?.prompt || '', createdAt: new Date().toISOString() }]
+  }
+  return generatedVideos.value
+})
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (activeTab.value === 'generate') Object.keys(formData).forEach(k => { if (o[k] !== undefined) formData[k] = o[k] })
+  else if (activeTab.value === 'extend') Object.keys(extendFormData).forEach(k => { if (o[k] !== undefined) extendFormData[k] = o[k] })
+  else if (activeTab.value === 'aleph') Object.keys(alephFormData).forEach(k => { if (o[k] !== undefined) alephFormData[k] = o[k] })
+}
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((res) => {
+      if (getRouteRecordId() !== recordId) return
+      detailData.value = res
+      if (res?.originalData) fillFormFromOriginalData(res.originalData)
+    }).catch(() => {})
+  } catch (e) { console.error('Load record detail failed:', e) }
+  finally { if (loadingRecordId.value === recordId) loadingRecordId.value = null }
+}
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+const getAuthToken = () => {
+  if (!isClient) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+/** 上传文件到 batch-upload，返回 URL 数组；单文件时返回 [url] */
+const uploadFilesToUrls = async (files) => {
+  if (!files || (Array.isArray(files) ? files.length === 0 : !files)) return []
+  const list = Array.isArray(files) ? files : [files]
+  const formDataUpload = new FormData()
+  list.forEach(f => formDataUpload.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage?.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message?.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls)) throw new Error('Invalid response: file URLs not found')
+  return urls
+}
 
 // 安全地获取路由（在 SSR 时会返回 null）
 let router = null
@@ -614,6 +729,7 @@ const formData = reactive({
   duration: '5',
   quality: '720p',
   imageFile: null,
+  uploadedImageUrl: null, // 选择文件后立即上传得到的 URL，提交时使用
   aspectRatio: '16:9',
   waterMark: ''
 })
@@ -622,10 +738,12 @@ const formData = reactive({
 const alephFormData = reactive({
   prompt: '',
   videoFile: null,
+  uploadedVideoUrl: null, // 选择视频后立即上传得到的 URL
   waterMark: '',
   aspectRatio: '16:9',
   seed: null,
-  referenceImageFile: null
+  referenceImageFile: null,
+  uploadedReferenceImageUrl: null
 })
 
 // Extend Tab Form data
@@ -639,6 +757,37 @@ const extendFormData = reactive({
 const isGenerating = ref(false)
 const generatedVideos = ref([])
 const alephReferenceVideo = ref('')
+const alephVideoInputRef = ref(null)
+const isUploadingAlephVideo = ref(false)
+
+const formatFileSize = (bytes) => {
+  if (bytes == null || bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+// 价格：Generate -> runway_generate(RULE: duration, quality)；Extend -> runway_extend；Aleph -> runway_aleph
+const runwayGeneratePriceText = computed(() => {
+  const credits = getPrice('runway_generate', {
+    duration: Number(formData.duration) || 5,
+    quality: formData.quality || '720p',
+    scene: 'generate'
+  })
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+const runwayExtendPriceText = computed(() => {
+  const credits = getPrice('runway_extend')
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+const runwayAlephPriceText = computed(() => {
+  const credits = getPrice('runway_aleph')
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
 
 // Tasks 列表（后续会从服务端获取）
 const tasks = ref([
@@ -653,23 +802,49 @@ watch([() => formData.duration, () => formData.quality], ([duration, quality]) =
   }
 })
 
-// Handle image upload
-const handleImageUpdate = (files) => {
-  if (!isClient) return
-  if (files && files.length > 0) {
-    formData.imageFile = files[0]
-  } else {
+// 选择文件后立即调用上传接口，并保存 URL 供提交使用
+const isUploadingGenerateImage = ref(false)
+const handleImageUpdate = async (files) => {
+  if (!Array.isArray(files) || files.length === 0) {
     formData.imageFile = null
+    formData.uploadedImageUrl = null
+    return
+  }
+  formData.imageFile = files[0]
+  formData.uploadedImageUrl = null
+  isUploadingGenerateImage.value = true
+  try {
+    const urls = await uploadFilesToUrls([files[0]])
+    formData.uploadedImageUrl = urls[0] || null
+  } catch (e) {
+    console.error('Reference image upload failed:', e)
+    showError(e?.message || 'Upload failed')
+    formData.imageFile = null
+  } finally {
+    isUploadingGenerateImage.value = false
   }
 }
 
-// Handle Aleph image upload
-const handleAlephImageUpdate = (files) => {
-  if (!isClient) return
-  if (files && files.length > 0) {
-    alephFormData.referenceImageFile = files[0]
-  } else {
+// Aleph：选择文件后立即上传
+const isUploadingAlephImage = ref(false)
+const handleAlephImageUpdate = async (files) => {
+  if (!Array.isArray(files) || files.length === 0) {
     alephFormData.referenceImageFile = null
+    alephFormData.uploadedReferenceImageUrl = null
+    return
+  }
+  alephFormData.referenceImageFile = files[0]
+  alephFormData.uploadedReferenceImageUrl = null
+  isUploadingAlephImage.value = true
+  try {
+    const urls = await uploadFilesToUrls([files[0]])
+    alephFormData.uploadedReferenceImageUrl = urls[0] || null
+  } catch (e) {
+    console.error('Aleph reference image upload failed:', e)
+    showError(e?.message || 'Upload failed')
+    alephFormData.referenceImageFile = null
+  } finally {
+    isUploadingAlephImage.value = false
   }
 }
 
@@ -684,77 +859,88 @@ const fileToBase64 = (file) => {
   })
 }
 
-// 处理 Aleph 视频上传
+// 处理 Aleph 视频上传：选择后立即调用上传服务
 const handleAlephVideoUpload = async (e) => {
   if (!isClient) return
   const file = e.target.files?.[0]
   if (!file) return
-  
-  try {
-    if (!file.type.startsWith('video/')) {
-      if (typeof window !== 'undefined') {
-        alert('Please select a valid video format')
-      }
-      return
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      if (typeof window !== 'undefined') {
-        alert('Video size cannot exceed 10MB')
-      }
-      return
-    }
-    alephFormData.videoFile = file
-    alephReferenceVideo.value = await fileToBase64(file)
-  } catch (error) {
-    console.error('File conversion failed:', error)
-    if (typeof window !== 'undefined') {
-      alert('File processing failed, please try again')
-    }
+  if (!file.type.startsWith('video/')) {
+    showError('Please select a valid video format (MP4, MOV, AVI)')
+    e.target.value = ''
+    return
   }
+  if (file.size > 10 * 1024 * 1024) {
+    showError('Video size cannot exceed 10MB')
+    e.target.value = ''
+    return
+  }
+  alephFormData.videoFile = file
+  alephFormData.uploadedVideoUrl = null
+  alephReferenceVideo.value = await fileToBase64(file)
+  isUploadingAlephVideo.value = true
+  try {
+    const urls = await uploadFilesToUrls([file])
+    alephFormData.uploadedVideoUrl = urls[0] || null
+  } catch (err) {
+    console.error('Aleph video upload failed:', err)
+    showError(err?.message || 'Video upload failed')
+    alephReferenceVideo.value = ''
+    alephFormData.videoFile = null
+  } finally {
+    isUploadingAlephVideo.value = false
+  }
+  e.target.value = ''
 }
 
 // 清空 Aleph 参考视频
 const clearAlephReferenceVideo = () => {
   alephReferenceVideo.value = ''
   alephFormData.videoFile = null
+  alephFormData.uploadedVideoUrl = null
+  if (alephVideoInputRef.value) alephVideoInputRef.value.value = ''
 }
 
 // Methods
 const generateVideo = async () => {
-  if (!formData.prompt) return
-  
-  // 添加到使用历史
-  if (addToUsageHistory) {
-    addToUsageHistory('Runway')
+  const promptTrim = formData.prompt?.trim()
+  if (!promptTrim || promptTrim.length > 1800) {
+    showError('Prompt is required and cannot exceed 1800 characters')
+    return
   }
-  
+  if (addToUsageHistory) addToUsageHistory('Runway')
+
   isGenerating.value = true
-  
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // 模拟生成结果
+    const body = {
+      prompt: promptTrim,
+      duration: Number(formData.duration) || 5,
+      quality: formData.quality || '720p',
+      imageUrl: formData.uploadedImageUrl || undefined,
+      aspectRatio: formData.aspectRatio || undefined,
+      waterMark: formData.waterMark?.trim() || undefined
+    }
+    const data = await post('/api/video/runway/generate', body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid && router) { router.push((route?.path || '/home/runway') + '?record-id=' + encodeURIComponent(rid)); return }
+    let payload = data?.data ?? data
     const newVideo = {
-      id: Date.now(),
-      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      thumbnail: 'https://via.placeholder.com/320x180/3b82f6/ffffff?text=Runway+Video',
+      id: payload.taskId || Date.now(),
+      url: payload.videoUrl || payload.url,
+      thumbnail: payload.thumbnail,
       duration: `${formData.duration} seconds`,
       resolution: formData.quality,
       aspectRatio: formData.aspectRatio,
       prompt: formData.prompt,
       createdAt: new Date().toISOString()
     }
-    
     generatedVideos.value.unshift(newVideo)
-    
-    // 重置表单
     formData.prompt = ''
     formData.imageFile = null
+    formData.uploadedImageUrl = null
     formData.waterMark = ''
-    
   } catch (error) {
     console.error('Video generation failed:', error)
+    showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -776,71 +962,40 @@ const clearResults = () => {
 
 // Aleph 视频生成方法
 const generateAlephVideo = async () => {
-  if (!alephFormData.prompt || !alephFormData.videoFile) return
-  
-  // 添加到使用历史
-  if (addToUsageHistory) {
-    addToUsageHistory('Runway Aleph')
-  }
-  
+  const promptTrim = alephFormData.prompt?.trim()
+  if (!promptTrim || !alephFormData.uploadedVideoUrl) return
+  if (addToUsageHistory) addToUsageHistory('Runway Aleph')
+
   isGenerating.value = true
-  
   try {
-    // 如果有上传的视频文件，需要先上传到服务器获取公开可访问的URL
-    // 在实际API调用中，需要先调用文件上传接口获取URL
-    let videoUrl = ''
-    if (alephFormData.videoFile) {
-      // TODO: 在实际应用中，需要先上传视频文件到服务器获取公开URL
-      // videoUrl = await uploadVideoToServer(alephFormData.videoFile)
+    const videoUrl = alephFormData.uploadedVideoUrl
+
+    const body = {
+      prompt: promptTrim,
+      videoUrl,
+      waterMark: (alephFormData.waterMark?.trim() || '').slice(0, 20) || undefined,
+      aspectRatio: alephFormData.aspectRatio || undefined,
+      seed: alephFormData.seed != null && alephFormData.seed !== '' ? Math.max(0, Number(alephFormData.seed)) : undefined,
+      referenceImageUrl: alephFormData.uploadedReferenceImageUrl || undefined
     }
-    
-    // 构建请求数据（使用纯对象，避免响应式对象）
-    const requestData = {
-      prompt: String(alephFormData.prompt),
-      videoUrl: String(videoUrl)
-    }
-    
-    // 可选字段
-    if (alephFormData.waterMark) {
-      requestData.waterMark = String(alephFormData.waterMark)
-    }
-    if (alephFormData.aspectRatio) {
-      requestData.aspectRatio = String(alephFormData.aspectRatio)
-    }
-    if (alephFormData.seed !== null && alephFormData.seed !== undefined) {
-      requestData.seed = Number(alephFormData.seed)
-    }
-    // 如果有上传的参考图片，需要先上传到服务器获取公开可访问的URL
-    // 在实际API调用中，需要先调用文件上传接口获取URL，然后再设置 referenceImage
-    if (alephFormData.referenceImageFile) {
-      // TODO: 在实际应用中，需要先上传文件到服务器获取公开URL
-      // const imageUrl = await uploadImageToServer(alephFormData.referenceImageFile)
-      // requestData.referenceImage = imageUrl
-    }
-    
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // 模拟生成结果
+    const data = await post('/api/video/runway/aleph', body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid && router) { router.push((route?.path || '/home/runway') + '?record-id=' + encodeURIComponent(rid)); return }
+    let payload = data?.data ?? data
     const newVideo = {
-      id: Date.now(),
-      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      thumbnail: 'https://via.placeholder.com/320x180/3b82f6/ffffff?text=Runway+Aleph+Video',
+      id: payload.taskId || Date.now(),
+      url: payload.videoUrl || payload.url,
+      thumbnail: payload.thumbnail,
       duration: 'Converted Video',
       resolution: '720p',
       aspectRatio: alephFormData.aspectRatio || '16:9',
       prompt: alephFormData.prompt,
       createdAt: new Date().toISOString()
     }
-    
     generatedVideos.value.unshift(newVideo)
-    
-    // 重置表单（保留部分字段以便调整）
-    // alephFormData.prompt = ''
-    // alephFormData.videoUrl = ''
-    
   } catch (error) {
     console.error('Failed to generate Aleph video:', error)
+    showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -859,51 +1014,43 @@ const getConfigHeaderTitle = () => {
 
 // Extend 视频生成方法
 const generateExtendVideo = async () => {
-  if (!extendFormData.task || !extendFormData.prompt) return
-  
-  // 添加到使用历史
-  if (addToUsageHistory) {
-    addToUsageHistory('Runway Extend')
+  const taskTrim = extendFormData.task?.trim()
+  const promptTrim = extendFormData.prompt?.trim()
+  if (!taskTrim || !promptTrim) return
+  if (promptTrim.length > 1000) {
+    showError('Extension prompt cannot exceed 1000 characters')
+    return
   }
-  
+  if (addToUsageHistory) addToUsageHistory('Runway Extend')
+
   isGenerating.value = true
-  
   try {
-    // 构建请求数据（使用纯对象，避免响应式对象）
-    const requestData = {
-      task: String(extendFormData.task),
-      prompt: String(extendFormData.prompt),
-      quality: String(extendFormData.quality)
+    const body = {
+      taskId: taskTrim,
+      prompt: promptTrim,
+      quality: extendFormData.quality || '720p',
+      waterMark: extendFormData.waterMark?.trim() || undefined
     }
-    
-    // 可选字段
-    if (extendFormData.waterMark) {
-      requestData.waterMark = String(extendFormData.waterMark)
-    }
-    
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // 模拟生成结果
+    const data = await post('/api/video/runway/extend', body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid && router) { router.push((route?.path || '/home/runway') + '?record-id=' + encodeURIComponent(rid)); return }
+    let payload = data?.data ?? data
     const newVideo = {
-      id: Date.now(),
-      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      thumbnail: 'https://via.placeholder.com/320x180/3b82f6/ffffff?text=Runway+Extend+Video',
+      id: payload.taskId || Date.now(),
+      url: payload.videoUrl || payload.url,
+      thumbnail: payload.thumbnail,
       duration: 'Extended Video',
       resolution: extendFormData.quality,
       prompt: extendFormData.prompt,
       createdAt: new Date().toISOString()
     }
-    
     generatedVideos.value.unshift(newVideo)
-    
-    // 重置表单
     extendFormData.task = ''
     extendFormData.prompt = ''
     extendFormData.waterMark = ''
-    
   } catch (error) {
     console.error('Failed to generate Extend video:', error)
+    showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -1039,6 +1186,12 @@ const generateExtendVideo = async () => {
 .config-form {
   flex: 1;
   overflow-y: auto;
+}
+
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 .cost-info {
@@ -1402,6 +1555,132 @@ const generateExtendVideo = async () => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Aleph Input Video：小选择区 + 下方展示（与图片上传类似） */
+.aleph-video-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.aleph-video-trigger {
+  position: relative;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  transition: border-color 0.2s, background 0.2s;
+}
+.aleph-video-trigger:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+.aleph-video-trigger.has-video {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+}
+.aleph-video-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.aleph-video-trigger-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+}
+.aleph-video-trigger-inner i {
+  font-size: 18px;
+  color: #64748b;
+}
+.aleph-video-trigger-inner span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+.aleph-video-trigger-inner small {
+  font-size: 11px;
+  color: #94a3b8;
+}
+.aleph-video-uploading {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.aleph-video-uploading i {
+  font-size: 14px;
+}
+.aleph-video-display {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+.aleph-video-preview-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+.aleph-video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.aleph-video-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #dc2626;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.aleph-video-remove:hover {
+  background: #b91c1c;
+}
+.aleph-video-meta {
+  padding: 10px 12px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #f8fafc;
+}
+.aleph-video-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.aleph-video-size {
+  font-size: 12px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
 .remove-video-btn:hover {
   background: #b91c1c;
   transform: scale(1.1);
@@ -1550,6 +1829,14 @@ const generateExtendVideo = async () => {
 }
 
 /* 空状态 */
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
 .empty-state {
   text-align: center;
   color: #64748b;

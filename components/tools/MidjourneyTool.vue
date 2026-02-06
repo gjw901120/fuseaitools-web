@@ -11,25 +11,22 @@
       </div>
     </div>
 
-    <!-- 功能选择区域 -->
+    <!-- 分类切换：Imagine | Upscale | Vary（样式参考 Nano Banana） -->
     <div class="function-selection-section">
       <div class="function-tabs">
-        <div 
-          v-for="func in functionOptions" 
-          :key="func.id"
+        <div
+          v-for="cat in categoryOptions"
+          :key="cat.id"
           class="function-tab"
-          :class="{ active: activeTab === func.id }"
-          @click="switchFunction(func.id)"
+          :class="{ active: activeCategory === cat.id }"
+          @click="activeCategory = cat.id"
         >
           <div class="function-icon">
-            <i :class="func.icon"></i>
+            <i :class="cat.icon"></i>
           </div>
           <div class="function-info">
-            <div class="function-name">{{ func.name }}</div>
-            <div class="function-description">{{ func.description }}</div>
-          </div>
-          <div class="function-info-icon" :title="func.detailDescription">
-            <i class="fas fa-info-circle"></i>
+            <div class="function-name">{{ cat.name }}</div>
+            <div class="function-description">{{ cat.description }}</div>
           </div>
         </div>
       </div>
@@ -39,181 +36,238 @@
     <div class="main-content">
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
-        <div class="config-header">
-          <h4>{{ getCurrentFunctionName() }} Configuration</h4>
-        </div>
-
-        <!-- Imagine -->
-        <form v-if="activeTab === 'imagine'" class="config-form" @submit.prevent="onSubmitImagine">
+        <!-- Imagine 表单 -->
+        <form v-if="activeCategory === 'imagine'" class="config-form" @submit.prevent="onSubmitImagine">
+          <fieldset class="config-fieldset" :disabled="loading || isDetailView">
+          <div class="form-group">
+            <label>Task Type *</label>
+            <div class="option-btn-group">
+              <button type="button" class="option-btn" :class="{ active: form.taskType === 'mj_txt2img' }" @click="form.taskType = 'mj_txt2img'">
+                Text-to-image
+              </button>
+              <button type="button" class="option-btn" :class="{ active: form.taskType === 'mj_img2img' }" @click="form.taskType = 'mj_img2img'">
+                Image-to-image
+              </button>
+            </div>
+          </div>
           <div class="form-group">
             <label>Prompt *</label>
             <textarea
-              v-model="imagine.prompt" 
+              v-model="form.prompt"
               rows="4"
               required
-              placeholder="Describe the image you want to generate, for example: A beautiful sunset over mountains, digital art style"
+              placeholder="Describe the desired image content. Be detailed (style, composition, lighting). Example: Help me generate a sci-fi themed fighter jet in a beautiful sky, to be used as a computer wallpaper"
               maxlength="2000"
             ></textarea>
-            <div class="char-count">{{ imagine.prompt.length }}/2000</div>
-            </div>
+            <div class="char-count">{{ form.prompt.length }}/2000</div>
+          </div>
           <div class="form-group">
+            <label>Speed</label>
+            <div class="option-btn-group">
+              <button type="button" class="option-btn" :class="{ active: form.speed === 'relaxed' }" @click="form.speed = 'relaxed'">relaxed</button>
+              <button type="button" class="option-btn" :class="{ active: form.speed === 'fast' }" @click="form.speed = 'fast'">fast</button>
+              <button type="button" class="option-btn" :class="{ active: form.speed === 'turbo' }" @click="form.speed = 'turbo'">turbo</button>
+            </div>
+          </div>
+          <div class="form-group" v-if="form.taskType === 'mj_img2img'">
             <UploadImage
-              input-id="midjourney-imagine-images"
-              label="Reference Images (Optional)"
+              ref="fileUrlsUploadRef"
+              input-id="midjourney-input-images"
+              label="Input Image(s) *"
               upload-icon="fas fa-cloud-upload-alt"
               upload-text="Click to upload image"
-              upload-hint="Supports JPG, PNG, GIF formats (max 5 images)"
+              upload-hint="Required for image-to-image."
               :max-files="5"
               :max-file-size="10 * 1024 * 1024"
-              additional-hint="Upload reference images to guide generation direction"
               theme-color="#667eea"
-              @update:files="handleImagineFilesUpdate"
+              @update:files="handleFileUrlsUpdate"
             />
           </div>
-
-
+          <div class="form-group">
+            <label>Aspect Ratio</label>
+            <select v-model="form.aspectRatio" class="form-select form-select-enhanced">
+              <option value="1:2">1:2</option>
+              <option value="9:16">9:16</option>
+              <option value="2:3">2:3</option>
+              <option value="3:4">3:4</option>
+              <option value="5:6">5:6</option>
+              <option value="6:5">6:5</option>
+              <option value="4:3">4:3</option>
+              <option value="3:2">3:2</option>
+              <option value="1:1">1:1</option>
+              <option value="16:9">16:9</option>
+              <option value="2:1">2:1</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Version</label>
+            <select v-model="form.version" class="form-select form-select-enhanced">
+              <option value="7">7</option>
+              <option value="6.1">6.1</option>
+              <option value="6">6</option>
+              <option value="5.2">5.2</option>
+              <option value="5.1">5.1</option>
+              <option value="niji6">niji6</option>
+              <option value="niji7">niji7</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Variety (0–100, step 5)</label>
+            <input v-model.number="form.variety" type="number" min="0" max="100" step="5" class="form-input" />
+            <div class="input-hint">Higher = more diverse; lower = more consistent</div>
+          </div>
+          <div class="form-group">
+            <label>Stylization (0–1000)</label>
+            <input v-model.number="form.stylization" type="number" min="0" max="1000" step="50" class="form-input" />
+            <div class="input-hint">Higher = more stylized; lower = more realistic</div>
+          </div>
+          <div class="form-group">
+            <label>Weirdness (0–3000)</label>
+            <input v-model.number="form.weirdness" type="number" min="0" max="3000" step="100" class="form-input" />
+            <div class="input-hint">Higher = more unusual; lower = more conventional</div>
+          </div>
+          <div class="form-group">
+            <label>Watermark</label>
+            <input v-model="form.waterMark" type="text" class="form-input" placeholder="Optional watermark identifier" />
+          </div>
           <div class="form-actions">
-            <button class="btn-primary" type="submit" :disabled="loading || !imagine.prompt">
+            <button class="btn-primary" type="submit" :disabled="loading || !form.prompt?.trim() || needFileUrlsButEmpty">
               <i v-if="loading" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-magic"></i>
-              {{ loading ? 'Generating...' : 'Start Generation ($0.05)' }}
+              {{ loading ? 'Generating...' : 'Start Generation' }}{{ midjourneyPriceText }}
             </button>
           </div>
+          </fieldset>
         </form>
 
-        <!-- Blend -->
-        <form v-if="activeTab === 'blend'" class="config-form" @submit.prevent="onSubmitBlend">
-              <div class="form-group">
-            <UploadImage
-              input-id="midjourney-blend-images"
-              label="Blend Images *"
-              upload-icon="fas fa-layer-group"
-              upload-text="Click to upload image"
-              upload-hint="Select 2-5 images to blend"
-              :max-files="5"
-              :max-file-size="10 * 1024 * 1024"
-              additional-hint="Upload 2-5 images for creative blending"
-              theme-color="#667eea"
-              @update:files="handleBlendFilesUpdate"
-            />
-              </div>
-              <div class="form-group">
-            <label>Output Ratio</label>
-            <div class="ratio-tabs">
-              <button 
+        <!-- Upscale 表单：Create an upscale task based on previously generated Midjourney images -->
+        <form v-if="activeCategory === 'upscale'" class="config-form" @submit.prevent="onSubmitUpscale">
+          <fieldset class="config-fieldset" :disabled="loading || isDetailView">
+          <p class="category-desc">Create an upscale task based on previously generated Midjourney images.</p>
+          <div class="form-group">
+            <label>Task ID *</label>
+            <div class="select-with-arrow">
+              <select v-model="upscaleForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList">
+                <option value="">Select a task</option>
+                <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
+            </div>
+            <div v-if="!loadingExtendList && extendList.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
+          </div>
+          <div class="form-group" v-if="selectedOutputUrls.length">
+            <label>Image Index *</label>
+            <div class="extend-image-index-grid">
+              <button
+                v-for="(url, idx) in selectedOutputUrls"
+                :key="idx"
                 type="button"
-                :class="['ratio-tab', { active: blend.dimensions === 'SQUARE' }]"
-                @click="blend.dimensions = 'SQUARE'"
+                class="extend-image-index-item"
+                :class="{ selected: upscaleForm.imageIndex === idx }"
+                @click="upscaleForm.imageIndex = idx"
               >
-                Square (1:1)
-              </button>
-              <button 
-                type="button"
-                :class="['ratio-tab', { active: blend.dimensions === 'PORTRAIT' }]"
-                @click="blend.dimensions = 'PORTRAIT'"
-              >
-                Portrait (2:3)
-              </button>
-              <button 
-                type="button"
-                :class="['ratio-tab', { active: blend.dimensions === 'LANDSCAPE' }]"
-                @click="blend.dimensions = 'LANDSCAPE'"
-              >
-                Landscape (3:2)
+                <img :src="url" :alt="`Image ${idx}`" />
+                <span class="index-badge">{{ idx }}</span>
               </button>
             </div>
-              </div>
-
-
+            <div class="input-hint">Select one image</div>
+          </div>
+          <div class="form-group">
+            <label>Watermark</label>
+            <input v-model="upscaleForm.waterMark" type="text" class="form-input" placeholder="Optional watermark identifier" />
+          </div>
           <div class="form-actions">
-            <button class="btn-primary" type="submit" :disabled="loading || blend.base64Array.length < 2">
+            <button class="btn-primary" type="submit" :disabled="loading || !upscaleForm.taskId?.trim()">
               <i v-if="loading" class="fas fa-spinner fa-spin"></i>
-              <i v-else class="fas fa-layer-group"></i>
-              {{ loading ? 'Blending...' : 'Start Blending ($0.05)' }}
-            </button>
-                </div>
-        </form>
-
-        <!-- Describe -->
-        <form v-if="activeTab === 'describe'" class="config-form" @submit.prevent="onSubmitDescribe">
-              <div class="form-group">
-            <UploadImage
-              input-id="midjourney-describe-image"
-              label="Input Image *"
-              upload-icon="fas fa-image"
-              upload-text="Click to upload image"
-              upload-hint="Upload the image to describe"
-              :multiple="false"
-              :max-file-size="10 * 1024 * 1024"
-              additional-hint="Upload image to get AI-generated text description"
-              theme-color="#667eea"
-              @update:files="handleDescribeFileUpdate"
-            />
-              </div>
-
-
-          <div class="form-actions">
-            <button class="btn-primary" type="submit" :disabled="loading || !describe.base64">
-              <i v-if="loading" class="fas fa-spinner fa-spin"></i>
-              <i v-else class="fas fa-align-left"></i>
-              {{ loading ? 'Analyzing...' : 'Start Analysis ($0.05)' }}
+              <i v-else class="fas fa-expand-arrows-alt"></i>
+              {{ loading ? 'Submitting...' : 'Upscale' }}{{ midjourneyPriceText }}
             </button>
           </div>
+          </fieldset>
         </form>
 
-        <!-- Swap Face -->
-        <form v-if="activeTab === 'swap'" class="config-form" @submit.prevent="onSubmitSwap">
-            <div class="form-group">
-            <UploadImage
-              input-id="midjourney-swap-source-image"
-              label="Source Face Image *"
-              upload-icon="fas fa-user"
-              upload-text="Click to upload image"
-              upload-hint="Contains the face to extract"
-              :multiple="false"
-              :max-file-size="10 * 1024 * 1024"
-              additional-hint="Upload image containing the face to extract"
-              theme-color="#667eea"
-              @update:files="handleSourceFileUpdate"
-            />
+        <!-- Vary 表单：Create a vary task to enhance image clarity and simulate styles -->
+        <form v-if="activeCategory === 'vary'" class="config-form" @submit.prevent="onSubmitVary">
+          <fieldset class="config-fieldset" :disabled="loading || isDetailView">
+          <p class="category-desc">Create a vary task to enhance image clarity and simulate styles based on previously generated Midjourney images.</p>
+          <div class="form-group">
+            <label>Task ID *</label>
+            <div class="select-with-arrow">
+              <select v-model="varyForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList">
+                <option value="">Select a task</option>
+                <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
             </div>
-
-            <div class="form-group">
-            <UploadImage
-              input-id="midjourney-swap-target-image"
-              label="Target Image *"
-              upload-icon="fas fa-image"
-              upload-text="Click to upload image"
-              upload-hint="Image to replace face"
-              :multiple="false"
-              :max-file-size="10 * 1024 * 1024"
-              additional-hint="Upload image to replace face"
-              theme-color="#667eea"
-              @update:files="handleTargetFileUpdate"
-            />
+            <div v-if="!loadingExtendList && extendList.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
           </div>
-
+          <div class="form-group" v-if="selectedOutputUrls.length">
+            <label>Image Index *</label>
+            <div class="extend-image-index-grid">
+              <button
+                v-for="(url, idx) in selectedOutputUrls"
+                :key="idx"
+                type="button"
+                class="extend-image-index-item"
+                :class="{ selected: varyForm.imageIndex === idx + 1 }"
+                @click="varyForm.imageIndex = idx + 1"
+              >
+                <img :src="url" :alt="`Image ${idx + 1}`" />
+                <span class="index-badge">{{ idx + 1 }}</span>
+              </button>
+            </div>
+            <div class="input-hint">Select one image</div>
+          </div>
+          <div class="form-group">
+            <label>Watermark</label>
+            <input v-model="varyForm.waterMark" type="text" class="form-input" placeholder="Optional watermark identifier" />
+          </div>
           <div class="form-actions">
-            <button class="btn-primary" type="submit" :disabled="loading || !swap.sourceBase64 || !swap.targetBase64">
+            <button class="btn-primary" type="submit" :disabled="loading || !varyForm.taskId?.trim()">
               <i v-if="loading" class="fas fa-spinner fa-spin"></i>
-              <i v-else class="fas fa-user-astronaut"></i>
-              {{ loading ? 'Replacing...' : 'Start Replace ($0.05)' }}
+              <i v-else class="fas fa-palette"></i>
+              {{ loading ? 'Submitting...' : 'Vary' }}{{ midjourneyPriceText }}
             </button>
           </div>
+          </fieldset>
         </form>
       </div>
 
       <div class="results-display-panel">
         <div class="results-header">
           <h4>Generation Results</h4>
-          <div class="results-actions" v-if="results.length">
+          <div class="results-actions" v-if="!isDetailView && results.length">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
             </button>
           </div>
         </div>
         <div class="results-container">
-          <div v-if="results.length" class="results-showcase">
+          <!-- 详情页：status 2 展示 outputUrls -->
+          <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputList.length > 0" class="results-showcase">
+            <div v-for="(item, idx) in detailOutputList" :key="idx" class="result-item">
+              <div class="result-content">
+                <img v-if="item.isImage" :src="item.url" class="detail-output-image" :alt="`Output ${idx + 1}`" />
+                <pre v-else class="result-json">{{ item.url }}</pre>
+              </div>
+            </div>
+          </div>
+          <!-- 详情页：status 3 失败 -->
+          <div v-else-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can debug the parameters and try generating again. Generation failure will not consume credits.</p>
+          </div>
+          <!-- 详情页：status 1 或加载中 -->
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <!-- 详情页：其他 -->
+          <div v-else-if="isDetailView" class="detail-loading-state">
+            <p>No output</p>
+          </div>
+          <!-- 非详情页：本地结果 -->
+          <div v-else-if="results.length" class="results-showcase">
             <div v-for="(item, idx) in results" :key="idx" class="result-item">
               <div class="result-header">
                 <span class="result-time">{{ formatTime(item.time) }}</span>
@@ -229,25 +283,7 @@
               <i class="fas fa-paint-brush"></i>
             </div>
             <h3>Waiting for Generation</h3>
-            <p>Select function type, fill in necessary information, click the generate button to start creating your AI content</p>
-            <div class="empty-features">
-              <div class="feature-item">
-                <i class="fas fa-keyboard"></i>
-                <span>Text Generation</span>
-              </div>
-              <div class="feature-item">
-                <i class="fas fa-layer-group"></i>
-                <span>Image Blend</span>
-              </div>
-              <div class="feature-item">
-                <i class="fas fa-align-left"></i>
-                <span>Image Description</span>
-              </div>
-              <div class="feature-item">
-                <i class="fas fa-user-astronaut"></i>
-                <span>Face Replace</span>
-              </div>
-            </div>
+            <p>Fill in the prompt and optional reference images, then click Start Generation to create your AI image</p>
           </div>
         </div>
       </div>
@@ -257,189 +293,238 @@
     <div class="usage-tips">
       <div class="tip-item">
         <span class="tip-icon">🎨</span>
-        <span><strong>Imagine:</strong> Describe the image you want in English, the more detailed the better</span>
-      </div>
-      <div class="tip-item">
-        <span class="tip-icon">🔄</span>
-        <span><strong>Blend:</strong> Select 2-5 images for creative blending</span>
-      </div>
-      <div class="tip-item">
-        <span class="tip-icon">📝</span>
-        <span><strong>Describe:</strong> Upload image to get AI-generated text description</span>
-      </div>
-      <div class="tip-item">
-        <span class="tip-icon">👤</span>
-        <span><strong>Swap Face:</strong> Replace face from one image to another</span>
+        <span>Describe the image you want in English; the more detailed the prompt, the better the result</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useMjApi } from '~/composables/useMjApi'
-import FileUpload from '../FileUpload.vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import UploadImage from '../tools/common/UploadImage.vue'
+import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
-const { submitImagine, submitBlend, submitDescribe, submitSwapFace } = useMjApi()
+const router = useRouter()
+const route = useRoute()
+const { token } = useAuth()
+const { showError } = useToast()
+const { post, get } = useApi()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
-const activeTab = ref('imagine')
+onMounted(() => { fetchPrices() })
+
+// 价格按分类匹配：Imagine -> midjourney_imagine，Upscale -> midjourney_upscale，Vary -> midjourney_vary
+const MIDJOURNEY_PRICE_KEYS = { imagine: 'midjourney_imagine', upscale: 'midjourney_upscale', vary: 'midjourney_vary' }
+const midjourneyPriceText = computed(() => {
+  const key = MIDJOURNEY_PRICE_KEYS[activeCategory.value] || 'midjourney_imagine'
+  const credits = getPrice(key)
+  const str = formatCredits(credits)
+  return str ? ` (${str})` : ''
+})
+
 const loading = ref(false)
 const results = ref([])
 
-// 功能选项配置
-const functionOptions = ref([
-  {
-    id: 'imagine',
-    name: 'Imagine',
-    description: 'Text to Image',
-    detailDescription: 'Generate AI images using text descriptions, supporting multiple styles and parameter settings',
-    icon: 'fas fa-keyboard'
-  },
-  {
-    id: 'blend',
-    name: 'Blend',
-    description: 'Image Blend',
-    detailDescription: 'Blend multiple images to generate new images, supporting 2-5 image blending',
-    icon: 'fas fa-layer-group'
-  },
-  {
-    id: 'describe',
-    name: 'Describe',
-    description: 'Image Description',
-    detailDescription: 'Analyze image content and generate detailed text descriptions',
-    icon: 'fas fa-align-left'
-  },
-  {
-    id: 'swap',
-    name: 'Swap Face',
-    description: 'Face Replace',
-    detailDescription: 'Replace face from one image to another',
-    icon: 'fas fa-user-astronaut'
+// 详情页：仅从 URL 读取 record-id
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const detailOutputList = computed(() => {
+  if (!detailData.value || !Array.isArray(detailData.value.outputUrls)) return []
+  return detailData.value.outputUrls.map((url) => {
+    const u = typeof url === 'string' ? url : url?.url ?? url?.imageUrl ?? ''
+    const isImage = /\.(jpe?g|png|gif|webp)(\?|$)/i.test(u) || u.startsWith('data:image/')
+    return { url: u, isImage }
+  }).filter((x) => x.url)
+})
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  if (o.taskType) form.taskType = String(o.taskType)
+  if (o.prompt != null) form.prompt = String(o.prompt)
+  if (o.speed) form.speed = String(o.speed)
+  if (o.fileUrl) form.fileUrls = [o.fileUrl]
+  if (Array.isArray(o.fileUrls)) form.fileUrls = [...o.fileUrls]
+  if (o.aspectRatio) form.aspectRatio = String(o.aspectRatio)
+  if (o.version) form.version = String(o.version)
+  if (o.variety != null) form.variety = Number(o.variety)
+  if (o.stylization != null) form.stylization = Number(o.stylization)
+  if (o.weirdness != null) form.weirdness = Number(o.weirdness)
+  if (o.waterMark != null) form.waterMark = String(o.waterMark)
+}
+
+function getRouteRecordId() { return route.query['record-id'] || '' }
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((result) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = result
+        if (result?.originalData) fillFormFromOriginalData(result.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
   }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+// 分类：imagine | upscale | vary
+const activeCategory = ref('imagine')
+
+// 分类选项（Imagine / Upscale / Vary，样式参考 Nano Banana）
+const categoryOptions = ref([
+  { id: 'imagine', name: 'Imagine', description: 'Create a new image generation task using the Midjourney AI model', icon: 'fas fa-wand-magic-sparkles' },
+  { id: 'upscale', name: 'Upscale', description: 'Create an upscale task based on previously generated Midjourney images', icon: 'fas fa-expand-arrows-alt' },
+  { id: 'vary', name: 'Vary', description: 'Create a vary task to enhance image clarity and simulate styles based on previously generated Midjourney images', icon: 'fas fa-palette' }
 ])
 
-// 切换功能
-const switchFunction = (funcId) => {
-  activeTab.value = funcId
-}
-
-// 获取当前功能名称
-const getCurrentFunctionName = () => {
-  const func = functionOptions.value.find(f => f.id === activeTab.value)
-  return func ? func.name : 'Imagine'
-}
-
-// Imagine
-const imagine = reactive({
+// Imagine 表单
+const form = reactive({
+  taskType: 'mj_txt2img',
   prompt: '',
-  base64Array: [],
-  accountFilter: { channelId: '', instanceId: '', modes: [], remark: '', remix: true, remixAutoConsidered: true },
-  state: ''
+  speed: 'relaxed',
+  fileUrls: [],
+  aspectRatio: '16:9',
+  version: '7',
+  variety: 10,
+  stylization: 100,
+  weirdness: 0,
+  waterMark: ''
 })
 
-// Blend
-const blend = reactive({
-  base64Array: [],
-  dimensions: 'SQUARE',
-  accountFilter: { channelId: '', instanceId: '', modes: [], remark: '', remix: true, remixAutoConsidered: true },
-  state: ''
+// Upscale 表单：taskId, imageIndex (0-3), waterMark
+const upscaleForm = reactive({
+  taskId: '',
+  imageIndex: 0,
+  waterMark: ''
 })
 
-// Describe
-const describe = reactive({
-  botType: 'MID_JOURNEY',
-  base64: '',
-  accountFilter: { channelId: '', instanceId: '', modes: [], remark: '', remix: true, remixAutoConsidered: true },
-  state: ''
+// Vary 表单：taskId, imageIndex (1-4), waterMark
+const varyForm = reactive({
+  taskId: '',
+  imageIndex: 1,
+  waterMark: ''
 })
 
-// Swap
-const swap = reactive({
-  sourceBase64: '',
-  targetBase64: ''
+// extend-list：Upscale/Vary 共用，用于 Task ID 下拉与 Image Index 图片选择
+const EXTEND_LIST_MODEL = 'midjourney_imagine'
+const extendList = ref([])
+const loadingExtendList = ref(false)
+const fetchExtendList = async () => {
+  loadingExtendList.value = true
+  try {
+    const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
+    extendList.value = Array.isArray(data) ? data : []
+  } catch {
+    extendList.value = []
+  } finally {
+    loadingExtendList.value = false
+  }
+}
+
+watch(activeCategory, (cat) => {
+  if (cat === 'upscale' || cat === 'vary') fetchExtendList()
+}, { immediate: true })
+
+watch(() => upscaleForm.taskId, () => { upscaleForm.imageIndex = 0 })
+watch(() => varyForm.taskId, () => { varyForm.imageIndex = 1 })
+
+// 当前选中的任务（用于展示 outputUrls）
+const selectedExtendTask = computed(() => {
+  const taskId = activeCategory.value === 'upscale' ? upscaleForm.taskId : varyForm.taskId
+  if (!taskId || !extendList.value.length) return null
+  return extendList.value.find((x) => x.taskId === taskId) || null
+})
+const selectedOutputUrls = computed(() => {
+  const task = selectedExtendTask.value
+  if (!task || !Array.isArray(task.outputUrls)) return []
+  return task.outputUrls.filter((u) => typeof u === 'string' && u.trim())
 })
 
-const handleFilesToBase64 = async (e, targetArray) => {
-  const files = Array.from(e.target.files || [])
-  
-  // 检查文件数量限制
-  if (files.length > 5) {
-    alert('Maximum 5 images allowed')
+const needFileUrlsButEmpty = computed(() => {
+  if (form.taskType !== 'mj_img2img') return false
+  return !form.fileUrls?.length
+})
+
+const fileUrlsUploadRef = ref(null)
+
+const getAuthToken = () => {
+  if (!process.client) return null
+  try {
+    if (token?.value) return token.value
+    return localStorage.getItem('auth_token')
+  } catch {
+    return localStorage.getItem('auth_token')
+  }
+}
+
+const uploadFilesToUrls = async (files) => {
+  if (!files || (Array.isArray(files) ? files.length === 0 : !files)) return []
+  const list = Array.isArray(files) ? files : [files]
+  const formDataUpload = new FormData()
+  list.forEach(f => formDataUpload.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const authToken = getAuthToken()
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+  const response = await fetch('/api/common/batch-upload', {
+    method: 'POST',
+    headers,
+    body: formDataUpload,
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
+      ? errorData.errorMessage.trim()
+      : (typeof errorData?.message === 'string' && errorData.message.trim())
+        ? errorData.message.trim()
+        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+    throw new Error(msg)
+  }
+  const data = await response.json()
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  if (!Array.isArray(urls)) throw new Error('Invalid response: file URLs not found')
+  return urls
+}
+
+const handleFileUrlsUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    form.fileUrls = []
+    fileUrlsUploadRef.value?.clearFiles?.()
     return
   }
-  
-  // 检查文件类型和大小
-  const validFiles = []
-  for (const file of files) {
-    if (!file.type.startsWith('image/')) {
-      alert(`File ${file.name} is not a valid image format`)
-      continue
-    }
-    if (file.size > 10 * 1024 * 1024) { // 10MB
-      alert(`File ${file.name} exceeds 10MB size limit`)
-      continue
-    }
-    validFiles.push(file)
-  }
-  
-  // 清空现有文件并添加新文件
-  targetArray.length = 0
-  for (const file of validFiles) {
-    try {
-      const b64 = await fileToBase64(file)
-      targetArray.push(b64)
-    } catch (error) {
-      console.error('File conversion failed:', error)
-      alert(`File ${file.name} conversion failed`)
-    }
-  }
-}
-
-const handleSingleToBase64 = async (e, setter) => {
-  const file = (e.target.files || [])[0]
-  if (!file) return
-  const b64 = await fileToBase64(file)
-  setter(b64)
-}
-
-const fileToBase64 = (file) => new Promise((resolve, reject) => {
-  const reader = new FileReader()
-  reader.onload = () => resolve(String(reader.result))
-  reader.onerror = reject
-  reader.readAsDataURL(file)
-})
-
-// 新的事件处理函数
-const handleImagineFilesUpdate = (files) => {
-  imagine.base64Array = files.map(file => file.url)
-}
-
-const handleBlendFilesUpdate = (files) => {
-  blend.base64Array = files.map(file => file.url)
-}
-
-const handleDescribeFileUpdate = (files) => {
-  if (files.length > 0) {
-    describe.base64 = files[0].url
-  } else {
-    describe.base64 = ''
-  }
-}
-
-const handleSourceFileUpdate = (files) => {
-  if (files.length > 0) {
-    swap.sourceBase64 = files[0].url
-  } else {
-    swap.sourceBase64 = ''
-  }
-}
-
-const handleTargetFileUpdate = (files) => {
-  if (files.length > 0) {
-    swap.targetBase64 = files[0].url
-  } else {
-    swap.targetBase64 = ''
+  const list = Array.isArray(files) ? files : [files]
+  try {
+    form.fileUrls = await uploadFilesToUrls(list)
+  } catch (e) {
+    showError(e.message || 'Failed to upload images')
+    form.fileUrls = []
+    fileUrlsUploadRef.value?.clearFiles?.()
   }
 }
 
@@ -448,94 +533,102 @@ const pushResult = (data) => {
 }
 
 const onSubmitImagine = async () => {
-  if (!imagine.prompt) return
+  const promptTrim = form.prompt?.trim()
+  if (!promptTrim) {
+    showError('Prompt cannot be empty')
+    return
+  }
+  if (form.taskType === 'mj_img2img' && !form.fileUrls?.length) {
+    showError('Input image(s) required for image-to-image')
+    return
+  }
   loading.value = true
   try {
-    const payload = { 
-      botType: 'MID_JOURNEY', 
-      prompt: imagine.prompt, 
-      base64Array: imagine.base64Array, 
-      accountFilter: imagine.accountFilter, 
-      state: imagine.state 
+    const body = {
+      taskType: form.taskType,
+      prompt: promptTrim,
+      aspectRatio: form.aspectRatio,
+      version: form.version,
+      variety: form.variety,
+      stylization: form.stylization,
+      weirdness: form.weirdness,
+      speed: form.speed
     }
-    const res = await submitImagine(payload)
+    if (form.fileUrls?.length) {
+      body.fileUrls = form.fileUrls
+      if (form.fileUrls.length === 1) body.fileUrl = form.fileUrls[0]
+    }
+    if (form.waterMark?.trim()) body.waterMark = form.waterMark.trim()
+    const res = await post('/api/midjourney/imagine', body)
+    const recordId = res?.recordId ?? res?.data?.recordId
+    if (recordId) {
+      router.push(`/home/midjourney?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
     pushResult(res)
-    // 重置表单
-    imagine.prompt = ''
-    imagine.base64Array = []
+    form.prompt = ''
+    form.fileUrls = []
   } catch (e) {
     pushResult({ error: e?.message || String(e) })
+    showError(e?.message || 'Request failed')
   } finally {
     loading.value = false
   }
 }
 
-const onSubmitBlend = async () => {
-  if (blend.base64Array.length < 2) { 
-    pushResult({ error: 'At least 2 images required' })
-    return 
+const onSubmitUpscale = async () => {
+  if (!upscaleForm.taskId?.trim()) {
+    showError('Task ID is required')
+    return
   }
   loading.value = true
   try {
-    const payload = { 
-      base64Array: blend.base64Array, 
-      dimensions: blend.dimensions, 
-      accountFilter: blend.accountFilter, 
-      state: blend.state, 
-      botType: 'MID_JOURNEY' 
+    const body = {
+      taskId: upscaleForm.taskId.trim(),
+      imageIndex: Number(upscaleForm.imageIndex)
     }
-    const res = await submitBlend(payload)
+    if (upscaleForm.waterMark?.trim()) body.waterMark = upscaleForm.waterMark.trim()
+    const res = await post('/api/midjourney/upscale', body)
+    const recordId = res?.recordId ?? res?.data?.recordId
+    if (recordId) {
+      router.push(`/home/midjourney?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
     pushResult(res)
-    // 重置表单
-    blend.base64Array = []
+    upscaleForm.taskId = ''
+    upscaleForm.imageIndex = 0
   } catch (e) {
     pushResult({ error: e?.message || String(e) })
+    showError(e?.message || 'Request failed')
   } finally {
     loading.value = false
   }
 }
 
-const onSubmitDescribe = async () => {
-  if (!describe.base64) { 
-    pushResult({ error: 'Please select an image' })
-    return 
+const onSubmitVary = async () => {
+  if (!varyForm.taskId?.trim()) {
+    showError('Task ID is required')
+    return
   }
   loading.value = true
   try {
-    const payload = { 
-      botType: describe.botType, 
-      base64: describe.base64, 
-      accountFilter: describe.accountFilter, 
-      state: describe.state 
+    const body = {
+      taskId: varyForm.taskId.trim(),
+      imageIndex: Number(varyForm.imageIndex)
     }
-    const res = await submitDescribe(payload)
+    if (varyForm.waterMark?.trim()) body.waterMark = varyForm.waterMark.trim()
+    const res = await post('/api/midjourney/vary', body)
+    const recordId = res?.recordId ?? res?.data?.recordId
+    if (recordId) {
+      router.push(`/home/midjourney?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
     pushResult(res)
-    // 重置表单
-    describe.base64 = ''
+    varyForm.taskId = ''
+    varyForm.imageIndex = 1
   } catch (e) {
     pushResult({ error: e?.message || String(e) })
-  } finally {
-    loading.value = false
-  }
-}
-
-const onSubmitSwap = async () => {
-  if (!swap.sourceBase64 || !swap.targetBase64) { 
-    pushResult({ error: 'Please provide source and target images' })
-    return 
-  }
-  loading.value = true
-  try {
-    const res = await submitSwapFace({ 
-      sourceBase64: swap.sourceBase64, 
-      targetBase64: swap.targetBase64 
-    })
-    pushResult(res)
-    // 重置表单
-    swap.sourceBase64 = ''
-    swap.targetBase64 = ''
-  } catch (e) {
-    pushResult({ error: e?.message || String(e) })
+    showError(e?.message || 'Request failed')
   } finally {
     loading.value = false
   }
@@ -572,6 +665,63 @@ const getResultType = (data) => {
   flex-direction: column;
 }
 
+.category-desc {
+  margin: 0 0 16px 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.input-hint-warn {
+  color: #b45309;
+}
+
+.extend-image-index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.extend-image-index-item {
+  position: relative;
+  aspect-ratio: 1;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 0;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.extend-image-index-item:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.extend-image-index-item.selected {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+}
+
+.extend-image-index-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.extend-image-index-item .index-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 /* 功能选择区域样式 */
 .function-selection-section {
   background: white;
@@ -581,7 +731,7 @@ const getResultType = (data) => {
 
 .function-tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
 
@@ -797,6 +947,11 @@ const getResultType = (data) => {
   overflow-y: auto;
 }
 
+.config-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
 
 .config-header h4 {
   font-size: 16px;
@@ -924,7 +1079,10 @@ const getResultType = (data) => {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group .form-select,
+.form-input,
+.form-select {
   width: 100%;
   padding: 12px;
   border: 1px solid #d1d5db;
@@ -932,6 +1090,89 @@ const getResultType = (data) => {
   font-size: 14px;
   transition: border-color 0.2s ease;
   box-sizing: border-box;
+}
+
+.form-group .form-select,
+.form-select {
+  cursor: pointer;
+  background: white;
+}
+
+/* Task Type / Speed 按钮组 */
+.option-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.option-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  background: #f8fafc;
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.option-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+/* Aspect Ratio / Version 下拉优化 */
+.form-select-enhanced {
+  padding: 10px 36px 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  appearance: none;
+  -webkit-appearance: none;
+  font-size: 14px;
+  color: #334155;
+}
+
+.form-select-enhanced:hover {
+  border-color: #cbd5e1;
+  background-color: #fff;
+}
+
+.form-select-enhanced:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* 与全局 .select-with-arrow 统一样式：去掉背景箭头、统一圆角与焦点色 */
+.select-with-arrow .form-select-enhanced {
+  padding: 12px 36px 12px 16px;
+  border-radius: 8px;
+  background-color: #fff;
+  background-image: none;
+}
+.select-with-arrow .form-select-enhanced:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.input-hint {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
 }
 
 .form-group input:focus,
@@ -1287,6 +1528,15 @@ const getResultType = (data) => {
 }
 
 /* 空状态 */
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
+}
+.detail-spinner { font-size: 48px; color: #667eea; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-output-image { max-width: 100%; height: auto; border-radius: 8px; }
+
 .empty-state {
   text-align: center;
   color: #64748b;

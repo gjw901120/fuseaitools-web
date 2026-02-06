@@ -30,9 +30,12 @@ export { requestIdleCallback, cancelIdleCallback } from '#app/compat/idle-callba
 export { setInterval } from '#app/compat/interval';
 export { useAI } from '../composables/useAI';
 export { useApi } from '../composables/useApi';
+export { fetchWithCache, useApiCache } from '../composables/useApiCache';
 export { useAuth } from '../composables/useAuth';
 export { useHomeLayout } from '../composables/useHomeLayout';
 export { useMjApi } from '../composables/useMjApi';
+export { useModelPrice } from '../composables/useModelPrice';
+export { useRecordPolling } from '../composables/useRecordPolling';
 export { useToast } from '../composables/useToast';
 export { useToolSEO } from '../composables/useToolSEO';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

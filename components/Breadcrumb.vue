@@ -47,7 +47,6 @@ const categoryLabel = computed(() => categoryLabels[props.category] || 'AI Tools
 <style scoped>
 .breadcrumb {
   padding: 12px 0;
-  margin-bottom: 20px;
 }
 
 .breadcrumb-list {
@@ -99,7 +98,6 @@ const categoryLabel = computed(() => categoryLabels[props.category] || 'AI Tools
 @media (max-width: 768px) {
   .breadcrumb {
     padding: 8px 0;
-    margin-bottom: 16px;
   }
 
   .breadcrumb-list {

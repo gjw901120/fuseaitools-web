@@ -27,20 +27,6 @@ export const useApi = () => {
   }
 
   /**
-   * 显示错误提示
-   * @param {string} message - 错误消息
-   */
-  const showError = (message) => {
-    if (process.client) {
-      // 使用 Toast 显示错误
-      const { showError: showToastError } = useToast()
-      const errorMsg = message || 'An error occurred'
-      console.log('Showing error toast:', errorMsg)
-      showToastError(errorMsg, 5000) // 错误消息显示 5 秒
-    }
-  }
-
-  /**
    * 统一的 API 请求方法
    * @param {string} url - 请求 URL
    * @param {object} options - fetch 选项
@@ -80,11 +66,11 @@ export const useApi = () => {
         if (response.errorCode === '00000') {
           return response.data
         } else {
-          // 失败：errorCode 是其他值，显示错误消息
-          // 优先显示 userTip，如果没有则显示 errorMessage
-          const errorMessage = response.userTip || response.errorMessage || 'Request failed'
-          showError(errorMessage)
-          throw new Error(errorMessage)
+          // 失败：只抛出异常，由调用方 catch 后统一 showError，避免重复弹窗
+          const errorMessage = response.errorMessage || response.userTip || 'Request failed'
+          const err = new Error(errorMessage)
+          err.__fromApi = true
+          throw err
         }
       }
 
@@ -92,16 +78,10 @@ export const useApi = () => {
       return response
     } catch (error) {
       console.error('API request error:', error)
-      
-      // 如果错误已经有消息（从上面的 throw 来的），直接抛出
-      if (error.message) {
-        throw error
-      }
-
-      // 处理网络错误或其他错误
-      // 优先显示 userTip，如果没有则显示 errorMessage
-      const errorMessage = error.data?.userTip || error.data?.errorMessage || error.message || 'Network error. Please try again.'
-      showError(errorMessage)
+      // 业务错误（上面 throw 的）直接抛出，由调用方 showError
+      if (error.__fromApi) throw error
+      // 网络/HTTP 错误：统一抛出带 message 的 Error，由调用方 showError
+      const errorMessage = error.data?.errorMessage || error.data?.userTip || error.message || 'Network error. Please try again.'
       throw new Error(errorMessage)
     }
   }

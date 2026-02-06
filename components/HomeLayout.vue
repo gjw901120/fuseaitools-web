@@ -8,38 +8,47 @@
           <h3>History</h3>
         </div>
         
-        <div class="timeline-container">
+        <div class="timeline-container" ref="timelineContainerRef">
           <div class="timeline-items">
-            <div class="timeline-item" v-for="(record, index) in usageHistory" :key="record.id">
+            <div
+              class="timeline-item timeline-item-clickable"
+              v-for="(record, index) in usageHistory"
+              :key="record.id || record.recordId || index"
+              @click="navigateToHistoryItem(record)"
+            >
               <div class="timeline-marker" :class="[record.status, record.type]">
                 <i :class="record.icon"></i>
               </div>
               <div class="timeline-content">
                 <div class="timeline-header">
-                  <div class="timeline-tool">{{ record.toolName }}</div>
+                  <div class="timeline-tool">{{ record.toolName || record.category }}</div>
                 </div>
-                <div class="timeline-description">{{ record.description }}</div>
+                <div class="timeline-description">{{ record.description || record.title }}</div>
+                <div class="timeline-meta" v-if="record.model">
+                  <span class="timeline-model">{{ record.model }}</span>
+                </div>
                 <div class="timeline-meta">
                   <div class="timeline-time">{{ formatTime(record.timestamp) }}</div>
-                  <div class="timeline-duration">{{ record.duration }}</div>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- 加载更多按钮 -->
-          <div class="load-more-container" v-if="hasMoreData">
-            <button class="load-more-btn" @click="loadMore" :disabled="isLoading">
+          <!-- 底部：加载更多 / 没有更多了（有记录时始终固定在底部） -->
+          <div class="load-more-container" v-if="usageHistory.length > 0">
+            <button v-if="hasMoreData" class="load-more-btn" @click="onLoadMore" :disabled="isLoading">
               <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
               <i v-else class="fas fa-plus"></i>
               {{ isLoading ? 'Loading...' : 'Load More' }}
             </button>
+            <div v-else class="no-more-hint">No more</div>
           </div>
           
-          <!-- 空状态 -->
+          <!-- 空状态 / 加载中 -->
           <div v-if="usageHistory.length === 0" class="empty-timeline">
-            <i class="fas fa-history"></i>
-            <p>No usage records</p>
+            <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-history"></i>
+            <p>{{ isLoading ? 'Loading...' : 'No usage records' }}</p>
           </div>
         </div>
       </aside>
@@ -76,14 +85,16 @@
           </div>
         </header>
 
-        <!-- 下方：工具界面（70%） -->
+        <!-- 下方：工具界面（70%），key 随路由变化强制重新挂载对应工具页 -->
         <section class="tool-interface">
           <Breadcrumb 
             v-if="selectedCategoryName && selectedToolName"
             :category="selectedCategoryName" 
             :current-page="selectedToolName" 
           />
-          <slot />
+          <div :key="route.path" class="tool-interface-slot">
+            <slot />
+          </div>
         </section>
       </main>
     </div>
@@ -91,11 +102,12 @@
 </template>
 
 <script setup>
-import { provide, computed } from 'vue'
+import { provide, computed, ref, nextTick } from 'vue'
 import Breadcrumb from '~/components/Breadcrumb.vue'
 import { useHomeLayout } from '~/composables/useHomeLayout'
 
 const {
+  route,
   selectedCategory,
   selectedTool,
   navItems,
@@ -109,8 +121,20 @@ const {
   selectTool,
   loadMore,
   addToUsageHistory,
-  allTools
+  allTools,
+  navigateToHistoryItem
 } = useHomeLayout()
+
+const timelineContainerRef = ref(null)
+
+// 点击加载更多：加载后把「新 10 条」起点对准视口顶部，新数据在上、Load more 在视口底部，不滚到整页最底
+async function onLoadMore() {
+  const el = timelineContainerRef.value
+  const prevScrollHeight = el ? el.scrollHeight : 0
+  await loadMore()
+  await nextTick()
+  if (el) el.scrollTop = Math.max(0, prevScrollHeight - el.clientHeight)
+}
 
 // 计算当前类别名称和工具名称
 const selectedCategoryName = computed(() => {
@@ -130,21 +154,23 @@ provide('addToUsageHistory', addToUsageHistory)
 <style scoped>
 .home-page {
   min-height: 100vh;
+  height: 100%;
   background: #f8fafc;
   margin: 0;
   padding: 0;
-  overflow: visible;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 主布局容器 */
+/* 主布局容器：至少占满视口，保证右侧工具区（Runway/Luma 等）有高度可展示 */
 .main-layout {
   display: flex;
   align-items: stretch;
   margin-top: 0;
   overflow: hidden;
-  /* 高度由内容撑开：timeline-header + timeline-container(包含10个元素+加载更多按钮) */
-  height: fit-content;
-  min-height: fit-content;
+  min-height: 0;
+  flex: 1;
 }
 
 /* 左侧边栏 - 20% */
@@ -216,7 +242,6 @@ provide('addToUsageHistory', addToUsageHistory)
 
 .timeline-items {
   flex: 0 0 auto;
-  max-height: 1280px;
   min-height: 0;
 }
 
@@ -225,6 +250,22 @@ provide('addToUsageHistory', addToUsageHistory)
   align-items: flex-start;
   margin-bottom: 20px;
   position: relative;
+}
+
+.timeline-item-clickable {
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 0;
+  margin: -4px 0;
+}
+
+.timeline-item-clickable:hover {
+  background: #f8fafc;
+}
+
+.timeline-model {
+  font-size: 11px;
+  color: #94a3b8;
 }
 
 .timeline-item:not(:last-child)::after {
@@ -324,7 +365,6 @@ provide('addToUsageHistory', addToUsageHistory)
 .load-more-container {
   padding: 20px 0 0;
   border-top: 1px solid #e2e8f0;
-  margin-top: auto;
   flex-shrink: 0;
 }
 
@@ -358,6 +398,13 @@ provide('addToUsageHistory', addToUsageHistory)
 
 .load-more-btn i {
   font-size: 12px;
+}
+
+.no-more-hint {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #94a3b8;
 }
 
 .empty-timeline {
@@ -486,6 +533,14 @@ provide('addToUsageHistory', addToUsageHistory)
   min-height: 0;
   height: 100%;
   overflow: hidden;
+}
+
+.tool-interface-slot {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 响应式设计 */
