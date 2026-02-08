@@ -28,6 +28,13 @@
           <button @click="refresh" class="retry-btn">Retry</button>
         </div>
 
+        <!-- API 业务错误（errorCode !== '00000'） -->
+        <div v-else-if="apiFailed" class="error-state">
+          <h3>Unable to load articles</h3>
+          <p>{{ newsData?.errorMessage || 'Please try again later.' }}</p>
+          <button @click="refresh" class="retry-btn">Retry</button>
+        </div>
+
         <!-- Content -->
         <div v-else>
           <!-- 分类筛选器 - 动态数据 -->
@@ -50,18 +57,18 @@
               class="news-list-item"
               @click="navigateToDetail(article)"
             >
-              <div class="news-image">
+              <div class="news-image" v-if="article.image">
                 <img :src="article.image" :alt="article.title" />
               </div>
               <div class="news-content">
                 <div class="news-header">
-                  <span class="news-category">{{ article.category }}</span>
+                  <span class="news-category" v-if="article.category">{{ article.category }}</span>
                   <span class="news-date">{{ formatDate(article.publishDate) }}</span>
                 </div>
                 <h3 class="news-title">{{ article.title }}</h3>
                 <p class="news-excerpt">{{ article.excerpt }}</p>
                 <div class="news-meta">
-                  <span class="news-read-time">{{ article.readTime }} min read</span>
+                  <span class="news-read-time" v-if="article.readTime != null">{{ article.readTime }} min read</span>
                   <i class="fas fa-arrow-right news-arrow"></i>
                 </div>
               </div>
@@ -122,29 +129,60 @@ useHead({
   ]
 })
 
-// 响应式数据
+// 频道/分类：与后端 category 数字对应
+const CATEGORY_LABELS = { 1: 'Chat', 2: 'Image', 3: 'Audio', 4: 'Video' }
+const CATEGORY_VALUES = { Chat: 1, Image: 2, Audio: 3, Video: 4 }
+
 const selectedCategory = ref('All')
 const currentPage = ref(1)
 const articlesPerPage = ref(10)
-const allArticles = ref([]) // 存储所有已加载的文章
 
-// 动态数据状态
-const { data: newsData, pending, error, refresh } = await useFetch('/api/news', {
-  query: computed(() => ({
-    page: currentPage.value,
-    limit: articlesPerPage.value,
-    category: selectedCategory.value
+// 调用后端 /api/news/list，返回 { errorCode, errorMessage, data: { records, total, current, size, pages } }
+const { data: newsData, pending, error, refresh } = await useFetch('/api/news/list', {
+  query: computed(() => {
+    const categoryParam = selectedCategory.value !== 'All' ? CATEGORY_VALUES[selectedCategory.value] : undefined
+    return {
+      page: currentPage.value,
+      size: articlesPerPage.value,
+      ...(categoryParam != null ? { category: categoryParam } : {})
+    }
+  })
+})
+
+// 接口失败时（errorCode !== '00000'）视为无数据
+const apiFailed = computed(() => newsData.value?.errorCode && newsData.value.errorCode !== '00000')
+
+// 适配列表：后端 record 为 { id, title, category, path, description }，无 image/publishDate/readTime 时不展示
+const articles = computed(() => {
+  if (apiFailed.value) return []
+  const raw = newsData.value?.data?.records || []
+  if (!Array.isArray(raw)) return []
+  return raw.map((r) => ({
+    id: r.id,
+    title: (r.title || '').trim(),
+    slug: r.path || String(r.id),
+    excerpt: r.description || '',
+    category: CATEGORY_LABELS[r.category] ?? (r.category != null ? String(r.category) : ''),
+    image: r.image || undefined,
+    publishDate: r.publishDate || null,
+    readTime: r.readTime ?? null
   }))
 })
 
-// 从API响应中提取数据
-const articles = computed(() => newsData.value?.articles || [])
-const categories = computed(() => newsData.value?.categories || [])
-const pagination = computed(() => newsData.value?.pagination || {
-  currentPage: 1,
-  totalPages: 1,
-  totalItems: 0,
-  hasMore: false
+const categories = computed(() => ['All', 'Chat', 'Image', 'Audio', 'Video'])
+
+const pagination = computed(() => {
+  const d = newsData.value?.data
+  if (!d) return { currentPage: 1, totalPages: 1, totalItems: 0, hasMore: false }
+  const total = Number(d.total) || 0
+  const current = Number(d.current) || 1
+  const pages = Number(d.pages) || 1
+  return {
+    currentPage: current,
+    totalPages: pages,
+    totalItems: total,
+    hasMore: current < pages
+  }
 })
 
 // 加载更多状态
@@ -152,6 +190,7 @@ const pendingMore = ref(false)
 
 // 方法
 const formatDate = (dateString) => {
+  if (!dateString) return ''
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -215,7 +254,7 @@ watch(selectedCategory, () => {
 .news-hero {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 80px 0;
+  padding: 10px 0;
   text-align: center;
 }
 
@@ -254,16 +293,16 @@ watch(selectedCategory, () => {
 }
 
 .hero-title {
-  font-size: 3rem;
+  font-size: 3rem; /* 2rem 放大 50% */
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: white;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.5rem; /* 1rem 放大 50% */
   opacity: 0.9;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -544,11 +583,11 @@ watch(selectedCategory, () => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: 2.25rem; /* 1.5rem 放大 50% */
   }
 
   .hero-subtitle {
-    font-size: 1rem;
+    font-size: 1.35rem; /* 0.9rem 放大 50% */
   }
 
   .news-list-item {

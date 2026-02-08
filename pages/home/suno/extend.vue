@@ -1,40 +1,27 @@
 <template>
-  <div class="tool-page">
-    <SunoTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <SunoTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
 import SunoTool from '~/components/tools/SunoTool.vue'
-import { useRouter } from 'vue-router'
+import { useToolSEO } from '~/composables/useToolSEO'
 
-const router = useRouter()
-
-// SEO 优化
-useHead({
-  title: 'Suno Music Extension - AI Music Extension Tool | FuseAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: 'Extend existing music works using Suno model, supporting custom parameter mode, can control music style and content of the extended part.'
-    },
-    {
-      name: 'keywords',
-      content: 'Suno, AI music extension, music expansion, artificial intelligence, music creation, AI tools'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'Suno - Music Extension',
+  description: 'Extend existing music with Suno AI. Use for free online.',
+  category: 'audio',
+  route: '/home/suno/extend',
+  keywords: ['Suno', 'Music Extension', 'AI music'],
+  applicationCategory: 'AudioApplication',
+  offers: { price: '0', priceCurrency: 'USD' }
 })
+useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page {
-  width: 100%;
-  height: 100vh;
-}
+.tool-page { width: 100%; height: 100%; }
 </style>
-
-
-
-
-
-

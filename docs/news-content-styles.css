@@ -1,0 +1,175 @@
+/**
+ * 新闻详情 content 区域样式（完整填充、统一排版）
+ * 可用于：后端 content 内联 <style>、或 CMS 全局样式、或前端 :deep() 参考
+ * 选择器按「注入到 .article-body.html-content 内」的 HTML 结构编写；
+ * 若放在后端 HTML 里，请去掉 .article-body.html-content 前缀，直接写 article/section/table 等。
+ */
+
+/* ---------- 容器：完整宽度 ---------- */
+article.ai-model-comparison,
+.article-body.html-content article {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.article-body.html-content section {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- 标题 ---------- */
+.article-body.html-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem;
+  line-height: 1.25;
+}
+
+.article-body.html-content h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.article-body.html-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 1.5rem 0 0.75rem;
+}
+
+/* ---------- 正文 ---------- */
+.article-body.html-content p {
+  margin-bottom: 1.25rem;
+  color: #374151;
+  line-height: 1.7;
+}
+
+.article-body.html-content ul,
+.article-body.html-content ol {
+  margin: 1rem 0 1.5rem 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.article-body.html-content li {
+  margin-bottom: 0.5rem;
+}
+
+.article-body.html-content blockquote {
+  border-left: 4px solid #667eea;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: #f8fafc;
+  font-style: italic;
+  color: #4b5563;
+  border-radius: 0 8px 8px 0;
+}
+
+/* ---------- 图片：完整宽度、自适应 ---------- */
+.article-body.html-content .image-container,
+.article-body.html-content figure {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  box-sizing: border-box;
+}
+
+.article-body.html-content .image-container img,
+.article-body.html-content img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.article-body.html-content .image-caption {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* ---------- 表格：完整宽度、可横向滚动 ---------- */
+.article-body.html-content .comparison-table {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.article-body.html-content table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.article-body.html-content th,
+.article-body.html-content td {
+  padding: 12px 16px;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+}
+
+.article-body.html-content th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.article-body.html-content tr:hover {
+  background: #fafafa;
+}
+
+/* ---------- 推荐/要点卡片 ---------- */
+.article-body.html-content .recommendation-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.article-body.html-content .recommendation,
+.article-body.html-content .key-takeaways {
+  width: 100%;
+  max-width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  box-sizing: border-box;
+}
+
+.article-body.html-content .article-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* ---------- 响应式：推荐区两列 ---------- */
+@media (min-width: 768px) {
+  .article-body.html-content .recommendation-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- 若后端 HTML 自带 style 可删除或覆盖以下（避免与页面冲突） ---------- */
+/* body { background: transparent !important; max-width: none !important; padding: 0 !important; margin: 0 !important; } */
+/* article { background: transparent !important; max-width: none !important; padding: 0 !important; } */

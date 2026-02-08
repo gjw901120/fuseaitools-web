@@ -6,7 +6,6 @@
         <div class="breadcrumb">
           <NuxtLink to="/" class="breadcrumb-link home-link">
             <i class="fas fa-home"></i>
-            首页
           </NuxtLink>
           <NuxtLink to="/news" class="breadcrumb-link">
             <i class="fas fa-arrow-left"></i>
@@ -15,147 +14,27 @@
         </div>
         
         <div class="article-header">
-          <div class="article-category">{{ article.category }}</div>
           <h1 class="article-title">{{ article.title }}</h1>
           <div class="article-meta">
             <span class="article-date">{{ formatDate(article.publishDate) }}</span>
-            <span class="article-read-time">{{ article.readTime }} min read</span>
+            <span class="article-read-time" v-if="article.readTime != null">{{ article.readTime }} min read</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Article Image -->
-    <section class="article-image-section">
-      <div class="simply-container">
-        <div class="article-image">
-          <img :src="article.image" :alt="article.title" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Article Content -->
+    <!-- Article Content（完整展示 content 的内容与结构） -->
     <section class="article-content-section">
       <div class="simply-container">
         <div class="content-wrapper">
-          <!-- Main Content -->
+          <!-- Main Content：仅渲染后端 content 的完整 HTML -->
           <article class="main-content">
-            <div class="article-excerpt">
-              {{ article.excerpt }}
-            </div>
-            
-            <!-- Sample article content -->
-            <div class="article-body">
-              <p>
-                Artificial intelligence continues to reshape our world at an unprecedented pace. 
-                This comprehensive exploration delves into the latest developments and their implications 
-                for businesses, individuals, and society at large.
-              </p>
-
-              <h2>The Current State of AI Technology</h2>
-              <p>
-                Recent advancements in machine learning and natural language processing have opened 
-                new possibilities for AI applications. Companies are leveraging these technologies 
-                to improve efficiency, enhance customer experiences, and drive innovation across 
-                various industries.
-              </p>
-
-              <blockquote>
-                "The future of AI lies not just in technological advancement, but in how we 
-                responsibly integrate these tools into our daily lives and work processes."
-              </blockquote>
-
-              <h3>Key Developments in 2024</h3>
-              <ul>
-                <li>Enhanced multimodal AI capabilities</li>
-                <li>Improved reasoning and problem-solving</li>
-                <li>Better integration with existing workflows</li>
-                <li>Increased focus on AI safety and ethics</li>
-              </ul>
-
-              <p>
-                These developments represent significant milestones in AI research and development. 
-                As we move forward, it's crucial to consider both the opportunities and challenges 
-                that these technologies present.
-              </p>
-
-              <h3>Industry Impact</h3>
-              <p>
-                The business world is experiencing a transformation driven by AI adoption. 
-                Organizations are finding new ways to leverage AI for competitive advantage, 
-                from automating routine tasks to gaining insights from large datasets.
-              </p>
-
-              <h2>Looking Ahead</h2>
-              <p>
-                As we continue to explore the potential of artificial intelligence, it's important 
-                to maintain a balanced perspective. While the opportunities are vast, we must 
-                also address concerns about job displacement, privacy, and the ethical use of AI.
-              </p>
-
-              <p>
-                The journey of AI development is far from over. With continued research, 
-                collaboration, and responsible implementation, we can harness the power of 
-                AI to create a better future for everyone.
-              </p>
-            </div>
+            <div class="article-body html-content" v-html="articleBodyHtml" />
           </article>
-
-          <!-- Sidebar -->
-          <aside class="sidebar">
-            <div class="sidebar-section">
-              <h3>Related Articles</h3>
-              <div class="related-articles">
-                <div 
-                  v-for="related in relatedArticles" 
-                  :key="related.id"
-                  class="related-article"
-                  @click="navigateToDetail(related.slug)"
-                >
-                  <img :src="related.image" :alt="related.title" />
-                  <div class="related-content">
-                    <h4>{{ related.title }}</h4>
-                    <span class="related-date">{{ formatDate(related.publishDate) }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="sidebar-section">
-              <h3>Share This Article</h3>
-              <div class="share-buttons">
-                <button class="share-btn twitter" @click="shareOnTwitter">
-                  <i class="fab fa-twitter"></i>
-                  Twitter
-                </button>
-                <button class="share-btn linkedin" @click="shareOnLinkedIn">
-                  <i class="fab fa-linkedin"></i>
-                  LinkedIn
-                </button>
-                <button class="share-btn facebook" @click="shareOnFacebook">
-                  <i class="fab fa-facebook"></i>
-                  Facebook
-                </button>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </section>
 
-    <!-- Newsletter Signup -->
-    <section class="newsletter-section">
-      <div class="simply-container">
-        <div class="newsletter-content">
-          <h3>Stay Updated</h3>
-          <p>Get the latest AI news and insights delivered to your inbox.</p>
-          <div class="newsletter-form">
-            <input type="email" placeholder="Enter your email address" v-model="email" />
-            <button @click="subscribeNewsletter">Subscribe</button>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 
   <!-- Loading State -->
@@ -168,12 +47,12 @@
     </div>
   </div>
 
-  <!-- Error State -->
-  <div v-else-if="error" class="error-state">
+  <!-- Error State（网络错误或接口返回失败/无数据） -->
+  <div v-else-if="showNotFound" class="error-state">
     <div class="simply-container">
       <div class="error-content">
         <h2>Article Not Found</h2>
-        <p>The article you're looking for doesn't exist or has been removed.</p>
+        <p>{{ notFoundMessage }}</p>
         <button @click="navigateTo('/news')" class="back-btn">
           Back to News
         </button>
@@ -192,54 +71,84 @@ definePageMeta({
   key: (route) => route.params.slug
 })
 
-// 动态数据加载 - SEO友好的方式
-const { data: articleData, pending, error, refresh } = await useFetch(`/api/news/${route.params.slug}`, {
+// 分类数字与文案（与列表页一致）
+const CATEGORY_LABELS = { 1: 'Chat', 2: 'Image', 3: 'Audio', 4: 'Video' }
+
+// 请求后端详情：GET /api/news/detail?path=slug，返回 { errorCode, errorMessage, data }
+const { data: detailData, pending, error, refresh } = await useFetch('/api/news/detail', {
   key: `article-${route.params.slug}`,
-  server: true,  // 服务器端渲染，SEO友好
-  default: () => ({ article: null, relatedArticles: [] }) // 默认值
+  query: computed(() => ({ path: route.params.slug })),
+  server: true,
+  default: () => ({ errorCode: '', data: null })
 })
 
-// 监听路由变化，重新获取数据（仅客户端导航时）
 watch(() => route.params.slug, async (newSlug, oldSlug) => {
-  if (newSlug !== oldSlug && process.client) {
-    await refresh()
-  }
+  if (newSlug !== oldSlug && process.client) await refresh()
 }, { immediate: false })
-
-// 监听路由完整路径变化（处理前进/后退）
 watch(() => route.fullPath, async (newPath, oldPath) => {
-  if (newPath !== oldPath && process.client) {
-    await refresh()
-  }
+  if (newPath !== oldPath && process.client) await refresh()
 }, { immediate: false })
 
-// 从API响应中提取数据
+// 接口失败或无数据
+const apiFailed = computed(() => {
+  const d = detailData.value
+  if (!d) return true
+  if (d.errorCode && d.errorCode !== '00000') return true
+  if (!d.data || d.data.isDel === 1) return true
+  return false
+})
+
+// 映射为页面使用的 article
 const article = computed(() => {
-  try {
-    return articleData.value?.article || null
-  } catch (error) {
-    console.warn('Error accessing article data:', error)
-    return null
+  if (apiFailed.value) return null
+  const d = detailData.value?.data
+  if (!d) return null
+  const firstImg = d.content && (d.content.match(/<img[^>]+src=["']([^"']+)["']/i) || [])[1]
+  return {
+    id: d.id,
+    title: (d.title || '').trim(),
+    slug: d.path,
+    excerpt: d.description || '',
+    category: CATEGORY_LABELS[d.category] ?? (d.category != null ? String(d.category) : ''),
+    image: d.image || firstImg || undefined,
+    publishDate: d.gmtCreate || null,
+    updatedAt: d.gmtModified || null,
+    readTime: d.readTime ?? null,
+    keyword: d.keyword || '',
+    content: d.content || ''
   }
+})
+
+// 从完整 HTML 中取出 body 内内容用于 v-html，避免重复 html/head/body
+const articleBodyHtml = computed(() => {
+  const raw = article.value?.content
+  if (!raw) return ''
+  const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i)
+  if (bodyMatch) return bodyMatch[1].trim()
+  const stripDoc = raw
+    .replace(/<!DOCTYPE[^>]*>/gi, '')
+    .replace(/<\/?html[^>]*>/gi, '')
+    .replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '')
+    .replace(/<\/?body[^>]*>/gi, '')
+  return stripDoc.trim()
 })
 
 const relatedArticles = computed(() => {
-  try {
-    return articleData.value?.relatedArticles || []
-  } catch (error) {
-    console.warn('Error accessing related articles:', error)
-    return []
-  }
+  const list = detailData.value?.data?.relatedList || detailData.value?.relatedArticles
+  return Array.isArray(list) ? list : []
 })
+
+const showNotFound = computed(() => !pending && (!!error || apiFailed.value))
+const notFoundMessage = computed(() => error.value?.message || detailData.value?.errorMessage || 'The article doesn\'t exist or has been removed.')
 
 // SEO配置 - 使用watch来动态更新
 watch(article, (newArticle) => {
   if (newArticle) {
 useHead({
       title: `${newArticle.title} - FuseAI Tools News`,
-  meta: [
+      meta: [
         { name: 'description', content: newArticle.excerpt || '' },
-        { name: 'keywords', content: `${newArticle.category}, AI news, ${newArticle.title}` },
+        { name: 'keywords', content: newArticle.keyword || `${newArticle.category}, AI news, ${newArticle.title}` },
         { property: 'og:title', content: newArticle.title || '' },
         { property: 'og:description', content: newArticle.excerpt || '' },
         { property: 'og:image', content: newArticle.image || '' },
@@ -263,23 +172,14 @@ useHead({
             "description": newArticle.excerpt || '',
             "image": newArticle.image || '',
             "datePublished": newArticle.publishDate || '',
-            "dateModified": newArticle.publishDate || '',
-            "author": {
-              "@type": "Organization",
-              "name": "FuseAI Tools"
-            },
+            "dateModified": newArticle.updatedAt || newArticle.publishDate || '',
+            "author": { "@type": "Organization", "name": "FuseAI Tools" },
             "publisher": {
               "@type": "Organization",
               "name": "FuseAI Tools",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://fuseaitools.com/favicon.ico"
-              }
+              "logo": { "@type": "ImageObject", "url": "https://fuseaitools.com/favicon.ico" }
             },
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": `https://fuseaitools.com/news/${newArticle.slug || ''}`
-            },
+            "mainEntityOfPage": { "@type": "WebPage", "@id": `https://fuseaitools.com/news/${newArticle.slug || ''}` },
             "articleSection": newArticle.category || '',
             "wordCount": (newArticle.readTime || 0) * 200
           })
@@ -289,13 +189,9 @@ useHead({
   }
 }, { immediate: true })
 
-// 响应式数据
-const email = ref('')
-
-// 相关文章已经在上面通过API获取
-
 // 方法
 const formatDate = (dateString) => {
+  if (!dateString) return ''
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -306,30 +202,6 @@ const formatDate = (dateString) => {
 
 const navigateToDetail = (slug) => {
   navigateTo(`/news/${slug}`)
-}
-
-const shareOnTwitter = () => {
-  const url = encodeURIComponent(window.location.href)
-  const text = encodeURIComponent(article.value.title)
-  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank')
-}
-
-const shareOnLinkedIn = () => {
-  const url = encodeURIComponent(window.location.href)
-  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank')
-}
-
-const shareOnFacebook = () => {
-  const url = encodeURIComponent(window.location.href)
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank')
-}
-
-const subscribeNewsletter = () => {
-  if (email.value) {
-    // 在实际应用中，这里会调用API
-    alert('Thank you for subscribing to our newsletter!')
-    email.value = ''
-  }
 }
 
 </script>
@@ -405,10 +277,10 @@ const subscribeNewsletter = () => {
   100% { transform: rotate(360deg); }
 }
 
-/* Hero Section */
+/* Hero Section - 背景高度缩小 30%，文字大小不变 */
 .detail-hero {
   background: #f8fafc;
-  padding: 60px 0 40px;
+  padding: 42px 0 28px;
 }
 
 .breadcrumb {
@@ -477,254 +349,202 @@ const subscribeNewsletter = () => {
   font-size: 0.875rem;
 }
 
-/* Article Image */
-.article-image-section {
-  padding: 0;
-}
-
-.article-image {
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-}
-
-.article-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* Content Section */
 .article-content-section {
   padding: 60px 0;
 }
 
 .content-wrapper {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 4rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .main-content {
   max-width: none;
+  width: 100%;
 }
 
-.article-excerpt {
-  font-size: 1.25rem;
-  color: #4b5563;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: #f8fafc;
-  border-left: 4px solid #667eea;
-  border-radius: 0 8px 8px 0;
-}
-
+/* Content 区域完整填充，统一排版与响应式 */
 .article-body {
   line-height: 1.7;
   color: #374151;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.article-body h2 {
+.article-body.html-content {
+  overflow-x: auto;
+}
+
+.article-body.html-content :deep(article),
+.article-body.html-content :deep(.ai-model-comparison) {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.article-body.html-content :deep(section) {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+.article-body.html-content :deep(h1) {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem;
+  line-height: 1.25;
+}
+
+.article-body.html-content :deep(h2) {
   font-size: 1.75rem;
   font-weight: 600;
   color: #1f2937;
   margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.article-body h3 {
+.article-body.html-content :deep(h3) {
   font-size: 1.5rem;
   font-weight: 600;
   color: #1f2937;
   margin: 1.5rem 0 0.75rem;
 }
 
-.article-body p {
-  margin-bottom: 1.5rem;
+.article-body.html-content :deep(p) {
+  margin-bottom: 1.25rem;
+  color: #374151;
 }
 
-.article-body ul {
-  margin: 1rem 0 1.5rem 2rem;
+.article-body.html-content :deep(ul),
+.article-body.html-content :deep(ol) {
+  margin: 1rem 0 1.5rem 1.5rem;
+  padding-left: 1.5rem;
 }
 
-.article-body li {
+.article-body.html-content :deep(li) {
   margin-bottom: 0.5rem;
 }
 
-.article-body blockquote {
+.article-body.html-content :deep(blockquote) {
   border-left: 4px solid #667eea;
   padding: 1rem 1.5rem;
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   background: #f8fafc;
   font-style: italic;
   color: #4b5563;
+  border-radius: 0 8px 8px 0;
 }
 
-/* Sidebar */
-.sidebar {
-  position: sticky;
-  top: 2rem;
-  height: fit-content;
+/* 正文内图片：完整宽度、自适应高度 */
+.article-body.html-content :deep(.image-container),
+.article-body.html-content :deep(figure) {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  box-sizing: border-box;
 }
 
-.sidebar-section {
-  background: #f8fafc;
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-}
-
-.sidebar-section h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
-
-.related-articles {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.related-article {
-  display: flex;
-  gap: 1rem;
-  cursor: pointer;
-  padding: 0.75rem;
+.article-body.html-content :deep(.image-container img),
+.article-body.html-content :deep(img) {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: 8px;
-  transition: background 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.related-article:hover {
-  background: #e5e7eb;
-}
-
-.related-article img {
-  width: 80px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.related-content h4 {
+.article-body.html-content :deep(.image-caption) {
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
-  margin-bottom: 0.25rem;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.related-date {
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
-
-.share-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.share-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.share-btn.twitter {
-  background: #1da1f2;
-  color: white;
-}
-
-.share-btn.linkedin {
-  background: #0077b5;
-  color: white;
-}
-
-.share-btn.facebook {
-  background: #1877f2;
-  color: white;
-}
-
-.share-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Newsletter Section */
-.newsletter-section {
-  background: #667eea;
-  color: white;
-  padding: 60px 0;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  font-style: italic;
   text-align: center;
 }
 
-.newsletter-content h3 {
-  font-size: 2rem;
+/* 表格：完整宽度、横向滚动 */
+.article-body.html-content :deep(.comparison-table) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.article-body.html-content :deep(table) {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.article-body.html-content :deep(th),
+.article-body.html-content :deep(td) {
+  padding: 12px 16px;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+}
+
+.article-body.html-content :deep(th) {
+  background: #f8fafc;
   font-weight: 600;
-  margin-bottom: 1rem;
+  color: #1f2937;
 }
 
-.newsletter-content p {
-  font-size: 1.125rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+.article-body.html-content :deep(tr:hover) {
+  background: #fafafa;
 }
 
-.newsletter-form {
-  display: flex;
-  max-width: 400px;
-  margin: 0 auto;
-  gap: 1rem;
+/* 推荐/要点等卡片区 */
+.article-body.html-content :deep(.recommendation-container) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  margin: 1.5rem 0;
 }
 
-.newsletter-form input {
-  flex: 1;
-  padding: 1rem;
-  border: none;
+.article-body.html-content :deep(.recommendation),
+.article-body.html-content :deep(.key-takeaways) {
+  width: 100%;
+  max-width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: #f8fafc;
   border-radius: 8px;
-  font-size: 1rem;
+  border-left: 4px solid #667eea;
+  box-sizing: border-box;
 }
 
-.newsletter-form button {
-  padding: 1rem 2rem;
-  background: white;
-  color: #667eea;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.article-body.html-content :deep(.article-footer) {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #6b7280;
 }
 
-.newsletter-form button:hover {
-  background: #f3f4f6;
-  transform: translateY(-2px);
+/* 去除 content 内可能自带的 body/article 背景与最大宽度限制，避免与页面冲突 */
+.article-body.html-content :deep(article body),
+.article-body.html-content :deep(.ai-model-comparison) {
+  background: transparent;
+  max-width: none;
+  padding: 0;
+  margin: 0;
 }
+
+@media (min-width: 768px) {
+  .article-body.html-content :deep(.recommendation-container) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .content-wrapper {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .sidebar {
-    position: static;
-  }
 }
 
 @media (max-width: 768px) {
@@ -735,14 +555,6 @@ const subscribeNewsletter = () => {
   .article-meta {
     flex-direction: column;
     gap: 0.5rem;
-  }
-
-  .newsletter-form {
-    flex-direction: column;
-  }
-
-  .newsletter-form button {
-    width: 100%;
   }
 }
 </style>

@@ -19,7 +19,7 @@
           :key="cat.id"
           class="function-tab"
           :class="{ active: activeCategory === cat.id }"
-          @click="activeCategory = cat.id"
+          @click="goToMidjourneyTab(cat.id)"
         >
           <div class="function-icon">
             <i :class="cat.icon"></i>
@@ -147,13 +147,13 @@
           <div class="form-group">
             <label>Task ID *</label>
             <div class="select-with-arrow">
-              <select v-model="upscaleForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList">
+              <select v-model="upscaleForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList" :key="'upscale-select-' + extendListOptions.length">
                 <option value="">Select a task</option>
-                <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
+                <option v-for="item in extendListOptions" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
               </select>
               <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
             </div>
-            <div v-if="!loadingExtendList && extendList.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
+            <div v-if="!loadingExtendList && extendListOptions.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
           </div>
           <div class="form-group" v-if="selectedOutputUrls.length">
             <label>Image Index *</label>
@@ -193,13 +193,13 @@
           <div class="form-group">
             <label>Task ID *</label>
             <div class="select-with-arrow">
-              <select v-model="varyForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList">
+              <select v-model="varyForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList" :key="'vary-select-' + extendListOptions.length">
                 <option value="">Select a task</option>
-                <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
+                <option v-for="item in extendListOptions" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
               </select>
               <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
             </div>
-            <div v-if="!loadingExtendList && extendList.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
+            <div v-if="!loadingExtendList && extendListOptions.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
           </div>
           <div class="form-group" v-if="selectedOutputUrls.length">
             <label>Image Index *</label>
@@ -300,7 +300,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadImage from '../tools/common/UploadImage.vue'
 import { useAuth } from '~/composables/useAuth'
@@ -313,7 +313,7 @@ const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
 const { showError } = useToast()
-const { post, get } = useApi()
+const { post } = useApi()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
@@ -393,8 +393,36 @@ watch(() => route.query['record-id'], (recordId) => {
   else { loadingRecordId.value = null; detailData.value = null }
 }, { immediate: true })
 
-// 分类：imagine | upscale | vary
+// 分类：imagine | upscale | vary，与三级路由同步：/home/midjourney/imagine、/upscale、/vary
 const activeCategory = ref('imagine')
+const validCategories = ['imagine', 'upscale', 'vary']
+
+const midjourneyTabToPath = {
+  imagine: '/home/midjourney/imagine',
+  upscale: '/home/midjourney/upscale',
+  vary: '/home/midjourney/vary'
+}
+
+const midjourneyPathToTab = {
+  '/home/midjourney/imagine': 'imagine',
+  '/home/midjourney/upscale': 'upscale',
+  '/home/midjourney/vary': 'vary'
+}
+
+function getMidjourneyTabFromPath(path) {
+  if (!path || typeof path !== 'string') return 'imagine'
+  return midjourneyPathToTab[path] || 'imagine'
+}
+
+function goToMidjourneyTab(catId) {
+  const path = midjourneyTabToPath[catId] || '/home/midjourney/imagine'
+  router.push(path)
+}
+
+watch(() => route.path, (path) => {
+  const tab = midjourneyPathToTab[path]
+  if (tab && validCategories.includes(tab)) activeCategory.value = tab
+}, { immediate: true })
 
 // 分类选项（Imagine / Upscale / Vary，样式参考 Nano Banana）
 const categoryOptions = ref([
@@ -403,8 +431,8 @@ const categoryOptions = ref([
   { id: 'vary', name: 'Vary', description: 'Create a vary task to enhance image clarity and simulate styles based on previously generated Midjourney images', icon: 'fas fa-palette' }
 ])
 
-// Imagine 表单
-const form = reactive({
+// Imagine 表单初始值（切换 Tab 时还原用）
+const INIT_IMAGINE_FORM = {
   taskType: 'mj_txt2img',
   prompt: '',
   speed: 'relaxed',
@@ -415,31 +443,39 @@ const form = reactive({
   stylization: 100,
   weirdness: 0,
   waterMark: ''
-})
+}
+const form = reactive({ ...INIT_IMAGINE_FORM })
 
 // Upscale 表单：taskId, imageIndex (0-3), waterMark
-const upscaleForm = reactive({
-  taskId: '',
-  imageIndex: 0,
-  waterMark: ''
-})
+const INIT_UPSCALE_FORM = { taskId: '', imageIndex: 0, waterMark: '' }
+const upscaleForm = reactive({ ...INIT_UPSCALE_FORM })
 
 // Vary 表单：taskId, imageIndex (1-4), waterMark
-const varyForm = reactive({
-  taskId: '',
-  imageIndex: 1,
-  waterMark: ''
-})
+const INIT_VARY_FORM = { taskId: '', imageIndex: 1, waterMark: '' }
+const varyForm = reactive({ ...INIT_VARY_FORM })
 
 // extend-list：Upscale/Vary 共用，用于 Task ID 下拉与 Image Index 图片选择
 const EXTEND_LIST_MODEL = 'midjourney_imagine'
 const extendList = ref([])
 const loadingExtendList = ref(false)
 const fetchExtendList = async () => {
+  if (!process.client) return
   loadingExtendList.value = true
   try {
-    const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
-    extendList.value = Array.isArray(data) ? data : []
+    const url = `/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`
+    const headers = { Accept: 'application/json' }
+    const token = getAuthToken()
+    if (token) headers['Authorization'] = `Bearer ${token}`
+    const res = await $fetch(url, { method: 'GET', headers, credentials: 'include' })
+    // 接口返回 { errorCode, data: [...] }，直接取 data
+    const rawList = (res && Array.isArray(res.data) ? res.data : Array.isArray(res) ? res : [])
+    const list = rawList.map((x) => ({
+      ...x,
+      taskId: x.taskId != null ? String(x.taskId) : '',
+      title: x.title != null ? String(x.title) : ''
+    })).filter((x) => x.taskId)
+    extendList.value = list
+    await nextTick()
   } catch {
     extendList.value = []
   } finally {
@@ -449,10 +485,17 @@ const fetchExtendList = async () => {
 
 watch(activeCategory, (cat) => {
   if (cat === 'upscale' || cat === 'vary') fetchExtendList()
+  // 切换 Tab 时当前表单恢复为初始状态，三个表单互不影响
+  if (cat === 'imagine') Object.assign(form, INIT_IMAGINE_FORM)
+  else if (cat === 'upscale') Object.assign(upscaleForm, INIT_UPSCALE_FORM)
+  else if (cat === 'vary') Object.assign(varyForm, INIT_VARY_FORM)
 }, { immediate: true })
 
 watch(() => upscaleForm.taskId, () => { upscaleForm.imageIndex = 0 })
 watch(() => varyForm.taskId, () => { varyForm.imageIndex = 1 })
+
+// 供模板使用的列表（computed 确保响应式更新后下拉选项重渲染）
+const extendListOptions = computed(() => extendList.value || [])
 
 // 当前选中的任务（用于展示 outputUrls）
 const selectedExtendTask = computed(() => {
@@ -562,7 +605,7 @@ const onSubmitImagine = async () => {
     const res = await post('/api/midjourney/imagine', body)
     const recordId = res?.recordId ?? res?.data?.recordId
     if (recordId) {
-      router.push(`/home/midjourney?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`${midjourneyTabToPath[activeCategory.value] || '/home/midjourney/imagine'}?record-id=${encodeURIComponent(recordId)}`)
       return
     }
     pushResult(res)
@@ -591,7 +634,7 @@ const onSubmitUpscale = async () => {
     const res = await post('/api/midjourney/upscale', body)
     const recordId = res?.recordId ?? res?.data?.recordId
     if (recordId) {
-      router.push(`/home/midjourney?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`${midjourneyTabToPath[activeCategory.value] || '/home/midjourney/imagine'}?record-id=${encodeURIComponent(recordId)}`)
       return
     }
     pushResult(res)
@@ -620,7 +663,7 @@ const onSubmitVary = async () => {
     const res = await post('/api/midjourney/vary', body)
     const recordId = res?.recordId ?? res?.data?.recordId
     if (recordId) {
-      router.push(`/home/midjourney?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`${midjourneyTabToPath[activeCategory.value] || '/home/midjourney/imagine'}?record-id=${encodeURIComponent(recordId)}`)
       return
     }
     pushResult(res)

@@ -62,17 +62,26 @@
             </div>
           </div>
           
-          <!-- 二级导航 -->
+          <!-- 二级导航：有路由的用 NuxtLink 保证可点击跳转（如 Luma） -->
           <div class="sub-nav" v-if="selectedCategory">
-            <div 
-              v-for="subTool in getCurrentTools()" 
-              :key="subTool.id"
-              class="sub-nav-item"
-              :class="{ active: selectedTool === subTool.id }"
-              @click="selectTool(subTool.id)"
-            >
-              {{ subTool.name }}
-            </div>
+            <template v-for="subTool in getCurrentTools()" :key="subTool.id">
+              <NuxtLink
+                v-if="toolRouteMap[subTool.name]"
+                :to="toolRouteMap[subTool.name]"
+                class="sub-nav-item"
+                :class="{ active: selectedTool === subTool.id }"
+              >
+                {{ subTool.name }}
+              </NuxtLink>
+              <div
+                v-else
+                class="sub-nav-item"
+                :class="{ active: selectedTool === subTool.id }"
+                @click="selectTool(subTool.id)"
+              >
+                {{ subTool.name }}
+              </div>
+            </template>
           </div>
         </header>
 
@@ -201,21 +210,21 @@ const route = useRoute()
 
 // 工具名称到路由的映射
 const toolRouteMap = {
-  'Veo3': '/home/veo3',
-  'Runway': '/home/runway',
-  'Luma': '/home/luma',
-  'Midjourney': '/home/midjourney',
-  'GPT 4o Image': '/home/gpt-4o-image',
-  'Flux Kontext': '/home/flux-kontext',
-  'Nano Banana': '/home/nano-banana',
-  'Elevenlabs': '/home/elevenlabs',
-  'Suno': '/home/suno',
-  'Sora': '/home/sora',
+  'Veo3': '/home/veo3/text-to-video',
+  'Runway': '/home/runway/generate',
+  'Luma': '/home/luma/generate',
+  'Midjourney': '/home/midjourney/imagine',
+  'GPT 4o Image': '/home/gpt-4o-image/generate',
+  'Flux Kontext': '/home/flux-kontext/generate',
+  'Nano Banana': '/home/nano-banana/generate',
+  'Elevenlabs': '/home/elevenlabs/multilingual-v2',
+  'Suno': '/home/suno/generate',
+  'Sora': '/home/sora/text-to-video',
   // Chat tools
-  'GPT': '/home/gpt',
-  'Deepseek': '/home/deepseek',
-  'Claude': '/home/claude',
-  'Gemini': '/home/gemini'
+  'GPT': '/home/gpt/generate',
+  'Deepseek': '/home/deepseek/generate',
+  'Claude': '/home/claude/generate',
+  'Gemini': '/home/gemini/generate'
 }
 
 // SEO优化
@@ -874,29 +883,60 @@ loadHistoryData()
 
 // 监听路由变化，同步侧边栏导航状态
 watch(() => route.path, (newPath) => {
-  // 如果访问的是 /home，默认跳转到 /home/gpt
+  // 如果访问的是 /home，默认跳转到 /home/gpt/generate
   if (newPath === '/home') {
-    router.replace('/home/gpt')
+    router.replace('/home/gpt/generate')
     return
   }
   
   // 根据路由路径找到对应的工具
   const routeToToolMap = {
     '/home/veo3': 'Veo3',
-    '/home/runway': 'Runway', 
+    '/home/veo3/text-to-video': 'Veo3',
+    '/home/veo3/first-and-last-to-video': 'Veo3',
+    '/home/veo3/reference-to-video': 'Veo3',
+    '/home/veo3/extend': 'Veo3',
+    '/home/runway': 'Runway',
+    '/home/runway/generate': 'Runway',
+    '/home/runway/extend': 'Runway',
+    '/home/runway/aleph': 'Runway',
     '/home/luma': 'Luma',
+    '/home/luma/generate': 'Luma',
     '/home/midjourney': 'Midjourney',
+    '/home/midjourney/imagine': 'Midjourney',
+    '/home/midjourney/upscale': 'Midjourney',
+    '/home/midjourney/vary': 'Midjourney',
     '/home/gpt-4o-image': 'GPT 4o Image',
+    '/home/gpt-4o-image/generate': 'GPT 4o Image',
     '/home/flux-kontext': 'Flux Kontext',
+    '/home/flux-kontext/generate': 'Flux Kontext',
     '/home/nano-banana': 'Nano Banana',
+    '/home/nano-banana/generate': 'Nano Banana',
+    '/home/nano-banana/edit': 'Nano Banana',
+    '/home/nano-banana/pro-generate': 'Nano Banana',
     '/home/elevenlabs': 'Elevenlabs',
+    '/home/elevenlabs/multilingual-v2': 'Elevenlabs',
+    '/home/elevenlabs/turbo-2-5': 'Elevenlabs',
+    '/home/elevenlabs/speech-to-text': 'Elevenlabs',
+    '/home/elevenlabs/sound-effect-v2': 'Elevenlabs',
+    '/home/elevenlabs/audio-isolation': 'Elevenlabs',
     '/home/suno': 'Suno',
+    '/home/suno/generate': 'Suno',
+    '/home/suno/extend': 'Suno',
+    '/home/suno/upload-cover': 'Suno',
+    '/home/suno/upload-extend': 'Suno',
+    '/home/suno/add-instrumental': 'Suno',
+    '/home/suno/add-vocals': 'Suno',
     '/home/sora': 'Sora',
     // Chat tools
     '/home/gpt': 'GPT',
+    '/home/gpt/generate': 'GPT',
     '/home/deepseek': 'Deepseek',
+    '/home/deepseek/generate': 'Deepseek',
     '/home/claude': 'Claude',
-    '/home/gemini': 'Gemini'
+    '/home/claude/generate': 'Claude',
+    '/home/gemini': 'Gemini',
+    '/home/gemini/generate': 'Gemini'
   }
   
   const toolName = routeToToolMap[newPath]
@@ -1252,6 +1292,8 @@ provide('addToUsageHistory', addToUsageHistory)
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .sub-nav-item:hover {

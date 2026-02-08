@@ -607,7 +607,7 @@ const generateImage = async () => {
     const data = await post('/api/image/flux-kontext/generate', requestBody)
     const recordId = data?.recordId ?? data?.data?.recordId
     if (recordId) {
-      router.push(`/home/flux-kontext?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`/home/flux-kontext/generate?record-id=${encodeURIComponent(recordId)}`)
       return
     }
     let urls = data?.outputUrls

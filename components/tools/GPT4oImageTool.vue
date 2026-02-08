@@ -431,7 +431,7 @@ const generateImage = async () => {
     const recordId = data?.recordId ?? data?.data?.recordId
 
     if (recordId) {
-      router.push(`/home/gpt-4o-image?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`/home/gpt-4o-image/generate?record-id=${encodeURIComponent(recordId)}`)
       return
     }
 

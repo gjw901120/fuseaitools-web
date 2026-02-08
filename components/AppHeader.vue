@@ -14,8 +14,7 @@
       <div class="header-content">
         <div class="logo">
           <NuxtLink to="/" class="logo-link">
-            <img src="/favicon.ico" alt="Logo" class="logo-icon" />
-            <span>FuseAI</span>
+            <img src="/favicon.ico" alt="Fuse AI" class="logo-icon" />
           </NuxtLink>
         </div>
 
@@ -255,8 +254,8 @@ onMounted(() => {
 }
 
 .logo-icon {
-  width: 32px;
-  height: 32px;
+  width: 160px;
+  height: 60px;
   object-fit: contain;
 }
 

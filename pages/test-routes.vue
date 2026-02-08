@@ -6,7 +6,7 @@
       <a href="/home/elevenlabs/multilingual-v2" class="test-link">ElevenLabs Multilingual v2</a>
       <a href="/home/elevenlabs/turbo-2-5" class="test-link">ElevenLabs Turbo 2.5</a>
       <a href="/home/nano-banana" class="test-link">Nano Banana 主页</a>
-      <a href="/home/gpt-4o-image" class="test-link">GPT 4o Image 主页</a>
+      <a href="/home/gpt-4o-image/generate" class="test-link">GPT 4o Image 主页</a>
     </div>
   </div>
 </template>

@@ -32,6 +32,7 @@ interface _GlobalComponents {
     'Toast': typeof import("../components/Toast.vue")['default']
     'ToastContainer': typeof import("../components/ToastContainer.vue")['default']
     'ToolCategory': typeof import("../components/ToolCategory.vue")['default']
+    'ToolOverview': typeof import("../components/ToolOverview.vue")['default']
     'VerifyCodeModal': typeof import("../components/VerifyCodeModal.vue")['default']
     'ToolsElevenLabsTool': typeof import("../components/tools/ElevenLabsTool.vue")['default']
     'ToolsFluxKontextTool': typeof import("../components/tools/FluxKontextTool.vue")['default']
@@ -89,6 +90,7 @@ interface _GlobalComponents {
     'LazyToast': LazyComponent<typeof import("../components/Toast.vue")['default']>
     'LazyToastContainer': LazyComponent<typeof import("../components/ToastContainer.vue")['default']>
     'LazyToolCategory': LazyComponent<typeof import("../components/ToolCategory.vue")['default']>
+    'LazyToolOverview': LazyComponent<typeof import("../components/ToolOverview.vue")['default']>
     'LazyVerifyCodeModal': LazyComponent<typeof import("../components/VerifyCodeModal.vue")['default']>
     'LazyToolsElevenLabsTool': LazyComponent<typeof import("../components/tools/ElevenLabsTool.vue")['default']>
     'LazyToolsFluxKontextTool': LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
@@ -152,6 +154,7 @@ export const ProductShowcase: typeof import("../components/ProductShowcase.vue")
 export const Toast: typeof import("../components/Toast.vue")['default']
 export const ToastContainer: typeof import("../components/ToastContainer.vue")['default']
 export const ToolCategory: typeof import("../components/ToolCategory.vue")['default']
+export const ToolOverview: typeof import("../components/ToolOverview.vue")['default']
 export const VerifyCodeModal: typeof import("../components/VerifyCodeModal.vue")['default']
 export const ToolsElevenLabsTool: typeof import("../components/tools/ElevenLabsTool.vue")['default']
 export const ToolsFluxKontextTool: typeof import("../components/tools/FluxKontextTool.vue")['default']
@@ -209,6 +212,7 @@ export const LazyProductShowcase: LazyComponent<typeof import("../components/Pro
 export const LazyToast: LazyComponent<typeof import("../components/Toast.vue")['default']>
 export const LazyToastContainer: LazyComponent<typeof import("../components/ToastContainer.vue")['default']>
 export const LazyToolCategory: LazyComponent<typeof import("../components/ToolCategory.vue")['default']>
+export const LazyToolOverview: LazyComponent<typeof import("../components/ToolOverview.vue")['default']>
 export const LazyVerifyCodeModal: LazyComponent<typeof import("../components/VerifyCodeModal.vue")['default']>
 export const LazyToolsElevenLabsTool: LazyComponent<typeof import("../components/tools/ElevenLabsTool.vue")['default']>
 export const LazyToolsFluxKontextTool: LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>

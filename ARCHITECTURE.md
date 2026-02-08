@@ -106,7 +106,7 @@ fuseaitools-web/
 - **工具中心**：`/home` 使用 `home/index.vue`，提供：
   - 左侧：使用历史（`useHomeLayout` 等）
   - 右侧：工具分类导航 + 当前选中工具的展示区（通过 `<component :is="currentToolComponent" />` 等动态加载对应 Tool 组件）。
-- **具体工具页**：如 `/home/gpt`、`/home/gpt-4o-image`、`/home/nano-banana` 等，多为「同一套 home 布局 + 不同 Tool 组件」，部分子路由如 `/home/elevenlabs/multilingual-v2`、`/home/suno/extend` 等。
+- **具体工具页**：如 `/home/gpt`、`/home/gpt-4o-image`、`/home/nano-banana` 等，多为「同一套 home 布局 + 不同 Tool 组件」；Suno 已统一为二级路由如 `/home/suno-generate`、`/home/suno-extend` 等；ElevenLabs 仍为三级如 `/home/elevenlabs/multilingual-v2`。
 
 ### 4.2 布局
 

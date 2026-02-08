@@ -1,42 +1,27 @@
 <template>
-  <div class="tool-page">
-    <ElevenLabsTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <ElevenLabsTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
+import { useToolSEO } from '~/composables/useToolSEO'
 
-// SEO 优化
-useHead({
-  title: 'ElevenLabs Multilingual v2 - Multilingual Voice Synthesis | FuseAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: 'ElevenLabs Multilingual v2 model, supporting AI voice synthesis in 100+ languages, suitable for international content creation, high-quality multilingual voice generation tool.'
-    },
-    {
-      name: 'keywords',
-      content: 'ElevenLabs Multilingual v2, multilingual voice synthesis, AI voice, international voice, multilingual TTS, voice generation'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'ElevenLabs Multilingual v2',
+  description: 'ElevenLabs Multilingual v2 - Multilingual Voice Synthesis. AI voice synthesis in 100+ languages. Use for free online.',
+  category: 'audio',
+  route: '/home/elevenlabs/multilingual-v2',
+  keywords: ['ElevenLabs', 'Multilingual v2', 'voice synthesis', 'TTS', 'multilingual voice'],
+  applicationCategory: 'AudioApplication',
+  offers: { price: '0', priceCurrency: 'USD' }
 })
-
-// 设置默认模型为Multilingual v2
-onMounted(() => {
-  // 这里可以通过事件总线或其他方式通知组件设置默认模型
-})
+useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page {
-  width: 100%;
-  height: 100vh;
-}
+.tool-page { width: 100%; height: 100%; }
 </style>
-
-
-
-
-
-

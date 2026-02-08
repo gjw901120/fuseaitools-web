@@ -19,7 +19,7 @@
           :key="func.id"
           class="function-tab"
           :class="{ active: formData.function === func.id }"
-          @click="switchFunction(func.id)"
+          @click="goToElevenLabsTab(func.id)"
         >
           <div class="function-icon">
             <i :class="func.icon"></i>
@@ -685,6 +685,26 @@ import elevenlabsVoices from '~/data/elevenlabs-voices.js'
 const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
+
+// Tab 与三级路由同步：/home/elevenlabs/multilingual-v2 等
+const elevenlabsTabToPath = {
+  'multilingual-v2': '/home/elevenlabs/multilingual-v2',
+  'turbo-2-5': '/home/elevenlabs/turbo-2-5',
+  'speech-to-text': '/home/elevenlabs/speech-to-text',
+  'sound-effect-v2': '/home/elevenlabs/sound-effect-v2',
+  'audio-isolation': '/home/elevenlabs/audio-isolation'
+}
+const elevenlabsPathToTab = {
+  '/home/elevenlabs/multilingual-v2': 'multilingual-v2',
+  '/home/elevenlabs/turbo-2-5': 'turbo-2-5',
+  '/home/elevenlabs/speech-to-text': 'speech-to-text',
+  '/home/elevenlabs/sound-effect-v2': 'sound-effect-v2',
+  '/home/elevenlabs/audio-isolation': 'audio-isolation'
+}
+function goToElevenLabsTab(tabId) {
+  const path = elevenlabsTabToPath[tabId] || elevenlabsTabToPath['multilingual-v2']
+  router.push(path)
+}
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
@@ -830,8 +850,8 @@ watch(() => formData.function, (newFunction) => {
     'multilingual-v2': 'elevenlabs_text_to_speech_multilingual',
     'turbo-2-5': 'elevenlabs_text_to_speech_turbo',
     'speech-to-text': 'elevenlabs_speech_to_text',
-    'sound-effect-v2': 'elevenlabs_audio_isolation',
-    'audio-isolation': 'elevenlabs_sound_effect'
+    'sound-effect-v2': 'elevenlabs_sound_effect',
+    'audio-isolation': 'elevenlabs_audio_isolation'
   }
   formData.model = modelMap[newFunction] || ''
 }, { immediate: true })
@@ -844,6 +864,16 @@ const isUploadingIsolation = ref(false)
 
 // 结果数据
 const result = ref(null)
+
+// 路由 path 同步到 formData.function（须在 formData、result 定义之后）
+watch(() => route.path, (path) => {
+  const tab = elevenlabsPathToTab[path]
+  if (tab && formData.function !== tab) {
+    formData.function = tab
+    result.value = null
+  }
+}, { immediate: true })
+
 const isGenerating = ref(false)
 const isPlaying = ref(false)
 const currentTime = ref(0)
@@ -894,11 +924,9 @@ const canGenerate = computed(() => {
   return false
 })
 
-// 方法
-const switchFunction = (functionId) => {
-  formData.function = functionId
-  // 重置结果
-  result.value = null
+// 方法（Tab 切换改为路由跳转，由 watch route.path 同步 formData.function）
+function getElevenLabsRecordPath() {
+  return elevenlabsTabToPath[formData.function] || '/home/elevenlabs/multilingual-v2'
 }
 
 const getConfigTitle = () => {
@@ -1164,7 +1192,7 @@ const generateContent = async () => {
       }
       const data = await post('/api/audio/elevenLabs/text-to-speech', body)
       const rid = data?.recordId ?? data?.data?.recordId
-      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      if (rid) { router.push(getElevenLabsRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
       const audioUrl = resolveAudioUrl(data)
       result.value = { ...data, audioUrl }
     } else if (formData.function === 'speech-to-text') {
@@ -1177,7 +1205,7 @@ const generateContent = async () => {
       }
       const data = await post('/api/audio/elevenLabs/speech-to-text', body)
       const rid = data?.recordId ?? data?.data?.recordId
-      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      if (rid) { router.push(getElevenLabsRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
       result.value = data
     } else if (formData.function === 'sound-effect-v2') {
       const body = {
@@ -1190,7 +1218,7 @@ const generateContent = async () => {
       }
       const data = await post('/api/audio/elevenLabs/sound-effect-v2', body)
       const rid = data?.recordId ?? data?.data?.recordId
-      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      if (rid) { router.push(getElevenLabsRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
       const audioUrl = resolveAudioUrl(data)
       result.value = { ...data, audioUrl }
     } else if (formData.function === 'audio-isolation') {
@@ -1200,7 +1228,7 @@ const generateContent = async () => {
       }
       const data = await post('/api/audio/elevenLabs/audio-isolation', body)
       const rid = data?.recordId ?? data?.data?.recordId
-      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      if (rid) { router.push(getElevenLabsRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
       const audioUrl = resolveAudioUrl(data)
       result.value = { ...data, audioUrl }
     }

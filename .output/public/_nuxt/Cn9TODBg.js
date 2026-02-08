@@ -1,0 +1,1 @@
+import{u as a,_ as s}from"./DitCw-bp.js";import{x as n,g as o,o as t,y as i}from"./C0Gp0dND.js";import"./BKLd6U9j.js";import"./DjnwlXih.js";import"./Ba1mol6I.js";const k={__name:"claude",setup(p){const{isOverviewPage:_,overviewConfig:e}=a();return(m,u)=>{const r=s,c=i;return o(_)&&o(e)?(t(),n(r,{key:0,config:o(e)},null,8,["config"])):(t(),n(c,{key:1}))}}};export{k as default};

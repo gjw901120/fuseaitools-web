@@ -765,9 +765,9 @@ const uploadAudioToUrl = async (file) => {
   return urls[0]
 }
 
-// 表单数据
-const formData = reactive({
-  function: 'generate', // 'generate', 'extend', 'cover', 'expand', 'accompaniment' 或 'vocal'
+// 表单数据初始值（切换功能时还原用，互不影响）
+const INIT_SUNO_FORM = {
+  function: 'generate',
   prompt: '',
   customMode: false,
   instrumental: true,
@@ -779,24 +779,25 @@ const formData = reactive({
   styleWeight: 0.65,
   weirdnessConstraint: 0.65,
   audioWeight: 0.65,
-  // 音乐延长相关字段
   audioId: '',
   defaultParamFlag: true,
   continueAt: 60,
-  // 音频覆盖相关字段
   uploadedFile: null,
-  // 音频扩展相关字段
   expandDefaultParamFlag: true,
   expandContinueAt: 60,
   expandUploadedFile: null,
-  // 伴奏生成相关字段
   accompanimentTitle: '',
   accompanimentTags: '',
   accompanimentNegativeTags: '',
-  // 人声生成相关字段
   vocalTitle: '',
   vocalStyle: '',
   vocalNegativeTags: ''
+}
+const formData = reactive({ ...INIT_SUNO_FORM })
+
+// 切换功能 Tab 时当前表单恢复为初始状态（保留当前选中的 function）
+watch(() => formData.function, (fn) => {
+  Object.assign(formData, { ...INIT_SUNO_FORM, function: fn })
 })
 
 // Music Extension：Audio ID 从 extend-list 拉取（model=suno_generate），提交值为 taskId
@@ -815,14 +816,15 @@ const fetchExtendList = async () => {
   }
 }
 // 监听路由变化，同步功能选择状态；仅当路由为 extend 时拉取 extend-list，避免与 switchFunction 重复触发两次请求
+// 二级路由（与 History model 对应：suno_generate → suno-generate 等）
 watch(() => route.path, (newPath) => {
   const routeToFunctionMap = {
-    '/home/suno': 'generate',
+    '/home/suno/generate': 'generate',
     '/home/suno/extend': 'extend',
-    '/home/suno/cover': 'cover',
-    '/home/suno/expand': 'expand',
-    '/home/suno/accompaniment': 'accompaniment',
-    '/home/suno/vocal': 'vocal'
+    '/home/suno/upload-cover': 'cover',
+    '/home/suno/upload-extend': 'expand',
+    '/home/suno/add-instrumental': 'accompaniment',
+    '/home/suno/add-vocals': 'vocal'
   }
   const functionId = routeToFunctionMap[newPath]
   if (functionId) {
@@ -947,18 +949,15 @@ const switchFunction = (functionId) => {
   formData.function = functionId
   // 路由跳转
   const functionRouteMap = {
-    'generate': '/home/suno',
+    'generate': '/home/suno/generate',
     'extend': '/home/suno/extend',
-    'cover': '/home/suno/cover',
-    'expand': '/home/suno/expand',
-    'accompaniment': '/home/suno/accompaniment',
-    'vocal': '/home/suno/vocal'
+    'cover': '/home/suno/upload-cover',
+    'expand': '/home/suno/upload-extend',
+    'accompaniment': '/home/suno/add-instrumental',
+    'vocal': '/home/suno/add-vocals'
   }
-  
-  const route = functionRouteMap[functionId]
-  if (route) {
-    router.push(route)
-  }
+  const path = functionRouteMap[functionId]
+  if (path) router.push(path)
 }
 
 

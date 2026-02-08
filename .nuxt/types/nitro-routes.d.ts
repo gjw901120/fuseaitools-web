@@ -90,8 +90,14 @@ declare module "nitropack/types" {
     '/api/news/:slug': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/[slug].get').default>>>>
     }
+    '/api/news/detail': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/detail.get').default>>>>
+    }
     '/api/news': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/index.get').default>>>>
+    }
+    '/api/news/list': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/news/list.get').default>>>>
     }
     '/api/records/chat-detail': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/chat-detail.get').default>>>>

@@ -3,23 +3,30 @@
     <div class="simply-container">
       <div class="hero-content">
         <div class="hero-text">
+          <div class="hero-badge">AI Tools Free</div>
           <h1 class="hero-title">
-            FuseAI Tools - All-in-One AI Platform
-            <span class="gradient-text">50+ AI Models & Tools</span>
+            All-in-One AI Platform
+            <span class="gradient-text">50+ AI Models & Tools Free</span>
           </h1>
           <p class="hero-description">
-            Access over 50 AI models and tools in one platform, ranging from Chat to Image, Audio, and Video<br>
-            Everything you need to make your work smarter.
+            Access over 50 AI models and tools in one platform—Chat, Image, Audio, and Video. Everything you need to work smarter.
+          </p>
+          <p class="hero-credits">
+            <strong>Register now and get <span class="credits-highlight">100 credits free</span>.</strong> No credit card required.
           </p>
           <div class="hero-actions">
             <button class="btn-primary" @click="startFreeTrial">
-              Get Started
+              Get 100 Free Credits
             </button>
             <button class="btn-secondary" @click="exploreProducts">
-              Explore Products
+              Explore AI Tools Free
             </button>
           </div>
           <div class="hero-features">
+            <div class="feature-pill feature-pill-free" @click="goToHome">
+              <i class="fas fa-gift"></i>
+              AI Tools Free
+            </div>
             <div class="feature-pill" @click="goToHome">
               <i class="fas fa-brain"></i>
               50+ AI Models
@@ -107,6 +114,19 @@ const sendMessage = () => {
   align-items: center;
 }
 
+.hero-badge {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+}
+
 .hero-title {
   font-size: 3.5rem;
   font-weight: 800;
@@ -125,8 +145,20 @@ const sendMessage = () => {
 .hero-description {
   font-size: 1.3rem;
   color: #4b5563;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
   line-height: 1.6;
+}
+
+.hero-credits {
+  font-size: 1.15rem;
+  color: #374151;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.credits-highlight {
+  color: #667eea;
+  font-weight: 800;
 }
 
 .hero-actions {
@@ -199,6 +231,12 @@ const sendMessage = () => {
 
 .feature-pill i {
   font-size: 0.8rem;
+}
+
+.feature-pill-free {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+  border-color: rgba(102, 126, 234, 0.4);
+  font-weight: 700;
 }
 
 .hero-visual {

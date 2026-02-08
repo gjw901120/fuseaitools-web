@@ -329,6 +329,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
@@ -336,6 +337,8 @@ import { useApi } from '~/composables/useApi'
 import { useModelPrice } from '~/composables/useModelPrice'
 import { useRecordPolling } from '~/composables/useRecordPolling'
 
+const route = useRoute()
+const router = useRouter()
 const isClient = typeof window !== 'undefined'
 const { token } = useAuth()
 const { showError } = useToast()
@@ -461,8 +464,33 @@ const handleSoraImagesUpdate = async (files) => {
   }
 }
 
+// Tab 与二级路由同步：/home/sora/text-to-video 等
+const soraModeToPath = {
+  'text-to-video': '/home/sora/text-to-video',
+  'image-to-video': '/home/sora/image-to-video',
+  'pro-text-to-video': '/home/sora/pro-text-to-video',
+  'pro-image-to-video': '/home/sora/pro-image-to-video',
+  'watermark-remover': '/home/sora/watermark-remover',
+  'pro-storyboard': '/home/sora/pro-storyboard'
+}
+const soraPathToMode = {
+  '/home/sora/text-to-video': 'text-to-video',
+  '/home/sora/image-to-video': 'image-to-video',
+  '/home/sora/pro-text-to-video': 'pro-text-to-video',
+  '/home/sora/pro-image-to-video': 'pro-image-to-video',
+  '/home/sora/watermark-remover': 'watermark-remover',
+  '/home/sora/pro-storyboard': 'pro-storyboard'
+}
+
+watch(() => route.path, (path) => {
+  const mode = soraPathToMode[path]
+  if (mode && form.model !== mode) form.model = mode
+}, { immediate: true })
+
 const switchMode = (model) => {
   form.model = model
+  const path = soraModeToPath[model] || soraModeToPath['text-to-video']
+  router.push(path)
 }
 
 // 获取视频列表

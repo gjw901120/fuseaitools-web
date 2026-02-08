@@ -16,12 +16,12 @@
     <!-- Function Selection Section -->
     <div class="function-selection-section">
       <div class="function-tabs">
-        <div 
-          v-for="func in functionOptions" 
+        <div
+          v-for="func in functionOptions"
           :key="func.id"
           class="function-tab"
           :class="{ active: activeTab === func.id }"
-          @click="activeTab = func.id"
+          @click="goToNanoBananaTab(func.id)"
         >
           <div class="function-icon">
             <i :class="func.icon"></i>
@@ -39,61 +39,12 @@
       <!-- Left: Parameter Configuration Panel -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>{{ activeTab === 'nano-banana' ? 'Nano Banana Configuration' : 'Nano Banana Pro Configuration' }}</h4>
+          <h4>{{ configHeaderTitle }}</h4>
         </div>
 
-        <!-- Nano Banana Form -->
+        <!-- Nano Banana Form（仅 Text to Image） -->
         <form v-if="activeTab === 'nano-banana'" class="config-form" @submit.prevent="generateImage">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
-          <!-- 模式选择 -->
-          <div class="form-group">
-            <label>Generation Mode *</label>
-            <div class="mode-switch">
-              <button 
-                type="button" 
-                class="mode-btn" 
-                :class="{ active: formData.mode === 'text-to-image' }"
-                @click="formData.mode = 'text-to-image'"
-              >
-                <i class="fas fa-keyboard"></i> Text to Image
-              </button>
-              <button 
-                type="button" 
-                class="mode-btn" 
-                :class="{ active: formData.mode === 'image-to-image' }"
-                @click="formData.mode = 'image-to-image'"
-              >
-                <i class="fas fa-images"></i> Image to Image
-              </button>
-            </div>
-            <div class="form-hint">
-              {{ formData.mode === 'text-to-image' ? 'Generate images from text descriptions' : 'Edit and generate based on uploaded images' }}
-            </div>
-          </div>
-
-          <!-- 图片上传（仅在图生图/编辑模式显示，1-10 张） -->
-          <div class="form-group" v-if="formData.mode === 'image-to-image'">
-            <label>Upload Image * (1-10)</label>
-            <UploadImage
-              ref="editImageUploadRef"
-              input-id="nano-banana-image-upload"
-              label=""
-              upload-icon="fas fa-cloud-upload-alt"
-              upload-text="Click to upload image"
-              upload-hint="Supports JPG, PNG, WEBP formats, maximum 10MB"
-              additional-hint="Upload images to edit, up to 10 images"
-              theme-color="#667eea"
-              :max-files="10"
-              :max-file-size="10 * 1024 * 1024"
-              accept="image/jpeg,image/png,image/webp"
-              :multiple="true"
-              @update:files="handleImageUpdate"
-            />
-            <div v-if="isUploadingEdit" class="uploading-hint">
-              <i class="fas fa-spinner fa-spin"></i> Uploading images...
-            </div>
-          </div>
-
           <!-- 提示词输入 -->
           <div class="form-group">
             <label>Prompt *</label>
@@ -230,9 +181,81 @@
           <!-- 生成按钮 -->
           <button type="submit" :disabled="isGenerating || !canGenerate" class="generate-btn">
             <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
-            <i v-else :class="formData.mode === 'image-to-image' ? 'fas fa-images' : 'fas fa-magic'"></i>
-            {{ isGenerating ? 'Generating...' : (formData.mode === 'image-to-image' ? 'Generate from Image' : 'Generate Image') }}
+            <i v-else class="fas fa-magic"></i>
+            {{ isGenerating ? 'Generating...' : 'Generate Image' }}
             <span v-if="nanoBananaPriceText" class="price-tag">{{ nanoBananaPriceText }}</span>
+          </button>
+          </fieldset>
+        </form>
+
+        <!-- Nano Banana Edit Form（Image to Image） -->
+        <form v-if="activeTab === 'nano-banana-edit'" class="config-form" @submit.prevent="generateImageEdit">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
+          <div class="form-group">
+            <label>Upload Image * (1-10)</label>
+            <UploadImage
+              ref="editImageUploadRef"
+              input-id="nano-banana-edit-image-upload"
+              label=""
+              upload-icon="fas fa-cloud-upload-alt"
+              upload-text="Click to upload image"
+              upload-hint="Supports JPG, PNG, WEBP formats, maximum 10MB"
+              additional-hint="Upload images to edit, up to 10 images"
+              theme-color="#667eea"
+              :max-files="10"
+              :max-file-size="10 * 1024 * 1024"
+              accept="image/jpeg,image/png,image/webp"
+              :multiple="true"
+              @update:files="handleEditImageUpdate"
+            />
+            <div v-if="isUploadingEdit" class="uploading-hint">
+              <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Prompt *</label>
+            <textarea
+              v-model="editFormData.prompt"
+              placeholder="Describe the edits you want to make to the image..."
+              rows="4"
+              maxlength="5000"
+              class="form-input"
+              required
+            ></textarea>
+            <div class="char-count">{{ editFormData.prompt.length }}/5000</div>
+          </div>
+          <div class="form-group">
+            <label>Output Format</label>
+            <div class="tab-group">
+              <div class="tab-option" :class="{ active: editFormData.output_format === 'png' }" @click="editFormData.output_format = 'png'">
+                <i class="fas fa-file-image"></i><span>PNG</span>
+              </div>
+              <div class="tab-option" :class="{ active: editFormData.output_format === 'jpeg' }" @click="editFormData.output_format = 'jpeg'">
+                <i class="fas fa-file-image"></i><span>JPEG</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Image Size</label>
+            <div class="tab-group">
+              <div class="tab-option" :class="{ active: editFormData.image_size === '1:1' }" @click="editFormData.image_size = '1:1'"><i class="fas fa-square"></i><span>1:1</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '9:16' }" @click="editFormData.image_size = '9:16'"><i class="fas fa-mobile-alt"></i><span>9:16</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '16:9' }" @click="editFormData.image_size = '16:9'"><i class="fas fa-desktop"></i><span>16:9</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '3:4' }" @click="editFormData.image_size = '3:4'"><i class="fas fa-mobile-alt"></i><span>3:4</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '4:3' }" @click="editFormData.image_size = '4:3'"><i class="fas fa-square"></i><span>4:3</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '3:2' }" @click="editFormData.image_size = '3:2'"><i class="fas fa-rectangle-wide"></i><span>3:2</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '2:3' }" @click="editFormData.image_size = '2:3'"><i class="fas fa-mobile-alt"></i><span>2:3</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '5:4' }" @click="editFormData.image_size = '5:4'"><i class="fas fa-rectangle-wide"></i><span>5:4</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '4:5' }" @click="editFormData.image_size = '4:5'"><i class="fas fa-mobile-alt"></i><span>4:5</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === '21:9' }" @click="editFormData.image_size = '21:9'"><i class="fas fa-tv"></i><span>21:9</span></div>
+              <div class="tab-option" :class="{ active: editFormData.image_size === 'auto' }" @click="editFormData.image_size = 'auto'"><i class="fas fa-magic"></i><span>auto</span></div>
+            </div>
+          </div>
+          <button type="submit" :disabled="isGenerating || !canGenerateEdit" class="generate-btn">
+            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-images"></i>
+            {{ isGenerating ? 'Generating...' : 'Generate from Image' }}
+            <span v-if="nanoBananaEditPriceText" class="price-tag">{{ nanoBananaEditPriceText }}</span>
           </button>
           </fieldset>
         </form>
@@ -450,16 +473,8 @@
     <!-- Usage Tips -->
     <div class="usage-tips" v-if="activeTab === 'nano-banana'">
       <div class="tip-item">
-        <span class="tip-icon">🎨</span>
-        <span><strong>Mode Selection:</strong> Text to Image is suitable for creating from scratch, Image to Image is suitable for editing existing images</span>
-      </div>
-      <div class="tip-item">
-        <span class="tip-icon">📤</span>
-        <span><strong>Image Upload:</strong> Image to Image mode supports uploading up to 10 images in JPG/PNG/WEBP format</span>
-      </div>
-      <div class="tip-item">
         <span class="tip-icon">✍️</span>
-        <span><strong>Detailed Description:</strong> Provide detailed image descriptions or editing requirements for better results</span>
+        <span><strong>Text to Image:</strong> Describe the image content you want to generate</span>
       </div>
       <div class="tip-item">
         <span class="tip-icon">📝</span>
@@ -471,15 +486,29 @@
       </div>
       <div class="tip-item">
         <span class="tip-icon">📐</span>
-        <span><strong>Size Selection:</strong> Choose the appropriate aspect ratio for the best visual effect</span>
-      </div>
-      <div class="tip-item">
-        <span class="tip-icon">🔀</span>
-        <span><strong>Auto Size:</strong> Select auto to let AI automatically determine the best aspect ratio</span>
+        <span><strong>Size Selection:</strong> Choose the appropriate aspect ratio or select auto for AI to decide</span>
       </div>
       <div class="tip-item">
         <span class="tip-icon">⚡</span>
         <span><strong>Lightweight:</strong> Nano Banana is optimized for fast generation</span>
+      </div>
+    </div>
+    <div class="usage-tips" v-if="activeTab === 'nano-banana-edit'">
+      <div class="tip-item">
+        <span class="tip-icon">📤</span>
+        <span><strong>Image to Image:</strong> Upload 1–10 images in JPG/PNG/WEBP format to edit</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">✍️</span>
+        <span><strong>Edit Prompt:</strong> Describe the edits you want to make to the uploaded images</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">📝</span>
+        <span><strong>Character Limit:</strong> Prompt supports up to 5000 characters</span>
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🖼️</span>
+        <span><strong>Format & Size:</strong> Choose output format and aspect ratio for the result</span>
       </div>
     </div>
     <div class="usage-tips" v-if="activeTab === 'nano-banana-pro'">
@@ -528,41 +557,77 @@ const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
-// Tab state
+// Tab state，与三级路由同步：/home/nano-banana/generate、/edit、/pro-generate
 const activeTab = ref('nano-banana')
+
+const nanoBananaTabToPath = {
+  'nano-banana': '/home/nano-banana/generate',
+  'nano-banana-edit': '/home/nano-banana/edit',
+  'nano-banana-pro': '/home/nano-banana/pro-generate'
+}
+
+const nanoBananaPathToTab = {
+  '/home/nano-banana/generate': 'nano-banana',
+  '/home/nano-banana/edit': 'nano-banana-edit',
+  '/home/nano-banana/pro-generate': 'nano-banana-pro'
+}
+
+function goToNanoBananaTab(tabId) {
+  const path = nanoBananaTabToPath[tabId] || '/home/nano-banana/generate'
+  router.push(path)
+}
+
+watch(() => route.path, (path) => {
+  const tab = nanoBananaPathToTab[path]
+  if (tab) activeTab.value = tab
+  else if (path.startsWith('/home/nano-banana')) activeTab.value = 'nano-banana'
+}, { immediate: true })
 
 // Function options configuration
 const functionOptions = ref([
-  {
-    id: 'nano-banana',
-    name: 'Nano Banana',
-    description: 'Lightweight Image Generation',
-    icon: 'fas fa-image'
-  },
-  {
-    id: 'nano-banana-pro',
-    name: 'Nano Banana Pro',
-    description: 'Advanced Image Generation',
-    icon: 'fas fa-star'
-  }
+  { id: 'nano-banana', name: 'Nano Banana', description: 'Text to Image', icon: 'fas fa-image' },
+  { id: 'nano-banana-edit', name: 'Nano Banana Edit', description: 'Image to Image', icon: 'fas fa-edit' },
+  { id: 'nano-banana-pro', name: 'Nano Banana Pro', description: 'Advanced Image Generation', icon: 'fas fa-star' }
 ])
 
-// Nano Banana form data（文生图 + 编辑/图生图）
-const formData = reactive({
-  mode: 'text-to-image', // 'text-to-image' -> /generate, 'image-to-image' -> /edit
-  prompt: '',
-  image_urls: [], // 编辑模式：上传后的 URL 数组（1-10）
-  output_format: 'png',
-  image_size: '1:1'
+const configHeaderTitle = computed(() => {
+  if (activeTab.value === 'nano-banana') return 'Nano Banana Configuration'
+  if (activeTab.value === 'nano-banana-edit') return 'Nano Banana Edit Configuration'
+  return 'Nano Banana Pro Configuration'
 })
 
-// Nano Banana Pro form data
-const proFormData = reactive({
+// Nano Banana form data（仅 Text to Image）
+const INIT_NANO_BANANA_FORM = {
   prompt: '',
-  image_input: [], // 上传后的 URL 数组，必填 1-10
+  output_format: 'png',
+  image_size: '1:1'
+}
+const formData = reactive({ ...INIT_NANO_BANANA_FORM })
+
+// Nano Banana Edit form data（Image to Image）
+const INIT_NANO_BANANA_EDIT_FORM = {
+  prompt: '',
+  image_urls: [],
+  output_format: 'png',
+  image_size: '1:1'
+}
+const editFormData = reactive({ ...INIT_NANO_BANANA_EDIT_FORM })
+
+// Nano Banana Pro form data 初始值
+const INIT_NANO_BANANA_PRO_FORM = {
+  prompt: '',
+  image_input: [],
   aspect_ratio: '1:1',
   resolution: '1K',
   output_format: 'png'
+}
+const proFormData = reactive({ ...INIT_NANO_BANANA_PRO_FORM })
+
+// 切换 Tab 时当前表单恢复为初始状态
+watch(activeTab, (tab) => {
+  if (tab === 'nano-banana') Object.assign(formData, INIT_NANO_BANANA_FORM)
+  else if (tab === 'nano-banana-edit') Object.assign(editFormData, INIT_NANO_BANANA_EDIT_FORM)
+  else if (tab === 'nano-banana-pro') Object.assign(proFormData, INIT_NANO_BANANA_PRO_FORM)
 })
 
 // Aspect ratios for Pro（与后端 imageSize 一致）
@@ -612,12 +677,18 @@ function fillFormFromOriginalData(originalData) {
     if (o.resolution) proFormData.resolution = o.resolution
     if (o.outputFormat) proFormData.output_format = o.outputFormat === 'jpeg' ? 'jpg' : (o.outputFormat || 'png')
     if (o.output_format) proFormData.output_format = o.output_format === 'jpeg' ? 'jpg' : (o.output_format || 'png')
+  } else if (o.model === 'nano-banana-edit' || (Array.isArray(o.imageUrls) && o.imageUrls.length) || (Array.isArray(o.image_urls) && o.image_urls.length)) {
+    activeTab.value = 'nano-banana-edit'
+    if (o.prompt != null) editFormData.prompt = o.prompt
+    if (Array.isArray(o.imageUrls)) editFormData.image_urls = [...o.imageUrls]
+    if (Array.isArray(o.image_urls)) editFormData.image_urls = [...o.image_urls]
+    if (o.outputFormat) editFormData.output_format = o.outputFormat === 'jpg' ? 'jpeg' : (o.outputFormat || 'png')
+    if (o.output_format) editFormData.output_format = o.output_format === 'jpg' ? 'jpeg' : (o.output_format || 'png')
+    if (o.imageSize) editFormData.image_size = o.imageSize
+    if (o.image_size) editFormData.image_size = o.image_size
   } else {
     activeTab.value = 'nano-banana'
-    if (o.mode) formData.mode = o.mode
     if (o.prompt != null) formData.prompt = o.prompt
-    if (Array.isArray(o.imageUrls)) formData.image_urls = [...o.imageUrls]
-    if (Array.isArray(o.image_urls)) formData.image_urls = [...o.image_urls]
     if (o.outputFormat) formData.output_format = o.outputFormat === 'jpg' ? 'jpeg' : (o.outputFormat || 'png')
     if (o.output_format) formData.output_format = o.output_format === 'jpg' ? 'jpeg' : (o.output_format || 'png')
     if (o.imageSize) formData.image_size = o.imageSize
@@ -660,7 +731,12 @@ const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
 
 const nanoBananaPriceText = computed(() => {
-  const credits = formData.mode === 'image-to-image' ? getPrice('nano-banana-edit') : getPrice('nano-banana')
+  const credits = getPrice('nano-banana')
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
+})
+const nanoBananaEditPriceText = computed(() => {
+  const credits = getPrice('nano-banana-edit')
   const str = formatCredits(credits)
   return str ? `(${str})` : ''
 })
@@ -717,10 +793,10 @@ const uploadFilesToUrls = async (files, onProgress) => {
 }
 
 // 计算属性
-const canGenerate = computed(() => {
-  if (!formData.prompt.trim()) return false
-  if (formData.mode === 'image-to-image') return formData.image_urls.length >= 1 && formData.image_urls.length <= 10
-  return true
+const canGenerate = computed(() => !!formData.prompt.trim())
+const canGenerateEdit = computed(() => {
+  if (!editFormData.prompt.trim()) return false
+  return editFormData.image_urls.length >= 1 && editFormData.image_urls.length <= 10
 })
 
 const canGeneratePro = computed(() => {
@@ -730,24 +806,13 @@ const canGeneratePro = computed(() => {
 })
 
 // 方法
-const getPromptPlaceholder = () => {
-  if (formData.mode === 'image-to-image') {
-    return 'Describe the edits you want to make to the image, for example: "turn this photo into a character figure. Behind it, place a box with the character\'s image printed on it..."'
-  }
-  return 'Describe the image content you want to generate...'
-}
+const getPromptPlaceholder = () => 'Describe the image content you want to generate...'
+const getPromptHint = () => 'Provide detailed image content description, supports up to 5000 characters'
 
-const getPromptHint = () => {
-  if (formData.mode === 'image-to-image') {
-    return 'Provide detailed editing requirements for the image, supports up to 5000 characters'
-  }
-  return 'Provide detailed image content description, supports up to 5000 characters'
-}
-
-// 编辑模式：上传图片得到 imageUrls（1-10）
-const handleImageUpdate = async (files) => {
+// Nano Banana Edit：上传图片得到 image_urls（1-10）
+const handleEditImageUpdate = async (files) => {
   if (!files || (Array.isArray(files) && files.length === 0)) {
-    formData.image_urls = []
+    editFormData.image_urls = []
     editImageUploadRef.value?.clearFiles?.()
     return
   }
@@ -758,11 +823,11 @@ const handleImageUpdate = async (files) => {
   }
   isUploadingEdit.value = true
   try {
-    formData.image_urls = await uploadFilesToUrls(fileList)
+    editFormData.image_urls = await uploadFilesToUrls(fileList)
   } catch (error) {
     console.error('Edit images upload error:', error)
     showError(error.message || 'Failed to upload images')
-    formData.image_urls = []
+    editFormData.image_urls = []
     editImageUploadRef.value?.clearFiles?.()
   } finally {
     isUploadingEdit.value = false
@@ -803,61 +868,77 @@ const generateImage = async () => {
   }
   isGenerating.value = true
   try {
-    if (formData.mode === 'text-to-image') {
-      const body = {
-        model: 'nano-banana',
-        prompt: promptTrim,
-        outputFormat: formData.output_format,
-        imageSize: formData.image_size
-      }
-      const data = await post('/api/image/nano-banana/generate', body)
-      const recordId = data?.recordId ?? data?.data?.recordId
-      if (recordId) {
-        router.push(`/home/nano-banana?record-id=${encodeURIComponent(recordId)}`)
-        return
-      }
-      const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
-      if (url && typeof url === 'string') {
-        generatedImages.value.unshift({
-          id: Date.now(),
-          url,
-          prompt: formData.prompt,
-          mode: formData.mode,
-          output_format: formData.output_format,
-          image_size: formData.image_size,
-          timestamp: new Date().toLocaleTimeString()
-        })
-      } else {
-        showError('No image URL in response')
-      }
+    const body = {
+      model: 'nano-banana',
+      prompt: promptTrim,
+      outputFormat: formData.output_format,
+      imageSize: formData.image_size
+    }
+    const data = await post('/api/image/nano-banana/generate', body)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`${nanoBananaTabToPath[activeTab.value] || '/home/nano-banana/generate'}?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
+    if (url && typeof url === 'string') {
+      generatedImages.value.unshift({
+        id: Date.now(),
+        url,
+        prompt: formData.prompt,
+        output_format: formData.output_format,
+        image_size: formData.image_size,
+        timestamp: new Date().toLocaleTimeString()
+      })
     } else {
-      const body = {
-        model: 'nano-banana-edit',
-        prompt: promptTrim,
-        imageUrls: formData.image_urls,
-        outputFormat: formData.output_format,
-        imageSize: formData.image_size
-      }
-      const data = await post('/api/image/nano-banana/edit', body)
-      const recordId = data?.recordId ?? data?.data?.recordId
-      if (recordId) {
-        router.push(`/home/nano-banana?record-id=${encodeURIComponent(recordId)}`)
-        return
-      }
-      const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
-      if (url && typeof url === 'string') {
-        generatedImages.value.unshift({
-          id: Date.now(),
-          url,
-          prompt: formData.prompt,
-          mode: formData.mode,
-          output_format: formData.output_format,
-          image_size: formData.image_size,
-          timestamp: new Date().toLocaleTimeString()
-        })
-      } else {
-        showError('No image URL in response')
-      }
+      showError('No image URL in response')
+    }
+  } catch (error) {
+    console.error('Failed to generate image:', error)
+    showError(error.message || 'Failed to generate image, please try again')
+  } finally {
+    isGenerating.value = false
+  }
+}
+
+const generateImageEdit = async () => {
+  if (!canGenerateEdit.value) return
+  const promptTrim = editFormData.prompt.trim()
+  if (promptTrim.length > 5000) {
+    showError('Prompt cannot exceed 5000 characters')
+    return
+  }
+  if (editFormData.image_urls.length < 1 || editFormData.image_urls.length > 10) {
+    showError('Please upload 1 to 10 images')
+    return
+  }
+  isGenerating.value = true
+  try {
+    const body = {
+      model: 'nano-banana-edit',
+      prompt: promptTrim,
+      imageUrls: editFormData.image_urls,
+      outputFormat: editFormData.output_format,
+      imageSize: editFormData.image_size
+    }
+    const data = await post('/api/image/nano-banana/edit', body)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`${nanoBananaTabToPath[activeTab.value] || '/home/nano-banana/edit'}?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
+    if (url && typeof url === 'string') {
+      generatedImages.value.unshift({
+        id: Date.now(),
+        url,
+        prompt: editFormData.prompt,
+        output_format: editFormData.output_format,
+        image_size: editFormData.image_size,
+        timestamp: new Date().toLocaleTimeString()
+      })
+    } else {
+      showError('No image URL in response')
     }
   } catch (error) {
     console.error('Failed to generate image:', error)
@@ -908,7 +989,7 @@ const generateImagePro = async () => {
     const data = await post('/api/image/nano-banana-pro/generate', body)
     const recordId = data?.recordId ?? data?.data?.recordId
     if (recordId) {
-      router.push(`/home/nano-banana?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`${nanoBananaTabToPath[activeTab.value] || '/home/nano-banana/pro-generate'}?record-id=${encodeURIComponent(recordId)}`)
       return
     }
     const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
@@ -1006,9 +1087,8 @@ const clearResults = () => {
 
 .function-tabs {
   display: grid;
-  grid-template-columns: 25% 25%;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  justify-content: start;
 }
 
 .function-tab {
@@ -1092,7 +1172,7 @@ const clearResults = () => {
 /* Function Selection Section Responsive */
 @media (max-width: 768px) {
   .function-tabs {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
   
   .function-tab {

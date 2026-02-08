@@ -11,26 +11,28 @@
       </div>
     </div>
 
+    <!-- 生成模式选择（与 Veo3 一致，Tab 置于上方） -->
+    <div class="mode-section">
+      <div class="mode-tabs">
+        <div 
+          v-for="tab in tabs" 
+          :key="tab.id"
+          class="mode-tab"
+          :class="{ active: activeTab === tab.id }"
+          @click="goToRunwayTab(tab.id)"
+        >
+          <i :class="tab.icon"></i>
+          <span>{{ tab.name }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- 主内容区域：左右布局 -->
     <div class="main-content">
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
         <div class="config-header">
           <h4>{{ getConfigHeaderTitle() }}</h4>
-        </div>
-
-        <!-- Tab 分类选择 -->
-        <div class="category-tabs">
-          <div 
-            v-for="tab in tabs" 
-            :key="tab.id"
-            class="category-tab"
-            :class="{ active: activeTab === tab.id }"
-            @click="activeTab = tab.id"
-          >
-            <i :class="tab.icon"></i>
-            <span>{{ tab.name }}</span>
-          </div>
         </div>
 
         <!-- Generate Tab 表单 -->
@@ -599,7 +601,7 @@
 
 <script setup>
 import { ref, reactive, watch, inject, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
@@ -613,8 +615,28 @@ const { showError } = useToast()
 const { post } = useApi()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const route = isClient ? useRoute() : { query: {} }
+const router = useRouter()
+const route = useRoute()
 onMounted(() => { fetchPrices() })
+
+// Tab 与三级路由同步：/home/runway/generate 等
+const runwayTabToPath = {
+  generate: '/home/runway/generate',
+  extend: '/home/runway/extend',
+  aleph: '/home/runway/aleph'
+}
+const runwayPathToTab = {
+  '/home/runway/generate': 'generate',
+  '/home/runway/extend': 'extend',
+  '/home/runway/aleph': 'aleph'
+}
+function goToRunwayTab(tabId) {
+  const path = runwayTabToPath[tabId] || runwayTabToPath.generate
+  router.push(path)
+}
+function getRunwayRecordPath() {
+  return runwayTabToPath[activeTab.value] || '/home/runway/generate'
+}
 
 // 详情页：仅从 URL 读取 record-id
 const routeRecordId = computed(() => route?.query?.['record-id'] || '')
@@ -700,17 +722,6 @@ const uploadFilesToUrls = async (files) => {
   return urls
 }
 
-// 安全地获取路由（在 SSR 时会返回 null）
-let router = null
-try {
-  if (isClient) {
-    router = useRouter()
-  }
-} catch (e) {
-  // 在 SSR 时忽略路由错误
-  console.warn('Router not available in SSR context')
-}
-
 // 注入父组件的函数（可选，可能为 undefined）
 const addToUsageHistory = inject('addToUsageHistory', null)
 
@@ -723,35 +734,46 @@ const tabs = Object.freeze([
   { id: 'aleph', name: 'Aleph', icon: 'fas fa-magic' }
 ])
 
-// Generate Tab Form data
-const formData = reactive({
+// 路由 path 同步到 activeTab
+watch(() => route.path, (path) => {
+  const tab = runwayPathToTab[path]
+  if (tab && activeTab.value !== tab) activeTab.value = tab
+}, { immediate: true })
+
+// Generate Tab 初始值（切换 Tab 时还原用）
+const INIT_GENERATE_FORM = {
   prompt: '',
   duration: '5',
   quality: '720p',
   imageFile: null,
-  uploadedImageUrl: null, // 选择文件后立即上传得到的 URL，提交时使用
+  uploadedImageUrl: null,
   aspectRatio: '16:9',
   waterMark: ''
-})
+}
+const formData = reactive({ ...INIT_GENERATE_FORM })
 
-// Aleph Tab Form data
-const alephFormData = reactive({
+// Aleph Tab 初始值
+const INIT_ALEPH_FORM = {
   prompt: '',
   videoFile: null,
-  uploadedVideoUrl: null, // 选择视频后立即上传得到的 URL
+  uploadedVideoUrl: null,
   waterMark: '',
   aspectRatio: '16:9',
   seed: null,
   referenceImageFile: null,
   uploadedReferenceImageUrl: null
-})
+}
+const alephFormData = reactive({ ...INIT_ALEPH_FORM })
 
-// Extend Tab Form data
-const extendFormData = reactive({
-  task: '',
-  prompt: '',
-  quality: '720p',
-  waterMark: ''
+// Extend Tab 初始值
+const INIT_EXTEND_FORM = { task: '', prompt: '', quality: '720p', waterMark: '' }
+const extendFormData = reactive({ ...INIT_EXTEND_FORM })
+
+// 切换 Tab 时当前表单恢复为初始状态，三个表单互不影响
+watch(activeTab, (tab) => {
+  if (tab === 'generate') Object.assign(formData, INIT_GENERATE_FORM)
+  else if (tab === 'extend') Object.assign(extendFormData, INIT_EXTEND_FORM)
+  else if (tab === 'aleph') Object.assign(alephFormData, INIT_ALEPH_FORM)
 })
 
 const isGenerating = ref(false)
@@ -921,7 +943,7 @@ const generateVideo = async () => {
     }
     const data = await post('/api/video/runway/generate', body)
     const rid = data?.recordId ?? data?.data?.recordId
-    if (rid && router) { router.push((route?.path || '/home/runway') + '?record-id=' + encodeURIComponent(rid)); return }
+    if (rid) { router.push(getRunwayRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
     let payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
@@ -980,7 +1002,7 @@ const generateAlephVideo = async () => {
     }
     const data = await post('/api/video/runway/aleph', body)
     const rid = data?.recordId ?? data?.data?.recordId
-    if (rid && router) { router.push((route?.path || '/home/runway') + '?record-id=' + encodeURIComponent(rid)); return }
+    if (rid) { router.push(getRunwayRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
     let payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
@@ -1033,7 +1055,7 @@ const generateExtendVideo = async () => {
     }
     const data = await post('/api/video/runway/extend', body)
     const rid = data?.recordId ?? data?.data?.recordId
-    if (rid && router) { router.push((route?.path || '/home/runway') + '?record-id=' + encodeURIComponent(rid)); return }
+    if (rid) { router.push(getRunwayRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
     let payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
@@ -1116,46 +1138,54 @@ const generateExtendVideo = async () => {
   color: #6b7280;
 }
 
-/* Tab 分类样式 */
-.category-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+/* 上方模式选择（与 Veo3 一致） */
+.mode-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
-.category-tab {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  color: #64748b;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mode-tab {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.category-tab:hover {
-  border-color: #3b82f6;
+  padding: 12px 8px;
   background: #f8fafc;
-  color: #3b82f6;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
 }
 
-.category-tab.active {
+.mode-tab:hover {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.mode-tab.active {
+  border-color: #3b82f6;
   background: #3b82f6;
   color: white;
-  border-color: #3b82f6;
 }
 
-.category-tab i {
+.mode-tab i {
   font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.mode-tab span {
+  font-size: 12px;
+  font-weight: 500;
 }
 
 /* 配置面板 */
@@ -1954,22 +1984,27 @@ const generateExtendVideo = async () => {
     gap: 12px;
   }
 
-  .category-tabs {
-    flex-wrap: wrap;
-    gap: 8px;
+  .mode-section {
+    padding: 12px 16px;
     margin-bottom: 16px;
-    padding-bottom: 12px;
   }
 
-  .category-tab {
-    flex: 1;
-    min-width: 100px;
-    padding: 10px 12px;
-    font-size: 13px;
+  .mode-tabs {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
 
-  .category-tab i {
+  .mode-tab {
+    padding: 10px 6px;
+    min-width: 0;
+  }
+
+  .mode-tab i {
     font-size: 14px;
+  }
+
+  .mode-tab span {
+    font-size: 11px;
   }
   
   .config-header {

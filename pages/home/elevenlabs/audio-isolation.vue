@@ -1,37 +1,27 @@
 <template>
-  <div class="tool-page">
-    <ElevenLabsTool />
-  </div>
+  <HomeLayout>
+    <div class="tool-page">
+      <ElevenLabsTool />
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
+import { useToolSEO } from '~/composables/useToolSEO'
 
-// SEO 优化
-useHead({
-  title: 'ElevenLabs Audio Isolation - AI Audio Separation | FuseAI Tools',
-  meta: [
-    {
-      name: 'description',
-      content: 'ElevenLabs Audio Isolation intelligently separates vocals and background music, supporting multiple audio formats, up to 10MB, suitable for audio post-processing.'
-    },
-    {
-      name: 'keywords',
-      content: 'ElevenLabs Audio Isolation, AI audio separation, vocal extraction, background music separation, audio post-processing, audio processing'
-    }
-  ]
+const seoConfig = useToolSEO({
+  name: 'ElevenLabs Audio Isolation',
+  description: 'ElevenLabs Audio Isolation - Isolate vocals or instruments. Use for free online.',
+  category: 'audio',
+  route: '/home/elevenlabs/audio-isolation',
+  keywords: ['ElevenLabs', 'Audio Isolation', 'vocal isolation'],
+  applicationCategory: 'AudioApplication',
+  offers: { price: '0', priceCurrency: 'USD' }
 })
+useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page {
-  width: 100%;
-  height: 100vh;
-}
+.tool-page { width: 100%; height: 100%; }
 </style>
-
-
-
-
-
-

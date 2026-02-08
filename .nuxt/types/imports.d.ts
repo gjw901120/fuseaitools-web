@@ -170,6 +170,7 @@ declare global {
   const useState: typeof import('../../node_modules/nuxt/dist/app/composables/state')['useState']
   const useTemplateRef: typeof import('../../node_modules/vue')['useTemplateRef']
   const useToast: typeof import('../../composables/useToast')['useToast']
+  const useToolOverviewPage: typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']
   const useToolSEO: typeof import('../../composables/useToolSEO')['useToolSEO']
   const useTransitionState: typeof import('../../node_modules/vue')['useTransitionState']
   const watch: typeof import('../../node_modules/vue')['watch']
@@ -362,6 +363,7 @@ declare module 'vue' {
     readonly useState: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/state')['useState']>
     readonly useTemplateRef: UnwrapRef<typeof import('../../node_modules/vue')['useTemplateRef']>
     readonly useToast: UnwrapRef<typeof import('../../composables/useToast')['useToast']>
+    readonly useToolOverviewPage: UnwrapRef<typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']>
     readonly useToolSEO: UnwrapRef<typeof import('../../composables/useToolSEO')['useToolSEO']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
     readonly watch: UnwrapRef<typeof import('../../node_modules/vue')['watch']>

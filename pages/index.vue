@@ -12,21 +12,21 @@ const route = useRoute()
 const router = useRouter()
 const { login } = useAuth()
 
-// SEO 配置
+// SEO 配置：突出 AI tools free、注册送 100 credits
 useHead({
-  title: 'FuseAI Tools - All-in-One AI Platform | 50+ AI Models & Tools',
+  title: 'AI Tools Free - FuseAI Tools | 50+ AI Models, 100 Credits on Sign Up',
   meta: [
     { 
       name: 'description', 
-      content: 'Access 50+ AI models and tools in one platform. ChatGPT, Claude, GPT-4, Midjourney, Veo3, ElevenLabs, Suno and more. Free AI chat, image generation, video creation, and audio processing tools.' 
+      content: 'AI tools free: access 50+ AI models in one platform—ChatGPT, Claude, Midjourney, Veo3, ElevenLabs, Suno and more. Register now and get 100 credits free. Free AI chat, image, video, and audio tools.' 
     },
     { 
       name: 'keywords', 
-      content: 'AI tools, ChatGPT, Claude, GPT-4, Midjourney, Veo3, ElevenLabs, Suno, AI chat, image generation, video creation, audio processing, AI platform, artificial intelligence tools' 
+      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Midjourney, Veo3, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 100 credits free' 
     },
     // Open Graph tags
-    { property: 'og:title', content: 'FuseAI Tools - All-in-One AI Platform | 50+ AI Models & Tools' },
-    { property: 'og:description', content: 'Access 50+ AI models and tools in one platform. ChatGPT, Claude, GPT-4, Midjourney, Veo3, ElevenLabs, Suno and more.' },
+    { property: 'og:title', content: 'AI Tools Free | FuseAI Tools - 100 Credits on Sign Up' },
+    { property: 'og:description', content: 'AI tools free: 50+ AI models in one platform. Register and get 100 credits free. ChatGPT, Claude, Midjourney, Veo3, ElevenLabs, Suno and more.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://fuseaitools.com' },
     { property: 'og:image', content: 'https://fuseaitools.com/og-image.jpg' },
@@ -34,8 +34,8 @@ useHead({
     { property: 'og:locale', content: 'en_US' },
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'FuseAI Tools - All-in-One AI Platform | 50+ AI Models & Tools' },
-    { name: 'twitter:description', content: 'Access 50+ AI models and tools in one platform. ChatGPT, Claude, GPT-4, Midjourney, Veo3, ElevenLabs, Suno and more.' },
+    { name: 'twitter:title', content: 'AI Tools Free | FuseAI Tools - 100 Credits on Sign Up' },
+    { name: 'twitter:description', content: 'AI tools free: 50+ AI models in one platform. Register and get 100 credits free.' },
     { name: 'twitter:image', content: 'https://fuseaitools.com/og-image.jpg' },
     // Additional meta tags
     { name: 'author', content: 'FuseAI Tools' },
@@ -56,7 +56,7 @@ useHead({
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
         "logo": "https://fuseaitools.com/favicon.ico",
-        "description": "All-in-one AI platform integrating 50+ AI models and tools including ChatGPT, Claude, GPT-4, Midjourney, Veo3, ElevenLabs, and Suno.",
+        "description": "AI tools free: all-in-one platform with 50+ AI models. Register and get 100 credits free. ChatGPT, Claude, Midjourney, Veo3, ElevenLabs, Suno and more.",
         "sameAs": [
           // Add social media links if available
         ],
@@ -74,7 +74,7 @@ useHead({
         "@type": "WebSite",
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
-        "description": "All-in-one AI platform with 50+ AI models and tools",
+        "description": "AI tools free: 50+ AI models in one platform. Sign up for 100 free credits.",
         "potentialAction": {
           "@type": "SearchAction",
           "target": {
@@ -127,7 +127,7 @@ useHead({
             "name": "Is FuseAI free?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, FuseAI offers flexible experience plans. Users who register receive 100 points, which allows them to experience all models on the site without barriers. There are multiple subscription plans designed to provide more substantial point quotas and exclusive discounts, catering to high-frequency and professional users. The platform also supports direct top-up of points for on-demand usage."
+              "text": "Yes. FuseAI offers AI tools free: when you register you get 100 credits free to try all models—chat, image, audio, and video. No credit card required. We also have subscription plans with more credits and discounts for heavy users, and pay-as-you-go top-up."
             }
           },
           {

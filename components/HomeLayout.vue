@@ -4,8 +4,11 @@
     <div class="main-layout">
       <!-- 左侧：AI工具使用历史记录（20%） -->
       <aside class="left-sidebar">
-        <div class="timeline-header">
+        <div class="timeline-header timeline-header-row">
           <h3>History</h3>
+          <button type="button" class="history-refresh-btn" title="Refresh" @click="refreshHistory" :disabled="isLoading">
+            <i :class="isLoading ? 'fas fa-spinner fa-spin' : 'fas fa-sync-alt'"></i>
+          </button>
         </div>
         
         <div class="timeline-container" ref="timelineContainerRef">
@@ -17,7 +20,8 @@
               @click="navigateToHistoryItem(record)"
             >
               <div class="timeline-marker" :class="[record.status, record.type]">
-                <i :class="record.icon"></i>
+                <img v-if="record.iconIsImage && record.icon" :src="record.icon" :alt="record.toolName || record.category" class="timeline-marker-logo" />
+                <i v-else :class="record.icon"></i>
               </div>
               <div class="timeline-content">
                 <div class="timeline-header">
@@ -71,17 +75,26 @@
             </div>
           </div>
           
-          <!-- 二级导航 -->
+          <!-- 二级导航：有路由的用 NuxtLink 保证点击可跳转（如 Luma /home/luma/generate） -->
           <div class="sub-nav" v-if="selectedCategory">
-            <div 
-              v-for="subTool in getCurrentTools()" 
-              :key="subTool.id"
-              class="sub-nav-item"
-              :class="{ active: selectedTool === subTool.id }"
-              @click="selectTool(subTool.id)"
-            >
-              {{ subTool.name }}
-            </div>
+            <template v-for="subTool in getCurrentTools()" :key="subTool.id">
+              <NuxtLink
+                v-if="toolRouteMap[subTool.name]"
+                :to="toolRouteMap[subTool.name]"
+                class="sub-nav-item"
+                :class="{ active: selectedTool === subTool.id }"
+              >
+                {{ subTool.name }}
+              </NuxtLink>
+              <div
+                v-else
+                class="sub-nav-item"
+                :class="{ active: selectedTool === subTool.id }"
+                @click="selectTool(subTool.id)"
+              >
+                {{ subTool.name }}
+              </div>
+            </template>
           </div>
         </header>
 
@@ -112,6 +125,7 @@ const {
   selectedTool,
   navItems,
   usageHistory,
+  toolRouteMap,
   isLoading,
   hasMoreData,
   formatTime,
@@ -120,6 +134,7 @@ const {
   selectCategory,
   selectTool,
   loadMore,
+  refreshHistory,
   addToUsageHistory,
   allTools,
   navigateToHistoryItem
@@ -197,6 +212,35 @@ provide('addToUsageHistory', addToUsageHistory)
   flex-shrink: 0;
   height: 50px;
   box-sizing: border-box;
+}
+
+.timeline-header-row {
+  justify-content: space-between;
+}
+
+.history-refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.history-refresh-btn:hover:not(:disabled) {
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
+.history-refresh-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .timeline-header h3 {
@@ -279,8 +323,8 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .timeline-marker {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -288,33 +332,20 @@ provide('addToUsageHistory', addToUsageHistory)
   margin-right: 12px;
   flex-shrink: 0;
   font-size: 14px;
-}
-
-.timeline-marker.completed {
-  background: #10b981;
-  color: white;
+  color: #6b7280;
+  border: 1px solid #60a5fa;
+  box-sizing: border-box;
 }
 
 .timeline-marker.in_progress {
-  background: #f59e0b;
-  color: white;
   animation: pulse 2s infinite;
 }
 
-.timeline-marker.chat {
-  background: #3b82f6;
-}
-
-.timeline-marker.image {
-  background: #8b5cf6;
-}
-
-.timeline-marker.audio {
-  background: #f59e0b;
-}
-
-.timeline-marker.video {
-  background: #ef4444;
+.timeline-marker-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 @keyframes pulse {
@@ -433,6 +464,8 @@ provide('addToUsageHistory', addToUsageHistory)
 
 /* 工具导航区域 - 自适应高度 */
 .tools-navigation {
+  position: relative;
+  z-index: 2;
   background: white;
   border-bottom: 1px solid #e2e8f0;
   display: flex;
@@ -511,6 +544,8 @@ provide('addToUsageHistory', addToUsageHistory)
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .sub-nav-item:hover {

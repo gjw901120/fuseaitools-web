@@ -7,11 +7,6 @@
           <span>Home</span>
         </NuxtLink>
       </li>
-      <li class="breadcrumb-item">
-        <NuxtLink to="/home" class="breadcrumb-link">
-          <span>{{ categoryLabel }}</span>
-        </NuxtLink>
-      </li>
       <li class="breadcrumb-item" aria-current="page">
         <span class="breadcrumb-current">{{ currentPage }}</span>
       </li>
@@ -20,28 +15,17 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
   category: {
     type: String,
-    required: true,
-    validator: (value) => ['chat', 'image', 'audio', 'video'].includes(value)
+    default: '',
+    validator: (value) => !value || ['chat', 'image', 'audio', 'video'].includes(value)
   },
   currentPage: {
     type: String,
     required: true
   }
 })
-
-const categoryLabels = {
-  chat: 'Chat AI',
-  image: 'Image Generation',
-  audio: 'Audio Processing',
-  video: 'Video Generation'
-}
-
-const categoryLabel = computed(() => categoryLabels[props.category] || 'AI Tools')
 </script>
 
 <style scoped>

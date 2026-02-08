@@ -37,6 +37,7 @@ export { useMjApi } from '../composables/useMjApi';
 export { useModelPrice } from '../composables/useModelPrice';
 export { useRecordPolling } from '../composables/useRecordPolling';
 export { useToast } from '../composables/useToast';
+export { useToolOverviewPage } from '../composables/useToolOverviewPage';
 export { useToolSEO } from '../composables/useToolSEO';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';

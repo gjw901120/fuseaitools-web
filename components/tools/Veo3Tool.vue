@@ -17,7 +17,7 @@
         <div 
           class="mode-tab"
           :class="{ active: formData.generationType === 'TEXT_2_VIDEO' }"
-          @click="formData.generationType = 'TEXT_2_VIDEO'"
+          @click="goToVeo3Tab('TEXT_2_VIDEO')"
         >
           <i class="fas fa-font"></i>
           <span>Text to Video</span>
@@ -28,7 +28,7 @@
         <div 
           class="mode-tab"
           :class="{ active: formData.generationType === 'FIRST_AND_LAST_FRAMES_2_VIDEO' }"
-          @click="formData.generationType = 'FIRST_AND_LAST_FRAMES_2_VIDEO'"
+          @click="goToVeo3Tab('FIRST_AND_LAST_FRAMES_2_VIDEO')"
         >
           <i class="fas fa-images"></i>
           <span>First And Last Frames to Video</span>
@@ -39,7 +39,7 @@
         <div 
           class="mode-tab"
           :class="{ active: formData.generationType === 'REFERENCE_2_VIDEO' }"
-          @click="formData.generationType = 'REFERENCE_2_VIDEO'"
+          @click="goToVeo3Tab('REFERENCE_2_VIDEO')"
         >
           <i class="fas fa-image"></i>
           <span>Image to Video</span>
@@ -50,7 +50,7 @@
         <div 
           class="mode-tab"
           :class="{ active: formData.generationType === 'VIDEO_EXTEND' }"
-          @click="formData.generationType = 'VIDEO_EXTEND'"
+          @click="goToVeo3Tab('VIDEO_EXTEND')"
         >
           <i class="fas fa-expand-arrows-alt"></i>
           <span>Video Extend</span>
@@ -436,6 +436,27 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const addToUsageHistory = inject('addToUsageHistory')
+
+// Tab 与三级路由同步：/home/veo3/text-to-video 等
+const veo3TabToPath = {
+  TEXT_2_VIDEO: '/home/veo3/text-to-video',
+  FIRST_AND_LAST_FRAMES_2_VIDEO: '/home/veo3/first-and-last-to-video',
+  REFERENCE_2_VIDEO: '/home/veo3/reference-to-video',
+  VIDEO_EXTEND: '/home/veo3/extend'
+}
+const veo3PathToTab = {
+  '/home/veo3/text-to-video': 'TEXT_2_VIDEO',
+  '/home/veo3/first-and-last-to-video': 'FIRST_AND_LAST_FRAMES_2_VIDEO',
+  '/home/veo3/reference-to-video': 'REFERENCE_2_VIDEO',
+  '/home/veo3/extend': 'VIDEO_EXTEND'
+}
+function goToVeo3Tab(generationType) {
+  const path = veo3TabToPath[generationType] || veo3TabToPath.TEXT_2_VIDEO
+  router.push(path)
+}
+function getVeo3RecordPath() {
+  return veo3TabToPath[formData.generationType] || '/home/veo3/text-to-video'
+}
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const { token } = useAuth()
@@ -517,6 +538,14 @@ watch(() => formData.generationType, (type) => {
 
 // 结果数据
 const result = ref(null)
+
+// 路由 path 同步到 formData.generationType
+watch(() => route.path, (path) => {
+  const tab = veo3PathToTab[path]
+  if (tab && formData.generationType !== tab) {
+    formData.generationType = tab
+  }
+}, { immediate: true })
 const isGenerating = ref(false)
 const extendPrompt = ref('')
 const imageUploadRef = ref(null)
@@ -783,7 +812,7 @@ const generateVideo = async () => {
       }
       const data = await post('/api/video/veo/extend', body)
       const rid = data?.recordId ?? data?.data?.recordId
-      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      if (rid) { router.push(getVeo3RecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
       result.value = resolveVideoResult(data)
     } else {
       const body = {
@@ -798,7 +827,7 @@ const generateVideo = async () => {
       }
       const data = await post('/api/video/veo/generate', body)
       const rid = data?.recordId ?? data?.data?.recordId
-      if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+      if (rid) { router.push(getVeo3RecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
       result.value = resolveVideoResult(data)
     }
   } catch (error) {
@@ -827,7 +856,7 @@ const extendVideo = async () => {
     }
     const data = await post('/api/video/veo/extend', body)
     const rid = data?.recordId ?? data?.data?.recordId
-    if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
+    if (rid) { router.push(getVeo3RecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
     result.value = resolveVideoResult(data)
     extendPrompt.value = ''
   } catch (error) {

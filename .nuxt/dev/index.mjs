@@ -635,6 +635,144 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
+      "/home/suno-extend": {
+        "redirect": {
+          "to": "/home/suno/extend",
+          "statusCode": 301
+        }
+      },
+      "/home/suno-generate": {
+        "redirect": {
+          "to": "/home/suno/generate",
+          "statusCode": 301
+        }
+      },
+      "/home/suno-upload-cover": {
+        "redirect": {
+          "to": "/home/suno/upload-cover",
+          "statusCode": 301
+        }
+      },
+      "/home/suno-upload-extend": {
+        "redirect": {
+          "to": "/home/suno/upload-extend",
+          "statusCode": 301
+        }
+      },
+      "/home/suno-add-instrumental": {
+        "redirect": {
+          "to": "/home/suno/add-instrumental",
+          "statusCode": 301
+        }
+      },
+      "/home/suno-add-vocals": {
+        "redirect": {
+          "to": "/home/suno/add-vocals",
+          "statusCode": 301
+        }
+      },
+      "/home/veo3-extend": {
+        "redirect": {
+          "to": "/home/veo3/extend",
+          "statusCode": 301
+        }
+      },
+      "/home/veo3-text-to-video": {
+        "redirect": {
+          "to": "/home/veo3/text-to-video",
+          "statusCode": 301
+        }
+      },
+      "/home/veo3-first-and-last-to-video": {
+        "redirect": {
+          "to": "/home/veo3/first-and-last-to-video",
+          "statusCode": 301
+        }
+      },
+      "/home/veo3-reference-to-video": {
+        "redirect": {
+          "to": "/home/veo3/reference-to-video",
+          "statusCode": 301
+        }
+      },
+      "/home/runway-generate": {
+        "redirect": {
+          "to": "/home/runway/generate",
+          "statusCode": 301
+        }
+      },
+      "/home/runway-extend": {
+        "redirect": {
+          "to": "/home/runway/extend",
+          "statusCode": 301
+        }
+      },
+      "/home/runway-aleph": {
+        "redirect": {
+          "to": "/home/runway/aleph",
+          "statusCode": 301
+        }
+      },
+      "/home/midjourney-imagine": {
+        "redirect": {
+          "to": "/home/midjourney/imagine",
+          "statusCode": 301
+        }
+      },
+      "/home/midjourney-upscale": {
+        "redirect": {
+          "to": "/home/midjourney/upscale",
+          "statusCode": 301
+        }
+      },
+      "/home/midjourney-vary": {
+        "redirect": {
+          "to": "/home/midjourney/vary",
+          "statusCode": 301
+        }
+      },
+      "/home/nano-banana-edit": {
+        "redirect": {
+          "to": "/home/nano-banana/edit",
+          "statusCode": 301
+        }
+      },
+      "/home/nano-banana-pro": {
+        "redirect": {
+          "to": "/home/nano-banana/pro-generate",
+          "statusCode": 301
+        }
+      },
+      "/home/elevenlabs-multilingual-v2": {
+        "redirect": {
+          "to": "/home/elevenlabs/multilingual-v2",
+          "statusCode": 301
+        }
+      },
+      "/home/elevenlabs-turbo-2-5": {
+        "redirect": {
+          "to": "/home/elevenlabs/turbo-2-5",
+          "statusCode": 301
+        }
+      },
+      "/home/elevenlabs-speech-to-text": {
+        "redirect": {
+          "to": "/home/elevenlabs/speech-to-text",
+          "statusCode": 301
+        }
+      },
+      "/home/elevenlabs-sound-effect-v2": {
+        "redirect": {
+          "to": "/home/elevenlabs/sound-effect-v2",
+          "statusCode": 301
+        }
+      },
+      "/home/elevenlabs-audio-isolation": {
+        "redirect": {
+          "to": "/home/elevenlabs/audio-isolation",
+          "statusCode": 301
+        }
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -1552,7 +1690,9 @@ const _lazy_U1Y3Se = () => Promise.resolve().then(function () { return swapFace_
 const _lazy_S4BDJq = () => Promise.resolve().then(function () { return upscale_post$1; });
 const _lazy_Y1HcS7 = () => Promise.resolve().then(function () { return vary_post$1; });
 const _lazy_MTnLsG = () => Promise.resolve().then(function () { return _slug__get$1; });
+const _lazy_715mBH = () => Promise.resolve().then(function () { return detail_get$3; });
 const _lazy_Rqaiw_ = () => Promise.resolve().then(function () { return index_get$1; });
+const _lazy_Jqsu_t = () => Promise.resolve().then(function () { return list_get$3; });
 const _lazy_8_gnv6 = () => Promise.resolve().then(function () { return chatDetail_get$1; });
 const _lazy_io_H72 = () => Promise.resolve().then(function () { return detail_get$1; });
 const _lazy_S_bw0Y = () => Promise.resolve().then(function () { return extendList_get$1; });
@@ -1603,7 +1743,9 @@ const handlers = [
   { route: '/api/midjourney/upscale', handler: _lazy_S4BDJq, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/vary', handler: _lazy_Y1HcS7, lazy: true, middleware: false, method: "post" },
   { route: '/api/news/:slug', handler: _lazy_MTnLsG, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news/detail', handler: _lazy_715mBH, lazy: true, middleware: false, method: "get" },
   { route: '/api/news', handler: _lazy_Rqaiw_, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news/list', handler: _lazy_Jqsu_t, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/chat-detail', handler: _lazy_8_gnv6, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/detail', handler: _lazy_io_H72, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/extend-list', handler: _lazy_S_bw0Y, lazy: true, middleware: false, method: "get" },
@@ -2807,6 +2949,36 @@ const _slug__get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
   default: _slug__get
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const detail_get$2 = defineEventHandler(async (event) => {
+  var _a;
+  const config = useRuntimeConfig();
+  const apiBase = ((_a = config.public) == null ? void 0 : _a.apiBase) || "http://127.0.0.1:8080/api";
+  const query = getQuery$1(event);
+  const path = query.path;
+  if (!path) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Missing path parameter"
+    });
+  }
+  try {
+    const res = await $fetch(`${apiBase}/news/detail`, {
+      query: { path }
+    });
+    return res;
+  } catch (e) {
+    throw createError({
+      statusCode: e.statusCode || 500,
+      statusMessage: e.message || "Failed to fetch article"
+    });
+  }
+});
+
+const detail_get$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: detail_get$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const index_get = defineEventHandler(async (event) => {
   try {
     const query = getQuery$1(event);
@@ -2847,6 +3019,33 @@ const index_get = defineEventHandler(async (event) => {
 const index_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: index_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const list_get$2 = defineEventHandler(async (event) => {
+  var _a;
+  const config = useRuntimeConfig();
+  const apiBase = ((_a = config.public) == null ? void 0 : _a.apiBase) || "http://127.0.0.1:8080/api";
+  const query = getQuery$1(event);
+  try {
+    const res = await $fetch(`${apiBase}/news/list`, {
+      query: {
+        page: query.page || 1,
+        size: query.size || 10,
+        ...query.category && query.category !== "All" ? { category: query.category } : {}
+      }
+    });
+    return res;
+  } catch (e) {
+    throw createError({
+      statusCode: e.statusCode || 500,
+      statusMessage: e.message || "Failed to fetch news list"
+    });
+  }
+});
+
+const list_get$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: list_get$2
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const chatDetail_get = defineEventHandler(async (event) => {
@@ -3293,79 +3492,106 @@ const sitemap_xml_get = defineEventHandler((event) => {
       priority: "0.7"
     },
     {
-      loc: "/tools",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
       loc: "/news",
       lastmod: currentDate,
       changefreq: "daily",
       priority: "0.5"
     },
-    // Chat AI Tools
+    // 14 个工具二级详情页（模型介绍 + 功能入口，利于 SEO 层级与长尾）
+    { loc: "/home/gpt", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/deepseek", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/claude", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/gemini", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/gpt-4o-image", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/flux-kontext", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/nano-banana", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/midjourney", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/suno", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/elevenlabs", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/veo3", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/runway", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/luma", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/sora", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    // Chat AI Tools（三级 /generate）
     {
-      loc: "/home/gpt",
+      loc: "/home/gpt/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/deepseek",
+      loc: "/home/deepseek/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/claude",
+      loc: "/home/claude/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/gemini",
+      loc: "/home/gemini/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     // Image Generation Tools
     {
-      loc: "/home/gpt-4o-image",
+      loc: "/home/gpt-4o-image/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/midjourney",
+      loc: "/home/midjourney/imagine",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/flux-kontext",
+      loc: "/home/midjourney/upscale",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/nano-banana",
+      loc: "/home/midjourney/vary",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/flux-kontext/generate",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/nano-banana/generate",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/nano-banana/edit",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/nano-banana/pro-generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     // Audio Processing Tools
     {
-      loc: "/home/elevenlabs",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
       loc: "/home/elevenlabs/multilingual-v2",
       lastmod: currentDate,
       changefreq: "weekly",
-      priority: "0.7"
+      priority: "0.8"
     },
     {
       loc: "/home/elevenlabs/turbo-2-5",
@@ -3392,7 +3618,7 @@ const sitemap_xml_get = defineEventHandler((event) => {
       priority: "0.7"
     },
     {
-      loc: "/home/suno",
+      loc: "/home/suno/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
@@ -3404,50 +3630,110 @@ const sitemap_xml_get = defineEventHandler((event) => {
       priority: "0.7"
     },
     {
-      loc: "/home/suno/cover",
+      loc: "/home/suno/upload-cover",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.7"
     },
     {
-      loc: "/home/suno/expand",
+      loc: "/home/suno/upload-extend",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.7"
     },
     {
-      loc: "/home/suno/accompaniment",
+      loc: "/home/suno/add-instrumental",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.7"
     },
     {
-      loc: "/home/suno/vocal",
+      loc: "/home/suno/add-vocals",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.7"
     },
-    // Video Generation Tools
+    // Video Generation Tools（三级路由）
     {
-      loc: "/home/veo3",
+      loc: "/home/veo3/text-to-video",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/runway",
+      loc: "/home/veo3/first-and-last-to-video",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/veo3/reference-to-video",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/veo3/extend",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/runway/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/luma",
+      loc: "/home/runway/extend",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/runway/aleph",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.7"
+    },
+    {
+      loc: "/home/luma/generate",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
     },
     {
-      loc: "/home/sora",
+      loc: "/home/sora/text-to-video",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/sora/image-to-video",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/sora/pro-text-to-video",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/sora/pro-image-to-video",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/sora/watermark-remover",
+      lastmod: currentDate,
+      changefreq: "weekly",
+      priority: "0.8"
+    },
+    {
+      loc: "/home/sora/pro-storyboard",
       lastmod: currentDate,
       changefreq: "weekly",
       priority: "0.8"
