@@ -33,7 +33,7 @@
             <button 
               @click.stop="clearFile"
               class="remove-file-btn"
-              title="删除文件"
+              title="Remove file"
             >
               <i class="fas fa-times"></i>
             </button>
@@ -61,7 +61,7 @@ const props = defineProps({
   },
   subtitle: {
     type: String,
-    default: '支持 MP3, WAV, M4A 等格式'
+    default: 'Supports MP3, WAV, M4A formats'
   },
   hint: {
     type: String,
@@ -139,7 +139,7 @@ const getAudioDuration = (file) => {
     
     audio.addEventListener('error', () => {
       URL.revokeObjectURL(url)
-      reject(new Error('无法加载音频文件'))
+      reject(new Error('Failed to load audio file'))
     })
     
     audio.src = url

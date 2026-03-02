@@ -1238,14 +1238,20 @@ const generateAIResponse = (userInput) => {
 .tool-avatar {
   width: 40px;
   height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
 }
 
 .tool-avatar img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .tool-details h3 {
@@ -1313,15 +1319,20 @@ const generateAIResponse = (userInput) => {
 .message-avatar {
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
 .message-avatar img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .message-content {

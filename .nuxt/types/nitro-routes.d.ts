@@ -111,6 +111,12 @@ declare module "nitropack/types" {
     '/api/records/list': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/list.get').default>>>>
     }
+    '/api/stripe/create-session': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/stripe/create-session.post').default>>>>
+    }
+    '/api/user/credits-detail': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/credits-detail.get').default>>>>
+    }
     '/api/user/login-by-email': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/login-by-email.post').default>>>>
     }

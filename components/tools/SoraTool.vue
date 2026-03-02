@@ -59,7 +59,7 @@
         </div>
 
         <!-- 模式选择已移动至顶部 -->
-        <fieldset class="config-fieldset" :disabled="isGenerating">
+        <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
 
         <!-- Prompt (hidden for watermark-remover & pro-storyboard) -->
         <div class="form-group" v-if="!['watermark-remover','pro-storyboard'].includes(form.model)">
@@ -209,27 +209,39 @@
           </div>
         </div>
 
-        <!-- watermark remover 专用：视频 URL 下拉选择 -->
+        <!-- watermark remover 专用：上传视频 -->
         <div class="form-group" v-if="form.model === 'watermark-remover'">
-          <label class="form-label">Video Url <span class="required">*</span></label>
-          <div class="select-wrapper">
-            <select
-              v-model="form.input.video_url"
-              class="form-select"
-              :disabled="isLoadingVideoList"
-            >
-              <option value="">Please select a video</option>
-              <option 
-                v-for="video in videoList" 
-                :key="video.value || video.url || video.id"
-                :value="video.value || video.url || video.id"
-              >
-                {{ video.label || video.name || video.title || video.url }}
-              </option>
-            </select>
-            <i class="fas fa-chevron-down"></i>
+          <label class="form-label">Upload Video <span class="required">*</span></label>
+          <input
+            type="file"
+            accept="video/*"
+            class="sora-video-file-input"
+            ref="watermarkVideoInputRef"
+            @change="handleWatermarkVideoUpload"
+          />
+          <div class="sora-video-upload-area" @click="triggerWatermarkVideoInput">
+            <div v-if="isUploadingWatermarkVideo" class="sora-video-uploading">
+              <i class="fas fa-spinner fa-spin"></i> Uploading video...
+            </div>
+            <template v-else-if="form.input.video_url">
+              <div class="sora-video-preview-wrap">
+                <video :src="form.input.video_url" class="sora-video-preview" controls></video>
+                <button type="button" class="sora-video-remove" title="Remove" @click.stop="clearWatermarkVideo">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div v-if="watermarkVideoFile" class="sora-video-meta">
+                <span>{{ watermarkVideoFile.name }}</span>
+                <span>{{ formatFileSize(watermarkVideoFile.size) }}</span>
+              </div>
+            </template>
+            <template v-else>
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Click to upload video</span>
+              <small>Supports MP4, MOV, etc.</small>
+            </template>
           </div>
-          <div class="form-help">Select a video URL from the list</div>
+          <div class="form-help">Upload a video to remove watermark</div>
         </div>
 
         <!-- storyboard shots builder -->
@@ -309,7 +321,31 @@
         </div>
 
         <div class="video-container">
-          <div v-if="results.length > 0" class="video-showcase">
+          <!-- 详情页：根据 record-id 拉取后的状态展示 -->
+          <div v-if="isDetailView && (loadingRecordId || (!detailData && routeRecordId))" class="empty-state">
+            <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: #3b82f6;"></i>
+            <p>Loading record...</p>
+          </div>
+          <div v-else-if="isDetailView && detailData && detailData.status === 1" class="empty-state">
+            <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: #3b82f6;"></i>
+            <p>Generating...</p>
+          </div>
+          <div v-else-if="isDetailView && detailData && detailData.status === 3" class="empty-state">
+            <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #ef4444;"></i>
+            <p>Generation failed.</p>
+          </div>
+          <div v-else-if="isDetailView && detailData && detailData.status === 2" class="video-showcase">
+            <div class="video-showcase-item">
+              <template v-if="detailOutputItems.length > 0">
+                <div v-for="(item, index) in detailOutputItems" :key="index" class="detail-output-item">
+                  <video v-if="item.type === 'video'" :src="item.url" controls class="detail-video"></video>
+                  <img v-else-if="item.type === 'image'" :src="item.url" :alt="'Output ' + (index + 1)" class="detail-image" loading="lazy" />
+                </div>
+              </template>
+              <pre v-else class="payload-json">{{ typeof detailData === 'object' ? JSON.stringify(detailData, null, 2) : '' }}</pre>
+            </div>
+          </div>
+          <div v-else-if="results.length > 0" class="video-showcase">
             <div v-for="(item, idx) in results" :key="idx" class="video-showcase-item">
               <pre class="payload-json">{{ typeof item === 'object' ? JSON.stringify(item, null, 2) : item }}</pre>
             </div>
@@ -344,8 +380,120 @@ const { token } = useAuth()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
-const { pollRecordDetail } = useRecordPolling()
+const { fetchRecordDetailOnce, pollRecordByStatus, pollRecordDetail } = useRecordPolling()
 onMounted(() => { fetchPrices() })
+
+// 详情页：URL 携带 record-id 时拉取并展示详情
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+function getRouteRecordId() { return route.query['record-id'] || '' }
+
+// 后端 model -> 前端 form.model（全部 Sora 模型）
+const BACKEND_TO_FRONTEND_MODEL = {
+  'sora-watermark-remover': 'watermark-remover',
+  'sora-2-pro-storyboard': 'pro-storyboard',
+  'sora-2-text-to-video': 'text-to-video',
+  'sora-2-image-to-video': 'image-to-video',
+  'sora-2-pro-text-to-video': 'pro-text-to-video',
+  'sora-2-pro-image-to-video': 'pro-image-to-video'
+}
+// 前端 model -> 路由 path（详情回填后同步 URL，需在 loadDetailByRecordId 前定义）
+const soraModeToPath = {
+  'text-to-video': '/home/sora/text-to-video',
+  'image-to-video': '/home/sora/image-to-video',
+  'pro-text-to-video': '/home/sora/pro-text-to-video',
+  'pro-image-to-video': '/home/sora/pro-image-to-video',
+  'watermark-remover': '/home/sora/watermark-remover',
+  'pro-storyboard': '/home/sora/pro-storyboard'
+}
+const soraPathToMode = {
+  '/home/sora/text-to-video': 'text-to-video',
+  '/home/sora/image-to-video': 'image-to-video',
+  '/home/sora/pro-text-to-video': 'pro-text-to-video',
+  '/home/sora/pro-image-to-video': 'pro-image-to-video',
+  '/home/sora/watermark-remover': 'watermark-remover',
+  '/home/sora/pro-storyboard': 'pro-storyboard'
+}
+function fillFormFromOriginalData(data) {
+  const o = data?.originalData || data
+  if (!o || typeof o !== 'object') return
+  if (o.model && BACKEND_TO_FRONTEND_MODEL[o.model]) form.model = BACKEND_TO_FRONTEND_MODEL[o.model]
+  if (o.videoUrl !== undefined) form.input.video_url = o.videoUrl || ''
+  if (o.video_url !== undefined) form.input.video_url = o.video_url || form.input.video_url
+  if (o.prompt !== undefined) form.input.prompt = o.prompt || ''
+  if (o.aspectRatio !== undefined) form.input.aspect_ratio = o.aspect_ratio || form.input.aspect_ratio
+  if (o.aspect_ratio !== undefined) form.input.aspect_ratio = o.aspect_ratio || form.input.aspect_ratio
+  if (o.nFrames !== undefined) form.input.n_frames = String(o.nFrames ?? o.n_frames ?? form.input.n_frames)
+  if (o.n_frames !== undefined) form.input.n_frames = String(o.n_frames ?? form.input.n_frames)
+  if (o.imageUrls && Array.isArray(o.imageUrls)) form.input.image_urls = [...o.imageUrls]
+  if (o.image_urls && Array.isArray(o.image_urls)) form.input.image_urls = [...o.image_urls]
+  if (o.size !== undefined) form.input.size = o.size || form.input.size
+  if (o.removeWatermark !== undefined) form.input.remove_watermark = !!o.removeWatermark
+  if (o.remove_watermark !== undefined) form.input.remove_watermark = !!o.remove_watermark
+  if (o.callBackUrl !== undefined) form.callBackUrl = o.callBackUrl || ''
+  if (o.call_back_url !== undefined) form.callBackUrl = o.call_back_url || form.callBackUrl
+  if (o.shots && Array.isArray(o.shots) && o.shots.length > 0) {
+    scenes.value = o.shots.map((s, i) => ({
+      id: Date.now() + i,
+      scene: typeof s.scene === 'string' ? s.scene : (s.text || ''),
+      duration: String(s.duration ?? 7.5)
+    }))
+  }
+}
+
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) {
+      fillFormFromOriginalData(data)
+      if (form.model && soraModeToPath[form.model] && route.path !== soraModeToPath[form.model]) {
+        router.replace({ path: soraModeToPath[form.model], query: { ...route.query } })
+      }
+    }
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((res) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = res
+        if (res?.originalData) {
+          fillFormFromOriginalData(res)
+          if (form.model && soraModeToPath[form.model] && route.path !== soraModeToPath[form.model]) {
+            router.replace({ path: soraModeToPath[form.model], query: { ...route.query } })
+          }
+        }
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
+}
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+// 详情 outputUrls 按 /image/、/video/ 分类展示
+const detailOutputItems = computed(() => {
+  if (!detailData.value || detailData.value.status !== 2 || !Array.isArray(detailData.value.outputUrls)) return []
+  return detailData.value.outputUrls
+    .map((u) => (typeof u === 'string' ? u : u?.url))
+    .filter(Boolean)
+    .map((url) => ({
+      type: url.includes('/image/') ? 'image' : url.includes('/video/') ? 'video' : 'unknown',
+      url
+    }))
+    .filter((item) => item.type !== 'unknown')
+})
 
 const getAuthToken = () => {
   if (!isClient) return null
@@ -405,6 +553,9 @@ const imageUrlsText = ref('')
 const videoList = ref([])
 const isLoadingVideoList = ref(false)
 const isUploadingImages = ref(false)
+const watermarkVideoInputRef = ref(null)
+const isUploadingWatermarkVideo = ref(false)
+const watermarkVideoFile = ref(null)
 const scenes = ref([{ id: Date.now(), scene: '', duration: '7.5' }])
 const totalSceneDuration = computed(() => scenes.value.reduce((sum, s) => sum + (parseFloat(s.duration) || 0), 0))
 const framesSeconds = computed(() => Number(form.input.n_frames || 0))
@@ -464,24 +615,43 @@ const handleSoraImagesUpdate = async (files) => {
   }
 }
 
-// Tab 与二级路由同步：/home/sora/text-to-video 等
-const soraModeToPath = {
-  'text-to-video': '/home/sora/text-to-video',
-  'image-to-video': '/home/sora/image-to-video',
-  'pro-text-to-video': '/home/sora/pro-text-to-video',
-  'pro-image-to-video': '/home/sora/pro-image-to-video',
-  'watermark-remover': '/home/sora/watermark-remover',
-  'pro-storyboard': '/home/sora/pro-storyboard'
-}
-const soraPathToMode = {
-  '/home/sora/text-to-video': 'text-to-video',
-  '/home/sora/image-to-video': 'image-to-video',
-  '/home/sora/pro-text-to-video': 'pro-text-to-video',
-  '/home/sora/pro-image-to-video': 'pro-image-to-video',
-  '/home/sora/watermark-remover': 'watermark-remover',
-  '/home/sora/pro-storyboard': 'pro-storyboard'
+const formatFileSize = (bytes) => {
+  if (bytes == null || bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
+const handleWatermarkVideoUpload = async (e) => {
+  const file = e.target?.files?.[0]
+  if (!file) return
+  isUploadingWatermarkVideo.value = true
+  form.input.video_url = ''
+  watermarkVideoFile.value = null
+  try {
+    const urls = await uploadFilesToUrls([file])
+    form.input.video_url = urls[0] || ''
+    watermarkVideoFile.value = file
+  } catch (err) {
+    showError(err?.message || 'Failed to upload video')
+  } finally {
+    isUploadingWatermarkVideo.value = false
+    e.target.value = ''
+  }
+}
+
+const clearWatermarkVideo = () => {
+  form.input.video_url = ''
+  watermarkVideoFile.value = null
+  if (watermarkVideoInputRef.value) watermarkVideoInputRef.value.value = ''
+}
+
+const triggerWatermarkVideoInput = () => {
+  watermarkVideoInputRef.value?.click()
+}
+
+// Tab 与二级路由同步：/home/sora/text-to-video 等（soraModeToPath / soraPathToMode 已提前定义）
 watch(() => route.path, (path) => {
   const mode = soraPathToMode[path]
   if (mode && form.model !== mode) form.model = mode
@@ -513,13 +683,6 @@ const fetchVideoList = async () => {
     isLoadingVideoList.value = false
   }
 }
-
-// 监听模式切换，如果是 watermark-remover 则加载视频列表
-watch(() => form.model, (newModel) => {
-  if (newModel === 'watermark-remover' && videoList.value.length === 0) {
-    fetchVideoList()
-  }
-}, { immediate: true })
 
 const canSubmit = computed(() => {
   // watermark remover: require selected video URL
@@ -721,6 +884,17 @@ const onSubmit = async () => {
 .remove-video-btn { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: #dc2626; color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
 .remove-video-btn:hover { background: #b91c1c; transform: scale(1.1); }
 
+/* watermark-remover 上传视频：固定预览尺寸，避免表单被撑大 */
+.sora-video-file-input { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
+.sora-video-upload-area { position: relative; border: 2px dashed #d1d5db; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafafa; min-height: 80px; max-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; box-sizing: border-box; }
+.sora-video-upload-area:hover { border-color: #3b82f6; background: #f0f7ff; }
+.sora-video-upload-area .sora-video-uploading { color: #64748b; }
+.sora-video-preview-wrap { position: relative; width: 100%; max-width: 280px; height: 160px; flex-shrink: 0; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; background: #000; }
+.sora-video-preview { width: 100%; height: 100%; object-fit: contain; display: block; vertical-align: middle; }
+.sora-video-remove { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; border-radius: 50%; background: rgba(0,0,0,0.6); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1; }
+.sora-video-remove:hover { background: #dc2626; }
+.sora-video-meta { font-size: 12px; color: #64748b; display: flex; gap: 12px; flex-shrink: 0; }
+
 /* shots builder */
 .shots-list { display: flex; flex-direction: column; gap: 16px; }
 .shot-card { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
@@ -756,6 +930,9 @@ const onSubmit = async () => {
 .video-showcase { width: 100%; max-width: 100%; }
 .video-showcase-item { width: 100%; background: #f8fafc; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
 .payload-json { margin: 0; padding: 16px; font-size: 12px; line-height: 1.5; background: #0f172a; color: #e2e8f0; white-space: pre-wrap; }
+.detail-output-item { margin-bottom: 16px; border-radius: 8px; overflow: hidden; background: #000; }
+.detail-output-item .detail-video { width: 100%; max-height: 70vh; display: block; }
+.detail-output-item .detail-image { width: 100%; height: auto; display: block; vertical-align: middle; }
 .empty-state { text-align: center; color: #64748b; max-width: 500px; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .empty-icon { font-size: 72px; color: #cbd5e1; margin-bottom: 24px; }
 

@@ -1,3 +1,5 @@
+import { useRoute } from 'vue-router'
+
 /**
  * 记录详情：单次拉取与按 status 轮询
  * - fetchRecordDetailOnce: 请求一次，返回 data（含 status、originalData、outputUrls）
@@ -5,7 +7,11 @@
  * - pollRecordDetail: 每 10 秒请求一次，直到 outputUrls 存在（兼容旧用法）
  */
 export function useRecordPolling() {
+  const route = useRoute()
   const POLL_INTERVAL_MS = 10 * 1000 // 10 秒
+
+  /** 当前 URL 是否仍包含该 record-id（切换 tab 后 query 会变，用路由直接判断避免闭包过期） */
+  const isRecordIdStillInUrl = (recordId) => (route.query['record-id'] || '') === recordId
 
   const getToken = () => {
     if (!process.client) return null
@@ -51,10 +57,13 @@ export function useRecordPolling() {
     }
     for (;;) {
       if (getIsCancelled?.()) return null
+      if (!isRecordIdStillInUrl(recordId)) return null
       await new Promise(r => setTimeout(r, intervalMs))
       if (getIsCancelled?.()) return null
+      if (!isRecordIdStillInUrl(recordId)) return null
       const data = await requestDetail(recordId)
       if (getIsCancelled?.()) return null
+      if (!isRecordIdStillInUrl(recordId)) return null
       if (data != null && Number(data.status) !== 1) return data
     }
   }

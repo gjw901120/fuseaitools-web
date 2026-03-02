@@ -309,6 +309,13 @@
                 :multiple="false"
                 @update:files="handleSpeechAudioUpdate"
               />
+              <!-- 详情页：在 Upload Audio File 下方回显原始音频 -->
+              <div v-if="isDetailView && detailOriginalAudioUrl" class="detail-audio-replay">
+                <label class="form-label detail-audio-label">Original Audio</label>
+                <div class="detail-audio-wrap">
+                  <audio controls class="detail-audio-player" :src="detailOriginalAudioUrl"></audio>
+                </div>
+              </div>
             </div>
 
             <!-- 语言选择 -->
@@ -485,6 +492,13 @@
                 :multiple="false"
                 @update:files="handleIsolationAudioUpdate"
               />
+              <!-- 详情页：在 Upload Audio File 下方回显原始音频 -->
+              <div v-if="isDetailView && detailIsolationOriginalAudioUrl" class="detail-audio-replay">
+                <label class="form-label detail-audio-label">Original Audio</label>
+                <div class="detail-audio-wrap">
+                  <audio controls class="detail-audio-player" :src="detailIsolationOriginalAudioUrl"></audio>
+                </div>
+              </div>
             </div>
           </template>
 
@@ -563,24 +577,52 @@
               ></audio>
             </div>
 
-            <!-- 语音识别结果 - 已禁用 -->
-            <!--
-            <div v-else-if="formData.function === 'speech-to-text'" class="text-result">
+            <!-- Speech-to-Text：详情用 outputResults 渲染，非详情用 result -->
+            <div v-else-if="(formData.function === 'speech-to-text' || (isDetailView && (detailData?.model === 'elevenlabs_speech_to_text' || detailData?.model === 'speech_to_text'))) && (displayResult?.transcript != null || speechToTextDetailResult)" class="text-result">
               <div class="text-content">
-                <h5>识别结果</h5>
-                <div class="transcript">
-                  {{ result.transcript || '暂无识别结果' }}
+                <h5>Recognition Result</h5>
+                <div class="transcript transcript-block">
+                  {{ (speechToTextDetailResult?.text ?? displayResult?.transcript) || 'No transcript' }}
                 </div>
-                <div v-if="result.speakers" class="speakers-info">
-                  <h6>说话人信息</h6>
-                  <div v-for="(speaker, index) in result.speakers" :key="index" class="speaker-item">
-                    <span class="speaker-name">{{ speaker.name }}</span>
-                    <span class="speaker-time">{{ speaker.time }}</span>
+                <div v-if="sttWordsList.length" class="words-list">
+                  <h6>Words Timeline</h6>
+                  <!-- 单行 + 横向滚动：时间轴在上，单词在下，一起滑动 -->
+                  <div class="timeline-scroll-wrap">
+                    <div class="timeline-inner">
+                      <!-- 时间轴：对应整段时长，在上方 -->
+                      <div v-if="sttTimelineDuration > 0" class="timeline-ruler-single">
+                        <template v-for="t in sttRulerTicks" :key="t">
+                          <span
+                            class="ruler-tick"
+                            :style="{ left: (t / sttTimelineDuration * 100) + '%' }"
+                          >{{ formatRulerTick(t) }}</span>
+                        </template>
+                      </div>
+                      <!-- 单词单行展示，不换行 -->
+                      <div class="timeline-bar timeline-bar-nowrap">
+                        <template v-for="(w, idx) in sttWordsList" :key="idx">
+                          <span
+                            v-if="w.type === 'word'"
+                            class="timeline-segment timeline-word"
+                            :title="`${w.start.toFixed(2)}s – ${w.end.toFixed(2)}s`"
+                            @click="seekSttAudio(w.start)"
+                          >{{ w.text }}</span>
+                          <span
+                            v-else-if="w.type === 'spacing'"
+                            class="timeline-segment timeline-spacing"
+                            :title="`${w.start.toFixed(2)}s – ${w.end.toFixed(2)}s`"
+                          >&nbsp;</span>
+                        </template>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <div v-if="speechToTextDetailResult?.language_code || displayResult?.outputResults?.language_code" class="stt-meta">
+                  <span>Language: {{ speechToTextDetailResult?.language_code ?? displayResult?.outputResults?.language_code }}</span>
+                </div>
+                <audio v-if="sttResultAudioUrl" ref="sttResultAudioRef" :src="sttResultAudioUrl" class="stt-result-audio"></audio>
               </div>
             </div>
-            -->
 
             <!-- 音效生成结果 -->
             <div v-else-if="formData.function === 'sound-effect-v2'" class="sound-effect-result">
@@ -613,16 +655,14 @@
               ></audio>
             </div>
 
-            <!-- 音频分离结果 - 已禁用 -->
-            <!--
-            <div v-else-if="formData.function === 'audio-isolation' && result" class="isolation-result">
+            <!-- 音频分离结果：详情用 outputUrls/displayResult 渲染 -->
+            <div v-else-if="(formData.function === 'audio-isolation' || (isDetailView && detailData?.model === 'elevenlabs_audio_isolation')) && isolationOutputUrls.length" class="isolation-result">
               <div class="isolation-player">
                 <div class="isolation-info">
                   <h5>{{ getIsolationTypeName(formData.isolationType) }}</h5>
-                  <p>分离结果</p>
+                  <p>Isolation Result</p>
                   <div class="isolation-meta">
-                    <span><i class="fas fa-clock"></i> {{ result.duration || '未知时长' }}</span>
-                    <span><i class="fas fa-cut"></i> {{ formData.isolationType }}</span>
+                    <span><i class="fas fa-cut"></i> {{ formData.isolationType || 'Isolated' }}</span>
                   </div>
                 </div>
                 <div class="player-controls">
@@ -635,16 +675,23 @@
                   <span class="time">{{ formatTime(isolationCurrentTime) }} / {{ formatTime(isolationDuration) }}</span>
                 </div>
               </div>
-              
-              <audio 
+              <audio
                 ref="isolationPlayer"
-                :src="displayResult.audioUrl" 
+                :src="isolationOutputUrls[0]"
                 @timeupdate="updateIsolationProgress"
                 @loadedmetadata="setIsolationDuration"
                 @ended="onIsolationEnded"
               ></audio>
+              <!-- 多个 output 时逐个展示 -->
+              <div v-if="isolationOutputUrls.length > 1" class="isolation-extra-outputs">
+                <template v-for="(url, i) in isolationOutputUrls" :key="i">
+                  <div v-if="i > 0" class="isolation-extra-item">
+                    <span class="isolation-extra-label">Output {{ i + 1 }}</span>
+                    <audio controls class="isolation-extra-audio" :src="url"></audio>
+                  </div>
+                </template>
+              </div>
             </div>
-            -->
           </div>
         </div>
       </div>
@@ -1118,12 +1165,100 @@ const detailData = ref(null)
 const loadingRecordId = ref(null)
 
 const displayResult = computed(() => {
-  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
-    const od = detailData.value.originalData || {}
-    const audioUrl = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
-    return { ...od, audioUrl, transcript: detailData.value.transcript ?? od.transcript }
+  if (isDetailView.value && detailData.value?.status === 2) {
+    const d = detailData.value
+    const od = d.originalData || {}
+    if (d.outputUrls?.length) {
+      const audioUrl = typeof d.outputUrls[0] === 'string' ? d.outputUrls[0] : d.outputUrls[0]?.url
+      return { ...od, audioUrl, transcript: d.transcript ?? od.transcript }
+    }
+    if ((d.model === 'elevenlabs_speech_to_text' || d.model === 'speech_to_text') && d.outputResults) {
+      return {
+        ...od,
+        transcript: d.outputResults.text || '',
+        outputResults: d.outputResults,
+        audioUrl: od.audioUrl || od.audio_url
+      }
+    }
   }
   return result.value
+})
+
+const speechToTextDetailResult = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputResults) return detailData.value.outputResults
+  if (displayResult.value?.outputResults) return displayResult.value.outputResults
+  return null
+})
+
+// 时间轴：words 列表、总时长、刻度
+const sttWordsList = computed(() => {
+  const words = speechToTextDetailResult.value?.words || displayResult.value?.outputResults?.words || []
+  return Array.isArray(words) ? words : []
+})
+
+const sttTimelineDuration = computed(() => {
+  if (!sttWordsList.value.length) return 0
+  return Math.max(...sttWordsList.value.map(w => Number(w.end) || 0), 0)
+})
+
+const sttRulerTicks = computed(() => {
+  const d = sttTimelineDuration.value
+  if (d <= 0) return []
+  const step = d <= 10 ? 1 : d <= 60 ? 5 : 10
+  const ticks = []
+  for (let t = 0; t <= Math.ceil(d); t += step) ticks.push(t)
+  return ticks
+})
+
+function formatRulerTick(t) {
+  return Number(t) === parseInt(t, 10) ? t + 's' : Number(t).toFixed(1) + 's'
+}
+
+function getSegmentWidth(w) {
+  const dur = sttTimelineDuration.value
+  if (!dur) return 0
+  const segDur = (Number(w.end) || 0) - (Number(w.start) || 0)
+  const pct = (segDur / dur) * 100
+  return w.type === 'spacing' && segDur <= 0 ? 0.3 : Math.max(pct, 0.5)
+}
+
+const sttResultAudioUrl = computed(() => detailOriginalAudioUrl.value || displayResult.value?.audioUrl || '')
+
+function seekSttAudio(sec) {
+  const el = sttResultAudioRef.value
+  if (el && sttResultAudioUrl.value) {
+    el.currentTime = Number(sec) || 0
+    el.play().catch(() => {})
+  }
+}
+
+const sttResultAudioRef = ref(null)
+
+// 详情页 Speech-to-Text 回显的原始音频 URL（用于左侧表单展示播放器）
+const detailOriginalAudioUrl = computed(() => {
+  if (!isDetailView.value || formData.function !== 'speech-to-text') return ''
+  const od = detailData.value?.originalData
+  if (od?.audioUrl) return od.audioUrl
+  return speechFileUrl.value || ''
+})
+
+// 详情页 Audio Isolation 回显的原始音频 URL
+const detailIsolationOriginalAudioUrl = computed(() => {
+  if (!isDetailView.value || formData.function !== 'audio-isolation') return ''
+  const od = detailData.value?.originalData
+  if (od?.audioUrl) return od.audioUrl
+  return isolationFileUrl.value || ''
+})
+
+// 音频分离结果：output 音频 URL 列表（用于主播放器 + 多 output 列表）
+const isolationOutputUrls = computed(() => {
+  if (isDetailView.value && detailData.value?.outputUrls?.length) {
+    return detailData.value.outputUrls.map(u => typeof u === 'string' ? u : u?.url).filter(Boolean)
+  }
+  const dr = displayResult.value
+  if (dr?.audioUrl) return [dr.audioUrl]
+  if (Array.isArray(dr?.outputUrls) && dr.outputUrls.length) return dr.outputUrls.map(u => typeof u === 'string' ? u : u?.url).filter(Boolean)
+  return []
 })
 
 function fillFormFromOriginalData(originalData) {
@@ -1132,6 +1267,28 @@ function fillFormFromOriginalData(originalData) {
   Object.keys(formData).forEach(k => { if (o[k] !== undefined && k in formData) formData[k] = o[k] })
   if (o.voiceSettings && typeof o.voiceSettings === 'object') Object.assign(formData.voiceSettings, o.voiceSettings)
   if (o.function) formData.function = o.function
+  if (o.model === 'elevenlabs_speech_to_text' || o.model === 'speech_to_text') formData.function = 'speech-to-text'
+  if (o.model === 'elevenlabs_sound_effect') formData.function = 'sound-effect-v2'
+  if (o.model === 'elevenlabs_audio_isolation') formData.function = 'audio-isolation'
+  // 后端 camelCase / 不同字段名 -> 表单回显
+  if (o.languageCode !== undefined) {
+    formData.language = o.languageCode
+    formData.language_code = o.languageCode
+  }
+  if (o.diarize !== undefined) formData.speakerIdentification = !!o.diarize
+  if (o.tagAudioEvents !== undefined) formData.audioEvents = !!o.tagAudioEvents
+  if (o.previousText !== undefined) formData.previous_text = o.previousText
+  if (o.nextText !== undefined) formData.next_text = o.nextText
+  if (o.audioUrl) {
+    if (formData.function === 'speech-to-text' || o.model === 'elevenlabs_speech_to_text' || o.model === 'speech_to_text') speechFileUrl.value = o.audioUrl
+    if (formData.function === 'audio-isolation' || o.model === 'elevenlabs_audio_isolation') isolationFileUrl.value = o.audioUrl
+  }
+  // Sound Effect v2
+  if (o.text !== undefined) formData.soundDescription = o.text
+  if (o.durationSeconds !== undefined) formData.duration = Number(o.durationSeconds)
+  if (o.promptInfluence !== undefined) formData.intensity = Number(o.promptInfluence)
+  if (o.loop !== undefined) formData.loop = !!o.loop
+  if (o.outputFormat !== undefined) formData.outputFormat = o.outputFormat
 }
 
 function getRouteRecordId() { return route.query['record-id'] || '' }
@@ -1641,6 +1798,41 @@ const shareResult = () => {
   border-color: #6366f1;
 }
 
+.detail-audio-replay {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.detail-audio-replay .detail-audio-label {
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.detail-audio-wrap {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.detail-audio-player {
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+}
+
+/* 详情页禁用时，整块表单不可操作（fieldset :disabled 已处理） */
+.config-fieldset:disabled .detail-audio-replay {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.config-fieldset:disabled .detail-audio-player {
+  pointer-events: auto;
+}
+
 /* Voice 下拉（选项内播放按钮） */
 .voice-dropdown {
   position: relative;
@@ -2031,6 +2223,30 @@ const shareResult = () => {
   gap: 4px;
 }
 
+.isolation-extra-outputs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.isolation-extra-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.isolation-extra-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.isolation-extra-audio {
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+}
+
 .player-controls {
   display: flex;
   align-items: center;
@@ -2101,6 +2317,119 @@ const shareResult = () => {
   line-height: 1.6;
   color: #374151;
   margin-bottom: 16px;
+}
+
+.transcript-block {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.words-list {
+  margin-top: 16px;
+}
+
+.words-list h6 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.timeline-ruler {
+  position: relative;
+  height: 24px;
+  margin-bottom: 10px;
+  padding: 0 4px;
+  background: linear-gradient(to right, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.timeline-scroll-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.timeline-inner {
+  min-width: min-content;
+  padding: 0 12px 12px;
+}
+
+.timeline-ruler-single {
+  position: relative;
+  height: 24px;
+  margin-bottom: 6px;
+  padding-top: 4px;
+  background: linear-gradient(to right, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 6px 6px 0 0;
+}
+
+.ruler-tick {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.timeline-bar {
+  display: flex;
+  gap: 6px 10px;
+  padding: 14px 18px;
+  min-height: 48px;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.timeline-bar-nowrap {
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
+.timeline-segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.timeline-word {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 1em;
+  white-space: nowrap;
+}
+
+.timeline-word:hover {
+  background: #bae6fd;
+}
+
+.timeline-spacing {
+  width: 0.25em;
+  min-width: 4px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.stt-result-audio {
+  display: none;
+}
+
+.stt-meta {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #64748b;
 }
 
 .speakers-info h6 {

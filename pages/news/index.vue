@@ -250,12 +250,12 @@ watch(selectedCategory, () => {
   background: #ffffff;
 }
 
-/* Hero Section */
+/* Hero Section - 与 pricing 一致：标题左侧靠上，副标题放大居中 */
 .news-hero {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 10px 0;
-  text-align: center;
+  padding: 20px 0;
+  text-align: left;
 }
 
 .breadcrumb {
@@ -288,22 +288,26 @@ watch(selectedCategory, () => {
 }
 
 .hero-content {
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .hero-title {
-  font-size: 3rem; /* 2rem 放大 50% */
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
   color: white;
+  text-align: left;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem; /* 1rem 放大 50% */
-  opacity: 0.9;
+  font-size: 2.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 900px;
+  margin: 0 auto;
   line-height: 1.5;
-  margin: 0;
+  text-align: center;
 }
 
 /* News List Section */
@@ -583,11 +587,11 @@ watch(selectedCategory, () => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 2.25rem; /* 1.5rem 放大 50% */
+    font-size: 2rem;
   }
 
   .hero-subtitle {
-    font-size: 1.35rem; /* 0.9rem 放大 50% */
+    font-size: 1.5rem;
   }
 
   .news-list-item {

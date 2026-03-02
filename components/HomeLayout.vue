@@ -19,6 +19,9 @@
               :key="record.id || record.recordId || index"
               @click="navigateToHistoryItem(record)"
             >
+              <span class="timeline-item-status-badge" :class="record.status" :title="record.status === 'completed' ? 'Completed' : 'In progress'">
+                <i :class="record.status === 'completed' ? 'fas fa-check-circle' : 'fas fa-spinner fa-spin'"></i>
+              </span>
               <div class="timeline-marker" :class="[record.status, record.type]">
                 <img v-if="record.iconIsImage && record.icon" :src="record.icon" :alt="record.toolName || record.category" class="timeline-marker-logo" />
                 <i v-else :class="record.icon"></i>
@@ -305,6 +308,23 @@ provide('addToUsageHistory', addToUsageHistory)
 
 .timeline-item-clickable:hover {
   background: #f8fafc;
+}
+
+.timeline-item-status-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 14px;
+  line-height: 1;
+  z-index: 1;
+}
+
+.timeline-item-status-badge.completed {
+  color: #22c55e;
+}
+
+.timeline-item-status-badge.in_progress {
+  color: #f59e0b;
 }
 
 .timeline-model {

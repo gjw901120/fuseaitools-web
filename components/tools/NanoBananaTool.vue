@@ -1054,15 +1054,12 @@ const clearResults = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #667eea;
-  color: white;
-  font-size: 20px;
 }
 
 .tool-icon img {
   width: 48px;
   height: 48px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .tool-info h3 {

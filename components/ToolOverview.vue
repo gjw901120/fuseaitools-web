@@ -3,7 +3,10 @@
     <div class="tool-overview content-padding">
       <header class="overview-header">
         <span v-if="config.showCategory !== false" class="overview-category">{{ config.category }}</span>
-        <h1 class="overview-title">{{ config.title }}</h1>
+        <div class="overview-title-row">
+          <img v-if="config.logo" :src="config.logo" alt="" class="overview-title-logo" />
+          <h1 class="overview-title">{{ config.title }}</h1>
+        </div>
         <p class="overview-intro" :class="{ 'intro-full-width': config.introFullWidth }">{{ config.intro }}</p>
       </header>
 
@@ -114,6 +117,24 @@ useHead({
   margin: 0 0 1.25rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
+}
+
+.overview-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.overview-title-row .overview-title {
+  margin: 0;
+}
+
+.overview-title-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .overview-intro {
@@ -262,6 +283,7 @@ useHead({
   .tool-overview { padding-top: 1.5rem; padding-bottom: 2.5rem; }
   .overview-header { padding-bottom: 1.5rem; margin-bottom: 2rem; }
   .overview-title { font-size: 1.75rem; }
+  .overview-title-logo { width: 2rem; height: 2rem; }
   .overview-intro { font-size: 1rem; }
   .overview-intro.intro-full-width { font-size: 1.0625rem; }
   .overview-features { padding: 1.5rem; margin-top: 2rem; }

@@ -38,7 +38,7 @@
           type="button"
           @click="clearFile"
           class="remove-btn"
-          title="删除文件"
+          title="Remove file"
         >
           <i class="fas fa-times"></i>
         </button>
@@ -51,7 +51,7 @@
           @click="togglePlay"
           class="play-pause-btn"
           :class="{ playing: isPlaying }"
-          :title="isPlaying ? '暂停' : '播放'"
+          :title="isPlaying ? 'Pause' : 'Play'"
         >
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
         </button>
@@ -97,11 +97,11 @@ const props = defineProps({
   },
   uploadText: {
     type: String,
-    default: '点击上传音频文件'
+    default: 'Click to upload audio file'
   },
   uploadHint: {
     type: String,
-    default: '支持 MP3, WAV, M4A 等格式'
+    default: 'Supports MP3, WAV, M4A formats'
   },
   additionalHint: {
     type: String,
@@ -201,7 +201,7 @@ const getAudioDuration = (file) => {
     
     audio.addEventListener('error', () => {
       URL.revokeObjectURL(url)
-      reject(new Error('无法加载音频文件'))
+      reject(new Error('Failed to load audio file'))
     })
     
     audio.src = url

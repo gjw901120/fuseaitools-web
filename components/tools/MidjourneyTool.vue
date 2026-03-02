@@ -14,7 +14,7 @@
     <!-- 分类切换：Imagine | Upscale | Vary（样式参考 Nano Banana） -->
     <div class="function-selection-section">
       <div class="function-tabs">
-        <div
+        <div 
           v-for="cat in categoryOptions"
           :key="cat.id"
           class="function-tab"
@@ -48,7 +48,7 @@
               <button type="button" class="option-btn" :class="{ active: form.taskType === 'mj_img2img' }" @click="form.taskType = 'mj_img2img'">
                 Image-to-image
               </button>
-            </div>
+        </div>
           </div>
           <div class="form-group">
             <label>Prompt *</label>
@@ -60,7 +60,7 @@
               maxlength="2000"
             ></textarea>
             <div class="char-count">{{ form.prompt.length }}/2000</div>
-          </div>
+            </div>
           <div class="form-group">
             <label>Speed</label>
             <div class="option-btn-group">
@@ -144,7 +144,7 @@
         <form v-if="activeCategory === 'upscale'" class="config-form" @submit.prevent="onSubmitUpscale">
           <fieldset class="config-fieldset" :disabled="loading || isDetailView">
           <p class="category-desc">Create an upscale task based on previously generated Midjourney images.</p>
-          <div class="form-group">
+              <div class="form-group">
             <label>Task ID *</label>
             <div class="select-with-arrow">
               <select v-model="upscaleForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList" :key="'upscale-select-' + extendListOptions.length">
@@ -152,13 +152,13 @@
                 <option v-for="item in extendListOptions" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
               </select>
               <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
-            </div>
+              </div>
             <div v-if="!loadingExtendList && extendListOptions.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
           </div>
           <div class="form-group" v-if="selectedOutputUrls.length">
             <label>Image Index *</label>
             <div class="extend-image-index-grid">
-              <button
+              <button 
                 v-for="(url, idx) in selectedOutputUrls"
                 :key="idx"
                 type="button"
@@ -171,7 +171,7 @@
               </button>
             </div>
             <div class="input-hint">Select one image</div>
-          </div>
+              </div>
           <div class="form-group">
             <label>Watermark</label>
             <input v-model="upscaleForm.waterMark" type="text" class="form-input" placeholder="Optional watermark identifier" />
@@ -182,7 +182,7 @@
               <i v-else class="fas fa-expand-arrows-alt"></i>
               {{ loading ? 'Submitting...' : 'Upscale' }}{{ midjourneyPriceText }}
             </button>
-          </div>
+                </div>
           </fieldset>
         </form>
 
@@ -190,7 +190,7 @@
         <form v-if="activeCategory === 'vary'" class="config-form" @submit.prevent="onSubmitVary">
           <fieldset class="config-fieldset" :disabled="loading || isDetailView">
           <p class="category-desc">Create a vary task to enhance image clarity and simulate styles based on previously generated Midjourney images.</p>
-          <div class="form-group">
+              <div class="form-group">
             <label>Task ID *</label>
             <div class="select-with-arrow">
               <select v-model="varyForm.taskId" class="form-select form-select-enhanced" required :disabled="loadingExtendList" :key="'vary-select-' + extendListOptions.length">
@@ -198,7 +198,7 @@
                 <option v-for="item in extendListOptions" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
               </select>
               <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true"></i>
-            </div>
+              </div>
             <div v-if="!loadingExtendList && extendListOptions.length === 0" class="input-hint input-hint-warn">Only tasks completed with Midjourney Imagine can be used.</div>
           </div>
           <div class="form-group" v-if="selectedOutputUrls.length">
@@ -214,11 +214,11 @@
               >
                 <img :src="url" :alt="`Image ${idx + 1}`" />
                 <span class="index-badge">{{ idx + 1 }}</span>
-              </button>
-            </div>
-            <div class="input-hint">Select one image</div>
+            </button>
           </div>
-          <div class="form-group">
+            <div class="input-hint">Select one image</div>
+            </div>
+            <div class="form-group">
             <label>Watermark</label>
             <input v-model="varyForm.waterMark" type="text" class="form-input" placeholder="Optional watermark identifier" />
           </div>
@@ -284,8 +284,8 @@
             </div>
             <h3>Waiting for Generation</h3>
             <p>Fill in the prompt and optional reference images, then click Start Generation to create your AI image</p>
-          </div>
-        </div>
+              </div>
+              </div>
       </div>
     </div>
 
@@ -583,7 +583,7 @@ const onSubmitImagine = async () => {
   }
   if (form.taskType === 'mj_img2img' && !form.fileUrls?.length) {
     showError('Input image(s) required for image-to-image')
-    return
+    return 
   }
   loading.value = true
   try {
@@ -622,7 +622,7 @@ const onSubmitImagine = async () => {
 const onSubmitUpscale = async () => {
   if (!upscaleForm.taskId?.trim()) {
     showError('Task ID is required')
-    return
+    return 
   }
   loading.value = true
   try {
@@ -651,7 +651,7 @@ const onSubmitUpscale = async () => {
 const onSubmitVary = async () => {
   if (!varyForm.taskId?.trim()) {
     showError('Task ID is required')
-    return
+    return 
   }
   loading.value = true
   try {

@@ -437,6 +437,262 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
       }
     ]
   },
+  seedream: {
+    title: 'Seedream',
+    category: 'Image',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Seedream delivers precision and flexibility in image generation: 1.5 Lite for text-to-image and 2.5 Lite for image-to-image. With full control over aspect ratio (1:1 to 21:9) and quality (Basic 2K or High 3K), plus support for long prompts up to 2996 characters, it\'s the ideal tool for stickers, lighting edits, style transfer, and creative iteration. Use Seedream on FuseAITools to bring your ideas to life with professional-grade output.',
+    features: [
+      { name: '1.5 Lite Text to Image', path: '/home/seedream/1-5-lite-text-to-image', description: 'Generate images from text descriptions with aspect ratio options from 1:1 to 21:9. Choose Basic (2K) or High (3K) quality. Prompt length up to 2995 characters.' },
+      { name: '2.5 Lite Image to Image', path: '/home/seedream/2-5-lite-image-to-image', description: 'Transform existing images via text instructions—adjust lighting, apply style transfer, or refine details. Upload one or more images (JPEG, PNG, WebP; max 10MB each), set aspect ratio and quality, and guide the result with natural language prompts up to 2996 characters.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Precision and flexibility: Seedream puts control in your hands—choose exactly the aspect ratio and resolution you need, from social squares to ultra-wide cinematics. High-quality output at 2K or 3K ensures your visuals stand out, whether for web, print, or digital campaigns.
+
+Simplicity without compromise: With straightforward parameters and generous prompt limits, Seedream balances ease of use with professional-grade results. It's built for creators who demand both creative freedom and technical reliability.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `1.5 Lite Text to Image
+
+Describe your vision in detail—up to 2995 characters.
+
+Select aspect ratio: 1:1, 4:3, 3:4, 16:9, 9:16, 2:3, 3:2, 21:9.
+
+Choose quality: Basic 2K (fast, efficient) or High 3K (enhanced detail and clarity).
+
+Ideal for concept art, stickers, social posts, and rapid visual exploration.
+
+2.5 Lite Image to Image
+
+Upload one or more images (JPEG, PNG, WebP; max 10MB each).
+
+Add a text instruction (e.g., "change lighting to golden hour," "convert to sticker style," "transfer this style to the subject").
+
+Apply the same aspect ratio and quality controls as text-to-image.
+
+Perfect for style unification, lighting adjustments, detail polishing, and creative remixing.`
+      },
+      {
+        title: 'Use cases',
+        content: `Sticker creation: Generate custom stickers with precise control over style and format.
+
+Lighting edits: Transform the mood of an image by changing lighting conditions via text prompts.
+
+Style transfer: Apply artistic or brand styles consistently across multiple assets.
+
+Marketing assets: Produce social media graphics, banners, and ads with tailored aspect ratios.
+
+Concept iteration: Rapidly explore variations of a design by tweaking prompts and parameters.
+
+Educational content: Create visuals for presentations, blogs, and student projects with high-quality output.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Text-to-image generation: Typically completes in 10–25 seconds for Basic 2K, 20–40 seconds for High 3K (dependent on complexity).
+
+Image-to-image generation: 15–30 seconds for most edits; supports batch processing for multiple images.
+
+Concurrency: Handles 50+ parallel requests smoothly.
+
+Input formats: JPEG, PNG, WebP (max 10MB per image).
+
+Prompt length: Up to 2995–2996 characters, enabling rich, detailed descriptions.`
+      },
+      {
+        title: 'Workflow',
+        content: `Quick create: Write a detailed prompt → select aspect ratio and quality → generate → review and refine.
+
+Batch editing: Upload a set of images → apply the same style or lighting instruction → unify output with consistent settings.
+
+Team collaboration: Share generated assets in real time, collect feedback, and iterate quickly using version tracking on FuseAITools.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt crafting: Be specific: [Subject] + [Action/Scene] + [Style/Lighting] + [Key details]. For image-to-image, clearly state what to change (e.g., "make it sunset lighting" rather than just "change lighting").
+
+Resolution strategy: Use Basic 2K for drafts and internal reviews; switch to High 3K for final assets.
+
+Batch efficiency: Group similar tasks (e.g., same aspect ratio/style) to minimize reconfiguration.
+
+Cost management: Optimize by reusing successful prompts and caching frequently used instructions.
+
+Quality control: Experiment with different prompts and aspect ratios to find the best combination; iterate from Basic to High for polish.`
+      },
+      {
+        title: 'Platform advantages',
+        content: `Flexible aspect ratios: From 1:1 to 21:9, covering all modern formats.
+
+High-quality output: 2K and 3K options ensure professional-grade visuals.
+
+Long prompt support: Up to 2996 characters for precise creative direction.
+
+Ease of use: Intuitive controls and minimal setup—start generating in seconds.
+
+Versatility: Ideal for stickers, lighting edits, style transfer, and more.
+
+Best for: Designers, marketers, educators, content creators, and anyone needing fast, flexible image generation.`
+      },
+      {
+        title: 'Try Seedream on FuseAITools',
+        content: `Seedream on FuseAITools combines precise control with high-quality output—whether you're crafting stickers, fine-tuning lighting, or exploring new styles. With flexible aspect ratios, 2K/3K resolution, and generous prompt limits, Seedream empowers you to create exactly what you envision. Start turning ideas into stunning visuals today.`
+      }
+    ]
+  },
+  qwen: {
+    title: 'Qwen',
+    category: 'Image',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Qwen image models deliver comprehensive creative control across text-to-image, image-to-image, image editing, and Z-Image workflows. Fine-tune every aspect of generation—size, inference steps, guidance scale, seed, acceleration, and safety—with generous prompt limits up to 5000 characters. Whether you need rapid iteration or precise refinement, Qwen on FuseAITools adapts to your vision.',
+    features: [
+      { name: 'Text to Image', path: '/home/qwen/text-to-image', description: 'Generate from text prompts up to 5000 characters. Control image size (square, portrait, landscape), inference steps (2–250), guidance scale (0–20), seed, output format (PNG/JPEG), negative prompts, and acceleration (none/regular/high). Safety checker included.' },
+      { name: 'Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with a text prompt. Set denoising strength (0–1) to balance between original and new content. Full parameter control: steps, guidance, seed, negative prompt, acceleration, output format.' },
+      { name: 'Image Edit', path: '/home/qwen/image-edit', description: 'Edit specific elements of an image via natural language. Choose image size, steps (2–49), number of outputs (1–4), sync mode, guidance scale, negative prompt, and safety checker. Prompt limit 2000 characters.' },
+      { name: 'Z-Image', path: '/home/qwen/z-image', description: 'Fast text-to-image with essential aspect ratio control. Prompt up to 1000 characters; select from 1:1, 4:3, 3:4, 16:9, 9:16. Ideal for quick ideation and format-specific assets.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Total creative control: Qwen puts every dial and switch in your hands—from step count and guidance scale to seed and acceleration. Whether you're a power user fine-tuning every detail or a rapid prototyper seeking speed, Qwen adapts to your workflow.
+
+Flexibility at scale: With support for extra-long prompts (up to 5000 characters) and multiple generation modes, Qwen handles everything from complex scene descriptions to targeted edits. The Z-Image mode offers a streamlined path for quick, aspect-aware generation.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `Text to Image
+
+Prompt: Up to 5000 characters, supporting rich descriptions and negative prompts.
+
+Size options: Square (1024×1024), square_hd (1536×1536), portrait 3:4 (864×1152), portrait 9:16 (768×1344), landscape 4:3 (1152×864), landscape 16:9 (1344×768).
+
+Inference steps: 2–250 (higher steps = more detail, slower generation).
+
+Guidance scale: 0–20 (higher = stricter adherence to prompt).
+
+Seed: Set for reproducibility or leave random.
+
+Output format: PNG or JPEG.
+
+Acceleration: None, regular, or high—trade speed for quality.
+
+Safety checker: Optional filter for sensitive content.
+
+Image to Image
+
+Reference image: Required URL (JPEG, PNG, WebP).
+
+Prompt: Up to 5000 characters.
+
+Denoising strength: 0–1 (0 = minimal change, 1 = maximum deviation from original).
+
+Full parameter set: Steps, guidance, seed, negative prompt, acceleration, output format, safety checker—same as text-to-image.
+
+Image Edit
+
+Prompt: Up to 2000 characters for describing the edit.
+
+Image URL: Required input.
+
+Image size: Adjustable (same options as text-to-image).
+
+Steps: 2–49.
+
+Num images: 1–4 outputs per request.
+
+Sync mode: Enable for deterministic generation across multiple runs.
+
+Guidance scale: Default 4, adjustable.
+
+Negative prompt: Specify what to avoid.
+
+Safety checker: Optional.
+
+Z-Image
+
+Prompt: Up to 1000 characters.
+
+Aspect ratio: Required—1:1, 4:3, 3:4, 16:9, 9:16.
+
+Simplified workflow: No advanced parameters; designed for speed and format compliance.`
+      },
+      {
+        title: 'Use cases',
+        content: `Concept exploration: Quickly generate multiple variations with long, detailed prompts.
+
+Brand asset creation: Maintain consistency by setting seeds and using negative prompts to avoid unwanted elements.
+
+Photo editing and retouching: Use Image-to-Image or Image Edit to change backgrounds, adjust lighting, or add/remove objects.
+
+Content for social media: Generate assets in exact aspect ratios with Z-Image for platforms like Instagram, TikTok, or YouTube.
+
+Batch experimentation: Run parallel generations with different seeds and guidance scales to find the perfect result.
+
+Educational materials: Create diagrams, illustrations, and visual aids with precise control over style and content.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Text-to-image generation: 5–30 seconds depending on steps, acceleration, and resolution. High acceleration reduces time by up to 50%.
+
+Image-to-image / edit: 10–35 seconds; denoising strength affects speed (higher strength may take slightly longer).
+
+Z-Image: 3–15 seconds—optimized for rapid output.
+
+Concurrency: Supports 100+ parallel requests; smart queue management.
+
+Prompt limits: 5000 chars (text/image-to-image), 2000 chars (edit), 1000 chars (Z-Image).
+
+Input formats: JPEG, PNG, WebP (max 10MB for image inputs).
+
+Safety checker: Optional filter; adds minimal processing time.`
+      },
+      {
+        title: 'Workflow',
+        content: `Quick generate: Write prompt → choose size/parameters → generate → review → iterate with adjusted seed or guidance.
+
+Edit iteration: Upload image → describe edit → adjust strength/steps → generate multiple versions → select best.
+
+Batch production: Set seed and parameters → run multiple prompts in parallel → unify style with consistent negative prompts and guidance.
+
+Team collaboration: Share generated assets, compare versions, and collect feedback in real time on FuseAITools.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt engineering: Be specific—[Subject] + [Action/Scene] + [Style] + [Details]. Use negative prompts to exclude unwanted elements (e.g., "blurry, low quality, extra limbs").
+
+Step/guidance tuning: Start with 20–30 steps and guidance 7–9; increase steps for fine detail, decrease for speed. For image-to-image, strength 0.3–0.7 often balances change and coherence.
+
+Seed strategy: Use a fixed seed to reproduce results; vary seed for exploration. Save successful seeds for future batches.
+
+Acceleration: Use "high" for drafts and internal reviews; "none" for final assets where quality is paramount.
+
+Cost efficiency: Match resolution to need—use smaller sizes for thumbnails, larger for print. Batch similar requests to reuse parameters.
+
+Safety checker: Enable only when necessary to avoid unintended filtering; disable for unrestricted creative exploration.`
+      },
+      {
+        title: 'Platform advantages',
+        content: `Granular control: Adjust steps, guidance, seed, and more—unmatched flexibility for power users.
+
+Long prompt support: Up to 5000 characters for intricate descriptions and detailed edits.
+
+Multiple modes: Text-to-image, image-to-image, edit, and Z-Image—all in one platform.
+
+Speed options: Acceleration levels let you prioritize speed or quality on demand.
+
+Reproducibility: Seed control ensures consistent outputs across sessions.
+
+Best for: Designers, developers, content creators, researchers, and anyone needing precise, repeatable image generation.`
+      },
+      {
+        title: 'Try Qwen on FuseAITools',
+        content: `Qwen on FuseAITools delivers the ultimate balance of control and speed—whether you're drafting concepts, refining details, or producing final assets. With four powerful modes, extensive parameter tuning, and support for long prompts, Qwen empowers you to create exactly what you envision. Start generating with precision today.`
+      }
+    ]
+  },
   suno: {
     title: 'Suno',
     category: 'Audio',
@@ -791,6 +1047,264 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
       {
         title: 'Try Sora on FuseAITools',
         content: `OpenAI Sora on FuseAITools gives you a full AI video stack—from concept tests to commercial production on one platform. Whether you’re a solo creator, agency, or enterprise, Sora provides the right tier and tools. Start with text or image and turn ideas into high-impact video.`
+      }
+    ]
+  },
+  wan: {
+    title: 'Wan',
+    category: 'Video',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Wan brings AI video generation to your fingertips—transform text into video, breathe life into static images, or reimagine existing footage with natural language prompts. With support for Chinese and English, flexible duration (5–15 seconds), resolution options (720p/1080p), and multi-shot composition control, Wan empowers you to create engaging video content for ads, social media, and creative projects. All on FuseAITools.',
+    features: [
+      { name: 'Text to Video', path: '/home/wan/text-to-video', description: 'Generate video directly from text prompts. Supports Chinese and English, 1–5000 characters. Choose duration (5, 10, or 15 seconds), resolution (720p or 1080p), and shot composition (single continuous shot or multiple shots with transitions).' },
+      { name: 'Image to Video', path: '/home/wan/image-to-video', description: 'Animate static images with text guidance. Provide image URLs (min 256×256px; JPEG, PNG, WebP; max 10MB), add a prompt describing the motion or scene, and set duration, resolution, and multi-shot style. Perfect for bringing illustrations, product shots, or concept art to life.' },
+      { name: 'Video to Video', path: '/home/wan/video-to-video', description: 'Transform existing video with new prompts. Upload a video URL (MP4, MOV, MKV; max 10MB), describe the desired changes or style transfer in text, and control duration (5 or 10 seconds), resolution, and shot composition. Ideal for restyling, content adaptation, or creative remixing.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Motion meets imagination: Wan bridges the gap between static concepts and dynamic storytelling. Whether you're starting from text, an image, or existing footage, Wan gives you the tools to craft video content with the same ease as generating an image.
+
+Flexible, fast, and accessible: With support for both Chinese and English, multiple duration options, and resolution choices from web-ready to HD, Wan adapts to your workflow—from quick social clips to polished creative projects.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `Text to Video
+
+Prompt: Natural language in Chinese or English, 1–5000 characters.
+
+Duration: 5 seconds (quick loops), 10 seconds (standard clips), or 15 seconds (extended scenes).
+
+Resolution: 720p (fast, web-optimized) or 1080p (Full HD, higher detail).
+
+Shot composition: Single continuous shot for simplicity, or multi-shot with transitions for narrative flow.
+
+Use cases: Concept visualization, ad creatives, social media content, storyboarding.
+
+Image to Video
+
+Input: Image URL(s) required; minimum 256×256px; formats JPEG, PNG, WebP; max 10MB per image.
+
+Prompt: Describe the animation, motion, or scene evolution (1–5000 characters).
+
+Duration: 5, 10, or 15 seconds.
+
+Resolution: 720p or 1080p.
+
+Shot composition: Same multi-shot controls as text-to-video.
+
+Use cases: Animating illustrations, product demos, character movement, bringing concept art to life.
+
+Video to Video
+
+Input: Video URL required; formats MP4, MOV, MKV; max 10MB.
+
+Prompt: Describe the transformation—style transfer, content change, mood shift, etc. (1–5000 characters).
+
+Duration: 5 or 10 seconds (output length may differ from input).
+
+Resolution: 720p or 1080p.
+
+Shot composition: Single or multi-shot, with ability to reinterpret original footage.
+
+Use cases: Restyling existing content, adapting videos for different platforms, creative remixing, consistent brand video generation.`
+      },
+      {
+        title: 'Use cases',
+        content: `Social media content: Generate short videos for TikTok, Instagram Reels, YouTube Shorts—in the right duration and resolution.
+
+Advertising and marketing: Create product demos, brand stories, and promotional clips from text briefs or existing assets.
+
+Creative projects: Animate illustrations, bring storyboards to life, experiment with video styles and transitions.
+
+Educational content: Produce explainer videos, visual aids, and short tutorials without complex editing software.
+
+Concept validation: Quickly visualize video ideas before committing to full production.
+
+Content adaptation: Transform existing videos for different audiences, platforms, or brand guidelines.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Text-to-video generation: 30–90 seconds for 5s clips, 60–180 seconds for 15s clips (dependent on resolution and shot complexity).
+
+Image-to-video: 40–120 seconds; image complexity and desired motion affect speed.
+
+Video-to-video: 60–180 seconds; depends on input length, transformation complexity, and resolution.
+
+Concurrency: Supports 50+ parallel requests with intelligent queue management.
+
+Prompt length: Up to 5000 characters across all modes.
+
+Input formats: JPEG, PNG, WebP for images; MP4, MOV, MKV for videos (max 10MB each).
+
+Output: MP4 format, delivered via secure URL or direct download.`
+      },
+      {
+        title: 'Workflow',
+        content: `Quick create (text-to-video): Write prompt → choose duration/resolution/shot style → generate → preview → iterate with refined prompt or parameters.
+
+Animate assets (image-to-video): Upload image → describe desired motion → set parameters → generate multiple variations → select best animation.
+
+Transform footage (video-to-video): Upload video → describe transformation → choose duration/resolution → generate → review → refine prompt if needed.
+
+Batch production: Plan content calendar → generate multiple videos with consistent parameters → unify style across campaign assets.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt crafting: Be specific about motion, scene changes, and style. Example: "A product rotating slowly on a white background, studio lighting, smooth 360-degree view" vs. just "product video."
+
+Duration strategy: Use 5s for loops and quick social clips; 10–15s for storytelling or demonstrations.
+
+Resolution choice: 720p for drafts, quick reviews, and web-first content; 1080p for final assets, presentations, and HD platforms.
+
+Shot composition: Single shot works best for focused subjects; multi-shot adds narrative depth—use when you need scene changes or progression.
+
+Image quality: For image-to-video, higher resolution inputs (ideally 1024×1024 or larger) yield smoother animations.
+
+Video-to-video prompts: Be explicit about what to change—style, mood, objects, background—and what to preserve.
+
+Cost efficiency: Match duration and resolution to platform requirements; batch similar requests to reuse parameters.`
+      },
+      {
+        title: 'Platform advantages',
+        content: `Multilingual support: Generate from prompts in Chinese or English—seamless for global teams.
+
+Flexible input modes: Text, image, or video—start from wherever your creative process begins.
+
+Duration control: 5, 10, or 15 seconds—fit any platform's requirements.
+
+HD quality: Up to 1080p resolution for professional-grade output.
+
+Shot composition: Single or multi-shot—choose the right narrative structure.
+
+Ease of use: Intuitive parameters, no video editing expertise required.
+
+Best for: Social media managers, marketers, content creators, educators, advertisers, and anyone needing fast, high-quality video generation.`
+      },
+      {
+        title: 'Try Wan on FuseAITools',
+        content: `Wan on FuseAITools makes video creation as simple as writing a sentence. Whether you're generating from scratch, animating images, or transforming existing footage, Wan delivers professional results in seconds. With full control over duration, resolution, and shot style, it's the all-in-one video solution for modern creators. Start bringing your ideas to motion today.`
+      }
+    ]
+  },
+  seedance: {
+    title: 'Seedance',
+    category: 'Video',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Seedance delivers AI video generation with options for every need—from lightweight, rapid creation to professional-grade quality. Choose between Lite and Pro tiers for text-to-video and image-to-video workflows, with full control over aspect ratio (16:9 to 9:21), resolution (480p/720p/1080p), duration (5s/10s), camera movement, and seed for reproducibility. Whether you need speed or cinematic fidelity, Seedance on FuseAITools has you covered.',
+    features: [
+      { name: 'v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Fast, efficient text-to-video generation. Choose aspect ratios from 16:9 to 9:21, resolution up to 1080p, duration 5 or 10 seconds. Fixed camera option, seed control, and safety checker included.' },
+      { name: 'v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate images quickly with optional end image for controlled transitions. Same resolution, duration, and camera controls as Lite Text to Video. Ideal for rapid prototyping and social content.' },
+      { name: 'v1 Pro Text to Video', path: '/home/seedance/v1-pro-text-to-video', description: 'Professional text-to-video with expanded aspect ratios (21:9 to 9:16). Choose 480p/720p/1080p, 5s/10s duration, seed control, and safety checker. Higher quality output for production-ready assets.' },
+      { name: 'v1 Pro Image to Video', path: '/home/seedance/v1-pro-image-to-video', description: 'Professional image animation with enhanced quality and detail. Full resolution and duration options, camera control, seed, and safety checker. Perfect for brand content and creative projects.' },
+      { name: 'v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Ultra-fast image-to-video generation without compromising quality. 720p or 1080p resolution, 5s or 10s duration, and support for prompts up to 10,000 characters. Optimized for speed when you need results now.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Choice without compromise: Seedance recognizes that different projects have different needs. Lite tier delivers speed and efficiency for rapid iteration; Pro tier offers enhanced quality for final assets. Both tiers share intuitive controls, so you can move seamlessly between them.
+
+Precision meets creativity: With aspect ratio support from ultra-wide 21:9 to vertical 9:21, camera control options, and seed-based reproducibility, Seedance puts professional video creation tools in your hands—without the complexity of traditional video editing.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `v1 Lite
+
+Text to Video: Aspect ratios: 16:9, 4:3, 1:1, 3:4, 9:16, 9:21. Resolution: 480p (fastest), 720p (balanced), or 1080p (HD). Duration: 5s or 10s. Camera: Fixed option for stable shots. Seed: Set for reproducibility (-1 for random). Safety checker: Optional content filtering.
+
+Image to Video: Input image URL (JPEG, PNG, WebP; max 10MB; min 256×256px). Optional end image URL for controlled transitions. Same resolution, duration, camera, and seed controls as text-to-video.
+
+v1 Pro
+
+Text to Video: All Lite aspect ratios plus 21:9 ultra-wide. Same resolution and duration options. Enhanced quality model for superior detail, lighting, and motion coherence.
+
+Image to Video: Professional-grade image animation with improved motion understanding and visual fidelity. Full resolution options, camera control, seed, safety checker.
+
+Pro Fast Image to Video: Optimized pipeline for speed. 720p or 1080p resolution, 5s or 10s duration, prompt support up to 10,000 characters. Delivers quality results in a fraction of the time.`
+      },
+      {
+        title: 'Use cases',
+        content: `Social media content: Create videos for TikTok, Instagram Reels, YouTube Shorts with platform-optimized aspect ratios (9:16 for vertical, 16:9 for horizontal).
+
+Advertising campaigns: Generate product demos, brand stories, and promotional clips with consistent quality across formats.
+
+Rapid prototyping: Use Lite tier to explore video concepts quickly before committing to final production.
+
+Creative projects: Animate illustrations, bring concepts to life, experiment with camera movements and transitions.
+
+Content repurposing: Transform existing images into engaging video content for multiple platforms.
+
+Professional productions: Leverage Pro tier for client work, presentations, and assets requiring high visual fidelity.`
+      },
+      {
+        title: 'Technical performance',
+        content: `v1 Lite Text/Image to Video: 20–60 seconds for 5s clips, 40–90 seconds for 10s clips (dependent on resolution and complexity).
+
+v1 Pro Text/Image to Video: 40–120 seconds for 5s clips, 80–180 seconds for 10s clips—higher quality requires additional processing.
+
+v1 Pro Fast Image to Video: 15–40 seconds for 5s clips, 30–70 seconds for 10s clips—optimized for speed.
+
+Concurrency: Supports 50+ parallel requests with intelligent queue management.
+
+Prompt length: Up to 10,000 characters for Pro Fast Image to Video; standard limits apply for other modes.
+
+Input formats: JPEG, PNG, WebP for images; max 10MB per file.
+
+Output: MP4 format, delivered via secure URL or direct download.
+
+Aspect ratio support: From 21:9 ultra-wide cinematic to 9:21 vertical—cover all modern formats.`
+      },
+      {
+        title: 'Workflow',
+        content: `Quick create (Lite): Write prompt → choose aspect ratio/resolution/duration → set camera/seed → generate → preview → iterate.
+
+Professional production (Pro): Develop concept → refine prompt for detail → select Pro tier and parameters → generate multiple variations → select best → optional refinement with seed control.
+
+Image animation: Upload image → describe motion or scene evolution → choose tier and parameters → generate → review → adjust prompt or end image as needed.
+
+Batch campaigns: Plan content calendar → generate multiple videos with consistent aspect ratios and quality settings → unify brand style across assets.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Tier selection: Use Lite for drafts, internal reviews, and rapid iteration; use Pro for client deliverables, public campaigns, and high-visibility content.
+
+Aspect ratio strategy: Match to platform—9:16 for TikTok/Reels/Shorts, 16:9 for YouTube/websites, 21:9 for cinematic presentations.
+
+Resolution choice: 480p for quick tests and low-bandwidth sharing; 720p for web and social; 1080p for HD platforms and archiving.
+
+Duration planning: 5s works best for loops, transitions, and attention-grabbing moments; 10s allows for storytelling and demonstration.
+
+Camera control: Use fixed camera for product focus and stable scenes; omit for dynamic, cinematic movement.
+
+Seed management: Set specific seeds to reproduce successful results; use -1 for random exploration across generations.
+
+Prompt engineering: Be specific about motion, style, and mood. For image-to-video, describe what should move and how.
+
+Pro Fast advantage: Use when speed is critical—ideation sessions, last-minute content needs, high-volume testing.`
+      },
+      {
+        title: 'Platform advantages',
+        content: `Dual-tier flexibility: Lite for speed, Pro for quality—one platform, both options.
+
+Wide aspect ratio support: From 21:9 cinematic to 9:21 vertical—every format covered.
+
+Resolution options: 480p to 1080p—choose based on need and bandwidth.
+
+Camera control: Fixed option for stability or dynamic for creativity.
+
+Seed reproducibility: Consistent results across sessions for brand continuity.
+
+Ultra-long prompts: Up to 10,000 characters for detailed direction in Pro Fast mode.
+
+Fast image-to-video: Dedicated Pro Fast pipeline when time matters most.
+
+Best for: Social media managers, marketers, content creators, advertisers, creative agencies, and anyone needing flexible, high-quality video generation.`
+      },
+      {
+        title: 'Try Seedance on FuseAITools',
+        content: `Seedance on FuseAITools puts professional video creation at your fingertips—whether you need lightning-fast drafts or production-ready assets. With Lite and Pro tiers, comprehensive aspect ratio support, and full control over resolution, duration, camera, and seed, Seedance adapts to your creative process. Start transforming text and images into compelling video today.`
       }
     ]
   }

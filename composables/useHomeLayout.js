@@ -23,14 +23,18 @@ export const useHomeLayout = () => {
     'Suno': '/home/suno/generate',
     'Elevenlabs': '/home/elevenlabs/multilingual-v2',
     'ElevenLabs': '/home/elevenlabs/multilingual-v2',
-    'Sora': '/home/sora/text-to-video'
+    'Sora': '/home/sora/text-to-video',
+    'Wan': '/home/wan/text-to-video',
+    'Seedance': '/home/seedance/v1-lite-text-to-video',
+    'Seedream': '/home/seedream/1-5-lite-text-to-image',
+    'Qwen': '/home/qwen/text-to-image'
   }
 
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
-    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video',
-    'Midjourney': 'image', 'GPT 4o Image': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image',
+    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'video', 'Seedance': 'video',
+    'Midjourney': 'image', 'GPT 4o Image': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
   }
 
@@ -45,8 +49,12 @@ export const useHomeLayout = () => {
     'Runway': '/tools-logo/Runway.png',
     'Luma': '/tools-logo/Luma.png',
     'Sora': '/tools-logo/sora.png',
+    'Wan': '/tools-logo/Wan.png',
+    'Seedance': '/tools-logo/Seedance.png',
+    'Seedream': '/tools-logo/Seedream.png',
+    'Qwen': '/tools-logo/QWen.png',
     'Midjourney': '/tools-logo/Midjourney.png',
-    'GPT 4o Image': '/tools-logo/ChatGpt.png',
+    'GPT 4o Image': '/tools-logo/ChatGPT4OImage.png',
     'Flux Kontext': '/tools-logo/FluxKontext.png',
     'Nano Banana': '/tools-logo/NanoBanana.png',
     'Suno': '/tools-logo/suno.png',
@@ -66,6 +74,10 @@ export const useHomeLayout = () => {
     'Elevenlabs': '/home/elevenlabs/multilingual-v2',
     'Suno': '/home/suno/generate',
     'Sora': '/home/sora/text-to-video',
+    'Wan': '/home/wan/text-to-video',
+    'Seedance': '/home/seedance/v1-lite-text-to-video',
+    'Seedream': '/home/seedream/1-5-lite-text-to-image',
+    'Qwen': '/home/qwen/text-to-image',
     // Chat tools
     'GPT': '/home/gpt/generate',
     'Deepseek': '/home/deepseek/generate',
@@ -162,7 +174,7 @@ export const useHomeLayout = () => {
       name: 'GPT 4o Image',
       type: 'image',
       description: 'OpenAI image generation model',
-      icon: '/tools-logo/ChatGpt.png',
+      icon: '/tools-logo/ChatGPT4OImage.png',
       rating: 4.7,
       usageCount: 750
     },
@@ -247,6 +259,42 @@ export const useHomeLayout = () => {
       description: 'Sora 2 视频生成（Text-to-Video / Image-to-Video）',
       icon: '/tools-logo/Veo.png',
       rating: 4.7,
+      usageCount: 0
+    },
+    {
+      id: 17,
+      name: 'Wan',
+      type: 'video',
+      description: 'Wan AI video: text-to-video, image-to-video, video-to-video',
+      icon: '/tools-logo/Wan.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
+      id: 18,
+      name: 'Seedance',
+      type: 'video',
+      description: 'Seedance v1 Lite & Pro: text-to-video, image-to-video',
+      icon: '/tools-logo/Seedance.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
+      id: 19,
+      name: 'Seedream',
+      type: 'image',
+      description: 'Seedream 1.5 Lite & 2.5 Lite: text-to-image, image-to-image',
+      icon: '/tools-logo/Seedream.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
+      id: 20,
+      name: 'Qwen',
+      type: 'image',
+      description: 'Qwen image: text-to-image, image-to-image, image-edit, Z-Image',
+      icon: '/tools-logo/QWen.png',
+      rating: 4.6,
       usageCount: 0
     }
   ])
@@ -432,6 +480,8 @@ export const useHomeLayout = () => {
     const category = (item.category || '').trim()
     const type = categoryToType[category] || 'chat'
     const logoUrl = categoryToLogo[category]
+    const isCompleted = item.isCompleted != null ? Number(item.isCompleted) : 1
+    const status = isCompleted === 1 ? 'completed' : 'in_progress'
     return {
       id: item.recordId,
       recordId: item.recordId,
@@ -443,7 +493,8 @@ export const useHomeLayout = () => {
       description: item.title != null ? String(item.title) : '',
       icon: logoUrl || getToolIcon(type),
       iconIsImage: !!logoUrl,
-      status: 'completed'
+      isCompleted,
+      status
     }
   }
 
@@ -547,6 +598,24 @@ export const useHomeLayout = () => {
       '/home/sora/pro-image-to-video': 'Sora',
       '/home/sora/watermark-remover': 'Sora',
       '/home/sora/pro-storyboard': 'Sora',
+      '/home/wan': 'Wan',
+      '/home/wan/text-to-video': 'Wan',
+      '/home/wan/image-to-video': 'Wan',
+      '/home/wan/video-to-video': 'Wan',
+      '/home/seedance': 'Seedance',
+      '/home/seedance/v1-lite-text-to-video': 'Seedance',
+      '/home/seedance/v1-lite-image-to-video': 'Seedance',
+      '/home/seedance/v1-pro-text-to-video': 'Seedance',
+      '/home/seedance/v1-pro-image-to-video': 'Seedance',
+      '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
+      '/home/seedream': 'Seedream',
+      '/home/seedream/1-5-lite-text-to-image': 'Seedream',
+      '/home/seedream/2-5-lite-image-to-image': 'Seedream',
+      '/home/qwen': 'Qwen',
+      '/home/qwen/text-to-image': 'Qwen',
+      '/home/qwen/image-to-image': 'Qwen',
+      '/home/qwen/image-edit': 'Qwen',
+      '/home/qwen/z-image': 'Qwen',
       '/home/gpt': 'GPT',
       '/home/gpt/generate': 'GPT',
       '/home/deepseek': 'Deepseek',

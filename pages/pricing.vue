@@ -75,7 +75,7 @@
               </div>
             </div>
 
-            <button class="plan-button basic-button" :style="{ background: selectedPlanIndex === 0 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" @click.stop="subscribePlan(0)">Subscribe Now</button>
+            <button class="plan-button basic-button" :style="{ background: selectedPlanIndex === 0 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="subscribePlan(0)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
           </div>
 
           <!-- Pro Plan -->
@@ -125,7 +125,7 @@
               </div>
             </div>
 
-            <button class="plan-button pro-button" :style="{ background: selectedPlanIndex === 1 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" @click.stop="subscribePlan(1)">Subscribe Now</button>
+            <button class="plan-button pro-button" :style="{ background: selectedPlanIndex === 1 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="subscribePlan(1)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
           </div>
 
           <!-- Ultimate Plan -->
@@ -175,7 +175,7 @@
               </div>
             </div>
 
-            <button class="plan-button ultimate-button" :style="{ background: selectedPlanIndex === 2 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" @click.stop="subscribePlan(2)">Subscribe Now</button>
+            <button class="plan-button ultimate-button" :style="{ background: selectedPlanIndex === 2 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="subscribePlan(2)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
           </div>
         </div>
 
@@ -233,7 +233,7 @@
               <span class="total-label">Total Credits:</span>
               <span class="total-value">{{ item.totalCredits }}</span>
             </div>
-            <button class="topup-button" :style="{ background: selectedTopupIndex === index ? getCardColor(3) : getCardColor(0), color: 'white', border: 'none' }" @click.stop="rechargeTopup(index)">Recharge Now</button>
+            <button class="topup-button" :style="{ background: selectedTopupIndex === index ? getCardColor(3) : getCardColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="rechargeTopup(index)">{{ stripeLoading ? 'Loading...' : 'Recharge Now' }}</button>
           </div>
         </div>
 
@@ -276,6 +276,9 @@ useHead({
     { name: 'description', content: 'Choose the perfect plan for your AI needs. Simple, transparent pricing with no hidden fees.' }
   ]
 })
+
+const { post } = useApi()
+const { showError } = useToast()
 
 // Subscription types: weekly, monthly, yearly
 const selectedSubscriptionType = ref('monthly')
@@ -421,19 +424,39 @@ const topupOptions = ref([
   }
 ])
 
-// 选中的充值选项索引
-const selectedTopupIndex = ref(null)
+// 选中的充值选项索引（默认选中 $30）
+const selectedTopupIndex = ref(1)
 
 // 选择充值选项
 const selectTopup = (index) => {
   selectedTopupIndex.value = selectedTopupIndex.value === index ? null : index
 }
 
-// 充值操作
+// 创建 Stripe 会话并跳转收银台
+const stripeLoading = ref(false)
+
+async function createStripeSession(type, priceId) {
+  if (stripeLoading.value) return
+  stripeLoading.value = true
+  try {
+    const data = await post('/api/stripe/create-session', { type, priceId })
+    const url = data?.sessionUrl
+    if (url) {
+      window.location.href = url
+      return
+    }
+    showError('Invalid response: missing checkout URL')
+  } catch (e) {
+    showError(e?.message || 'Failed to start checkout')
+  } finally {
+    stripeLoading.value = false
+  }
+}
+
+// 充值：从左到右 priceId 1–4
 const rechargeTopup = (index) => {
-  const item = topupOptions.value[index]
-  console.log('Recharging:', item)
-  // 这里可以添加实际的充值逻辑
+  const priceId = index + 1
+  createStripeSession('recharge', priceId)
 }
 
 // 获取卡片边框颜色（靛蓝递进式）
@@ -511,13 +534,13 @@ const selectPlan = (index) => {
   selectedPlanIndex.value = index
 }
 
-// 订阅套餐操作
+// 订阅套餐操作：weekly priceId 1–3，monthly 4–6，yearly 7–9
 const subscribePlan = (index) => {
   selectedPlanIndex.value = index
-  const planNames = ['basic', 'pro', 'ultimate']
-  const planName = planNames[index]
-  console.log('Subscribing to:', planName, getCurrentPricing(planName))
-  // 这里可以添加实际的订阅逻辑
+  const typeMap = { weekly: 1, monthly: 4, yearly: 7 }
+  const base = typeMap[selectedSubscriptionType.value] ?? 4
+  const priceId = base + index
+  createStripeSession('subscription', priceId)
 }
 </script>
 
@@ -528,28 +551,36 @@ const subscribePlan = (index) => {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Hero Section */
+/* Hero Section - 与 news 头部一致 */
 .hero-section {
-  padding: 60px 0 40px;
-  text-align: center;
-  background: #ffffff;
-  color: #1a1a1a;
+  padding: 20px 0;
+  text-align: left;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .hero-title {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   line-height: 1.2;
-  color: #1a1a1a;
+  color: white;
+  text-align: left;
 }
 
 .hero-subtitle {
-  font-size: 1.125rem;
-  color: #6b7280;
-  max-width: 780px;
+  font-size: 2.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 900px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.5;
+  text-align: center;
 }
 
 /* Pricing Plans */

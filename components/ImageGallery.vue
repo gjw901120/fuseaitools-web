@@ -126,7 +126,7 @@ const imageModels = ref([
   },
   {
     title: 'GPT 4o Image',
-    logo: '/tools-logo/ChatGpt.png',
+    logo: '/tools-logo/ChatGPT4OImage.png',
     route: '/home/gpt-4o-image'
   },
   {
@@ -138,6 +138,16 @@ const imageModels = ref([
     title: 'Nano Banana',
     logo: '/tools-logo/NanoBanana.png',
     route: '/home/nano-banana'
+  },
+  {
+    title: 'Seedream',
+    logo: '/tools-logo/Seedream.png',
+    route: '/home/seedream'
+  },
+  {
+    title: 'Qwen',
+    logo: '/tools-logo/QWen.png',
+    route: '/home/qwen'
   }
 ])
 
@@ -174,6 +184,16 @@ const videoModels = ref([
     title: 'Sora',
     logo: '/tools-logo/sora.png',
     route: '/home/sora'
+  },
+  {
+    title: 'Wan',
+    logo: '/tools-logo/Wan.png',
+    route: '/home/wan'
+  },
+  {
+    title: 'Seedance',
+    logo: '/tools-logo/Seedance.png',
+    route: '/home/seedance'
   }
 ])
 </script>
@@ -237,7 +257,7 @@ const videoModels = ref([
   text-align: center;
   min-width: 144px;
   flex-shrink: 0;
-  min-height: 115.2px;
+  min-height: 100px;
   box-sizing: border-box;
 }
 
@@ -286,9 +306,9 @@ const videoModels = ref([
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 淡化阴影，增强融合度 */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 172.8px; /* 固定宽度，再放大20% */
-  height: 115.2px; /* 固定高度，再放大20% */
-  flex: 0 0 172.8px; /* 固定大小，不伸缩，再放大20% */
+  width: 150px;
+  height: 100px;
+  flex: 0 0 150px;
   text-decoration: none;
   display: block;
   cursor: pointer; /* 确保鼠标指针显示为手型 */
@@ -316,8 +336,8 @@ const videoModels = ref([
 }
 
 .logo-wrapper {
-  width: 40px; /* 缩小 logo 大小 */
-  height: 40px; /* 缩小 logo 大小 */
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;

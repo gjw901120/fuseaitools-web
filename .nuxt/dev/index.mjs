@@ -1697,6 +1697,8 @@ const _lazy_8_gnv6 = () => Promise.resolve().then(function () { return chatDetai
 const _lazy_io_H72 = () => Promise.resolve().then(function () { return detail_get$1; });
 const _lazy_S_bw0Y = () => Promise.resolve().then(function () { return extendList_get$1; });
 const _lazy_EU3ogi = () => Promise.resolve().then(function () { return list_get$1; });
+const _lazy_Up3Lrr = () => Promise.resolve().then(function () { return createSession_post$1; });
+const _lazy_9KA_u2 = () => Promise.resolve().then(function () { return creditsDetail_get$1; });
 const _lazy_FeFrNq = () => Promise.resolve().then(function () { return loginByEmail_post$1; });
 const _lazy_qjMUPF = () => Promise.resolve().then(function () { return sendEmailCode_post$1; });
 const _lazy_jQelEb = () => Promise.resolve().then(function () { return generate_post$9; });
@@ -1750,6 +1752,8 @@ const handlers = [
   { route: '/api/records/detail', handler: _lazy_io_H72, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/extend-list', handler: _lazy_S_bw0Y, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/list', handler: _lazy_EU3ogi, lazy: true, middleware: false, method: "get" },
+  { route: '/api/stripe/create-session', handler: _lazy_Up3Lrr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/credits-detail', handler: _lazy_9KA_u2, lazy: true, middleware: false, method: "get" },
   { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/luma/generate', handler: _lazy_jQelEb, lazy: true, middleware: false, method: "post" },
@@ -3181,6 +3185,69 @@ const list_get = defineEventHandler(async (event) => {
 const list_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: list_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const createSession_post = defineEventHandler(async (event) => {
+  var _a;
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const targetUrl = `${apiBase}/stripe/create-session`;
+  const body = await readBody(event);
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers.Authorization = authHeader;
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body
+    });
+    return response;
+  } catch (error) {
+    console.error("Stripe create-session proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: ((_a = error.data) == null ? void 0 : _a.errorMessage) || error.message || "Failed to create checkout session"
+    });
+  }
+});
+
+const createSession_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: createSession_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const creditsDetail_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase;
+  const query = getQuery$1(event);
+  const page = query.page || 1;
+  const size = query.size || 10;
+  const targetUrl = `${apiBase}/user/credits-detail?page=${page}&size=${size}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Credits detail proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to fetch credits detail"
+    });
+  }
+});
+
+const creditsDetail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: creditsDetail_get
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const loginByEmail_post = defineEventHandler(async (event) => {

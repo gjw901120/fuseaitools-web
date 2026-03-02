@@ -72,11 +72,11 @@ const props = defineProps({
   },
   uploadText: {
     type: String,
-    default: '点击上传图片'
+    default: 'Click to upload image'
   },
   uploadHint: {
     type: String,
-    default: '支持 .jfif, .jpeg, .jpg, .png, .webp (最多5张)'
+    default: 'Supports .jfif, .jpeg, .jpg, .png, .webp (max 5 images)'
   },
   
   // 文件配置

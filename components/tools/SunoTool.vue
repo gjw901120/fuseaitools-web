@@ -346,9 +346,6 @@
                 :multiple="false"
                 @update:files="handleVocalAudioUpdate"
               />
-              <div class="form-hint">
-                Specify the source audio file to add vocals to
-              </div>
             </div>
 
             <!-- 音乐标题 -->
@@ -449,8 +446,8 @@
               </div>
             </div>
 
-            <!-- 音乐风格 -->
-            <div class="form-group">
+            <!-- 音乐风格（vocal/accompaniment 在专属区块已有，此处不重复） -->
+            <div class="form-group" v-if="formData.function !== 'vocal' && formData.function !== 'accompaniment'">
               <label for="style" class="form-label">
                 Music Style <span class="required">*</span>
               </label>
@@ -468,8 +465,8 @@
               </div>
             </div>
 
-            <!-- 标题 -->
-            <div class="form-group">
+            <!-- 标题（vocal/accompaniment 在专属区块已有，此处不重复） -->
+            <div class="form-group" v-if="formData.function !== 'vocal' && formData.function !== 'accompaniment'">
               <label for="title" class="form-label">
                 Music Title <span class="required">*</span>
               </label>
@@ -503,8 +500,8 @@
               </div>
             </div>
 
-            <!-- 排除标签 -->
-            <div class="form-group">
+            <!-- 排除标签（vocal/accompaniment 在专属区块已有，此处不重复） -->
+            <div class="form-group" v-if="formData.function !== 'vocal' && formData.function !== 'accompaniment'">
               <label for="negative-tags" class="form-label">Exclude Tags</label>
               <input 
                 id="negative-tags"
@@ -602,14 +599,6 @@
       <div class="result-panel">
         <div class="result-header">
           <h4>Generation Result</h4>
-          <div class="result-actions" v-if="!isDetailView && displayResult">
-            <button class="action-btn" @click="downloadResult" title="Download">
-              <i class="fas fa-download"></i>
-            </button>
-            <button class="action-btn" @click="shareResult" title="Share">
-              <i class="fas fa-share"></i>
-            </button>
-          </div>
         </div>
 
         <div class="result-content">
@@ -632,7 +621,8 @@
 
           <!-- 结果展示（含详情页 status 2） -->
           <div v-else class="music-result">
-            <div class="music-player">
+            <!-- 详情页多图多音频：按 outputUrls 循环渲染 -->
+            <template v-if="isDetailView && detailOutputItems.length">
               <div class="music-info">
                 <h5>{{ displayResult.title || 'Generated Music' }}</h5>
                 <p>{{ displayResult.style || 'Unknown Style' }}</p>
@@ -641,24 +631,57 @@
                   <span><i class="fas fa-user"></i> {{ displayResult.model || 'Suno' }}</span>
                 </div>
               </div>
-              <div class="player-controls">
-                <button class="play-btn" @click="togglePlay">
-                  <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
-                </button>
-                <div class="progress-bar">
-                  <div class="progress" :style="{ width: progress + '%' }"></div>
-                </div>
-                <span class="time">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
+              <div class="detail-output-list">
+                <template v-for="(item, index) in detailOutputItems" :key="item.url + String(index)">
+                  <div v-if="item.type === 'image'" class="detail-output-item detail-output-image">
+                    <img :src="item.url" :alt="'Cover ' + (index + 1)" loading="lazy" />
+                  </div>
+                  <div v-else-if="item.type === 'audio'" class="detail-output-item detail-output-audio">
+                    <audio :src="item.url" controls></audio>
+                  </div>
+                </template>
               </div>
-            </div>
-            
-            <audio 
-              ref="audioPlayer"
-              :src="displayResult.audioUrl" 
-              @timeupdate="updateProgress"
-              @loadedmetadata="setDuration"
-              @ended="onAudioEnded"
-            ></audio>
+            </template>
+            <!-- 单条结果或非详情：保留原有单播放器 -->
+            <template v-else>
+              <div class="music-player">
+                <div class="music-info">
+                  <h5>{{ displayResult.title || 'Generated Music' }}</h5>
+                  <p>{{ displayResult.style || 'Unknown Style' }}</p>
+                  <div class="music-meta">
+                    <span><i class="fas fa-clock"></i> {{ displayResult.duration || 'Unknown Duration' }}</span>
+                    <span><i class="fas fa-user"></i> {{ displayResult.model || 'Suno' }}</span>
+                  </div>
+                </div>
+                <div class="player-controls">
+                  <button class="play-btn" @click="togglePlay">
+                    <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+                  </button>
+                  <div class="progress-bar">
+                    <div class="progress" :style="{ width: progress + '%' }"></div>
+                  </div>
+                  <span class="time">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
+                  <div class="playback-speed">
+                    <span class="speed-label">Speed</span>
+                    <select v-model.number="playbackSpeed" class="speed-select" @change="onPlaybackSpeedChange">
+                      <option :value="0.5">0.5x</option>
+                      <option :value="1">1x</option>
+                      <option :value="1.25">1.25x</option>
+                      <option :value="1.5">1.5x</option>
+                      <option :value="1.75">1.75x</option>
+                      <option :value="2">2x</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <audio 
+                ref="audioPlayer"
+                :src="displayResult.audioUrl" 
+                @timeupdate="updateProgress"
+                @loadedmetadata="setDuration"
+                @ended="onAudioEnded"
+              ></audio>
+            </template>
           </div>
         </div>
       </div>
@@ -842,13 +865,27 @@ const loadingRecordId = ref(null)
 const detailResult = computed(() => {
   if (!detailData.value || detailData.value.status !== 2 || !Array.isArray(detailData.value.outputUrls) || !detailData.value.outputUrls[0]) return null
   const od = detailData.value.originalData || {}
+  const firstUrl = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
   return {
-    audioUrl: typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url,
+    audioUrl: firstUrl,
     title: od.title || 'Generated Music',
     style: od.style || '',
     model: od.model || formData.model,
     duration: detailData.value.duration
   }
+})
+
+// 详情页 outputUrls 按 /image/、/audio/ 分类，用于循环渲染多图多音频
+const detailOutputItems = computed(() => {
+  if (!detailData.value || detailData.value.status !== 2 || !Array.isArray(detailData.value.outputUrls)) return []
+  return detailData.value.outputUrls
+    .map((u) => (typeof u === 'string' ? u : u?.url))
+    .filter(Boolean)
+    .map((url) => ({
+      type: url.includes('/image/') ? 'image' : url.includes('/audio/') ? 'audio' : 'unknown',
+      url
+    }))
+    .filter((item) => item.type !== 'unknown')
 })
 
 const displayResult = computed(() => {
@@ -983,6 +1020,7 @@ const currentTime = ref(0)
 const duration = ref(0)
 const progress = ref(0)
 const audioPlayer = ref(null)
+const playbackSpeed = ref(1)
 
 // 计算属性
 const isPromptRequired = computed(() => {
@@ -1455,7 +1493,12 @@ const updateProgress = () => {
 const setDuration = () => {
   if (audioPlayer.value) {
     duration.value = audioPlayer.value.duration
+    audioPlayer.value.playbackRate = playbackSpeed.value
   }
+}
+
+const onPlaybackSpeedChange = () => {
+  if (audioPlayer.value) audioPlayer.value.playbackRate = playbackSpeed.value
 }
 
 const onAudioEnded = () => {
@@ -1471,24 +1514,27 @@ const formatTime = (time) => {
 }
 
 const downloadResult = () => {
-  if (result.value?.audioUrl) {
+  const src = displayResult.value?.audioUrl ?? result.value?.audioUrl
+  const title = displayResult.value?.title ?? result.value?.title
+  if (src) {
     const link = document.createElement('a')
-    link.href = result.value.audioUrl
-    link.download = `${result.value.title}.mp3`
+    link.href = src
+    link.download = `${title || 'audio'}.mp3`
     link.click()
   }
 }
 
 const shareResult = () => {
-  if (navigator.share && result.value) {
+  const data = displayResult.value ?? result.value
+  if (!data?.audioUrl) return
+  if (navigator.share && data) {
     navigator.share({
-      title: result.value.title,
-      text: `Listen to the music I generated using Suno: ${result.value.title}`,
-      url: result.value.audioUrl
+      title: data.title,
+      text: `Listen to the music I generated using Suno: ${data.title}`,
+      url: data.audioUrl
     })
   } else {
-    // 复制链接到剪贴板
-    navigator.clipboard.writeText(result.value.audioUrl)
+    navigator.clipboard.writeText(data.audioUrl)
     alert('Music link copied to clipboard')
   }
 }
@@ -2063,11 +2109,6 @@ const shareResult = () => {
   color: #1e293b;
 }
 
-.result-actions {
-  display: flex;
-  gap: 8px;
-}
-
 .result-content {
   flex: 1;
   padding: 20px;
@@ -2115,6 +2156,32 @@ const shareResult = () => {
   gap: 20px;
 }
 
+.detail-output-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.detail-output-item {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.detail-output-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+}
+
+.detail-output-audio audio {
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+}
+
 .music-player {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -2153,6 +2220,28 @@ const shareResult = () => {
   align-items: center;
   gap: 12px;
   margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.playback-speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.playback-speed .speed-label {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.playback-speed .speed-select {
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+  color: #1e293b;
 }
 
 .play-btn {

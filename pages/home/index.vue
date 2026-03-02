@@ -116,6 +116,14 @@
           
           <!-- Sora 工具组件 -->
           <SoraTool v-else-if="getSelectedToolInfo().name === 'Sora'" />
+          <!-- Wan 工具组件 -->
+          <WanTool v-else-if="getSelectedToolInfo().name === 'Wan'" />
+          <!-- Seedance 工具组件 -->
+          <SeedanceTool v-else-if="getSelectedToolInfo().name === 'Seedance'" />
+          <!-- Seedream 工具组件 -->
+          <SeedreamTool v-else-if="getSelectedToolInfo().name === 'Seedream'" />
+          <!-- Qwen 工具组件 -->
+          <QwenTool v-else-if="getSelectedToolInfo().name === 'Qwen'" />
           
           <!-- 其他工具的聊天界面 -->
           <div v-else class="chat-interface">
@@ -201,6 +209,10 @@ import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 import FluxKontextTool from '~/components/tools/FluxKontextTool.vue'
 import SunoTool from '~/components/tools/SunoTool.vue'
 import SoraTool from '~/components/tools/SoraTool.vue'
+import WanTool from '~/components/tools/WanTool.vue'
+import SeedanceTool from '~/components/tools/SeedanceTool.vue'
+import SeedreamTool from '~/components/tools/SeedreamTool.vue'
+import QwenTool from '~/components/tools/QwenTool.vue'
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
 import { watch, provide, onMounted, onUnmounted, nextTick } from 'vue'
@@ -220,6 +232,10 @@ const toolRouteMap = {
   'Elevenlabs': '/home/elevenlabs/multilingual-v2',
   'Suno': '/home/suno/generate',
   'Sora': '/home/sora/text-to-video',
+  'Wan': '/home/wan/text-to-video',
+  'Seedance': '/home/seedance/v1-lite-text-to-video',
+  'Seedream': '/home/seedream/1-5-lite-text-to-image',
+  'Qwen': '/home/qwen/text-to-image',
   // Chat tools
   'GPT': '/home/gpt/generate',
   'Deepseek': '/home/deepseek/generate',
@@ -498,7 +514,7 @@ const allTools = ref([
     name: 'GPT 4o Image',
     type: 'image',
     description: 'OpenAI的图像生成模型',
-    icon: '/tools-logo/ChatGpt.png',
+    icon: '/tools-logo/ChatGPT4OImage.png',
     rating: 4.7,
     usageCount: 750
   },
@@ -576,6 +592,42 @@ const allTools = ref([
     description: 'Sora 2 视频生成（Text-to-Video / Image-to-Video）',
     icon: '/tools-logo/Veo.png',
     rating: 4.7,
+    usageCount: 0
+  },
+  {
+    id: 17,
+    name: 'Wan',
+    type: 'video',
+    description: 'Wan AI 视频：文生视频、图生视频、视频生视频',
+    icon: '/tools-logo/Wan.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
+    id: 18,
+    name: 'Seedance',
+    type: 'video',
+    description: 'Seedance v1 Lite & Pro：文生视频、图生视频',
+    icon: '/tools-logo/Seedance.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
+    id: 19,
+    name: 'Seedream',
+    type: 'image',
+    description: 'Seedream 1.5 Lite & 2.5 Lite：文生图、图生图',
+    icon: '/tools-logo/Seedream.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
+    id: 20,
+    name: 'Qwen',
+    type: 'image',
+    description: 'Qwen 图像：文生图、图生图、图像编辑、Z-Image',
+    icon: '/tools-logo/QWen.png',
+    rating: 4.6,
     usageCount: 0
   },
   {
@@ -928,6 +980,26 @@ watch(() => route.path, (newPath) => {
     '/home/suno/add-instrumental': 'Suno',
     '/home/suno/add-vocals': 'Suno',
     '/home/sora': 'Sora',
+    '/home/sora/text-to-video': 'Sora',
+    '/home/sora/image-to-video': 'Sora',
+    '/home/wan': 'Wan',
+    '/home/wan/text-to-video': 'Wan',
+    '/home/wan/image-to-video': 'Wan',
+    '/home/wan/video-to-video': 'Wan',
+    '/home/seedance': 'Seedance',
+    '/home/seedance/v1-lite-text-to-video': 'Seedance',
+    '/home/seedance/v1-lite-image-to-video': 'Seedance',
+    '/home/seedance/v1-pro-text-to-video': 'Seedance',
+    '/home/seedance/v1-pro-image-to-video': 'Seedance',
+    '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
+    '/home/seedream': 'Seedream',
+    '/home/seedream/1-5-lite-text-to-image': 'Seedream',
+    '/home/seedream/2-5-lite-image-to-image': 'Seedream',
+    '/home/qwen': 'Qwen',
+    '/home/qwen/text-to-image': 'Qwen',
+    '/home/qwen/image-to-image': 'Qwen',
+    '/home/qwen/image-edit': 'Qwen',
+    '/home/qwen/z-image': 'Qwen',
     // Chat tools
     '/home/gpt': 'GPT',
     '/home/gpt/generate': 'GPT',

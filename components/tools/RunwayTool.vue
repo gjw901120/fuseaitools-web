@@ -365,19 +365,20 @@
         <!-- Extend Tab 表单 -->
         <form v-if="activeTab === 'extend'" class="config-form" @submit.prevent="generateExtendVideo">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
-          <!-- Task 选择 -->
+          <!-- Task 选择：来自 /api/records/extend-list?model=runway_generate -->
           <div class="form-group">
             <label for="extend-task">Task *</label>
             <div class="select-wrapper">
-              <select id="extend-task" v-model="extendFormData.task" required>
+              <select id="extend-task" v-model="extendFormData.task" required :disabled="loadingExtendList">
                 <option value="">Select a task</option>
-                <option v-for="task in tasks" :key="task.id" :value="task.id">
-                  {{ task.id }} {{ task.name ? `- ${task.name}` : '' }}
-                </option>
+                <option v-for="item in extendList" :key="item.taskId" :value="item.taskId">{{ item.title || item.taskId }}</option>
               </select>
               <i class="fas fa-chevron-down"></i>
             </div>
-            <div class="form-help">
+            <div v-if="!loadingExtendList && extendList.length === 0" class="form-hint input-hint-warn">
+              Only tasks completed with Runway Generate can be used.
+            </div>
+            <div v-else class="form-help">
               Original video generation task. Must be a valid task from a previously generated video.
             </div>
           </div>
@@ -612,7 +613,7 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 const isClient = typeof window !== 'undefined'
 const { token } = useAuth()
 const { showError } = useToast()
-const { post } = useApi()
+const { get, post } = useApi()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const router = useRouter()
@@ -646,8 +647,20 @@ const loadingRecordId = ref(null)
 const detailDelayTimer = ref(null)
 const displayVideos = computed(() => {
   if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
-    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
-    return [{ id: 'detail', url, prompt: detailData.value.originalData?.prompt || '', createdAt: new Date().toISOString() }]
+    const urls = detailData.value.outputUrls.map(u => (typeof u === 'string' ? u : u?.url)).filter(Boolean)
+    const imageUrl = urls.find(u => u.includes('/image/'))
+    const videoUrl = urls.find(u => u.includes('/video/'))
+    const od = detailData.value.originalData || {}
+    return [{
+      id: 'detail',
+      url: videoUrl || urls[0],
+      thumbnail: imageUrl || undefined,
+      prompt: od.prompt || detailData.value.title || '',
+      duration: od.duration ? `${od.duration} seconds` : '',
+      resolution: od.quality || '',
+      aspectRatio: od.aspectRatio || '',
+      createdAt: new Date().toISOString()
+    }]
   }
   return generatedVideos.value
 })
@@ -734,10 +747,27 @@ const tabs = Object.freeze([
   { id: 'aleph', name: 'Aleph', icon: 'fas fa-magic' }
 ])
 
-// 路由 path 同步到 activeTab
+// Extend Task 列表：来自 /api/records/extend-list?model=runway_generate（需在 watch 前定义）
+const EXTEND_LIST_MODEL = 'runway_generate'
+const extendList = ref([])
+const loadingExtendList = ref(false)
+const fetchExtendList = async () => {
+  loadingExtendList.value = true
+  try {
+    const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
+    extendList.value = Array.isArray(data) ? data : []
+  } catch {
+    extendList.value = []
+  } finally {
+    loadingExtendList.value = false
+  }
+}
+
+// 路由 path 同步到 activeTab；进入 extend 时拉取 Task 列表
 watch(() => route.path, (path) => {
   const tab = runwayPathToTab[path]
   if (tab && activeTab.value !== tab) activeTab.value = tab
+  if (tab === 'extend') fetchExtendList()
 }, { immediate: true })
 
 // Generate Tab 初始值（切换 Tab 时还原用）
@@ -810,12 +840,6 @@ const runwayAlephPriceText = computed(() => {
   const str = formatCredits(credits)
   return str ? `(${str})` : ''
 })
-
-// Tasks 列表（后续会从服务端获取）
-const tasks = ref([
-  { id: 'ee603959-debb-48d1-98c4-a6d1c717eba6', name: 'Sample Video 1' },
-  { id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', name: 'Sample Video 2' }
-])
 
 // Watch for duration and quality conflicts
 watch([() => formData.duration, () => formData.quality], ([duration, quality]) => {

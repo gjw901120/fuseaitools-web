@@ -557,6 +557,7 @@ const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
 const loadingRecordId = ref(null)
 const detailDelayTimer = ref(null)
+const DETAIL_DELAY_MS = 300
 const displayResult = computed(() => {
   if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
     const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url

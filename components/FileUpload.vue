@@ -37,7 +37,7 @@
             <button 
               @click.stop="removeFile(index)"
               class="remove-file-btn"
-              title="删除文件"
+              title="Remove file"
             >
               <i class="fas fa-times"></i>
             </button>
@@ -65,7 +65,7 @@ const props = defineProps({
   },
   subtitle: {
     type: String,
-    default: '支持多种文件格式'
+    default: 'Supports multiple file formats'
   },
   hint: {
     type: String,

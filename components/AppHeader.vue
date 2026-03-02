@@ -44,6 +44,10 @@
               
               <!-- 用户菜单下拉 -->
               <div v-if="userMenuOpen" class="user-menu">
+                <NuxtLink to="/credits" class="user-menu-item" @click="userMenuOpen = false">
+                  <i class="fas fa-coins"></i>
+                  <span>Credits</span>
+                </NuxtLink>
                 <div class="user-menu-item" @click="handleLogout">
                   <i class="fas fa-sign-out-alt"></i>
                   <span>Log out</span>
@@ -78,6 +82,7 @@
             <div v-else class="mobile-user-info">
               <img :src="userAvatar" :alt="userName || 'User'" class="mobile-user-avatar" />
               <span v-if="userName" class="mobile-user-name">{{ userName }}</span>
+              <NuxtLink to="/credits" class="mobile-nav-link" @click="closeMobileMenu" style="margin-right: 12px;">Credits</NuxtLink>
               <button class="mobile-logout-btn" @click="handleLogout">Log out</button>
             </div>
             <template #fallback>
@@ -450,6 +455,7 @@ onMounted(() => {
   transition: background 0.2s ease;
   color: #1f2937;
   font-size: 0.9375rem;
+  text-decoration: none;
 }
 
 .user-menu-item:hover {

@@ -3,7 +3,6 @@
     <div class="simply-container">
       <div class="hero-content">
         <div class="hero-text">
-          <div class="hero-badge">AI Tools Free</div>
           <h1 class="hero-title">
             All-in-One AI Platform
             <span class="gradient-text">50+ AI Models & Tools Free</span>
@@ -112,19 +111,6 @@ const sendMessage = () => {
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
-}
-
-.hero-badge {
-  display: inline-block;
-  padding: 0.5rem 1.25rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  border-radius: 9999px;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
 }
 
 .hero-title {
