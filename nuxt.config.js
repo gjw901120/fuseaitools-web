@@ -166,8 +166,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NODE_ENV === 'production' 
-        ? 'https://www.fuseaitools.com/api' 
+      apiBase: process.env.NODE_ENV === 'production'
+        ? 'https://api.fuseaitools.com'
         : 'http://127.0.0.1:8080/api'
     }
   }
