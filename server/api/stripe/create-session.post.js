@@ -4,8 +4,7 @@
  * 返回：{ errorCode, errorMessage, data: { sessionId, sessionUrl } }
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/stripe/create-session`
 
   const body = await readBody(event)

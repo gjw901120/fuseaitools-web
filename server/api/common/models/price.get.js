@@ -3,8 +3,7 @@
  * 仅透传 Authorization，无其他参数
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/common/models/price`
 
   const headers = {

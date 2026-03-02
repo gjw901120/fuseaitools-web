@@ -3,8 +3,7 @@
  * 转发到后端，携带 Authorization
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
   const page = query.page || 1
   const size = query.size || 10

@@ -3,8 +3,7 @@
  * 返回 { errorCode, data: Array<{ recordId, modelId, category, model, title, gtmCreated }> }
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
   const page = query.page != null ? String(query.page) : '1'
   const size = query.size != null ? String(query.size) : '10'

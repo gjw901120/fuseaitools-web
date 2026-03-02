@@ -3,8 +3,7 @@
  * 查询参数: current, size, category (可选)
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public?.apiBase || 'http://127.0.0.1:8080/api'
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
 
   try {

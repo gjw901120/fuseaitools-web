@@ -2,8 +2,7 @@
  * 代理到后端新闻详情 API GET /news/detail?path=xxx
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public?.apiBase || 'http://127.0.0.1:8080/api'
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
   const path = query.path
 

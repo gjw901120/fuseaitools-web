@@ -4,8 +4,7 @@
  * 用于 Midjourney Upscale/Vary 的 Task ID 下拉与图片选择
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
   const model = query.model != null ? String(query.model) : ''
   if (!model) {

@@ -3,8 +3,7 @@
  * 用于轮询任务结果，返回含 outputUrls 等字段的 data
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
   const recordId = query['record-id'] || query.recordId
   if (!recordId || typeof recordId !== 'string') {

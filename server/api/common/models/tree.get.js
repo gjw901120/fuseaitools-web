@@ -4,8 +4,7 @@
  * Automatically forwards Authorization header if present
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/common/models/tree`
   
   // 获取请求头

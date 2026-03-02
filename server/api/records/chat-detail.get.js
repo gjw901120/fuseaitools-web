@@ -3,8 +3,7 @@
  * 用于 GPT/Deepseek/Claude/Gemini 等 chat 类型，返回含 messageList、conversionId 的 data
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  const apiBase = getEffectiveApiBase(event)
   const query = getQuery(event)
   const recordId = query['record-id'] || query.recordId
   if (!recordId || typeof recordId !== 'string') {
