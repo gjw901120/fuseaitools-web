@@ -17,7 +17,7 @@ export function getEffectiveApiBase(event) {
   const isProductionDomain = host === 'www.fuseaitools.com' || host === 'fuseaitools.com'
 
   if (isProductionDomain && (!apiBase || apiBase.includes('127.0.0.1'))) {
-    return 'https://api.fuseaitools.com'
+    return 'https://api.fuseaitools.com/api'
   }
   if (!apiBase) {
     return 'http://127.0.0.1:8080/api'

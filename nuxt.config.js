@@ -164,11 +164,11 @@ export default defineNuxtConfig({
     }
   },
 
-  // 生产 API 域名：构建/运行时需 NODE_ENV=production，或显式设置 NUXT_PUBLIC_API_BASE
+  // 生产 API 基地址带 /api 前缀，与后端路径一致（如 /api/common/models/tree）
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE
-        || (process.env.NODE_ENV === 'production' ? 'https://api.fuseaitools.com' : 'http://127.0.0.1:8080/api')
+        || (process.env.NODE_ENV === 'production' ? 'https://api.fuseaitools.com/api' : 'http://127.0.0.1:8080/api')
     }
   }
 })
