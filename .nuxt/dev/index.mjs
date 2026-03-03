@@ -2100,14 +2100,38 @@ const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: styles
 }, Symbol.toStringTag, { value: 'Module' }));
 
+function getEffectiveApiBase(event) {
+  const config = useRuntimeConfig();
+  let apiBase = config.public.apiBase || "";
+  let host = (getHeader(event, "host") || getHeader(event, "x-forwarded-host") || "").split(":")[0].toLowerCase();
+  if (!host && getHeader(event, "referer")) {
+    try {
+      const u = new URL(getHeader(event, "referer"));
+      host = u.hostname.toLowerCase();
+    } catch (_) {
+    }
+  }
+  const isProductionDomain = host === "www.fuseaitools.com" || host === "fuseaitools.com";
+  if (isProductionDomain && (!apiBase || apiBase.includes("127.0.0.1"))) {
+    return "https://api.fuseaitools.com/api";
+  }
+  if (!apiBase) {
+    return "http://127.0.0.1:8080/api";
+  }
+  return apiBase;
+}
+
 const audioIsolation_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/audio-isolation";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/elevenLabs/audio-isolation`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2124,12 +2148,15 @@ const audioIsolation_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.def
 
 const soundEffectV2_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/sound-effect-v2";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/elevenLabs/sound-effect-v2`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2146,12 +2173,15 @@ const soundEffectV2_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defi
 
 const speechToText_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/speech-to-text";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/elevenLabs/speech-to-text`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2168,12 +2198,15 @@ const speechToText_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
 
 const textToSpeech_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/elevenLabs/text-to-speech";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/elevenLabs/text-to-speech`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2190,12 +2223,15 @@ const textToSpeech_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
 
 const addInstrumental_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/add-instrumental";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/suno/add-instrumental`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2212,12 +2248,15 @@ const addInstrumental_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.de
 
 const addVocals_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/add-vocals";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/suno/add-vocals`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2234,12 +2273,15 @@ const addVocals_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePr
 
 const extend_post$4 = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/extend";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/suno/extend`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2256,12 +2298,15 @@ const extend_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
 
 const generate_post$i = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/suno/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2278,12 +2323,15 @@ const generate_post$j = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const uploadCover_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/upload-cover";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/suno/upload-cover`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2300,12 +2348,15 @@ const uploadCover_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.define
 
 const uploadExtend_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/audio/suno/upload-extend";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/audio/suno/upload-extend`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2322,39 +2373,32 @@ const uploadExtend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
 
 const chatgpt_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/chat/chatgpt";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/chat/chatgpt`;
   try {
     const authHeader = getHeader(event, "authorization");
     const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
     const headers = {
       "Content-Type": "application/json",
-      "Accept": clientAccept
+      Accept: clientAccept
     };
-    if (authHeader) {
-      headers["Authorization"] = authHeader;
-      console.log("Forwarding Authorization header to backend");
-    } else {
-      console.warn("No Authorization header found in request");
-    }
-    console.log("Proxying request to:", backendUrl);
-    console.log("Request body:", JSON.stringify(body));
-    const response = await fetch(backendUrl, {
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
     });
-    console.log("Backend response status:", response.status);
     if (!response.ok) {
       setResponseStatus(event, response.status);
       const errorData = await response.json().catch(() => ({ error: "Request failed" }));
-      console.error("Backend error:", errorData);
       return errorData;
     }
     setHeader(event, "Content-Type", "application/json");
     setHeader(event, "Cache-Control", "no-cache");
     setHeader(event, "Connection", "keep-alive");
     setHeader(event, "Transfer-Encoding", "chunked");
-    console.log("Streaming response to client");
     return response.body;
   } catch (error) {
     console.error("Stream proxy error:", error);
@@ -2372,39 +2416,32 @@ const chatgpt_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProp
 
 const claude_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/chat/claude";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/chat/claude`;
   try {
     const authHeader = getHeader(event, "authorization");
     const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
     const headers = {
       "Content-Type": "application/json",
-      "Accept": clientAccept
+      Accept: clientAccept
     };
-    if (authHeader) {
-      headers["Authorization"] = authHeader;
-      console.log("Forwarding Authorization header to backend");
-    } else {
-      console.warn("No Authorization header found in request");
-    }
-    console.log("Proxying request to:", backendUrl);
-    console.log("Request body:", JSON.stringify(body));
-    const response = await fetch(backendUrl, {
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
     });
-    console.log("Backend response status:", response.status);
     if (!response.ok) {
       setResponseStatus(event, response.status);
       const errorData = await response.json().catch(() => ({ error: "Request failed" }));
-      console.error("Backend error:", errorData);
       return errorData;
     }
     setHeader(event, "Content-Type", "application/json");
     setHeader(event, "Cache-Control", "no-cache");
     setHeader(event, "Connection", "keep-alive");
     setHeader(event, "Transfer-Encoding", "chunked");
-    console.log("Streaming response to client");
     return response.body;
   } catch (error) {
     console.error("Stream proxy error:", error);
@@ -2422,39 +2459,32 @@ const claude_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
 
 const deepseek_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/chat/deepseek";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/chat/deepseek`;
   try {
     const authHeader = getHeader(event, "authorization");
     const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
     const headers = {
       "Content-Type": "application/json",
-      "Accept": clientAccept
+      Accept: clientAccept
     };
-    if (authHeader) {
-      headers["Authorization"] = authHeader;
-      console.log("Forwarding Authorization header to backend");
-    } else {
-      console.warn("No Authorization header found in request");
-    }
-    console.log("Proxying request to:", backendUrl);
-    console.log("Request body:", JSON.stringify(body));
-    const response = await fetch(backendUrl, {
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
     });
-    console.log("Backend response status:", response.status);
     if (!response.ok) {
       setResponseStatus(event, response.status);
       const errorData = await response.json().catch(() => ({ error: "Request failed" }));
-      console.error("Backend error:", errorData);
       return errorData;
     }
     setHeader(event, "Content-Type", "application/json");
     setHeader(event, "Cache-Control", "no-cache");
     setHeader(event, "Connection", "keep-alive");
     setHeader(event, "Transfer-Encoding", "chunked");
-    console.log("Streaming response to client");
     return response.body;
   } catch (error) {
     console.error("Stream proxy error:", error);
@@ -2472,39 +2502,32 @@ const deepseek_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const gemini_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/chat/gemini";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/chat/gemini`;
   try {
     const authHeader = getHeader(event, "authorization");
     const clientAccept = getHeader(event, "accept") || "text/event-stream, application/json, */*";
     const headers = {
       "Content-Type": "application/json",
-      "Accept": clientAccept
+      Accept: clientAccept
     };
-    if (authHeader) {
-      headers["Authorization"] = authHeader;
-      console.log("Forwarding Authorization header to backend");
-    } else {
-      console.warn("No Authorization header found in request");
-    }
-    console.log("Proxying request to:", backendUrl);
-    console.log("Request body:", JSON.stringify(body));
-    const response = await fetch(backendUrl, {
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
     });
-    console.log("Backend response status:", response.status);
     if (!response.ok) {
       setResponseStatus(event, response.status);
       const errorData = await response.json().catch(() => ({ error: "Request failed" }));
-      console.error("Backend error:", errorData);
       return errorData;
     }
     setHeader(event, "Content-Type", "application/json");
     setHeader(event, "Cache-Control", "no-cache");
     setHeader(event, "Connection", "keep-alive");
     setHeader(event, "Transfer-Encoding", "chunked");
-    console.log("Streaming response to client");
     return response.body;
   } catch (error) {
     console.error("Stream proxy error:", error);
@@ -2528,7 +2551,8 @@ const batchUpload_post = defineEventHandler(async (event) => {
       message: "No files provided"
     });
   }
-  const backendUrl = "http://127.0.0.1:8080/api/common/batch-upload";
+  const apiBase = getEffectiveApiBase(event);
+  const backendUrl = `${apiBase}/common/batch-upload`;
   try {
     const authHeader = getHeader(event, "authorization");
     const forwardFormData = new FormData();
@@ -2555,17 +2579,14 @@ const batchUpload_post = defineEventHandler(async (event) => {
     };
     if (authHeader) {
       headers["Authorization"] = authHeader;
-      console.log("Forwarding Authorization header to backend");
-    } else {
-      console.warn("No Authorization header found in request");
     }
-    console.log("Proxying batch upload request to:", backendUrl, `Files: ${formData.length}`);
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
     const response = await fetch(backendUrl, {
       method: "POST",
       headers,
       body: forwardFormData
     });
-    console.log("Backend response status:", response.status);
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       console.error("Backend upload error:", errorData);
@@ -2593,8 +2614,7 @@ const batchUpload_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.define
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const price_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/common/models/price`;
   const headers = {
     "Content-Type": "application/json",
@@ -2623,8 +2643,7 @@ const price_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePropert
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const tree_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/common/models/tree`;
   const headers = {
     "Content-Type": "application/json",
@@ -2656,7 +2675,8 @@ const tree_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
 
 const generate_post$g = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/image/flux-kontext/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/flux-kontext/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = {
@@ -2666,7 +2686,9 @@ const generate_post$g = defineEventHandler(async (event) => {
     if (authHeader) {
       headers["Authorization"] = authHeader;
     }
-    const response = await fetch(backendUrl, {
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
@@ -2690,17 +2712,18 @@ const generate_post$h = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const generate_post$e = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/image/gpt4o-image/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/gpt4o-image/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = {
       "Content-Type": "application/json",
       Accept: "application/json"
     };
-    if (authHeader) {
-      headers["Authorization"] = authHeader;
-    }
-    const response = await fetch(backendUrl, {
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
@@ -2724,12 +2747,15 @@ const generate_post$f = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const generate_post$c = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/image/nano-banana-pro/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/nano-banana-pro/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2746,12 +2772,15 @@ const generate_post$d = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const edit_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/image/nano-banana/edit";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/nano-banana/edit`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2768,12 +2797,15 @@ const edit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePropert
 
 const generate_post$a = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/image/nano-banana/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/nano-banana/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2790,12 +2822,15 @@ const generate_post$b = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const blend_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/midjourney/blend";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/midjourney/blend`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2812,12 +2847,15 @@ const blend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
 
 const describe_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/midjourney/describe";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/midjourney/describe`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2834,12 +2872,15 @@ const describe_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const imagine_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/midjourney/imagine";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/midjourney/imagine`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2856,12 +2897,15 @@ const imagine_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProp
 
 const swapFace_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/midjourney/swap-face";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/midjourney/swap-face`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2878,12 +2922,15 @@ const swapFace_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const upscale_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/midjourney/upscale";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/midjourney/upscale`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2900,12 +2947,15 @@ const upscale_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProp
 
 const vary_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/midjourney/vary";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/midjourney/vary`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -2954,9 +3004,7 @@ const _slug__get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const detail_get$2 = defineEventHandler(async (event) => {
-  var _a;
-  const config = useRuntimeConfig();
-  const apiBase = ((_a = config.public) == null ? void 0 : _a.apiBase) || "http://127.0.0.1:8080/api";
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   const path = query.path;
   if (!path) {
@@ -3026,9 +3074,7 @@ const index_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePropert
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const list_get$2 = defineEventHandler(async (event) => {
-  var _a;
-  const config = useRuntimeConfig();
-  const apiBase = ((_a = config.public) == null ? void 0 : _a.apiBase) || "http://127.0.0.1:8080/api";
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   try {
     const res = await $fetch(`${apiBase}/news/list`, {
@@ -3053,8 +3099,7 @@ const list_get$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const chatDetail_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   const recordId = query["record-id"] || query.recordId;
   if (!recordId || typeof recordId !== "string") {
@@ -3088,8 +3133,7 @@ const chatDetail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePr
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const detail_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   const recordId = query["record-id"] || query.recordId;
   if (!recordId || typeof recordId !== "string") {
@@ -3123,8 +3167,7 @@ const detail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const extendList_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   const model = query.model != null ? String(query.model) : "";
   if (!model) {
@@ -3158,8 +3201,7 @@ const extendList_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePr
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const list_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   const page = query.page != null ? String(query.page) : "1";
   const size = query.size != null ? String(query.size) : "10";
@@ -3189,8 +3231,7 @@ const list_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
 
 const createSession_post = defineEventHandler(async (event) => {
   var _a;
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/stripe/create-session`;
   const body = await readBody(event);
   const headers = {
@@ -3221,8 +3262,7 @@ const createSession_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defi
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const creditsDetail_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
   const page = query.page || 1;
   const size = query.size || 10;
@@ -3251,25 +3291,29 @@ const creditsDetail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const loginByEmail_post = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/user/login-by-email`;
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/user/login-by-email";
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  const cookie = getHeader(event, "cookie");
+  if (cookie) headers["Cookie"] = cookie;
   try {
-    const response = await fetch(backendUrl, {
+    const response = await $fetch(targetUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(body)
+      headers,
+      body
     });
-    const data = await response.json();
-    setResponseStatus(event, response.status);
-    return data;
+    return response;
   } catch (error) {
-    console.error("Proxy error:", error);
+    console.error("Login by email proxy error:", error);
     throw createError({
-      statusCode: 500,
-      message: "Failed to login by email"
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to login by email"
     });
   }
 });
@@ -3280,25 +3324,29 @@ const loginByEmail_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const sendEmailCode_post = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/user/send-email-code`;
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/user/send-email-code";
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  const cookie = getHeader(event, "cookie");
+  if (cookie) headers["Cookie"] = cookie;
   try {
-    const response = await fetch(backendUrl, {
+    const response = await $fetch(targetUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(body)
+      headers,
+      body
     });
-    const data = await response.json();
-    setResponseStatus(event, response.status);
-    return data;
+    return response;
   } catch (error) {
-    console.error("Proxy error:", error);
+    console.error("Send email code proxy error:", error);
     throw createError({
-      statusCode: 500,
-      message: "Failed to send email code"
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to send email code"
     });
   }
 });
@@ -3310,12 +3358,15 @@ const sendEmailCode_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defi
 
 const generate_post$8 = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/luma/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/luma/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3332,12 +3383,15 @@ const generate_post$9 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const aleph_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/runway/aleph";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/runway/aleph`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3354,12 +3408,15 @@ const aleph_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
 
 const extend_post$2 = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/runway/extend";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/runway/extend`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3376,12 +3433,15 @@ const extend_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
 
 const generate_post$6 = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/runway/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/runway/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3398,12 +3458,15 @@ const generate_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const generate_post$4 = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/sora-pro/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/sora-pro/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3420,12 +3483,15 @@ const generate_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const storyboard_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/sora-pro/storyboard";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/sora-pro/storyboard`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3442,12 +3508,15 @@ const storyboard_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineP
 
 const generate_post$2 = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/sora/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/sora/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3464,12 +3533,15 @@ const generate_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 
 const watermarkRemover_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/sora/watermark-remover";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/sora/watermark-remover`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3486,12 +3558,15 @@ const watermarkRemover_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.d
 
 const extend_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/veo/extend";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/veo/extend`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;
@@ -3508,12 +3583,15 @@ const extend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
 
 const generate_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const backendUrl = "http://127.0.0.1:8080/api/video/veo/generate";
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/veo/generate`;
   try {
     const authHeader = getHeader(event, "authorization");
     const headers = { "Content-Type": "application/json", Accept: "application/json" };
     if (authHeader) headers["Authorization"] = authHeader;
-    const response = await fetch(backendUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await response.json().catch(() => ({}));
     setResponseStatus(event, response.status);
     return data;

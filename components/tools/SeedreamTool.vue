@@ -76,30 +76,24 @@
             </div>
 
             <div class="form-group">
-              <label for="seedream-aspect" class="form-label">Aspect Ratio <span class="required">*</span></label>
-              <div class="select-with-arrow">
-                <select id="seedream-aspect" v-model="formData.aspectRatio" class="form-input" required>
-                  <option value="1:1">1:1</option>
-                  <option value="4:3">4:3</option>
-                  <option value="3:4">3:4</option>
-                  <option value="16:9">16:9</option>
-                  <option value="9:16">9:16</option>
-                  <option value="2:3">2:3</option>
-                  <option value="3:2">3:2</option>
-                  <option value="21:9">21:9</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Aspect Ratio <span class="required">*</span></label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '1:1' }" @click="formData.aspectRatio = '1:1'"><span>1:1</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '4:3' }" @click="formData.aspectRatio = '4:3'"><span>4:3</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '3:4' }" @click="formData.aspectRatio = '3:4'"><span>3:4</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '16:9' }" @click="formData.aspectRatio = '16:9'"><span>16:9</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '9:16' }" @click="formData.aspectRatio = '9:16'"><span>9:16</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '2:3' }" @click="formData.aspectRatio = '2:3'"><span>2:3</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '3:2' }" @click="formData.aspectRatio = '3:2'"><span>3:2</span></button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '21:9' }" @click="formData.aspectRatio = '21:9'"><span>21:9</span></button>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="seedream-quality" class="form-label">Quality <span class="required">*</span></label>
-              <div class="select-with-arrow">
-                <select id="seedream-quality" v-model="formData.quality" class="form-input" required>
-                  <option value="basic">Basic (2K)</option>
-                  <option value="high">High (3K)</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Quality <span class="required">*</span></label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.quality === 'basic' }" @click="formData.quality = 'basic'">Basic (2K)</button>
+                <button type="button" class="tab-option" :class="{ active: formData.quality === 'high' }" @click="formData.quality = 'high'">High (3K)</button>
               </div>
               <div class="form-hint">Basic outputs 2K; High outputs 3K.</div>
             </div>
@@ -109,6 +103,7 @@
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-magic"></i>
                 {{ isGenerating ? 'Generating...' : 'Generate Image' }}
+                <span v-if="seedreamPriceText" class="price-tag">{{ seedreamPriceText }}</span>
               </button>
             </div>
           </fieldset>
@@ -148,18 +143,21 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useRecordPolling } from '~/composables/useRecordPolling'
+import { useModelPrice } from '~/composables/useModelPrice'
 
 const router = useRouter()
 const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+onMounted(() => { fetchPrices() })
 
 const modeTabToPath = {
   '1-5-lite-text-to-image': '/home/seedream/1-5-lite-text-to-image',
@@ -186,6 +184,22 @@ const formData = reactive({
   imageUrls: [],
   aspectRatio: '1:1',
   quality: 'basic'
+})
+
+// 价格：按 mode 取 modelKey，可选按 aspectRatio + quality 匹配 RULE
+const seedreamPriceModelKeyMap = {
+  '1-5-lite-text-to-image': 'seedream-5-lite-text-to-image',
+  '2-5-lite-image-to-image': 'seedream-5-lite-image-to-image'
+}
+const seedreamPriceText = computed(() => {
+  const modelKey = seedreamPriceModelKeyMap[mode.value]
+  if (!modelKey) return ''
+  const credits = getPrice(modelKey, {
+    aspectRatio: formData.aspectRatio,
+    quality: formData.quality
+  })
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
 })
 
 const imageUploadRef = ref(null)
@@ -371,7 +385,8 @@ watch(mode, (m) => {
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
 
-.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.form-group:last-of-type { margin-bottom: 0; }
 .form-label { font-size: 14px; font-weight: 500; color: #374151; }
 .required { color: #ef4444; }
 .form-input { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
@@ -382,7 +397,45 @@ watch(mode, (m) => {
 .select-with-arrow .form-input { width: 100%; appearance: none; padding-right: 32px; }
 .select-arrow-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6b7280; }
 
+.tab-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.tab-option {
+  flex: 1;
+  min-width: 60px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.tab-option:hover {
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.tab-option.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
+.price-tag { font-size: 12px; opacity: 0.8; margin-left: 4px; }
 .btn-primary {
   width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
   border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;

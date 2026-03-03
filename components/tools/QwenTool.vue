@@ -86,32 +86,26 @@
 
             <!-- text-to-image & image-edit: imageSize -->
             <div v-if="mode === 'text-to-image' || mode === 'image-edit'" class="form-group">
-              <label for="qwen-imageSize" class="form-label">Image Size</label>
-              <div class="select-with-arrow">
-                <select id="qwen-imageSize" v-model="formData.imageSize" class="form-input">
-                  <option value="square">Square</option>
-                  <option value="square_hd">Square HD</option>
-                  <option value="portrait_4_3">Portrait 3:4</option>
-                  <option value="portrait_16_9">Portrait 9:16</option>
-                  <option value="landscape_4_3">Landscape 4:3</option>
-                  <option value="landscape_16_9">Landscape 16:9</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Image Size</label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'square' }" @click="formData.imageSize = 'square'">Square</button>
+                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'square_hd' }" @click="formData.imageSize = 'square_hd'">Square HD</button>
+                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'portrait_4_3' }" @click="formData.imageSize = 'portrait_4_3'">3:4</button>
+                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'portrait_16_9' }" @click="formData.imageSize = 'portrait_16_9'">9:16</button>
+                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'landscape_4_3' }" @click="formData.imageSize = 'landscape_4_3'">4:3</button>
+                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'landscape_16_9' }" @click="formData.imageSize = 'landscape_16_9'">16:9</button>
               </div>
             </div>
 
             <!-- z-image: aspectRatio required -->
             <div v-if="mode === 'z-image'" class="form-group">
-              <label for="qwen-aspectRatio" class="form-label">Aspect Ratio <span class="required">*</span></label>
-              <div class="select-with-arrow">
-                <select id="qwen-aspectRatio" v-model="formData.aspectRatio" class="form-input" required>
-                  <option value="1:1">1:1</option>
-                  <option value="4:3">4:3</option>
-                  <option value="3:4">3:4</option>
-                  <option value="16:9">16:9</option>
-                  <option value="9:16">9:16</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Aspect Ratio <span class="required">*</span></label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '1:1' }" @click="formData.aspectRatio = '1:1'">1:1</button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '4:3' }" @click="formData.aspectRatio = '4:3'">4:3</button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '3:4' }" @click="formData.aspectRatio = '3:4'">3:4</button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '16:9' }" @click="formData.aspectRatio = '16:9'">16:9</button>
+                <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '9:16' }" @click="formData.aspectRatio = '9:16'">9:16</button>
               </div>
             </div>
 
@@ -153,15 +147,12 @@
 
             <!-- image-edit: numImages, syncMode -->
             <div v-if="mode === 'image-edit'" class="form-group">
-              <label for="qwen-numImages" class="form-label">Num Images</label>
-              <div class="select-with-arrow">
-                <select id="qwen-numImages" v-model="formData.numImages" class="form-input">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Num Images</label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.numImages === '1' }" @click="formData.numImages = '1'">1</button>
+                <button type="button" class="tab-option" :class="{ active: formData.numImages === '2' }" @click="formData.numImages = '2'">2</button>
+                <button type="button" class="tab-option" :class="{ active: formData.numImages === '3' }" @click="formData.numImages = '3'">3</button>
+                <button type="button" class="tab-option" :class="{ active: formData.numImages === '4' }" @click="formData.numImages = '4'">4</button>
               </div>
             </div>
             <div v-if="mode === 'image-edit'" class="form-group">
@@ -173,24 +164,18 @@
 
             <!-- outputFormat, acceleration (all except z-image), negativePrompt, enableSafetyChecker -->
             <div v-if="mode !== 'z-image'" class="form-group">
-              <label for="qwen-outputFormat" class="form-label">Output Format</label>
-              <div class="select-with-arrow">
-                <select id="qwen-outputFormat" v-model="formData.outputFormat" class="form-input">
-                  <option value="png">PNG</option>
-                  <option value="jpeg">JPEG</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Output Format</label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.outputFormat === 'png' }" @click="formData.outputFormat = 'png'">PNG</button>
+                <button type="button" class="tab-option" :class="{ active: formData.outputFormat === 'jpeg' }" @click="formData.outputFormat = 'jpeg'">JPEG</button>
               </div>
             </div>
             <div v-if="mode !== 'z-image'" class="form-group">
-              <label for="qwen-acceleration" class="form-label">Acceleration</label>
-              <div class="select-with-arrow">
-                <select id="qwen-acceleration" v-model="formData.acceleration" class="form-input">
-                  <option value="none">None</option>
-                  <option value="regular">Regular</option>
-                  <option value="high">High</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Acceleration</label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.acceleration === 'none' }" @click="formData.acceleration = 'none'">None</button>
+                <button type="button" class="tab-option" :class="{ active: formData.acceleration === 'regular' }" @click="formData.acceleration = 'regular'">Regular</button>
+                <button type="button" class="tab-option" :class="{ active: formData.acceleration === 'high' }" @click="formData.acceleration = 'high'">High</button>
               </div>
               <div class="form-hint">Higher = faster. High recommended for images without text.</div>
             </div>
@@ -218,6 +203,7 @@
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-magic"></i>
                 {{ isGenerating ? 'Generating...' : 'Generate Image' }}
+                <span v-if="qwenPriceText" class="price-tag">{{ qwenPriceText }}</span>
               </button>
             </div>
           </fieldset>
@@ -257,18 +243,21 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useRecordPolling } from '~/composables/useRecordPolling'
+import { useModelPrice } from '~/composables/useModelPrice'
 
 const router = useRouter()
 const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+onMounted(() => { fetchPrices() })
 
 const modeList = [
   { id: 'text-to-image', label: 'Text to Image', icon: 'fas fa-font' },
@@ -312,6 +301,25 @@ const formData = reactive({
   enableSafetyChecker: true,
   numImages: '1',
   syncMode: false
+})
+
+// 价格：按 mode 取 modelKey，可选按 imageSize / aspectRatio / numImages 等匹配 RULE
+const qwenPriceModelKeyMap = {
+  'text-to-image': 'qwen-text-to-image',
+  'image-to-image': 'qwen-image-to-image',
+  'image-edit': 'qwen-image-edit',
+  'z-image': 'qwen-z-image'
+}
+const qwenPriceText = computed(() => {
+  const modelKey = qwenPriceModelKeyMap[mode.value]
+  if (!modelKey) return ''
+  const formFields = {}
+  if (mode.value === 'text-to-image' || mode.value === 'image-edit') formFields.imageSize = formData.imageSize
+  if (mode.value === 'image-edit') formFields.numImages = formData.numImages
+  if (mode.value === 'z-image') formFields.aspectRatio = formData.aspectRatio
+  const credits = getPrice(modelKey, formFields)
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
 })
 
 const imageUploadRef = ref(null)
@@ -556,7 +564,8 @@ watch(mode, (m) => {
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
 
-.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.form-group:last-of-type { margin-bottom: 0; }
 .form-label { font-size: 14px; font-weight: 500; color: #374151; }
 .required { color: #ef4444; }
 .form-input { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
@@ -567,10 +576,48 @@ watch(mode, (m) => {
 .select-with-arrow .form-input { width: 100%; appearance: none; padding-right: 32px; }
 .select-arrow-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6b7280; }
 
+.tab-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.tab-option {
+  flex: 1;
+  min-width: 60px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.tab-option:hover {
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.tab-option.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
 .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #374151; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; }
 
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
+.price-tag { font-size: 12px; opacity: 0.8; margin-left: 4px; }
 .btn-primary {
   width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
   border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;

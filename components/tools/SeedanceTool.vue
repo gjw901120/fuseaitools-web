@@ -113,25 +113,19 @@
             </div>
 
             <div class="form-group">
-              <label for="seedance-resolution" class="form-label">Resolution</label>
-              <div class="select-with-arrow">
-                <select id="seedance-resolution" v-model="formData.resolution" class="form-input">
-                  <option v-if="mode !== 'v1-pro-fast-image-to-video'" value="480p">480p</option>
-                  <option value="720p">720p</option>
-                  <option value="1080p">1080p</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Resolution</label>
+              <div class="tab-group">
+                <button v-if="mode !== 'v1-pro-fast-image-to-video'" type="button" class="tab-option" :class="{ active: formData.resolution === '480p' }" @click="formData.resolution = '480p'">480p</button>
+                <button type="button" class="tab-option" :class="{ active: formData.resolution === '720p' }" @click="formData.resolution = '720p'">720p</button>
+                <button type="button" class="tab-option" :class="{ active: formData.resolution === '1080p' }" @click="formData.resolution = '1080p'">1080p</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="seedance-duration" class="form-label">Duration</label>
-              <div class="select-with-arrow">
-                <select id="seedance-duration" v-model="formData.duration" class="form-input">
-                  <option value="5">5s</option>
-                  <option value="10">10s</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Duration</label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.duration === '5' }" @click="formData.duration = '5'">5s</button>
+                <button type="button" class="tab-option" :class="{ active: formData.duration === '10' }" @click="formData.duration = '10'">10s</button>
               </div>
             </div>
 
@@ -169,6 +163,7 @@
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-play"></i>
                 {{ isGenerating ? 'Generating...' : 'Generate Video' }}
+                <span v-if="seedancePriceText" class="price-tag">{{ seedancePriceText }}</span>
               </button>
             </div>
           </fieldset>
@@ -210,18 +205,21 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useRecordPolling } from '~/composables/useRecordPolling'
+import { useModelPrice } from '~/composables/useModelPrice'
 
 const router = useRouter()
 const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+onMounted(() => { fetchPrices() })
 
 const modeList = [
   { id: 'v1-lite-text-to-video', label: 'v1 Lite T2V', icon: 'fas fa-font' },
@@ -262,6 +260,25 @@ const formData = reactive({
   cameraFixed: false,
   seed: -1,
   enableSafetyChecker: true
+})
+
+// 价格：按 Duration + Resolution 匹配，与 Veo3/Runway 等视频模型定价规则一致
+const seedancePriceModelKeyMap = {
+  'v1-lite-text-to-video': 'seedance-v1-lite-text-to-video',
+  'v1-lite-image-to-video': 'seedance-v1-lite-image-to-video',
+  'v1-pro-text-to-video': 'seedance-v1-pro-text-to-video',
+  'v1-pro-image-to-video': 'seedance-v1-pro-image-to-video',
+  'v1-pro-fast-image-to-video': 'seedance-v1-pro-fast-image-to-video'
+}
+const seedancePriceText = computed(() => {
+  const modelKey = seedancePriceModelKeyMap[mode.value]
+  if (!modelKey) return ''
+  const credits = getPrice(modelKey, {
+    duration: formData.duration,
+    quality: formData.resolution
+  })
+  const str = formatCredits(credits)
+  return str ? `(${str})` : ''
 })
 
 const imageUploadRef = ref(null)
@@ -522,7 +539,8 @@ watch(mode, (m) => {
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
 
-.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.form-group:last-of-type { margin-bottom: 0; }
 .form-label { font-size: 14px; font-weight: 500; color: #374151; }
 .required { color: #ef4444; }
 .form-input { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
@@ -533,10 +551,48 @@ watch(mode, (m) => {
 .select-with-arrow .form-input { width: 100%; appearance: none; padding-right: 32px; }
 .select-arrow-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6b7280; }
 
+.tab-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.tab-option {
+  flex: 1;
+  min-width: 60px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.tab-option:hover {
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.tab-option.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
 .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #374151; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; }
 
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
+.price-tag { font-size: 12px; opacity: 0.8; margin-left: 4px; }
 .btn-primary {
   width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
   border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
