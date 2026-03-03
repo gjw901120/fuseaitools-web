@@ -26,9 +26,8 @@ export default defineEventHandler(async (event) => {
     })
   }
   
-  const backendUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://www.fuseaitools.com/api/common/batch-upload'
-    : 'http://127.0.0.1:8080/api/common/batch-upload'
+  const apiBase = getEffectiveApiBase(event)
+  const backendUrl = `${apiBase}/common/batch-upload`
 
   try {
     // 获取请求头中的 Authorization
@@ -64,12 +63,9 @@ export default defineEventHandler(async (event) => {
     // 确保 Authorization 头被正确传递
     if (authHeader) {
       headers['Authorization'] = authHeader
-      console.log('Forwarding Authorization header to backend')
-    } else {
-      console.warn('No Authorization header found in request')
     }
-    
-    console.log('Proxying batch upload request to:', backendUrl, `Files: ${formData.length}`)
+    const cookie = getHeader(event, 'cookie')
+    if (cookie) headers['Cookie'] = cookie
     
     // 转发 FormData 到后端
     const response = await fetch(backendUrl, {
@@ -78,12 +74,9 @@ export default defineEventHandler(async (event) => {
       body: forwardFormData
     })
 
-    console.log('Backend response status:', response.status)
-
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
       console.error('Backend upload error:', errorData)
-      // 抛出异常，携带后端 errorMessage，便于前端统一展示
       const msg = (errorData && typeof errorData.errorMessage === 'string' && errorData.errorMessage.trim())
         ? errorData.errorMessage.trim()
         : (errorData?.message || errorData?.userTip || errorData?.error || 'Upload failed')

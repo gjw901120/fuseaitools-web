@@ -6,9 +6,8 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const backendUrl = process.env.NODE_ENV === 'production'
-    ? 'https://www.fuseaitools.com/api/image/flux-kontext/generate'
-    : 'http://127.0.0.1:8080/api/image/flux-kontext/generate'
+  const apiBase = getEffectiveApiBase(event)
+  const targetUrl = `${apiBase}/image/flux-kontext/generate`
 
   try {
     const authHeader = getHeader(event, 'authorization')
@@ -19,8 +18,10 @@ export default defineEventHandler(async (event) => {
     if (authHeader) {
       headers['Authorization'] = authHeader
     }
+    const cookie = getHeader(event, 'cookie')
+    if (cookie) headers['Cookie'] = cookie
 
-    const response = await fetch(backendUrl, {
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers,
       body: JSON.stringify(body)

@@ -86,9 +86,11 @@ const closeModal = () => {
 }
 
 const handleGoogleLogin = () => {
-  // Google OAuth 2.0 配置参数
+  const config = useRuntimeConfig()
+  const apiBase = config.public?.apiBase || (typeof window !== 'undefined' && (window.location.hostname === 'www.fuseaitools.com' || window.location.hostname === 'fuseaitools.com') ? 'https://api.fuseaitools.com/api' : 'http://127.0.0.1:8080/api')
+  const redirectUri = encodeURIComponent(apiBase + '/user/login/google/callback')
+
   const clientId = '423114934028-8rscjpq0a544tor5i3olc2pq8iaf0iig.apps.googleusercontent.com'
-  const redirectUri = encodeURIComponent('http://127.0.0.1:8080/api/user/login/google/callback')
   const scope = encodeURIComponent('openid email profile')
   const responseType = 'code'
   

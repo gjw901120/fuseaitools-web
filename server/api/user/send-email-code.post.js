@@ -1,30 +1,29 @@
 export default defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event)
+  const targetUrl = `${apiBase}/user/send-email-code`
   const body = await readBody(event)
-  
-  const backendUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://www.fuseaitools.com/api/user/send-email-code'
-    : 'http://127.0.0.1:8080/api/user/send-email-code'
+
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+  const authHeader = getHeader(event, 'authorization')
+  if (authHeader) headers['Authorization'] = authHeader
+  const cookie = getHeader(event, 'cookie')
+  if (cookie) headers['Cookie'] = cookie
 
   try {
-    const response = await fetch(backendUrl, {
+    const response = await $fetch(targetUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(body)
+      headers,
+      body
     })
-
-    const data = await response.json()
-
-    // 返回相同的状态码和响应
-    setResponseStatus(event, response.status)
-    return data
+    return response
   } catch (error) {
-    console.error('Proxy error:', error)
+    console.error('Send email code proxy error:', error)
     throw createError({
-      statusCode: 500,
-      message: 'Failed to send email code'
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || 'Failed to send email code'
     })
   }
 })

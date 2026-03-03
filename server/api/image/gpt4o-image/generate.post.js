@@ -6,9 +6,8 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const backendUrl = process.env.NODE_ENV === 'production'
-    ? 'https://www.fuseaitools.com/api/image/gpt4o-image/generate'
-    : 'http://127.0.0.1:8080/api/image/gpt4o-image/generate'
+  const apiBase = getEffectiveApiBase(event)
+  const targetUrl = `${apiBase}/image/gpt4o-image/generate`
 
   try {
     const authHeader = getHeader(event, 'authorization')
@@ -16,11 +15,11 @@ export default defineEventHandler(async (event) => {
       'Content-Type': 'application/json',
       Accept: 'application/json'
     }
-    if (authHeader) {
-      headers['Authorization'] = authHeader
-    }
+    if (authHeader) headers['Authorization'] = authHeader
+    const cookie = getHeader(event, 'cookie')
+    if (cookie) headers['Cookie'] = cookie
 
-    const response = await fetch(backendUrl, {
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers,
       body: JSON.stringify(body)
