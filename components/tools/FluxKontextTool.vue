@@ -382,9 +382,9 @@ const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
 
-// 价格：Model Version flux_kontext_pro / flux_kontext_max 分别对应不同 credits
+// 价格：根据 Model Version 匹配 price 接口的 flux-kontext-pro(8) / flux-kontext-max(16)
 const fluxKontextPriceText = computed(() => {
-  const modelKey = formData.model === 'flux-kontext-max' ? 'flux_kontext_max' : 'flux_kontext_pro'
+  const modelKey = formData.model || 'flux-kontext-pro'
   const credits = getPrice(modelKey)
   const str = formatCredits(credits)
   return str ? `(${str})` : ''

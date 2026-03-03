@@ -69,6 +69,24 @@ declare module "nitropack/types" {
     '/api/image/nano-banana/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana/generate.post').default>>>>
     }
+    '/api/image/qwen/image-edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/image-edit.post').default>>>>
+    }
+    '/api/image/qwen/image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/image-to-image.post').default>>>>
+    }
+    '/api/image/qwen/text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/text-to-image.post').default>>>>
+    }
+    '/api/image/qwen/z-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/z-image.post').default>>>>
+    }
+    '/api/image/seedream/lite-image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/seedream/lite-image-to-image.post').default>>>>
+    }
+    '/api/image/seedream/lite-text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/seedream/lite-text-to-image.post').default>>>>
+    }
     '/api/midjourney/blend': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/blend.post').default>>>>
     }
@@ -135,6 +153,21 @@ declare module "nitropack/types" {
     '/api/video/runway/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/runway/generate.post').default>>>>
     }
+    '/api/video/seedance/lite-image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/lite-image-to-video.post').default>>>>
+    }
+    '/api/video/seedance/lite-text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/lite-text-to-video.post').default>>>>
+    }
+    '/api/video/seedance/pro-fast-image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/pro-fast-image-to-video.post').default>>>>
+    }
+    '/api/video/seedance/pro-image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/pro-image-to-video.post').default>>>>
+    }
+    '/api/video/seedance/pro-text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/pro-text-to-video.post').default>>>>
+    }
     '/api/video/sora-pro/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/sora-pro/generate.post').default>>>>
     }
@@ -152,6 +185,15 @@ declare module "nitropack/types" {
     }
     '/api/video/veo/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/veo/generate.post').default>>>>
+    }
+    '/api/video/wan/image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/image-to-video.post').default>>>>
+    }
+    '/api/video/wan/text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/text-to-video.post').default>>>>
+    }
+    '/api/video/wan/video-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/video-to-video.post').default>>>>
     }
     '/sitemap.xml': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/sitemap.xml.get').default>>>>

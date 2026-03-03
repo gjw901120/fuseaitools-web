@@ -1251,7 +1251,22 @@ const plugins = [
 _x97qlr_3HNtLjE9TgMFJOrXi5_dH8bELYiZ02jASNI
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2a9a3-M/zwZjpGWZJvY4j08AEae8Mvvuw\"",
+    "mtime": "2026-03-03T09:37:26.178Z",
+    "size": 174499,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"8b4fe-A4NYb3A+CVZZgqf1x0/dQoIOaFA\"",
+    "mtime": "2026-03-03T09:37:26.180Z",
+    "size": 570622,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1683,6 +1698,12 @@ const _lazy_eKX6sF = () => Promise.resolve().then(function () { return generate_
 const _lazy_qqfBr2 = () => Promise.resolve().then(function () { return generate_post$d; });
 const _lazy_FTuawy = () => Promise.resolve().then(function () { return edit_post$1; });
 const _lazy_guMvLE = () => Promise.resolve().then(function () { return generate_post$b; });
+const _lazy_WLaKBl = () => Promise.resolve().then(function () { return imageEdit_post$1; });
+const _lazy_qIqT3J = () => Promise.resolve().then(function () { return imageToImage_post$1; });
+const _lazy_1eEZQf = () => Promise.resolve().then(function () { return textToImage_post$1; });
+const _lazy_ihh8BE = () => Promise.resolve().then(function () { return zImage_post$1; });
+const _lazy_N5QhNS = () => Promise.resolve().then(function () { return liteImageToImage_post$1; });
+const _lazy_gIVXeQ = () => Promise.resolve().then(function () { return liteTextToImage_post$1; });
 const _lazy_0wwS49 = () => Promise.resolve().then(function () { return blend_post$1; });
 const _lazy_cv5vHn = () => Promise.resolve().then(function () { return describe_post$1; });
 const _lazy_3ymEXI = () => Promise.resolve().then(function () { return imagine_post$1; });
@@ -1705,12 +1726,20 @@ const _lazy_jQelEb = () => Promise.resolve().then(function () { return generate_
 const _lazy_Aq6nFl = () => Promise.resolve().then(function () { return aleph_post$1; });
 const _lazy_TashgN = () => Promise.resolve().then(function () { return extend_post$3; });
 const _lazy_p973yV = () => Promise.resolve().then(function () { return generate_post$7; });
+const _lazy_sKJKjy = () => Promise.resolve().then(function () { return liteImageToVideo_post$1; });
+const _lazy_QyBpAM = () => Promise.resolve().then(function () { return liteTextToVideo_post$1; });
+const _lazy_gXE561 = () => Promise.resolve().then(function () { return proFastImageToVideo_post$1; });
+const _lazy_cH5mVr = () => Promise.resolve().then(function () { return proImageToVideo_post$1; });
+const _lazy_FAqGLf = () => Promise.resolve().then(function () { return proTextToVideo_post$1; });
 const _lazy_VnAtz4 = () => Promise.resolve().then(function () { return generate_post$5; });
 const _lazy_eP3eSa = () => Promise.resolve().then(function () { return storyboard_post$1; });
 const _lazy_zvAFYZ = () => Promise.resolve().then(function () { return generate_post$3; });
 const _lazy_PgSmd9 = () => Promise.resolve().then(function () { return watermarkRemover_post$1; });
 const _lazy_5PmXRt = () => Promise.resolve().then(function () { return extend_post$1; });
 const _lazy_nwJeW1 = () => Promise.resolve().then(function () { return generate_post$1; });
+const _lazy_b90URI = () => Promise.resolve().then(function () { return imageToVideo_post$1; });
+const _lazy_47YsKd = () => Promise.resolve().then(function () { return textToVideo_post$1; });
+const _lazy_jTvRhe = () => Promise.resolve().then(function () { return videoToVideo_post$1; });
 const _lazy_38TWWp = () => Promise.resolve().then(function () { return sitemap_xml_get$1; });
 const _lazy_T022gR = () => Promise.resolve().then(function () { return renderer$1; });
 
@@ -1738,6 +1767,12 @@ const handlers = [
   { route: '/api/image/nano-banana-pro/generate', handler: _lazy_qqfBr2, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana/edit', handler: _lazy_FTuawy, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana/generate', handler: _lazy_guMvLE, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/image-edit', handler: _lazy_WLaKBl, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/image-to-image', handler: _lazy_qIqT3J, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/text-to-image', handler: _lazy_1eEZQf, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/z-image', handler: _lazy_ihh8BE, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/seedream/lite-image-to-image', handler: _lazy_N5QhNS, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/seedream/lite-text-to-image', handler: _lazy_gIVXeQ, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/blend', handler: _lazy_0wwS49, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/describe', handler: _lazy_cv5vHn, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/imagine', handler: _lazy_3ymEXI, lazy: true, middleware: false, method: "post" },
@@ -1760,12 +1795,20 @@ const handlers = [
   { route: '/api/video/runway/aleph', handler: _lazy_Aq6nFl, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/extend', handler: _lazy_TashgN, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/generate', handler: _lazy_p973yV, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/lite-image-to-video', handler: _lazy_sKJKjy, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/lite-text-to-video', handler: _lazy_QyBpAM, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/pro-fast-image-to-video', handler: _lazy_gXE561, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/pro-image-to-video', handler: _lazy_cH5mVr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/pro-text-to-video', handler: _lazy_FAqGLf, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora-pro/generate', handler: _lazy_VnAtz4, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora-pro/storyboard', handler: _lazy_eP3eSa, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora/generate', handler: _lazy_zvAFYZ, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora/watermark-remover', handler: _lazy_PgSmd9, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/veo/extend', handler: _lazy_5PmXRt, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/veo/generate', handler: _lazy_nwJeW1, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/image-to-video', handler: _lazy_b90URI, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/text-to-video', handler: _lazy_47YsKd, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/video-to-video', handler: _lazy_jTvRhe, lazy: true, middleware: false, method: "post" },
   { route: '/sitemap.xml', handler: _lazy_38TWWp, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
@@ -2820,6 +2863,156 @@ const generate_post$b = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
   default: generate_post$a
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const imageEdit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/qwen/image-edit`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Qwen image-edit proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageEdit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageEdit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const imageToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/qwen/image-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Qwen image-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const textToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/qwen/text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Qwen text-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const textToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: textToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const zImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/qwen/z-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Qwen z-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const zImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: zImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const liteImageToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/seedream/lite-image-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedream lite-image-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const liteImageToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: liteImageToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const liteTextToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/seedream/lite-text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedream lite-text-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const liteTextToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: liteTextToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const blend_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -3456,6 +3649,131 @@ const generate_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
   default: generate_post$6
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const liteImageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/lite-image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance lite-image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const liteImageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: liteImageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const liteTextToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/lite-text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance lite-text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const liteTextToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: liteTextToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const proFastImageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/pro-fast-image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance pro-fast-image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const proFastImageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: proFastImageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const proImageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/pro-image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance pro-image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const proImageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: proImageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const proTextToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/pro-text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance pro-text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const proTextToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: proTextToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const generate_post$4 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -3604,6 +3922,81 @@ const generate_post = defineEventHandler(async (event) => {
 const generate_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: generate_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const imageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const textToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const textToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: textToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const videoToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/video-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan video-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const videoToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: videoToVideo_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const sitemap_xml_get = defineEventHandler((event) => {
