@@ -33,7 +33,12 @@ export default defineNuxtConfig({
   nitro: {
     // 根据环境变量决定使用静态或服务器模式
     // Docker 运行时使用 node-server，否则使用 static
+    // 生产若需 /api 接口（如 batch-upload），必须用 node-server 并让 CloudFront 将 /api/* 指到该 Node 源
     preset: process.env.NITRO_PRESET || 'static',
+    // Node 模式下放宽请求体限制，避免大文件上传（如 batch-upload）被 403/413
+    experimental: {
+      maxRequestBodySize: 10 * 1024 * 1024 // 10MB
+    },
     prerender: {
       crawlLinks: true,
       // 如果路由不存在，不抛出错误（适用于 node-server preset）
