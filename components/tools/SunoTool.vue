@@ -732,6 +732,7 @@ const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 // 功能与价格 key 对应：Music Extension→suno_extend, Audio Expansion→suno_upload_extend, Vocal Generation→suno_add_vocals, Audio Cover→suno_upload_cover, Music Generation→suno_generate, Accompaniment→suno_add_instrumental
 const SUNO_MODEL_KEY = {
@@ -767,7 +768,7 @@ const uploadAudioToUrl = async (file) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

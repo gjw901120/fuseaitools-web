@@ -318,6 +318,7 @@ const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 // 价格按分类匹配：Imagine -> midjourney_imagine，Upscale -> midjourney_upscale，Vary -> midjourney_vary
 const MIDJOURNEY_PRICE_KEYS = { imagine: 'midjourney_imagine', upscale: 'midjourney_upscale', vary: 'midjourney_vary' }
@@ -534,7 +535,7 @@ const uploadFilesToUrls = async (files) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

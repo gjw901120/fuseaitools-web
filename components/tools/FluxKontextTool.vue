@@ -381,6 +381,7 @@ const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 // 价格：根据 Model Version 匹配 price 接口的 flux-kontext-pro(8) / flux-kontext-max(16)
 const fluxKontextPriceText = computed(() => {
@@ -520,7 +521,7 @@ const handleInputImage = async (files) => {
     const headers = { Accept: 'application/json' }
     const authToken = getAuthToken()
     if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-    const response = await fetch('/api/common/batch-upload', {
+    const response = await fetch(batchUploadUrl, {
       method: 'POST',
       headers,
       body: formDataUpload,

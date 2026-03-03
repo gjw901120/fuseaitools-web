@@ -216,6 +216,7 @@ const getAuthToken = () => {
 }
 const { get } = useApi()
 const { showError } = useToast()
+const batchUploadUrl = useBatchUploadUrl()
 
 const inputMessage = ref('')
 const chatMessages = ref([])
@@ -637,7 +638,7 @@ const handleFileUpload = async () => {
       }
       
       // 上传文件
-      const response = await fetch('/api/common/batch-upload', {
+      const response = await fetch(batchUploadUrl, {
         method: 'POST',
         headers: headers,
         body: formData,

@@ -619,6 +619,7 @@ const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const router = useRouter()
 const route = useRoute()
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 // Tab 与三级路由同步：/home/runway/generate 等
 const runwayTabToPath = {
@@ -714,7 +715,7 @@ const uploadFilesToUrls = async (files) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

@@ -755,6 +755,7 @@ function goToElevenLabsTab(tabId) {
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const batchUploadUrl = useBatchUploadUrl()
 
 const getAuthToken = () => {
   if (!process.client) return null
@@ -774,7 +775,7 @@ const uploadAudioToUrl = async (file) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

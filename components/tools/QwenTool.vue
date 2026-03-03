@@ -258,6 +258,7 @@ const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 const modeList = [
   { id: 'text-to-image', label: 'Text to Image', icon: 'fas fa-font' },
@@ -352,7 +353,7 @@ async function uploadFileToUrl(file) {
   const headers = { Accept: 'application/json' }
   const token = getAuthToken()
   if (token) headers['Authorization'] = `Bearer ${token}`
-  const res = await fetch('/api/common/batch-upload', {
+  const res = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: form,

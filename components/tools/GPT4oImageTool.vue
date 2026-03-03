@@ -240,6 +240,7 @@ const { showError } = useToast()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 // 价格：GPT 4o Image 对应模型 key GPT_4o_image
 const gpt4oImagePriceText = computed(() => {
@@ -287,7 +288,7 @@ const handleReferenceImages = async (files) => {
     const authToken = getAuthToken()
     if (authToken) headers['Authorization'] = `Bearer ${authToken}`
 
-    const response = await fetch('/api/common/batch-upload', {
+    const response = await fetch(batchUploadUrl, {
       method: 'POST',
       headers,
       body: formDataUpload,

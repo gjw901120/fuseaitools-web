@@ -382,6 +382,7 @@ const { post } = useApi()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus, pollRecordDetail } = useRecordPolling()
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 // 详情页：URL 携带 record-id 时拉取并展示详情
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -513,7 +514,7 @@ const uploadFilesToUrls = async (files) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

@@ -459,6 +459,7 @@ function getVeo3RecordPath() {
 }
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 const { token } = useAuth()
 const { showError } = useToast()
 const { post, get } = useApi()
@@ -483,7 +484,7 @@ const uploadFilesToUrls = async (files) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

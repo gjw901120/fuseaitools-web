@@ -729,6 +729,7 @@ watch(() => route.query['record-id'], (recordId) => {
 
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 const nanoBananaPriceText = computed(() => {
   const credits = getPrice('nano-banana')
@@ -771,7 +772,7 @@ const uploadFilesToUrls = async (files, onProgress) => {
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-  const response = await fetch('/api/common/batch-upload', {
+  const response = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: formDataUpload,

@@ -220,6 +220,7 @@ const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
+const batchUploadUrl = useBatchUploadUrl()
 
 const modeList = [
   { id: 'v1-lite-text-to-video', label: 'v1 Lite T2V', icon: 'fas fa-font' },
@@ -305,7 +306,7 @@ async function uploadFileToUrl(file) {
   const headers = { Accept: 'application/json' }
   const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null
   if (token) headers['Authorization'] = `Bearer ${token}`
-  const res = await fetch('/api/common/batch-upload', {
+  const res = await fetch(batchUploadUrl, {
     method: 'POST',
     headers,
     body: form,
