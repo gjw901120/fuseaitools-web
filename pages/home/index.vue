@@ -1082,6 +1082,12 @@ provide('addToUsageHistory', addToUsageHistory)
   overflow: hidden;
 }
 
+/* History 标题区：去除 logo/标题外边框颜色 */
+.left-sidebar > .timeline-header {
+  border: none;
+  border-radius: 0;
+}
+
 .timeline-header {
   padding: 10px;
   border-bottom: 1px solid #e2e8f0;

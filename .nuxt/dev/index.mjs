@@ -1251,7 +1251,22 @@ const plugins = [
 _x97qlr_3HNtLjE9TgMFJOrXi5_dH8bELYiZ02jASNI
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2c217-wTQSHJR4uZO1QvMdND+Yh/T/6R0\"",
+    "mtime": "2026-03-06T09:19:11.598Z",
+    "size": 180759,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"8f9d8-Doy2x7Mmh/6LDZTv7eksUlHig/8\"",
+    "mtime": "2026-03-06T09:19:11.599Z",
+    "size": 588248,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1703,6 +1718,11 @@ const _lazy_8_gnv6 = () => Promise.resolve().then(function () { return chatDetai
 const _lazy_io_H72 = () => Promise.resolve().then(function () { return detail_get$1; });
 const _lazy_S_bw0Y = () => Promise.resolve().then(function () { return extendList_get$1; });
 const _lazy_EU3ogi = () => Promise.resolve().then(function () { return list_get$1; });
+const _lazy_SUC6Fg = () => Promise.resolve().then(function () { return cancelSubscription_post$1; });
+const _lazy_4yVrOh = () => Promise.resolve().then(function () { return refundRechargeDetail_get$1; });
+const _lazy_20VHYv = () => Promise.resolve().then(function () { return refundRecharge_post$1; });
+const _lazy_KDkYe7 = () => Promise.resolve().then(function () { return refundSubscriptionDetail_get$1; });
+const _lazy_f9UqaQ = () => Promise.resolve().then(function () { return refundSubscription_post$1; });
 const _lazy_Up3Lrr = () => Promise.resolve().then(function () { return createSession_post$1; });
 const _lazy_J0ejHy = () => Promise.resolve().then(function () { return refreshTimezone_post$1; });
 const _lazy_9KA_u2 = () => Promise.resolve().then(function () { return creditsDetail_get$1; });
@@ -1773,6 +1793,11 @@ const handlers = [
   { route: '/api/records/detail', handler: _lazy_io_H72, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/extend-list', handler: _lazy_S_bw0Y, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/list', handler: _lazy_EU3ogi, lazy: true, middleware: false, method: "get" },
+  { route: '/api/refund/cancel-subscription', handler: _lazy_SUC6Fg, lazy: true, middleware: false, method: "post" },
+  { route: '/api/refund/refund-recharge-detail', handler: _lazy_4yVrOh, lazy: true, middleware: false, method: "get" },
+  { route: '/api/refund/refund-recharge', handler: _lazy_20VHYv, lazy: true, middleware: false, method: "post" },
+  { route: '/api/refund/refund-subscription-detail', handler: _lazy_KDkYe7, lazy: true, middleware: false, method: "get" },
+  { route: '/api/refund/refund-subscription', handler: _lazy_f9UqaQ, lazy: true, middleware: false, method: "post" },
   { route: '/api/stripe/create-session', handler: _lazy_Up3Lrr, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/auth/refresh-timezone', handler: _lazy_J0ejHy, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/credits-detail', handler: _lazy_9KA_u2, lazy: true, middleware: false, method: "get" },
@@ -3407,6 +3432,149 @@ const list_get = defineEventHandler(async (event) => {
 const list_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: list_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const cancelSubscription_post = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/refund/cancel-subscription`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  const body = await readBody(event).catch(() => ({}));
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body
+    });
+    return response;
+  } catch (error) {
+    console.error("Cancel subscription proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to cancel subscription"
+    });
+  }
+});
+
+const cancelSubscription_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: cancelSubscription_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const refundRechargeDetail_get = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/refund/refund-recharge-detail`;
+  const headers = {
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Refund recharge proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to refund recharge"
+    });
+  }
+});
+
+const refundRechargeDetail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: refundRechargeDetail_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const refundRecharge_post = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/refund/refund-recharge`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  const body = await readBody(event).catch(() => ({}));
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body
+    });
+    return response;
+  } catch (error) {
+    console.error("Refund recharge submit proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to submit recharge refund"
+    });
+  }
+});
+
+const refundRecharge_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: refundRecharge_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const refundSubscriptionDetail_get = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/refund/refund-subscription-detail`;
+  const headers = {
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  try {
+    const response = await $fetch(targetUrl, { method: "GET", headers });
+    return response;
+  } catch (error) {
+    console.error("Refund subscription proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to refund subscription"
+    });
+  }
+});
+
+const refundSubscriptionDetail_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: refundSubscriptionDetail_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const refundSubscription_post = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/refund/refund-subscription`;
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  const body = await readBody(event).catch(() => ({}));
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body
+    });
+    return response;
+  } catch (error) {
+    console.error("Refund subscription submit proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to submit subscription refund"
+    });
+  }
+});
+
+const refundSubscription_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: refundSubscription_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const createSession_post = defineEventHandler(async (event) => {

@@ -129,6 +129,21 @@ declare module "nitropack/types" {
     '/api/records/list': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/records/list.get').default>>>>
     }
+    '/api/refund/cancel-subscription': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/refund/cancel-subscription.post').default>>>>
+    }
+    '/api/refund/refund-recharge-detail': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/refund/refund-recharge-detail.get').default>>>>
+    }
+    '/api/refund/refund-recharge': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/refund/refund-recharge.post').default>>>>
+    }
+    '/api/refund/refund-subscription-detail': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/refund/refund-subscription-detail.get').default>>>>
+    }
+    '/api/refund/refund-subscription': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/refund/refund-subscription.post').default>>>>
+    }
     '/api/stripe/create-session': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/stripe/create-session.post').default>>>>
     }

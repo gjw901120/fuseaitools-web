@@ -23,13 +23,29 @@
                 <span v-if="subscriptionDetailFormatted.startDateFormatted || subscriptionDetailFormatted.endDateFormatted" class="title-dates">{{ subscriptionDetailFormatted.startDateFormatted }} – {{ subscriptionDetailFormatted.endDateFormatted }}</span>
                 <span v-if="subscriptionPackageLabel" class="title-package"> · {{ subscriptionPackageLabel }}</span>
               </span>
-              <span class="progress-value">{{ subscriptionRatioPercent }}% remaining</span>
+              <div class="progress-tail-actions">
+                <template v-if="subscriptionDetail.refundStatus === 0">
+                  <template v-if="subscriptionDetail.isCancel === 1">
+                    <button type="button" class="btn-refund btn-secondary" :disabled="refundLoading" @click="cancelSubscription">Cancel Subscription</button>
+                    <button type="button" class="btn-refund btn-primary" :disabled="refundLoading" @click="refundSubscription">Cancel & Refund</button>
+                  </template>
+                  <template v-else>
+                    <span class="refund-status-text">Subscription Terminated</span>
+                    <button type="button" class="btn-refund btn-primary" :disabled="refundLoading" @click="refundSubscription">Cancel & Refund</button>
+                  </template>
+                </template>
+                <span v-else-if="subscriptionDetail.refundStatus === 1" class="refund-status-text">Refund Applied</span>
+                <span v-else-if="subscriptionDetail.refundStatus === 2" class="refund-status-text">Refund In Progress</span>
+              </div>
             </div>
-            <div class="progress-track">
-              <div class="progress-fill subscription" :style="{ width: subscriptionRatioPercent + '%' }"></div>
+            <div class="progress-bar-wrap">
+              <div class="progress-track">
+                <div class="progress-fill subscription" :style="{ width: subscriptionRatioPercent + '%' }"></div>
+              </div>
             </div>
-            <div class="progress-meta">
-              {{ subscriptionDetail.remainingCredits }} / {{ subscriptionDetail.credits }} credits
+            <div class="progress-meta progress-meta-ends">
+              <span class="progress-meta-left">{{ subscriptionDetail.remainingCredits }} / {{ subscriptionDetail.credits }} credits</span>
+              <span class="progress-meta-right">{{ subscriptionRatioPercent }}% remaining</span>
             </div>
           </div>
         </div>
@@ -39,16 +55,26 @@
           <div class="progress-card recharge-card">
             <div class="progress-label">
               <span class="progress-title">Recharge Credits</span>
+              <div class="progress-tail-actions">
+                <template v-if="rechargeDetail.refundStatus === 0">
+                  <button type="button" class="btn-refund btn-primary" :disabled="refundLoading" @click="refundRecharge">Refund</button>
+                </template>
+                <span v-else-if="rechargeDetail.refundStatus === 1" class="refund-status-text">Refund Applied</span>
+                <span v-else-if="rechargeDetail.refundStatus === 2" class="refund-status-text">Refund In Progress</span>
+              </div>
             </div>
             <div class="recharge-ruler">
               <span v-for="t in rechargeRulerTicks" :key="t" class="ruler-tick" :style="{ left: (t / rechargeRulerMax) * 100 + '%' }">{{ (t / 1000).toFixed(0) }}k</span>
             </div>
-            <div class="progress-track recharge-track">
-              <div class="progress-fill recharge" :style="{ width: rechargeRemainingBarPercent + '%' }"></div>
-              <div v-if="rechargeRemainingBarPercent >= 100" class="energy-effect" title="Your credits are full and overflowing!"></div>
+            <div class="progress-bar-wrap">
+              <div class="progress-track recharge-track">
+                <div class="progress-fill recharge" :style="{ width: rechargeRemainingBarPercent + '%' }"></div>
+                <div v-if="rechargeRemainingBarPercent >= 100" class="energy-effect" title="Your credits are full and overflowing!"></div>
+              </div>
             </div>
-            <div class="progress-meta">
-              {{ formatCreditsNum(rechargeDetail.remainingCredits) }} credits
+            <div class="progress-meta progress-meta-ends">
+              <span class="progress-meta-left">{{ formatCreditsNum(rechargeDetail.remainingCredits) }} / {{ rechargeRulerMax }} credits</span>
+              <span class="progress-meta-right">{{ rechargeRemainingBarPercentText }}%<span v-if="rechargeOverflow" class="overflow-plus">+</span> remaining</span>
             </div>
           </div>
         </div>
@@ -107,6 +133,34 @@
         </div>
       </div>
     </section>
+
+    <!-- Recharge 退款确认弹窗 -->
+    <Teleport to="body">
+      <div v-if="rechargeRefundModal" class="refund-modal-overlay" @click.self="rechargeRefundModal = false">
+        <div class="refund-modal">
+          <h3 class="refund-modal-title">Recharge Refund</h3>
+          <p class="refund-modal-amount">Refundable amount: <strong>${{ rechargeRefundAmount }}</strong></p>
+          <div class="refund-modal-actions">
+            <button type="button" class="btn-refund btn-secondary" :disabled="rechargeRefundSubmitting" @click="rechargeRefundModal = false">Cancel</button>
+            <button type="button" class="btn-refund btn-primary" :disabled="rechargeRefundSubmitting" @click="confirmRechargeRefund">Confirm Refund</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- Subscription 退款确认弹窗 -->
+    <Teleport to="body">
+      <div v-if="subscriptionRefundModal" class="refund-modal-overlay" @click.self="subscriptionRefundModal = false">
+        <div class="refund-modal">
+          <h3 class="refund-modal-title">Subscription Refund</h3>
+          <p class="refund-modal-amount">Refundable amount: <strong>${{ subscriptionRefundAmount }}</strong></p>
+          <div class="refund-modal-actions">
+            <button type="button" class="btn-refund btn-secondary" :disabled="subscriptionRefundSubmitting" @click="subscriptionRefundModal = false">Cancel</button>
+            <button type="button" class="btn-refund btn-primary" :disabled="subscriptionRefundSubmitting" @click="confirmSubscriptionRefund">Confirm Refund</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -124,11 +178,21 @@ useHead({
 
 const router = useRouter()
 const loading = ref(false)
+const refundLoading = ref(false)
+const { showError, showSuccess } = useToast()
+const rechargeRefundModal = ref(false)
+const rechargeRefundAmount = ref(0)
+const rechargeRefundSubmitting = ref(false)
+const subscriptionRefundModal = ref(false)
+const subscriptionRefundAmount = ref(0)
+const subscriptionRefundSubmitting = ref(false)
 
 // API 原始数据
 const isSubscription = ref(0)
 const isRecharge = ref(0)
 const subscriptionDetail = ref({
+  isCancel: 0,
+  refundStatus: 0,
   credits: 0,
   remainingCredits: 0,
   ratio: 0,
@@ -138,7 +202,7 @@ const subscriptionDetail = ref({
   discount: 1,
   type: ''
 })
-const rechargeDetail = ref({ remainingCredits: 0, totalCredits: 0 })
+const rechargeDetail = ref({ remainingCredits: 0, totalCredits: 0, refundStatus: 0 })
 const creditsDetails = ref([])
 const historyPage = ref(1)
 const historyPageSize = 10
@@ -185,6 +249,13 @@ const rechargeRemainingBarPercent = computed(() => {
   const remaining = Number(rechargeDetail.value.remainingCredits) || 0
   return Math.min((remaining / rechargeRulerMax) * 100, 100)
 })
+
+const rechargeRemainingBarPercentText = computed(() => {
+  const remaining = Number(rechargeDetail.value.remainingCredits) || 0
+  return Math.min(Math.round((remaining / rechargeRulerMax) * 100), 100)
+})
+
+const rechargeOverflow = computed(() => (Number(rechargeDetail.value.remainingCredits) || 0) > rechargeRulerMax)
 
 function formatDiscount(v) {
   if (v == null) return '—'
@@ -276,6 +347,77 @@ async function fetchCredits(page = 1) {
     console.error('Fetch credits failed:', e)
   } finally {
     loading.value = false
+  }
+}
+
+async function cancelSubscription() {
+  refundLoading.value = true
+  try {
+    const { post } = useApi()
+    await post('/api/refund/cancel-subscription', {})
+    await fetchCredits(1)
+  } catch (e) {
+    console.error('Cancel subscription failed:', e)
+  } finally {
+    refundLoading.value = false
+  }
+}
+
+async function refundSubscription() {
+  refundLoading.value = true
+  try {
+    const { get } = useApi()
+    const data = await get('/api/refund/refund-subscription-detail')
+    subscriptionRefundAmount.value = data?.refundAmount ?? 0
+    subscriptionRefundModal.value = true
+  } catch (e) {
+    console.error('Refund subscription failed:', e)
+  } finally {
+    refundLoading.value = false
+  }
+}
+
+async function confirmSubscriptionRefund() {
+  subscriptionRefundSubmitting.value = true
+  try {
+    const { post } = useApi()
+    await post('/api/refund/refund-subscription', {})
+    showSuccess('Application submitted. Please wait for the refund to complete.')
+    subscriptionRefundModal.value = false
+    await fetchCredits(1)
+  } catch (e) {
+    console.error('Confirm subscription refund failed:', e)
+  } finally {
+    subscriptionRefundSubmitting.value = false
+  }
+}
+
+async function refundRecharge() {
+  refundLoading.value = true
+  try {
+    const { get } = useApi()
+    const data = await get('/api/refund/refund-recharge-detail')
+    rechargeRefundAmount.value = data?.refundAmount ?? 0
+    rechargeRefundModal.value = true
+  } catch (e) {
+    showError(e?.message || 'Request failed')
+  } finally {
+    refundLoading.value = false
+  }
+}
+
+async function confirmRechargeRefund() {
+  rechargeRefundSubmitting.value = true
+  try {
+    const { post } = useApi()
+    await post('/api/refund/refund-recharge', {})
+    showSuccess('Application submitted. Please wait for the refund to complete.')
+    rechargeRefundModal.value = false
+    await fetchCredits(1)
+  } catch (e) {
+    showError(e?.message || 'Request failed')
+  } finally {
+    rechargeRefundSubmitting.value = false
   }
 }
 
@@ -382,6 +524,125 @@ onMounted(() => {
   margin-top: 6px;
   font-size: 0.8125rem;
   color: #64748b;
+}
+
+.progress-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progress-tail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.refund-status-text {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #059669;
+  align-self: center;
+}
+
+.btn-refund {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  border: 1px solid transparent;
+}
+
+.btn-refund:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-refund.btn-secondary {
+  background: #fff;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.btn-refund.btn-secondary:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.btn-refund.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #5a67d8;
+}
+
+.btn-refund.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.refund-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.refund-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 320px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.refund-modal-title {
+  margin: 0 0 16px 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.refund-modal-amount {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  color: #475569;
+}
+
+.refund-modal-amount strong {
+  color: #059669;
+}
+
+.refund-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.progress-meta-ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-meta-left {
+  flex-shrink: 0;
+}
+
+.progress-meta-right {
+  flex-shrink: 0;
+}
+
+.overflow-plus {
+  font-weight: 700;
+  color: #059669;
+  margin-left: 1px;
+  font-size: 1em;
 }
 
 .meta-extra {

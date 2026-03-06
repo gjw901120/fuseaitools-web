@@ -366,6 +366,13 @@ provide('addToUsageHistory', addToUsageHistory)
   height: 36px;
   object-fit: contain;
   border-radius: 4px;
+  border: none;
+  outline: none;
+}
+
+/* 包含 logo 时去除 marker 外边框 */
+.timeline-marker:has(.timeline-marker-logo) {
+  border: none;
 }
 
 @keyframes pulse {
