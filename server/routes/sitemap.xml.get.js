@@ -1,18 +1,41 @@
 /**
  * Dynamic Sitemap Generator
  * Generates sitemap.xml at root path (/sitemap.xml)
+ * Includes static pages, tool routes, and dynamic news article URLs from backend list API.
  */
 
-export default defineEventHandler((event) => {
+import { getEffectiveApiBase } from '../utils/getApiBase'
+
+export default defineEventHandler(async (event) => {
   // Set content type to XML
   setHeader(event, 'Content-Type', 'application/xml')
-  
-  // Get current date in YYYY-MM-DD format
-  const currentDate = new Date().toISOString().split('T')[0]
+
   const baseUrl = 'https://fuseaitools.com'
-  
-  // Define all pages with their metadata
-  const pages = [
+  const currentDate = new Date().toISOString().split('T')[0]
+
+  // Fetch news paths from backend list API (for dynamic /news/[slug] pages)
+  let newsPages = []
+  try {
+    const apiBase = getEffectiveApiBase(event)
+    const res = await $fetch(`${apiBase}/news/list`, {
+      query: { page: 1, size: 500 }
+    })
+    const records = res?.data?.records || []
+    const list = Array.isArray(records) ? records : []
+    newsPages = list
+      .filter((r) => r.path && r.isDel !== 1)
+      .map((r) => ({
+        loc: `/news/${encodeURIComponent(String(r.path).trim())}`,
+        lastmod: (r.gmtModified || r.gmtCreate || currentDate).toString().split('T')[0],
+        changefreq: 'weekly',
+        priority: '0.6'
+      }))
+  } catch (_) {
+    // If news API fails, sitemap still returns static + tool URLs
+  }
+
+  // Define all static/tool pages with their metadata
+  const staticPages = [
     // Main pages
     {
       loc: '/',
@@ -291,7 +314,10 @@ export default defineEventHandler((event) => {
       priority: '0.8'
     }
   ]
-  
+
+  // Combine static/tool pages and dynamic news article URLs
+  const pages = [...staticPages, ...newsPages]
+
   // Generate XML sitemap
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

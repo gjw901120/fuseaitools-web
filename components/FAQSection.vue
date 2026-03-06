@@ -55,7 +55,7 @@ const faqItems = ref([
   }
 ])
 
-// FAQ 结构化数据
+// FAQ 结构化数据（仅保留一处，避免与首页重复；Answer.text 使用纯文本）
 const faqSchema = computed(() => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -64,7 +64,7 @@ const faqSchema = computed(() => ({
     "name": item.question,
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": item.answer
+      "text": typeof item.answer === 'string' ? item.answer.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : item.answer
     }
   }))
 }))

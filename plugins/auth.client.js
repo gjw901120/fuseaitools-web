@@ -1,14 +1,56 @@
 /**
  * 认证插件 - 处理 URL 中的 token（用于 Google 登录回调等）
- * 在所有页面加载时检查 URL 中的 token 参数
+ * 登录状态下每小时校验 JWT 中的 timeZoneOffset 与客户端是否一致，不一致则调用 refresh-timezone 并刷新 token
  */
 export default defineNuxtPlugin((nuxtApp) => {
-  // 只在客户端执行
   if (process.server) return
 
   const route = useRoute()
   const router = useRouter()
-  const { login } = useAuth()
+  const { login, token, isAuthenticated, parseJWT, getClientTimezone } = useAuth()
+  const { post } = useApi()
+
+  let timezoneCheckTimer = null
+
+  const runTimezoneCheck = async () => {
+    const currentToken = token.value
+    if (!currentToken) return
+    try {
+      const payload = parseJWT(currentToken)
+      const jwtOffset = payload?.timeZoneOffset
+      const { timeZone, timeZoneOffset } = getClientTimezone()
+      const needRefresh = jwtOffset === undefined || jwtOffset === null || jwtOffset !== timeZoneOffset
+      if (!needRefresh) return
+      const data = await post('/api/user/auth/refresh-timezone', {
+        timeZoneOffset: timeZoneOffset,
+        timeZone: timeZone
+      })
+      if (data?.token) {
+        login(data.token)
+        if (process.dev) console.log('[Auth Plugin] 时区已更新，token 已刷新')
+      }
+    } catch (e) {
+      if (process.dev) console.warn('[Auth Plugin] refresh-timezone 失败:', e?.message)
+    }
+  }
+
+  const startTimezoneCheck = () => {
+    if (timezoneCheckTimer) return
+    runTimezoneCheck()
+    timezoneCheckTimer = setInterval(runTimezoneCheck, 60 * 60 * 1000)
+  }
+
+  const stopTimezoneCheck = () => {
+    if (timezoneCheckTimer) {
+      clearInterval(timezoneCheckTimer)
+      timezoneCheckTimer = null
+    }
+  }
+
+  watch(isAuthenticated, (authenticated) => {
+    if (authenticated) startTimezoneCheck()
+    else stopTimezoneCheck()
+  }, { immediate: true })
 
   // 检查 URL 中是否有 token 参数
   const checkTokenInUrl = () => {

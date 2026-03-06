@@ -99,48 +99,8 @@ useHead({
           }
         ]
       })
-    },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is FuseAI?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "FuseAI is an integrated artificial intelligence platform that brings together various cutting-edge AI tools, including chat, image generation, audio processing, and video creation. The platform's objective is to enable users to easily access and utilize the most comprehensive AI capabilities from a single location."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How to use FuseAI?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Users can access the platform simply by completing registration. Upon registration, users can enjoy over 50 professional AI models and tools. FuseAI is designed to meet various needs, whether it's getting inspiration through intelligent dialogue, creating visual works with text-to-image tools, processing and optimizing audio, or generating high-quality video content."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is FuseAI free?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. FuseAI offers AI tools free: when you register you get 100 credits free to try all models—chat, image, audio, and video. No credit card required. We also have subscription plans with more credits and discounts for heavy users, and pay-as-you-go top-up."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How does FuseAI work?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The core of FuseAI lies in its powerful model integration. It seamlessly integrates industry-leading AI technologies, including ChatGPT, Claude, Gemini for dialogue and reasoning; Midjourney, Flux Kontext for image generation; Suno, ElevenLabs for audio processing; and Veo3, Runway, Luma, Sora for video generation. Through a unified, user-friendly interface, we integrate these scattered cutting-edge capabilities into a coherent workflow, providing you with a one-stop AI solution."
-            }
-          }
-        ]
-      })
     }
+    // FAQPage 仅由 FAQSection 组件输出，避免重复导致 Google 富媒体结果无效
   ]
 })
 

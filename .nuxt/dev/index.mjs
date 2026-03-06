@@ -1251,22 +1251,7 @@ const plugins = [
 _x97qlr_3HNtLjE9TgMFJOrXi5_dH8bELYiZ02jASNI
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"2a9a3-M/zwZjpGWZJvY4j08AEae8Mvvuw\"",
-    "mtime": "2026-03-03T09:37:26.178Z",
-    "size": 174499,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"8b4fe-A4NYb3A+CVZZgqf1x0/dQoIOaFA\"",
-    "mtime": "2026-03-03T09:37:26.180Z",
-    "size": 570622,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1719,6 +1704,7 @@ const _lazy_io_H72 = () => Promise.resolve().then(function () { return detail_ge
 const _lazy_S_bw0Y = () => Promise.resolve().then(function () { return extendList_get$1; });
 const _lazy_EU3ogi = () => Promise.resolve().then(function () { return list_get$1; });
 const _lazy_Up3Lrr = () => Promise.resolve().then(function () { return createSession_post$1; });
+const _lazy_J0ejHy = () => Promise.resolve().then(function () { return refreshTimezone_post$1; });
 const _lazy_9KA_u2 = () => Promise.resolve().then(function () { return creditsDetail_get$1; });
 const _lazy_FeFrNq = () => Promise.resolve().then(function () { return loginByEmail_post$1; });
 const _lazy_qjMUPF = () => Promise.resolve().then(function () { return sendEmailCode_post$1; });
@@ -1788,6 +1774,7 @@ const handlers = [
   { route: '/api/records/extend-list', handler: _lazy_S_bw0Y, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/list', handler: _lazy_EU3ogi, lazy: true, middleware: false, method: "get" },
   { route: '/api/stripe/create-session', handler: _lazy_Up3Lrr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/auth/refresh-timezone', handler: _lazy_J0ejHy, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/credits-detail', handler: _lazy_9KA_u2, lazy: true, middleware: false, method: "get" },
   { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
@@ -3454,6 +3441,39 @@ const createSession_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defi
   default: createSession_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const refreshTimezone_post = defineEventHandler(async (event) => {
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/user/auth/refresh-timezone`;
+  const body = await readBody(event);
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  };
+  const authHeader = getHeader(event, "authorization");
+  if (authHeader) headers["Authorization"] = authHeader;
+  const cookie = getHeader(event, "cookie");
+  if (cookie) headers["Cookie"] = cookie;
+  try {
+    const response = await $fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body
+    });
+    return response;
+  } catch (error) {
+    console.error("Refresh timezone proxy error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Failed to refresh timezone"
+    });
+  }
+});
+
+const refreshTimezone_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: refreshTimezone_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const creditsDetail_get = defineEventHandler(async (event) => {
   const apiBase = getEffectiveApiBase(event);
   const query = getQuery$1(event);
@@ -3999,11 +4019,28 @@ const videoToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
   default: videoToVideo_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const sitemap_xml_get = defineEventHandler((event) => {
+const sitemap_xml_get = defineEventHandler(async (event) => {
+  var _a;
   setHeader(event, "Content-Type", "application/xml");
-  const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
   const baseUrl = "https://fuseaitools.com";
-  const pages = [
+  const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+  let newsPages = [];
+  try {
+    const apiBase = getEffectiveApiBase(event);
+    const res = await $fetch(`${apiBase}/news/list`, {
+      query: { page: 1, size: 500 }
+    });
+    const records = ((_a = res == null ? void 0 : res.data) == null ? void 0 : _a.records) || [];
+    const list = Array.isArray(records) ? records : [];
+    newsPages = list.filter((r) => r.path && r.isDel !== 1).map((r) => ({
+      loc: `/news/${encodeURIComponent(String(r.path).trim())}`,
+      lastmod: (r.gmtModified || r.gmtCreate || currentDate).toString().split("T")[0],
+      changefreq: "weekly",
+      priority: "0.6"
+    }));
+  } catch (_) {
+  }
+  const staticPages = [
     // Main pages
     {
       loc: "/",
@@ -4277,6 +4314,7 @@ const sitemap_xml_get = defineEventHandler((event) => {
       priority: "0.8"
     }
   ];
+  const pages = [...staticPages, ...newsPages];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((page) => `  <url>

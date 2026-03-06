@@ -82,6 +82,17 @@ export const useAuth = () => {
     }
   }
 
+  /**
+   * 获取当前客户端时区信息（用于与 JWT 中的 timeZoneOffset 比对或调用 refresh-timezone）
+   * timeZoneOffset: 小时制偏移，如 Asia/Shanghai 为 8，UTC 为 0
+   */
+  const getClientTimezone = () => {
+    if (!process.client) return { timeZone: 'UTC', timeZoneOffset: 0 }
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+    const timeZoneOffset = Math.round(-new Date().getTimezoneOffset() / 60)
+    return { timeZone, timeZoneOffset }
+  }
+
   // 登录
   const login = (jwtToken) => {
     if (!jwtToken) return false
@@ -153,7 +164,8 @@ export const useAuth = () => {
     isAuthenticated,
     login,
     logout,
-    parseJWT
+    parseJWT,
+    getClientTimezone
   }
 }
 

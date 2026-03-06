@@ -32,6 +32,7 @@ export { useAI } from '../composables/useAI';
 export { useApi } from '../composables/useApi';
 export { fetchWithCache, useApiCache } from '../composables/useApiCache';
 export { useAuth } from '../composables/useAuth';
+export { useBatchUploadUrl } from '../composables/useBatchUploadUrl';
 export { useHomeLayout } from '../composables/useHomeLayout';
 export { useMjApi } from '../composables/useMjApi';
 export { useModelPrice } from '../composables/useModelPrice';

@@ -132,6 +132,9 @@ declare module "nitropack/types" {
     '/api/stripe/create-session': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/stripe/create-session.post').default>>>>
     }
+    '/api/user/auth/refresh-timezone': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/auth/refresh-timezone.post').default>>>>
+    }
     '/api/user/credits-detail': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/credits-detail.get').default>>>>
     }
