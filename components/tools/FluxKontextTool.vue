@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Flux Kontext</h3>
-        <p>High-quality image generation and editing model</p>
+        <p class="tool-description">Flux is Black Forest Labs' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.</p>
       </div>
     </div>
 
@@ -712,6 +712,10 @@ const clearResults = () => {
   margin: 0;
   font-size: 14px;
   color: #6b7280;
+}
+
+.tool-details p.tool-description {
+  line-height: 1.55;
 }
 
 

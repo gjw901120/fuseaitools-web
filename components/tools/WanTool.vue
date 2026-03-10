@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Wan</h3>
-        <p>Wan supports text-to-video, image-to-video, and video-to-video. Control duration (5/10/15s), resolution (720p/1080p), and multi-shot composition. Supports Chinese and English prompts.</p>
+        <p class="tool-description">Wan is Alibaba's AI video model, offering affordable multi-shot 1080p generation with stable characters and synchronized native audio. Through the Wan—including T2V, I2V, and reference-guided modes—you can create up to 15-second cinematic videos with improved motion logic, consistent visuals, and production-ready quality.</p>
       </div>
     </div>
 
@@ -468,6 +468,7 @@ watch(mode, (m) => {
 .tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
+.tool-details p.tool-description { line-height: 1.55; }
 
 .mode-section { margin-bottom: 24px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
 .mode-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }

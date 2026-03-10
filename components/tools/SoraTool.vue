@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Sora</h3>
-        <p>Sora 2 is OpenAI’s latest AI video generation model, supporting both text-to-video and image-to-video. It delivers realistic motion, physics consistency, with improved control over style, scene, and aspect ratio—ideal for creative apps and social media content.</p>
+        <p>Sora is OpenAI's latest AI video generation model, supporting both text-to-video and image-to-video. It delivers realistic motion, physics consistency, with improved control over style, scene, and aspect ratio—ideal for creative apps and social media content.</p>
       </div>
     </div>
 
@@ -314,7 +314,7 @@
         <div class="video-header">
           <h4>Result Preview</h4>
           <div class="video-actions" v-if="results.length > 0">
-            <button @click="results = []" class="btn-secondary">
+            <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
             </button>
           </div>
@@ -565,8 +565,12 @@ const remainingDuration = computed(() => {
   return rem > 0 ? rem : 0
 })
 const isGenerating = ref(false)
-let results = ref([])
+const results = ref([])
 const shotsJson = ref('')
+
+function clearResults() {
+  results.value = []
+}
 
 // 价格：Frames 表单字段 (n_frames) 映射为价格规则中的 duration；watermark-remover->sora-watermark-remover；pro-storyboard->sora-2-pro-storyboard(duration)；text/image->sora-2-*；pro-text/image->sora-2-pro-*(duration+size)
 const soraPriceText = computed(() => {
@@ -661,7 +665,7 @@ watch(() => route.path, (path) => {
 const switchMode = (model) => {
   form.model = model
   const path = soraModeToPath[model] || soraModeToPath['text-to-video']
-  router.push(path)
+  router.push({ path, query: { ...route.query } })
 }
 
 // 获取视频列表
@@ -948,5 +952,3 @@ const onSubmit = async () => {
   .mode-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 </style>
-
-

@@ -2,7 +2,7 @@
   <HomeLayout>
     <ChatInterface
       tool-name="Gemini"
-      tool-description="Google AI assistant"
+      tool-description="Google's Gemini brings native multimodal understanding and agentic capabilities: text, image, audio, and video in one architecture; tool use (Search, Maps, code execution); and multi-step reasoning under user oversight. Gemini 2.0 is tuned for the agentic era—context understanding, planning ahead, and supervised actions. Use Gemini on FuseAITools for chat, coding, research, and any task that benefits from grounding and tools."
       tool-icon="/tools-logo/Gemini.png"
       model-category="Gemini"
     />
@@ -14,7 +14,7 @@ import { useToolSEO } from '~/composables/useToolSEO'
 
 const seoConfig = useToolSEO({
   name: 'Gemini',
-  description: 'Use Google Gemini AI for free online. Google\'s advanced conversational AI assistant for chat, analysis, multimodal understanding, and creative tasks. No signup required.',
+  description: 'Google\'s Gemini brings native multimodal understanding and agentic capabilities: text, image, audio, and video in one architecture; tool use (Search, Maps, code execution); and multi-step reasoning under user oversight. Gemini 2.0 is tuned for the agentic era—context understanding, planning ahead, and supervised actions. Use Gemini on FuseAITools for chat, coding, research, and any task that benefits from grounding and tools. Use Gemini for free online. No signup required.',
   category: 'chat',
   route: '/home/gemini/generate',
   keywords: ['Gemini', 'Google Gemini', 'Gemini AI', 'AI chat', 'conversational AI', 'Google AI', 'multimodal AI', 'free Gemini'],

@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Midjourney</h3>
-        <p>AI image generation tool</p>
+        <p class="tool-description">Midjourney is a leading AI image tool for art and photorealistic imagery.</p>
       </div>
     </div>
 
@@ -959,6 +959,10 @@ const getResultType = (data) => {
   margin: 0;
   font-size: 14px;
   color: #6b7280;
+}
+
+.tool-details p.tool-description {
+  line-height: 1.55;
 }
 
 

@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Seedance</h3>
-        <p>Seedance v1 Lite and Pro: text-to-video and image-to-video with aspect ratio, resolution (480p/720p/1080p), duration (5s/10s), camera control, and optional seed. Prompt max 10000 characters.</p>
+        <p class="tool-description">Seedance is a multimodal AI video model by ByteDance that generates consistent, cinematic videos with strong multi-shot consistency and native audio using text, image, video, and audio references.</p>
       </div>
     </div>
 
@@ -517,6 +517,7 @@ watch(mode, (m) => {
 .tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
+.tool-details p.tool-description { line-height: 1.55; }
 
 .mode-section { margin-bottom: 24px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
 .mode-tabs { display: grid; gap: 8px; }

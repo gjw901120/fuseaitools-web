@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Seedream</h3>
-        <p>1.5 Lite text-to-image and 2.5 Lite image-to-image. Aspect ratio 1:1 to 21:9, quality Basic (2K) or High (3K). Prompt max 2995 (text) or 2996 (image) characters.</p>
+        <p class="tool-description">Seedream is a unified multimodal image generation model by ByteDance, designed for multimodal reasoning, deep understanding, and controllable visual creation. It supports text-to-image and image editing workflows with improved consistency and real-time knowledge integration.</p>
       </div>
     </div>
 
@@ -364,6 +364,7 @@ watch(mode, (m) => {
 .tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
+.tool-details p.tool-description { line-height: 1.55; }
 
 .mode-section { margin-bottom: 24px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
 .mode-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }

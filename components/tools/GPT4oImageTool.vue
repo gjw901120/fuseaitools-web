@@ -8,7 +8,7 @@
         </div>
         <div class="tool-info">
           <h3>GPT 4o Image</h3>
-          <p>OpenAI GPT-4o image generation tool</p>
+          <p class="tool-description">ChatGPT 4o Image, is OpenAI's latest AI image generation model. It understands both text and visual context, allowing developers to create and edit images with remarkable accuracy. Unlike traditional diffusion models, ChatGPT 4o Image follows instructions precisely, supports consistent styles, and renders legible text — making it ideal for applications in design, marketing, and creative automation.</p>
         </div>
       </div>
     </div>
@@ -534,6 +534,10 @@ const clearResults = () => {
   margin: 0;
   font-size: 14px;
   color: #6b7280;
+}
+
+.tool-info p.tool-description {
+  line-height: 1.55;
 }
 
 .main-content {

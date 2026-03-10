@@ -465,3 +465,4 @@ Claude Opus 4.5, Claude Opus 4.6, AI model comparison, Anthropic Claude, large l
 - **锚文本**：使用完整模型/产品名（如「Claude Opus 4.6」「Claude on FuseAITools」），避免「点击这里」等泛化表述。
 - **数量**：正文中 1–2 处高相关内链即可（如首段提及 + 文末 CTA），不宜堆砌。
 - **文末 CTA**：可加一句自然引导，例如：「Try [产品名] on FuseAITools for [简短场景].」并链到对应工具页（如 `https://www.fuseaitools.com/home/claude`）。
+- **工具页链接**：文章中凡涉及站内工具的内链，一律链到该工具的**主/概览页**（如 `/home/claude`、`/home/elevenlabs`、`/home/suno`、`/home/midjourney`），**不要**链到具体功能子页面（如 `/home/elevenlabs/multilingual-v2`、`/home/suno/extend`、`/home/midjourney/imagine` 等）。

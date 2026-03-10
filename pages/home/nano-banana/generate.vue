@@ -12,10 +12,10 @@ import { useToolSEO } from '~/composables/useToolSEO'
 
 const seoConfig = useToolSEO({
   name: 'Nano Banana',
-  description: 'Use Nano Banana for free online. Lightweight AI image generation tool that quickly generates high-quality images. Supports multiple sizes, formats, and styles.',
+  description: 'Meet Nano Banana, Google\'s Gemini Flash Image model, now available via Fuse AI. Built for developers, it combines lightning-fast speed with Pro-level quality, accurate text rendering, strong character consistency, and scalable image generation and editing workflows.',
   category: 'image',
   route: '/home/nano-banana/generate',
-  keywords: ['Nano Banana', 'AI image generation', 'lightweight image', 'AI creation', 'image generation tool'],
+  keywords: ['Nano Banana', 'Gemini Flash Image', 'Google', 'AI image generation', 'Fuse AI', 'image generation', 'image editing', 'AI tools', 'AI art'],
   applicationCategory: 'GraphicsApplication',
   offers: { price: '0', priceCurrency: 'USD' }
 })

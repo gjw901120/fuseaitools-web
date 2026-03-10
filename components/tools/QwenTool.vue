@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Qwen</h3>
-        <p>Text-to-image, image-to-image, image-edit, and Z-Image. Control size, inference steps, guidance scale, seed, acceleration, and safety checker. Prompt max 5000 (text/i2i), 2000 (edit), or 1000 (Z-Image).</p>
+        <p class="tool-description">The Qwen Image empowers creators, developers, and businesses to generate and edit photorealistic images effortlessly. Whether you're crafting intricate designs or refining existing visuals, this powerful Qwen integrates seamlessly into your workflow, delivering multilingual text rendering and advanced editing capabilities that rival top models.</p>
       </div>
     </div>
 
@@ -542,6 +542,7 @@ watch(mode, (m) => {
 .tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
+.tool-details p.tool-description { line-height: 1.55; }
 
 .mode-section { margin-bottom: 24px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
 .mode-tabs { display: grid; gap: 8px; }

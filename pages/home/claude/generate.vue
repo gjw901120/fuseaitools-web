@@ -2,7 +2,7 @@
   <HomeLayout>
     <ChatInterface
       tool-name="Claude"
-      tool-description="Anthropic AI assistant"
+      tool-description="Anthropic's Claude is built for nuanced conversation, long documents, and helpful, accurate outputs. Strong on coding, analysis, and multilingual dialogue, with vision to read PDFs, charts, and diagrams."
       tool-icon="/tools-logo/Claude.png"
       model-category="Claude"
     />
@@ -14,7 +14,7 @@ import { useToolSEO } from '~/composables/useToolSEO'
 
 const seoConfig = useToolSEO({
   name: 'Claude',
-  description: 'Use Claude AI for free online. Anthropic\'s advanced conversational AI assistant for chat, analysis, writing, and complex reasoning. Access Claude instantly without signup.',
+  description: 'Anthropic\'s Claude is built for nuanced conversation, long documents, and helpful, accurate outputs. Strong on coding, analysis, and multilingual dialogue, with vision to read PDFs, charts, and diagrams. Use Claude for free online. No signup required.',
   category: 'chat',
   route: '/home/claude/generate',
   keywords: ['Claude', 'Claude AI', 'Anthropic', 'AI chat', 'conversational AI', 'AI assistant', 'free Claude', 'Anthropic Claude'],

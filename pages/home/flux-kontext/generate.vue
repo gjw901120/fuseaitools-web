@@ -12,10 +12,10 @@ import { useToolSEO } from '~/composables/useToolSEO'
 
 const seoConfig = useToolSEO({
   name: 'Flux Kontext',
-  description: 'Use Flux Kontext for free online. Generate high-quality AI images using Flux Kontext model, supporting both image generation and editing modes. Multiple aspect ratios, output formats, and creative styles available.',
+  description: 'Flux is Black Forest Labs\' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.',
   category: 'image',
   route: '/home/flux-kontext/generate',
-  keywords: ['Flux Kontext', 'Flux', 'AI image generation', 'image editing', 'artificial intelligence', 'image creation', 'AI tools', 'Flux AI', 'image generator', 'AI art'],
+  keywords: ['Flux Kontext', 'Flux 2', 'Black Forest Labs', 'AI image generation', 'image editing', 'photoreal', 'text rendering', 'AI tools', 'image generator', 'AI art'],
   applicationCategory: 'GraphicsApplication',
   offers: { price: '0', priceCurrency: 'USD' }
 })

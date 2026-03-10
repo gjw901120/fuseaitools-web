@@ -18,10 +18,10 @@ const switchToMain = () => {
 
 const seoConfig = useToolSEO({
   name: 'GPT 4o Image',
-  description: 'Use GPT 4o Image for free online. Generate high-quality AI images using OpenAI\'s GPT 4o Image model, supporting multiple styles, scenes, and creative expressions. Easy-to-use image generation tool with advanced AI capabilities.',
+  description: 'ChatGPT 4o Image, is OpenAI\'s latest AI image generation model. It understands both text and visual context, allowing developers to create and edit images with remarkable accuracy. Unlike traditional diffusion models, ChatGPT 4o Image follows instructions precisely, supports consistent styles, and renders legible text — making it ideal for applications in design, marketing, and creative automation.',
   category: 'image',
   route: '/home/gpt-4o-image/generate',
-  keywords: ['GPT 4o Image', 'GPT-4o Image', 'AI image generation', 'OpenAI', 'artificial intelligence', 'image creation', 'AI tools', 'DALL-E', 'image generator', 'AI art'],
+  keywords: ['GPT 4o Image', 'GPT-4o Image', 'GPT-Image-1', 'AI image generation', 'OpenAI', 'ChatGPT 4o Image', 'image creation', 'AI tools', 'image generator', 'AI art'],
   applicationCategory: 'GraphicsApplication',
   offers: { price: '0', priceCurrency: 'USD' }
 })

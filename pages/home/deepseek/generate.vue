@@ -2,7 +2,7 @@
   <HomeLayout>
     <ChatInterface
       tool-name="Deepseek"
-      tool-description="DeepSeek AI assistant"
+      tool-description="DeepSeek delivers strong code intelligence and long-context reasoning: trained on massive code and text, it excels at multi-language programming (80+ languages), debugging, and mathematical reasoning. Open and commercially friendly, it rivals top closed-source models on coding benchmarks. Use DeepSeek on FuseAITools for development support, deep analysis, and creative writing with long-context applications."
       tool-icon="/tools-logo/Deepseek.png"
       model-category="DeepSeek"
     />
@@ -14,7 +14,7 @@ import { useToolSEO } from '~/composables/useToolSEO'
 
 const seoConfig = useToolSEO({
   name: 'Deepseek',
-  description: 'Use Deepseek AI for free online. Advanced conversational AI assistant powered by DeepSeek technology. Perfect for coding, writing, analysis, and general conversations. No signup required.',
+  description: 'DeepSeek delivers strong code intelligence and long-context reasoning: trained on massive code and text, it excels at multi-language programming (80+ languages), debugging, and mathematical reasoning. Open and commercially friendly, it rivals top closed-source models on coding benchmarks. Use DeepSeek on FuseAITools for free online. No signup required.',
   category: 'chat',
   route: '/home/deepseek/generate',
   keywords: ['Deepseek', 'DeepSeek AI', 'AI chat', 'conversational AI', 'AI assistant', 'free AI chat', 'coding AI'],

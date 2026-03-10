@@ -2,7 +2,7 @@
   <HomeLayout>
     <ChatInterface
       tool-name="GPT"
-      tool-description="OpenAI conversational AI assistant"
+      tool-description="The OpenAI GPT series represents the most advanced conversational AI available today, combining code generation, creative writing, mathematical reasoning, and complex problem-solving in one platform."
       tool-icon="/tools-logo/ChatGpt.png"
       model-category="GPT"
     />
@@ -14,7 +14,7 @@ import { useToolSEO } from '~/composables/useToolSEO'
 
 const seoConfig = useToolSEO({
   name: 'GPT',
-  description: 'Use GPT (ChatGPT) for free online. OpenAI conversational AI assistant for chat, coding, writing, analysis, and more. No signup required. Access ChatGPT, GPT-4, and other OpenAI models in one platform.',
+  description: 'The OpenAI GPT series represents the most advanced conversational AI available today, combining code generation, creative writing, mathematical reasoning, and complex problem-solving in one platform. Use GPT (ChatGPT) for free online. No signup required.',
   category: 'chat',
   route: '/home/gpt/generate',
   keywords: ['GPT', 'ChatGPT', 'OpenAI', 'AI chat', 'conversational AI', 'GPT-4', 'AI assistant', 'free ChatGPT', 'online chat AI'],

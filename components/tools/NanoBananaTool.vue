@@ -8,7 +8,7 @@
         </div>
         <div class="tool-info">
           <h3>Nano Banana</h3>
-          <p>Lightweight AI image generation tool</p>
+          <p class="tool-description">Meet Nano Banana, Google's Gemini Flash Image model, now available via Fuse AI. Built for developers, it combines lightning-fast speed with Pro-level quality, accurate text rendering, strong character consistency, and scalable image generation and editing workflows.</p>
         </div>
       </div>
     </div>
@@ -1074,6 +1074,10 @@ const clearResults = () => {
   margin: 0;
   font-size: 14px;
   color: #6b7280;
+}
+
+.tool-info p.tool-description {
+  line-height: 1.55;
 }
 
 /* Function Selection Section */

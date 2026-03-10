@@ -136,7 +136,7 @@ export const useHomeLayout = () => {
       id: 1,
       name: 'GPT',
       type: 'chat',
-      description: 'OpenAI conversational AI assistant',
+      description: 'The OpenAI GPT series represents the most advanced conversational AI available today, combining code generation, creative writing, mathematical reasoning, and complex problem-solving in one platform.',
       icon: '/tools-logo/ChatGpt.png',
       rating: 4.9,
       usageCount: 1250
@@ -145,7 +145,7 @@ export const useHomeLayout = () => {
       id: 2,
       name: 'Deepseek',
       type: 'chat',
-      description: 'DeepSeek AI assistant',
+      description: 'DeepSeek delivers strong code intelligence and long-context reasoning: trained on massive code and text, it excels at multi-language programming (80+ languages), debugging, and mathematical reasoning. Open and commercially friendly, it rivals top closed-source models on coding benchmarks. Use DeepSeek on FuseAITools for development support, deep analysis, and creative writing with long-context applications.',
       icon: '/tools-logo/Deepseek.png',
       rating: 4.8,
       usageCount: 890
@@ -154,7 +154,7 @@ export const useHomeLayout = () => {
       id: 3,
       name: 'Claude',
       type: 'chat',
-      description: 'Anthropic AI assistant',
+      description: 'Anthropic\'s Claude is built for nuanced conversation, long documents, and helpful, accurate outputs. Strong on coding, analysis, and multilingual dialogue, with vision to read PDFs, charts, and diagrams.',
       icon: '/tools-logo/Claude.png',
       rating: 4.8,
       usageCount: 980
@@ -163,7 +163,7 @@ export const useHomeLayout = () => {
       id: 4,
       name: 'Gemini',
       type: 'chat',
-      description: 'Google AI assistant',
+      description: 'Google\'s Gemini brings native multimodal understanding and agentic capabilities: text, image, audio, and video in one architecture; tool use (Search, Maps, code execution); and multi-step reasoning under user oversight. Gemini 2.0 is tuned for the agentic era—context understanding, planning ahead, and supervised actions. Use Gemini on FuseAITools for chat, coding, research, and any task that benefits from grounding and tools.',
       icon: '/tools-logo/Gemini.png',
       rating: 4.7,
       usageCount: 680

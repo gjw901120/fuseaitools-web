@@ -410,6 +410,8 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   position: relative;
+  transform: scale(1.3);
+  transform-origin: right center;
 }
 
 .user-avatar {
@@ -474,6 +476,8 @@ onMounted(() => {
   gap: 0.75rem;
   padding: 0.75rem 0;
   width: 100%;
+  transform: scale(1.3);
+  transform-origin: left center;
 }
 
 .mobile-user-avatar {

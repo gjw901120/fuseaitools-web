@@ -226,7 +226,7 @@ Tool use: Search—real-time web, fact-check, multi-language. Maps—location, l
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'OpenAI\'s vision-capable GPT-4o drives both image generation and natural-language image editing. Describe what you want or upload a reference—create new art, edit existing images, refine composition and style, and iterate in one conversation. Built for concept art, marketing assets, and fast visual iteration; all without leaving the chat.',
+    intro: 'ChatGPT 4o Image, is OpenAI\'s latest AI image generation model. It understands both text and visual context, allowing developers to create and edit images with remarkable accuracy. Unlike traditional diffusion models, ChatGPT 4o Image follows instructions precisely, supports consistent styles, and renders legible text — making it ideal for applications in design, marketing, and creative automation.',
     features: [
       { name: 'Generate', path: '/home/gpt-4o-image/generate', description: 'Generate new images from text or references; edit, refine, and iterate with natural language in one flow.' }
     ],
@@ -280,7 +280,7 @@ Unified: Context and style consistency across the chat; full history and rollbac
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Flux Kontext delivers high-fidelity image generation with fine control over style and composition. Choose Pro for balanced quality and speed, or Max for top-tier fidelity—both from a single text prompt. Produce photorealistic or artistic visuals for concept art, social content, and design mockups. Use Flux Kontext on FuseAITools to find the right balance for every project.',
+    intro: 'Flux is Black Forest Labs\' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.',
     features: [
       { name: 'Generate', path: '/home/flux-kontext/generate', description: 'Pro or Max: single-prompt photorealistic or artistic images with style, composition, and lighting control.' }
     ],
@@ -334,7 +334,7 @@ Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techni
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Nano Banana is a lightweight, fast image model: text-to-image for quick ideation, image-to-image for style transfer and edits, and a Pro tier for higher fidelity and control. Built for rapid prototyping, social graphics, and workflows where speed and cost matter without sacrificing quality. Use Nano Banana on FuseAITools to ship visuals fast.',
+    intro: 'Meet Nano Banana, Google\'s Gemini Flash Image model, now available via Fuse AI. Built for developers, it combines lightning-fast speed with Pro-level quality, accurate text rendering, strong character consistency, and scalable image generation and editing workflows.',
     features: [
       { name: 'Text to Image', path: '/home/nano-banana/generate', description: 'Sub-20s generation; social sizes (1080×1080, 1080×1920), web and 16:9; style and mood presets.' },
       { name: 'Image to Image', path: '/home/nano-banana/edit', description: 'Style and theme transfer, detail polish, natural-language edit; batch style unification.' },
@@ -442,7 +442,7 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedream delivers precision and flexibility in image generation: 1.5 Lite for text-to-image and 2.5 Lite for image-to-image. With full control over aspect ratio (1:1 to 21:9) and quality (Basic 2K or High 3K), plus support for long prompts up to 2996 characters, it\'s the ideal tool for stickers, lighting edits, style transfer, and creative iteration. Use Seedream on FuseAITools to bring your ideas to life with professional-grade output.',
+    intro: 'Seedream is a unified multimodal image generation model by ByteDance, designed for multimodal reasoning, deep understanding, and controllable visual creation. It supports text-to-image and image editing workflows with improved consistency and real-time knowledge integration.',
     features: [
       { name: '1.5 Lite Text to Image', path: '/home/seedream/1-5-lite-text-to-image', description: 'Generate images from text descriptions with aspect ratio options from 1:1 to 21:9. Choose Basic (2K) or High (3K) quality. Prompt length up to 2995 characters.' },
       { name: '2.5 Lite Image to Image', path: '/home/seedream/2-5-lite-image-to-image', description: 'Transform existing images via text instructions—adjust lighting, apply style transfer, or refine details. Upload one or more images (JPEG, PNG, WebP; max 10MB each), set aspect ratio and quality, and guide the result with natural language prompts up to 2996 characters.' }
@@ -547,7 +547,7 @@ Best for: Designers, marketers, educators, content creators, and anyone needing 
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Qwen image models deliver comprehensive creative control across text-to-image, image-to-image, image editing, and Z-Image workflows. Fine-tune every aspect of generation—size, inference steps, guidance scale, seed, acceleration, and safety—with generous prompt limits up to 5000 characters. Whether you need rapid iteration or precise refinement, Qwen on FuseAITools adapts to your vision.',
+    intro: 'The Qwen Image empowers creators, developers, and businesses to generate and edit photorealistic images effortlessly. Whether you\'re crafting intricate designs or refining existing visuals, this powerful Qwen integrates seamlessly into your workflow, delivering multilingual text rendering and advanced editing capabilities that rival top models.',
     features: [
       { name: 'Text to Image', path: '/home/qwen/text-to-image', description: 'Generate from text prompts up to 5000 characters. Control image size (square, portrait, landscape), inference steps (2–250), guidance scale (0–20), seed, output format (PNG/JPEG), negative prompts, and acceleration (none/regular/high). Safety checker included.' },
       { name: 'Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with a text prompt. Set denoising strength (0–1) to balance between original and new content. Full parameter control: steps, guidance, seed, negative prompt, acceleration, output format.' },
@@ -990,7 +990,7 @@ Technical quality: Strong frame-to-frame coherence, physics-aware motion, rich t
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'OpenAI Sora delivers professional-grade text-to-video and image-to-video generation. Pro tiers support higher fidelity and longer clips; the platform also includes a watermark remover and Pro Storyboard for planning shots and sequences. Use Sora on FuseAITools for ads, concept reels, narrative and commercial video—all in one place.',
+    intro: 'Sora is OpenAI\'s AI video generation model, supporting both text-to-video and image-to-video. It delivers realistic motion, physics consistency, with improved control over style, scene, and aspect ratio—ideal for creative apps and social media content.',
     features: [
       { name: 'Text to Video', path: '/home/sora/text-to-video', description: 'Create video from natural language with deep scene understanding, physics, timing, and style control.' },
       { name: 'Image to Video', path: '/home/sora/image-to-video', description: 'Animate static images while preserving composition, style, and detail.' },
@@ -1055,7 +1055,7 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Wan brings AI video generation to your fingertips—transform text into video, breathe life into static images, or reimagine existing footage with natural language prompts. With support for Chinese and English, flexible duration (5–15 seconds), resolution options (720p/1080p), and multi-shot composition control, Wan empowers you to create engaging video content for ads, social media, and creative projects. All on FuseAITools.',
+    intro: 'Wan is Alibaba\'s AI video model, offering affordable multi-shot 1080p generation with stable characters and synchronized native audio. Through the Wan—including T2V, I2V, and reference-guided modes—you can create up to 15-second cinematic videos with improved motion logic, consistent visuals, and production-ready quality.',
     features: [
       { name: 'Text to Video', path: '/home/wan/text-to-video', description: 'Generate video directly from text prompts. Supports Chinese and English, 1–5000 characters. Choose duration (5, 10, or 15 seconds), resolution (720p or 1080p), and shot composition (single continuous shot or multiple shots with transitions).' },
       { name: 'Image to Video', path: '/home/wan/image-to-video', description: 'Animate static images with text guidance. Provide image URLs (min 256×256px; JPEG, PNG, WebP; max 10MB), add a prompt describing the motion or scene, and set duration, resolution, and multi-shot style. Perfect for bringing illustrations, product shots, or concept art to life.' },
@@ -1193,7 +1193,7 @@ Best for: Social media managers, marketers, content creators, educators, adverti
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedance delivers AI video generation with options for every need—from lightweight, rapid creation to professional-grade quality. Choose between Lite and Pro tiers for text-to-video and image-to-video workflows, with full control over aspect ratio (16:9 to 9:21), resolution (480p/720p/1080p), duration (5s/10s), camera movement, and seed for reproducibility. Whether you need speed or cinematic fidelity, Seedance on FuseAITools has you covered.',
+    intro: 'Seedance is a multimodal AI video model by ByteDance that generates consistent, cinematic videos with strong multi-shot consistency and native audio using text, image, video, and audio references.',
     features: [
       { name: 'v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Fast, efficient text-to-video generation. Choose aspect ratios from 16:9 to 9:21, resolution up to 1080p, duration 5 or 10 seconds. Fixed camera option, seed control, and safety checker included.' },
       { name: 'v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate images quickly with optional end image for controlled transitions. Same resolution, duration, and camera controls as Lite Text to Video. Ideal for rapid prototyping and social content.' },
