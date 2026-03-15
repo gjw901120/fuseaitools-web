@@ -57,8 +57,38 @@ declare module "nitropack/types" {
     '/api/image/flux-kontext/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/generate.post').default>>>>
     }
+    '/api/image/gpt-image/image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt-image/image-to-image.post').default>>>>
+    }
+    '/api/image/gpt-image/text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt-image/text-to-image.post').default>>>>
+    }
     '/api/image/gpt4o-image/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt4o-image/generate.post').default>>>>
+    }
+    '/api/image/ideogram/character-edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/character-edit.post').default>>>>
+    }
+    '/api/image/ideogram/character-remix': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/character-remix.post').default>>>>
+    }
+    '/api/image/ideogram/character': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/character.post').default>>>>
+    }
+    '/api/image/ideogram/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/generate.post').default>>>>
+    }
+    '/api/image/ideogram/v3-edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/v3-edit.post').default>>>>
+    }
+    '/api/image/ideogram/v3-reframe': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/v3-reframe.post').default>>>>
+    }
+    '/api/image/ideogram/v3-remix': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/v3-remix.post').default>>>>
+    }
+    '/api/image/ideogram/v3-text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/v3-text-to-image.post').default>>>>
     }
     '/api/image/nano-banana-pro/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana-pro/generate.post').default>>>>
@@ -158,6 +188,36 @@ declare module "nitropack/types" {
     }
     '/api/user/send-email-code': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/send-email-code.post').default>>>>
+    }
+    '/api/video/hailuo/image-to-video-pro': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/hailuo/image-to-video-pro.post').default>>>>
+    }
+    '/api/video/hailuo/image-to-video-standard': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/hailuo/image-to-video-standard.post').default>>>>
+    }
+    '/api/video/kling/2-6-image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/2-6-image-to-video.post').default>>>>
+    }
+    '/api/video/kling/2-6-motion-control': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/2-6-motion-control.post').default>>>>
+    }
+    '/api/video/kling/2-6-text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/2-6-text-to-video.post').default>>>>
+    }
+    '/api/video/kling/3-0-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/3-0-video.post').default>>>>
+    }
+    '/api/video/kling/ai-avatar-pro': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/ai-avatar-pro.post').default>>>>
+    }
+    '/api/video/kling/ai-avatar-standard': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/ai-avatar-standard.post').default>>>>
+    }
+    '/api/video/kling/v2-5-turbo-image-to-video-pro': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/v2-5-turbo-image-to-video-pro.post').default>>>>
+    }
+    '/api/video/kling/v2-5-turbo-text-to-video-pro': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/v2-5-turbo-text-to-video-pro.post').default>>>>
     }
     '/api/video/luma/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/luma/generate.post').default>>>>

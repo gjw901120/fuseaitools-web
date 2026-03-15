@@ -1,0 +1,2 @@
+import style_0 from './pricing-styles-1.mjs-BHLCBb4y.js';
+export default [style_0]

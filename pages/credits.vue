@@ -304,6 +304,8 @@ const modelToPathMap = {
   },
   Midjourney: { default: '/home/midjourney/imagine' },
   'GPT 4o Image': { default: '/home/gpt-4o-image/generate' },
+  'GPT Image': { default: '/home/gpt-image/text-to-image' },
+  'Ideogram': { default: '/home/ideogram/v3-text-to-image' },
   'Flux Kontext': { default: '/home/flux-kontext/generate' },
   'Nano Banana': { default: '/home/nano-banana/generate' },
   Suno: { default: '/home/suno/generate' },
@@ -400,7 +402,7 @@ async function refundRecharge() {
     rechargeRefundAmount.value = data?.refundAmount ?? 0
     rechargeRefundModal.value = true
   } catch (e) {
-    showError(e?.message || 'Request failed')
+    if (!e?.__fromApi) showError(e?.message || 'Request failed')
   } finally {
     refundLoading.value = false
   }
@@ -415,7 +417,7 @@ async function confirmRechargeRefund() {
     rechargeRefundModal.value = false
     await fetchCredits(1)
   } catch (e) {
-    showError(e?.message || 'Request failed')
+    if (!e?.__fromApi) showError(e?.message || 'Request failed')
   } finally {
     rechargeRefundSubmitting.value = false
   }

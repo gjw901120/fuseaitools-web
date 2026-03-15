@@ -236,7 +236,7 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
@@ -246,7 +246,7 @@ const batchUploadUrl = useBatchUploadUrl()
 const gpt4oImagePriceText = computed(() => {
   const credits = getPrice('GPT_4o_image')
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 const formData = reactive({
@@ -453,7 +453,7 @@ const generateImage = async () => {
     generatedImages.value.unshift(...newImages)
   } catch (error) {
     console.error('Image generation failed:', error)
-    showError(error.message || 'Image generation failed, please try again')
+    if (!error?.__fromApi) showError(error.message || 'Image generation failed, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -469,7 +469,7 @@ const downloadImage = (image) => {
 const copyImageUrl = async (image) => {
   try {
     await navigator.clipboard.writeText(image.url)
-    alert('Image URL copied to clipboard')
+    showSuccess('Image URL copied to clipboard')
   } catch (error) {
     console.error('Copy failed:', error)
   }

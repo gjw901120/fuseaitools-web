@@ -1,0 +1,1 @@
+import{R as a}from"./DBjyR4jR.js";function e(){var t;const o=((t=a().public)==null?void 0:t.apiBase)||"";return typeof window<"u"&&o&&o.startsWith("http")?`${o.replace(/\/$/,"")}/common/batch-upload`:"/api/common/batch-upload"}export{e as u};

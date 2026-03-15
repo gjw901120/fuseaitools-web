@@ -375,7 +375,7 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
@@ -388,7 +388,7 @@ const fluxKontextPriceText = computed(() => {
   const modelKey = formData.model || 'flux-kontext-pro'
   const credits = getPrice(modelKey)
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 // 表单数据（与后端 DTO 对应）
@@ -631,8 +631,8 @@ const generateImage = async () => {
     }
     generatedImages.value.unshift(newImage)
   } catch (error) {
-    console.error('生成图像失败:', error)
-    showError(error.message || '生成图像失败，请重试')
+    console.error('Image generation failed:', error)
+    if (!error?.__fromApi) showError(error.message || 'Image generation failed, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -650,9 +650,9 @@ const downloadImage = (image) => {
 const copyImageUrl = async (image) => {
   try {
     await navigator.clipboard.writeText(image.url)
-    alert('图像URL已复制到剪贴板')
+    showSuccess('Image URL copied to clipboard')
   } catch (error) {
-    console.error('复制失败:', error)
+    console.error('Copy failed:', error)
   }
 }
 
@@ -997,7 +997,7 @@ const clearResults = () => {
 }
 
 .price-tag {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   opacity: 0.8;
   margin-left: 4px;

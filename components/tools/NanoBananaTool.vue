@@ -13,23 +13,18 @@
       </div>
     </div>
 
-    <!-- Function Selection Section -->
-    <div class="function-selection-section">
-      <div class="function-tabs">
+    <!-- Function Selection Section：样式与 Ideogram mode-tabs 一致 -->
+    <div class="mode-tabs-wrap">
+      <div class="mode-tabs">
         <div
           v-for="func in functionOptions"
           :key="func.id"
-          class="function-tab"
+          class="mode-tab"
           :class="{ active: activeTab === func.id }"
           @click="goToNanoBananaTab(func.id)"
         >
-          <div class="function-icon">
-            <i :class="func.icon"></i>
-          </div>
-          <div class="function-info">
-            <div class="function-name">{{ func.name }}</div>
-            <div class="function-description">{{ func.description }}</div>
-          </div>
+          <i :class="func.icon"></i>
+          <span>{{ func.description }}</span>
         </div>
       </div>
     </div>
@@ -553,7 +548,7 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
@@ -734,12 +729,12 @@ const batchUploadUrl = useBatchUploadUrl()
 const nanoBananaPriceText = computed(() => {
   const credits = getPrice('nano-banana')
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 const nanoBananaEditPriceText = computed(() => {
   const credits = getPrice('nano-banana-edit')
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 const nanoBananaProPriceText = computed(() => {
   const credits = getPrice('nano-banana-pro', {
@@ -751,7 +746,7 @@ const nanoBananaProPriceText = computed(() => {
     scene: 'generate'
   })
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 const getAuthToken = () => {
@@ -896,7 +891,7 @@ const generateImage = async () => {
     }
   } catch (error) {
     console.error('Failed to generate image:', error)
-    showError(error.message || 'Failed to generate image, please try again')
+    if (!error?.__fromApi) showError(error.message || 'Failed to generate image, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -943,7 +938,7 @@ const generateImageEdit = async () => {
     }
   } catch (error) {
     console.error('Failed to generate image:', error)
-    showError(error.message || 'Failed to generate image, please try again')
+    if (!error?.__fromApi) showError(error.message || 'Failed to generate image, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -959,7 +954,7 @@ const downloadImage = (image) => {
 const copyImageUrl = async (image) => {
   try {
     await navigator.clipboard.writeText(image.url)
-    alert('Image URL copied to clipboard')
+    showSuccess('Image URL copied to clipboard')
   } catch (error) {
     console.error('Failed to copy:', error)
   }
@@ -1009,7 +1004,7 @@ const generateImagePro = async () => {
     }
   } catch (error) {
     console.error('Failed to generate image:', error)
-    showError(error.message || 'Failed to generate image, please try again')
+    if (!error?.__fromApi) showError(error.message || 'Failed to generate image, please try again')
   } finally {
     isGenerating.value = false
   }
@@ -1038,6 +1033,7 @@ const clearResults = () => {
   justify-content: space-between;
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
 .header-left {
@@ -1080,124 +1076,51 @@ const clearResults = () => {
   line-height: 1.55;
 }
 
-/* Function Selection Section */
-.function-selection-section {
-  background: white;
+/* Function Selection：与 Ideogram mode-tabs 一致 */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
-  padding: 20px 30px;
+  margin-bottom: 20px;
 }
 
-.function-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.function-tab {
-  display: flex;
-  align-items: center;
-  padding: 6px 9px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 6px;
+.mode-tab {
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  height: 63px;
-}
-
-.function-tab:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.function-tab.active {
-  background: #667eea;
-  border-color: #667eea;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.function-icon {
-  width: 30px;
-  height: 30px;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  margin-right: 6px;
-  flex-shrink: 0;
+  gap: 6px;
 }
 
-.function-tab.active .function-icon {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.function-icon i {
-  font-size: 15px;
+.mode-tab:hover {
+  border-color: #667eea;
   color: #667eea;
 }
 
-.function-tab.active .function-icon i {
-  color: white;
-}
-
-.function-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.function-name {
-  font-size: 13.5px;
-  font-weight: 600;
-  margin-bottom: 1px;
-  color: #1e293b;
-}
-
-.function-tab.active .function-name {
-  color: white;
-}
-
-.function-description {
-  font-size: 10.5px;
-  color: #64748b;
-  line-height: 1.1;
-}
-
-.function-tab.active .function-description {
-  color: rgba(255, 255, 255, 0.9);
+.mode-tab.active {
+  background: #667eea;
+  color: #fff;
+  border-color: #667eea;
 }
 
 /* Function Selection Section Responsive */
 @media (max-width: 768px) {
-  .function-tabs {
-    grid-template-columns: repeat(3, 1fr);
+  .mode-tabs {
+    gap: 6px;
   }
-  
-  .function-tab {
-    height: auto;
-    padding: 4.5px 6px;
-  }
-  
-  .function-icon {
-    width: 27px;
-    height: 27px;
-    margin-right: 4.5px;
-  }
-  
-  .function-icon i {
-    font-size: 12px;
-  }
-  
-  .function-name {
-    font-size: 12px;
-  }
-  
-  .function-description {
-    font-size: 9px;
+  .mode-tab {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
 
@@ -1406,7 +1329,7 @@ const clearResults = () => {
 }
 
 .price-tag {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   opacity: 0.8;
   margin-left: 4px;

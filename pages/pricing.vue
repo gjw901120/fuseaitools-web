@@ -447,7 +447,7 @@ async function createStripeSession(type, priceId) {
     }
     showError('Invalid response: missing checkout URL')
   } catch (e) {
-    showError(e?.message || 'Failed to start checkout')
+    if (!e?.__fromApi) showError(e?.message || 'Failed to start checkout')
   } finally {
     stripeLoading.value = false
   }

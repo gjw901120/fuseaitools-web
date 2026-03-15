@@ -607,7 +607,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "4ca90916-97b2-41da-9d0e-e84ceb330384",
+    "buildId": "e0ef7750-8ac5-4404-a137-cbba2609aacc",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -773,7 +773,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "apiBase": "https://www.fuseaitools.com/api"
+    "apiBase": "https://api.fuseaitools.com/api"
   }
 };
 const envOptions = {
@@ -1178,9 +1178,16 @@ const _lazy_Vz7ILQ = () => import('../routes/api/common/models/price.get.mjs');
 const _lazy_eQ36Mn = () => import('../routes/api/common/models/tree.get.mjs');
 const _lazy_67lOnD = () => import('../routes/api/image/flux-kontext/generate.post.mjs');
 const _lazy_eKX6sF = () => import('../routes/api/image/gpt4o-image/generate.post.mjs');
+const _lazy_XK6oKJ = () => import('../routes/api/image/ideogram/generate.post.mjs');
 const _lazy_qqfBr2 = () => import('../routes/api/image/nano-banana-pro/generate.post.mjs');
 const _lazy_FTuawy = () => import('../routes/api/image/nano-banana/edit.post.mjs');
 const _lazy_guMvLE = () => import('../routes/api/image/nano-banana/generate.post.mjs');
+const _lazy_WLaKBl = () => import('../routes/api/image/qwen/image-edit.post.mjs');
+const _lazy_qIqT3J = () => import('../routes/api/image/qwen/image-to-image.post.mjs');
+const _lazy_1eEZQf = () => import('../routes/api/image/qwen/text-to-image.post.mjs');
+const _lazy_ihh8BE = () => import('../routes/api/image/qwen/z-image.post.mjs');
+const _lazy_N5QhNS = () => import('../routes/api/image/seedream/lite-image-to-image.post.mjs');
+const _lazy_gIVXeQ = () => import('../routes/api/image/seedream/lite-text-to-image.post.mjs');
 const _lazy_0wwS49 = () => import('../routes/api/midjourney/blend.post.mjs');
 const _lazy_cv5vHn = () => import('../routes/api/midjourney/describe.post.mjs');
 const _lazy_3ymEXI = () => import('../routes/api/midjourney/imagine.post.mjs');
@@ -1188,23 +1195,51 @@ const _lazy_U1Y3Se = () => import('../routes/api/midjourney/swap-face.post.mjs')
 const _lazy_S4BDJq = () => import('../routes/api/midjourney/upscale.post.mjs');
 const _lazy_Y1HcS7 = () => import('../routes/api/midjourney/vary.post.mjs');
 const _lazy_MTnLsG = () => import('../routes/api/news/_slug_.get.mjs');
+const _lazy_715mBH = () => import('../routes/api/news/detail.get.mjs');
 const _lazy_Rqaiw_ = () => import('../routes/api/index.get.mjs');
+const _lazy_Jqsu_t = () => import('../routes/api/news/list.get.mjs');
 const _lazy_8_gnv6 = () => import('../routes/api/records/chat-detail.get.mjs');
 const _lazy_io_H72 = () => import('../routes/api/records/detail.get.mjs');
 const _lazy_S_bw0Y = () => import('../routes/api/records/extend-list.get.mjs');
 const _lazy_EU3ogi = () => import('../routes/api/records/list.get.mjs');
+const _lazy_SUC6Fg = () => import('../routes/api/refund/cancel-subscription.post.mjs');
+const _lazy_4yVrOh = () => import('../routes/api/refund/refund-recharge-detail.get.mjs');
+const _lazy_20VHYv = () => import('../routes/api/refund/refund-recharge.post.mjs');
+const _lazy_KDkYe7 = () => import('../routes/api/refund/refund-subscription-detail.get.mjs');
+const _lazy_f9UqaQ = () => import('../routes/api/refund/refund-subscription.post.mjs');
+const _lazy_Up3Lrr = () => import('../routes/api/stripe/create-session.post.mjs');
+const _lazy_J0ejHy = () => import('../routes/api/user/auth/refresh-timezone.post.mjs');
+const _lazy_9KA_u2 = () => import('../routes/api/user/credits-detail.get.mjs');
 const _lazy_FeFrNq = () => import('../routes/api/user/login-by-email.post.mjs');
 const _lazy_qjMUPF = () => import('../routes/api/user/send-email-code.post.mjs');
+const _lazy_qOz6pW = () => import('../routes/api/video/hailuo/image-to-video-pro.post.mjs');
+const _lazy_jTz2Ya = () => import('../routes/api/video/hailuo/image-to-video-standard.post.mjs');
+const _lazy_wmPuCb = () => import('../routes/api/video/kling/2-6-image-to-video.post.mjs');
+const _lazy_tPVUKN = () => import('../routes/api/video/kling/2-6-motion-control.post.mjs');
+const _lazy_rNnSXt = () => import('../routes/api/video/kling/2-6-text-to-video.post.mjs');
+const _lazy_ku4ezm = () => import('../routes/api/video/kling/3-0-video.post.mjs');
+const _lazy_DpYPJk = () => import('../routes/api/video/kling/ai-avatar-pro.post.mjs');
+const _lazy_ogCNsr = () => import('../routes/api/video/kling/ai-avatar-standard.post.mjs');
+const _lazy_eEbYT_ = () => import('../routes/api/video/kling/v2-5-turbo-image-to-video-pro.post.mjs');
+const _lazy_3igsmN = () => import('../routes/api/video/kling/v2-5-turbo-text-to-video-pro.post.mjs');
 const _lazy_jQelEb = () => import('../routes/api/video/luma/generate.post.mjs');
 const _lazy_Aq6nFl = () => import('../routes/api/video/runway/aleph.post.mjs');
 const _lazy_TashgN = () => import('../routes/api/video/runway/extend.post.mjs');
 const _lazy_p973yV = () => import('../routes/api/video/runway/generate.post.mjs');
+const _lazy_sKJKjy = () => import('../routes/api/video/seedance/lite-image-to-video.post.mjs');
+const _lazy_QyBpAM = () => import('../routes/api/video/seedance/lite-text-to-video.post.mjs');
+const _lazy_gXE561 = () => import('../routes/api/video/seedance/pro-fast-image-to-video.post.mjs');
+const _lazy_cH5mVr = () => import('../routes/api/video/seedance/pro-image-to-video.post.mjs');
+const _lazy_FAqGLf = () => import('../routes/api/video/seedance/pro-text-to-video.post.mjs');
 const _lazy_VnAtz4 = () => import('../routes/api/video/sora-pro/generate.post.mjs');
 const _lazy_eP3eSa = () => import('../routes/api/video/sora-pro/storyboard.post.mjs');
 const _lazy_zvAFYZ = () => import('../routes/api/video/sora/generate.post.mjs');
 const _lazy_PgSmd9 = () => import('../routes/api/video/sora/watermark-remover.post.mjs');
 const _lazy_5PmXRt = () => import('../routes/api/video/veo/extend.post.mjs');
 const _lazy_nwJeW1 = () => import('../routes/api/video/veo/generate.post.mjs');
+const _lazy_b90URI = () => import('../routes/api/video/wan/image-to-video.post.mjs');
+const _lazy_47YsKd = () => import('../routes/api/video/wan/text-to-video.post.mjs');
+const _lazy_jTvRhe = () => import('../routes/api/video/wan/video-to-video.post.mjs');
 const _lazy_38TWWp = () => import('../routes/sitemap.xml.get.mjs');
 const _lazy_T022gR = () => import('./renderer.mjs').then(function (n) { return n.r; });
 
@@ -1229,9 +1264,16 @@ const handlers = [
   { route: '/api/common/models/tree', handler: _lazy_eQ36Mn, lazy: true, middleware: false, method: "get" },
   { route: '/api/image/flux-kontext/generate', handler: _lazy_67lOnD, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt4o-image/generate', handler: _lazy_eKX6sF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/generate', handler: _lazy_XK6oKJ, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana-pro/generate', handler: _lazy_qqfBr2, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana/edit', handler: _lazy_FTuawy, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana/generate', handler: _lazy_guMvLE, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/image-edit', handler: _lazy_WLaKBl, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/image-to-image', handler: _lazy_qIqT3J, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/text-to-image', handler: _lazy_1eEZQf, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/z-image', handler: _lazy_ihh8BE, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/seedream/lite-image-to-image', handler: _lazy_N5QhNS, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/seedream/lite-text-to-image', handler: _lazy_gIVXeQ, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/blend', handler: _lazy_0wwS49, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/describe', handler: _lazy_cv5vHn, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/imagine', handler: _lazy_3ymEXI, lazy: true, middleware: false, method: "post" },
@@ -1239,23 +1281,51 @@ const handlers = [
   { route: '/api/midjourney/upscale', handler: _lazy_S4BDJq, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/vary', handler: _lazy_Y1HcS7, lazy: true, middleware: false, method: "post" },
   { route: '/api/news/:slug', handler: _lazy_MTnLsG, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news/detail', handler: _lazy_715mBH, lazy: true, middleware: false, method: "get" },
   { route: '/api/news', handler: _lazy_Rqaiw_, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news/list', handler: _lazy_Jqsu_t, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/chat-detail', handler: _lazy_8_gnv6, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/detail', handler: _lazy_io_H72, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/extend-list', handler: _lazy_S_bw0Y, lazy: true, middleware: false, method: "get" },
   { route: '/api/records/list', handler: _lazy_EU3ogi, lazy: true, middleware: false, method: "get" },
+  { route: '/api/refund/cancel-subscription', handler: _lazy_SUC6Fg, lazy: true, middleware: false, method: "post" },
+  { route: '/api/refund/refund-recharge-detail', handler: _lazy_4yVrOh, lazy: true, middleware: false, method: "get" },
+  { route: '/api/refund/refund-recharge', handler: _lazy_20VHYv, lazy: true, middleware: false, method: "post" },
+  { route: '/api/refund/refund-subscription-detail', handler: _lazy_KDkYe7, lazy: true, middleware: false, method: "get" },
+  { route: '/api/refund/refund-subscription', handler: _lazy_f9UqaQ, lazy: true, middleware: false, method: "post" },
+  { route: '/api/stripe/create-session', handler: _lazy_Up3Lrr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/auth/refresh-timezone', handler: _lazy_J0ejHy, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/credits-detail', handler: _lazy_9KA_u2, lazy: true, middleware: false, method: "get" },
   { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/hailuo/image-to-video-pro', handler: _lazy_qOz6pW, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/hailuo/image-to-video-standard', handler: _lazy_jTz2Ya, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/2-6-image-to-video', handler: _lazy_wmPuCb, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/2-6-motion-control', handler: _lazy_tPVUKN, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/2-6-text-to-video', handler: _lazy_rNnSXt, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/3-0-video', handler: _lazy_ku4ezm, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/ai-avatar-pro', handler: _lazy_DpYPJk, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/ai-avatar-standard', handler: _lazy_ogCNsr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/v2-5-turbo-image-to-video-pro', handler: _lazy_eEbYT_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/v2-5-turbo-text-to-video-pro', handler: _lazy_3igsmN, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/luma/generate', handler: _lazy_jQelEb, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/aleph', handler: _lazy_Aq6nFl, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/extend', handler: _lazy_TashgN, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/generate', handler: _lazy_p973yV, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/lite-image-to-video', handler: _lazy_sKJKjy, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/lite-text-to-video', handler: _lazy_QyBpAM, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/pro-fast-image-to-video', handler: _lazy_gXE561, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/pro-image-to-video', handler: _lazy_cH5mVr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/pro-text-to-video', handler: _lazy_FAqGLf, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora-pro/generate', handler: _lazy_VnAtz4, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora-pro/storyboard', handler: _lazy_eP3eSa, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora/generate', handler: _lazy_zvAFYZ, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora/watermark-remover', handler: _lazy_PgSmd9, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/veo/extend', handler: _lazy_5PmXRt, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/veo/generate', handler: _lazy_nwJeW1, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/image-to-video', handler: _lazy_b90URI, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/text-to-video', handler: _lazy_47YsKd, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/video-to-video', handler: _lazy_jTvRhe, lazy: true, middleware: false, method: "post" },
   { route: '/sitemap.xml', handler: _lazy_38TWWp, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined }

@@ -37,6 +37,10 @@ interface _GlobalComponents {
     'ToolsElevenLabsTool': typeof import("../components/tools/ElevenLabsTool.vue")['default']
     'ToolsFluxKontextTool': typeof import("../components/tools/FluxKontextTool.vue")['default']
     'ToolsGPT4oImageTool': typeof import("../components/tools/GPT4oImageTool.vue")['default']
+    'ToolsGPTImageTool': typeof import("../components/tools/GPTImageTool.vue")['default']
+    'ToolsHailuoTool': typeof import("../components/tools/HailuoTool.vue")['default']
+    'ToolsIdeogramTool': typeof import("../components/tools/IdeogramTool.vue")['default']
+    'ToolsKlingTool': typeof import("../components/tools/KlingTool.vue")['default']
     'ToolsLumaTool': typeof import("../components/tools/LumaTool.vue")['default']
     'ToolsMidjourneyTool': typeof import("../components/tools/MidjourneyTool.vue")['default']
     'ToolsNanoBananaTool': typeof import("../components/tools/NanoBananaTool.vue")['default']
@@ -99,6 +103,10 @@ interface _GlobalComponents {
     'LazyToolsElevenLabsTool': LazyComponent<typeof import("../components/tools/ElevenLabsTool.vue")['default']>
     'LazyToolsFluxKontextTool': LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
     'LazyToolsGPT4oImageTool': LazyComponent<typeof import("../components/tools/GPT4oImageTool.vue")['default']>
+    'LazyToolsGPTImageTool': LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
+    'LazyToolsHailuoTool': LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
+    'LazyToolsIdeogramTool': LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
+    'LazyToolsKlingTool': LazyComponent<typeof import("../components/tools/KlingTool.vue")['default']>
     'LazyToolsLumaTool': LazyComponent<typeof import("../components/tools/LumaTool.vue")['default']>
     'LazyToolsMidjourneyTool': LazyComponent<typeof import("../components/tools/MidjourneyTool.vue")['default']>
     'LazyToolsNanoBananaTool': LazyComponent<typeof import("../components/tools/NanoBananaTool.vue")['default']>
@@ -167,6 +175,10 @@ export const VerifyCodeModal: typeof import("../components/VerifyCodeModal.vue")
 export const ToolsElevenLabsTool: typeof import("../components/tools/ElevenLabsTool.vue")['default']
 export const ToolsFluxKontextTool: typeof import("../components/tools/FluxKontextTool.vue")['default']
 export const ToolsGPT4oImageTool: typeof import("../components/tools/GPT4oImageTool.vue")['default']
+export const ToolsGPTImageTool: typeof import("../components/tools/GPTImageTool.vue")['default']
+export const ToolsHailuoTool: typeof import("../components/tools/HailuoTool.vue")['default']
+export const ToolsIdeogramTool: typeof import("../components/tools/IdeogramTool.vue")['default']
+export const ToolsKlingTool: typeof import("../components/tools/KlingTool.vue")['default']
 export const ToolsLumaTool: typeof import("../components/tools/LumaTool.vue")['default']
 export const ToolsMidjourneyTool: typeof import("../components/tools/MidjourneyTool.vue")['default']
 export const ToolsNanoBananaTool: typeof import("../components/tools/NanoBananaTool.vue")['default']
@@ -229,6 +241,10 @@ export const LazyVerifyCodeModal: LazyComponent<typeof import("../components/Ver
 export const LazyToolsElevenLabsTool: LazyComponent<typeof import("../components/tools/ElevenLabsTool.vue")['default']>
 export const LazyToolsFluxKontextTool: LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
 export const LazyToolsGPT4oImageTool: LazyComponent<typeof import("../components/tools/GPT4oImageTool.vue")['default']>
+export const LazyToolsGPTImageTool: LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
+export const LazyToolsHailuoTool: LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
+export const LazyToolsIdeogramTool: LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
+export const LazyToolsKlingTool: LazyComponent<typeof import("../components/tools/KlingTool.vue")['default']>
 export const LazyToolsLumaTool: LazyComponent<typeof import("../components/tools/LumaTool.vue")['default']>
 export const LazyToolsMidjourneyTool: LazyComponent<typeof import("../components/tools/MidjourneyTool.vue")['default']>
 export const LazyToolsNanoBananaTool: LazyComponent<typeof import("../components/tools/NanoBananaTool.vue")['default']>

@@ -9,6 +9,8 @@ const OVERVIEW_KEY_TO_LOGO = {
   claude: '/tools-logo/Claude.png',
   gemini: '/tools-logo/Gemini.png',
   'gpt-4o-image': '/tools-logo/ChatGPT4OImage.png',
+  'gpt-image': '/tools-logo/GPTImage.png',
+  'ideogram': '/tools-logo/Ideogram.png',
   'flux-kontext': '/tools-logo/FluxKontext.png',
   'nano-banana': '/tools-logo/NanoBanana.png',
   midjourney: '/tools-logo/Midjourney.png',
@@ -21,7 +23,9 @@ const OVERVIEW_KEY_TO_LOGO = {
   luma: '/tools-logo/Luma.png',
   sora: '/tools-logo/sora.png',
   wan: '/tools-logo/Wan.png',
-  seedance: '/tools-logo/Seedance.png'
+  seedance: '/tools-logo/Seedance.png',
+  hailuo: '/tools-logo/Hailuo.png',
+  kling: '/tools-logo/Kling.png'
 }
 
 /**

@@ -81,6 +81,7 @@
 
 <script setup>
 import { ref, computed, onUnmounted } from 'vue'
+const { showError } = useToast()
 
 const props = defineProps({
   inputId: {
@@ -153,13 +154,13 @@ const handleFileChange = (event) => {
 const validateAndSetFile = async (file) => {
   // 检查文件类型
   if (!file.type.startsWith('audio/')) {
-    alert('请选择音频文件')
+    showError('Please select an audio file')
     return
   }
   
   // 检查文件大小
   if (file.size > props.maxFileSize) {
-    alert(`文件大小不能超过 ${formatFileSize(props.maxFileSize)}`)
+    showError(`File size must not exceed ${formatFileSize(props.maxFileSize)}`)
     return
   }
   
@@ -168,11 +169,11 @@ const validateAndSetFile = async (file) => {
     try {
       const audioDuration = await getAudioDuration(file)
       if (audioDuration > props.maxDuration) {
-        alert(`音频时长不能超过 ${props.maxDuration} 秒`)
+        showError(`Audio duration must not exceed ${props.maxDuration} seconds`)
         return
       }
     } catch (error) {
-      console.warn('无法获取音频时长:', error)
+      console.warn('Could not get audio duration:', error)
     }
   }
   

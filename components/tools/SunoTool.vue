@@ -11,26 +11,18 @@
       </div>
     </div>
 
-    <!-- 功能选择区域 -->
-    <div class="function-selection-section">
-      <div class="function-tabs">
-        <div 
-          v-for="func in functionOptions" 
+    <!-- 功能选择区域：与 Ideogram / Nano Banana / Midjourney / Qwen 统一的 tabs 样式 -->
+    <div class="mode-tabs-wrap">
+      <div class="mode-tabs">
+        <div
+          v-for="func in functionOptions"
           :key="func.id"
-          class="function-tab"
+          class="mode-tab"
           :class="{ active: formData.function === func.id }"
           @click="switchFunction(func.id)"
         >
-          <div class="function-icon">
-            <i :class="func.icon"></i>
-          </div>
-          <div class="function-info">
-            <div class="function-name">{{ func.name }}</div>
-            <div class="function-description">{{ func.description }}</div>
-          </div>
-          <div class="function-info-icon" :title="func.detailDescription">
-            <i class="fas fa-info-circle"></i>
-          </div>
+          <i :class="func.icon"></i>
+          <span>{{ func.name }}</span>
         </div>
       </div>
     </div>
@@ -726,7 +718,7 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const { post, get } = useApi()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
@@ -748,7 +740,7 @@ const sunoPriceText = computed(() => {
   if (!key) return ''
   const credits = getPrice(key)
   const str = formatCredits(credits)
-  return str ? ` (${str})` : ''
+  return str ? ` · ${str} credits` : ''
 })
 
 const getAuthToken = () => {
@@ -1431,7 +1423,7 @@ const generateMusic = async () => {
     }
   } catch (error) {
     console.error('Failed to generate music:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -1536,165 +1528,57 @@ const shareResult = () => {
     })
   } else {
     navigator.clipboard.writeText(data.audioUrl)
-    alert('Music link copied to clipboard')
+    showSuccess('Music link copied to clipboard')
   }
 }
 </script>
 
 <style scoped>
-/* 功能选择区域样式 */
-.function-selection-section {
-  background: white;
+/* 功能选择区域：统一 mode-tabs 样式，主色保持 #667eea */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
-  padding: 20px 30px;
+  margin-bottom: 20px;
 }
 
-.function-tabs {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.function-tab {
-  display: flex;
-  align-items: center;
-  padding: 6px 9px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  height: 63px;
-}
-
-.function-tab:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.function-tab.active {
-  background: #667eea;
-  border-color: #667eea;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.function-icon {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  margin-right: 6px;
-  flex-shrink: 0;
-}
-
-.function-tab.active .function-icon {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.function-icon i {
-  font-size: 15px;
-  color: #667eea;
-}
-
-.function-tab.active .function-icon i {
-  color: white;
-}
-
-.function-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.function-name {
-  font-size: 13.5px;
-  font-weight: 600;
-  margin-bottom: 1px;
-  color: #1e293b;
-}
-
-.function-tab.active .function-name {
-  color: white;
-}
-
-.function-description {
-  font-size: 10.5px;
+.mode-tab {
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
   color: #64748b;
-  line-height: 1.1;
-}
-
-.function-tab.active .function-description {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.function-info-icon {
-  width: 18px;
-  height: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  flex-shrink: 0;
+  gap: 6px;
+  transition: all 0.2s ease;
 }
 
-.function-tab.active .function-info-icon {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.function-info-icon:hover {
+.mode-tab:hover {
+  border-color: #667eea;
   color: #667eea;
 }
 
-.function-tab.active .function-info-icon:hover {
-  color: white;
+.mode-tab.active {
+  background: #667eea;
+  color: #fff;
+  border-color: #667eea;
 }
 
-/* 响应式设计 */
-@media (max-width: 1200px) {
-  .function-tabs {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.mode-tab i {
+  font-size: 1em;
 }
 
-@media (max-width: 900px) {
-  .function-tabs {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .function-tabs {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .function-tab {
-    height: auto;
-    padding: 4.5px 6px;
-  }
-  
-  .function-icon {
-    width: 27px;
-    height: 27px;
-    margin-right: 4.5px;
-  }
-  
-  .function-icon i {
-    font-size: 12px;
-  }
-  
-  .function-name {
-    font-size: 12px;
-  }
-  
-  .function-description {
-    font-size: 9px;
-  }
+.mode-tab span {
+  font-weight: 500;
 }
 
 .suno-tool {
@@ -1711,8 +1595,10 @@ const shareResult = () => {
 .tool-header {
   display: flex;
   align-items: center;
+  gap: 16px;
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
 .tool-avatar {
@@ -2324,7 +2210,7 @@ const shareResult = () => {
   .suno-tool {
     padding: 16px;
   }
-  
+
   .tool-header {
     flex-direction: column;
     align-items: flex-start;
@@ -2334,32 +2220,14 @@ const shareResult = () => {
   .config-header {
     padding: 0 0 16px 0;
   }
-  
-  .function-tabs {
-    grid-template-columns: repeat(2, 1fr);
+
+  .mode-tabs {
+    gap: 6px;
   }
-  
-  .function-tab {
-    height: auto;
-    padding: 4.5px 6px;
-  }
-  
-  .function-icon {
-    width: 27px;
-    height: 27px;
-    margin-right: 4.5px;
-  }
-  
-  .function-icon i {
-    font-size: 12px;
-  }
-  
-  .function-name {
-    font-size: 12px;
-  }
-  
-  .function-description {
-    font-size: 9px;
+
+  .mode-tab {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
 </style>

@@ -221,6 +221,119 @@ Tool use: Search—real-time web, fact-check, multi-language. Maps—location, l
       }
     ]
   },
+  'gpt-image': {
+    title: 'GPT-4o Image',
+    category: 'Image',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'GPT-4o Image is OpenAI\'s latest native multimodal image generation model. By deeply integrating text and visual understanding, it enables a complete workflow from concept generation to professional-grade refinement within a single chat flow, excelling in instruction following, text rendering, and style consistency.',
+    features: [
+      { name: 'Text to Image', path: '/home/gpt-image/text-to-image', description: 'Generate images from complex text descriptions or reference images, with precise control over aspect ratio and quality.' },
+      { name: 'Image to Image', path: '/home/gpt-image/image-to-image', description: 'Add, remove, or modify elements using natural language; supports style transfer based on reference images and parametric fine-tuning.' }
+    ],
+    sections: [
+      {
+        title: 'Platform Strengths & Technical Highlights',
+        content: `Deep Understanding & Precise Control
+
+Unified Multimodal Architecture: Deeply aligns vision and language to parse vague intent and translate abstract concepts (e.g., "the loneliness of cyberpunk") into precise visual output.
+
+Professional-Grade Visual Control: Enables fine adjustments to composition (viewpoint, focal length), color (saturation, temperature), lighting (direction, intensity), and style (brushstroke, texture).
+
+Real-Time Feedback Optimization: Iteratively refines through dialogue, with built-in aesthetic evaluation and conflict detection to ensure every modification meets user expectations.
+
+Seamless Workflow
+
+Zero-Switch Experience: Generate, edit, and optimize within a unified conversation interface, eliminating the need to switch between multiple traditional software windows.
+
+In-Context Memory: Maintains style and context consistency throughout the chat history, supporting version rollback and the combinatorial optimization of key elements.`
+      },
+      {
+        title: 'Typical Use Cases',
+        content: `Concept Development: Concept art for games/film, storyboards, mood boards, brand exploration, product design.
+
+Commercial Creation: Social media content, advertising concepts, product-in-scene composites, presentation visuals.
+
+Design & Prototyping: High-fidelity UI/UX mockups, packaging design, interior/exterior spatial visualization.
+
+Education & Communication: Scientific visualizations, instructional diagrams, infographics for complex reports.`
+      },
+      {
+        title: 'Advanced Tips',
+        content: `Effective Prompt Structure: [Subject] + [Setting] + [Mood] + [Technical Parameters] + [Style Reference]
+
+Precise Instructions: Use quantifiable descriptions (e.g., "increase saturation by 30%," "warmer tones," "follow the rule of thirds") for accurate results.
+
+Style Fusion: Blend different artistic genres, fuse traditional and digital elements, and explore cross-cultural visual evolution.
+
+Iteration Strategy: Follow an optimization path from global to local: finalize the composition first, then refine details, and finally combine key elements.`
+      },
+      {
+        title: 'Quality Standards & Roadmap',
+        content: `Quality Assurance: Features built-in automated aesthetic evaluation, technical artifact detection (noise, artifacts), and analysis of creative and commercial fit.
+
+Content Safety: Strictly adheres to brand alignment guidelines and cultural sensitivity principles.
+
+Future Roadmap: Will support more detailed dynamic image generation, 2D-to-3D capabilities, and real-time collaboration features, with specialized editions planned for enterprises, educational institutions, and professional creators.`
+      }
+    ]
+  },
+  ideogram: {
+    title: 'Ideogram',
+    category: 'Image',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Ideogram  is  image generation model, offering text-to-image, image editing, reframing, and remixing with improved consistency and creative control.',
+    features: [
+      { name: 'v3-text-to-image', path: '/home/ideogram/v3-text-to-image', description: 'Generate images from rich natural language prompts, with optional rendering speed, style, prompt expansion, image size, seed, and negative prompt controls.' },
+      { name: 'v3-edit', path: '/home/ideogram/v3-edit', description: 'Mask-based image editing: upload an image and mask, then fill or modify the masked region with a new prompt.' },
+      { name: 'v3-remix', path: '/home/ideogram/v3-remix', description: 'Remix an existing image with a new prompt, controlling strength, style, size, speed, seed, and negative prompt.' },
+      { name: 'v3-reframe', path: '/home/ideogram/v3-reframe', description: 'Reframe an image into new aspect ratios and resolutions (square, portrait, landscape), with optional style, speed, and multi-image outputs.' },
+      { name: 'character', path: '/home/ideogram/character', description: 'Generate character-centric scenes from reference images, preserving identity while changing setting, pose, or style.' },
+      { name: 'character-edit', path: '/home/ideogram/character-edit', description: 'Edit part of a character image using masks and reference images to adjust looks, clothing, or pose while keeping identity.' },
+      { name: 'character-remix', path: '/home/ideogram/character-remix', description: 'Remix character images with new prompts and style references, controlling strength, size, and negative prompts for nuanced variations.' }
+    ],
+    sections: [
+      {
+        title: 'Core Features',
+        content: `Text to Image (v3-text-to-image): Generate images from detailed text prompts, with options for TURBO/BALANCED/QUALITY rendering speed, style presets (AUTO, GENERAL, REALISTIC, DESIGN), MagicPrompt expansion, multiple aspect ratios (square, portrait, landscape), and seed/negative prompt control up to 5000 characters.
+
+Image Editing (v3-edit): Upload an image and a mask of the same size, then use a prompt to inpaint or modify only the masked region; supports rendering speed, MagicPrompt, and seed for reproducibility.
+
+Image Remixing (v3-remix): Provide an input image and a remix prompt, optionally setting style, size, speed, expand_prompt, number of images, strength, seed, and negative prompt to explore new variations on the same base.
+
+Reframing (v3-reframe): Reframe existing images into different target aspect ratios and resolutions (square, square_hd, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9), with optional style, speed, num_images, and seed.`
+      },
+      {
+        title: 'Character Tools',
+        content: `Character (character): Use one or more reference images as character anchors, then place them into new scenes described by a prompt. Control rendering speed (TURBO, BALANCED, QUALITY), style (AUTO, REALISTIC, FICTION), MagicPrompt, num_images, image_size, seed, and negative_prompt for fine control.
+
+Character Edit (character-edit): Upload an image, a matching mask, and character reference images to selectively edit parts of a character while preserving identity. Supports the same rendering_speed, style, expand_prompt, num_images, and seed controls for guided edits.
+
+Character Remix (character-remix): Remix character images with new prompts and reference images, adjusting strength of the original, style, image_size, num_images, seed, and negative_prompt, plus optional style reference images and masks for even more precise control.`
+      },
+      {
+        title: 'Typical Use Cases',
+        content: `Brand and Product Visuals: Consistent product shots, lifestyle scenes, and campaign images; iterative refinement across formats (1:1, 4:3, 16:9).
+
+Character-Driven Content: Game and animation characters, mascots, and influencers; consistent identity across multiple scenes, poses, and outfits.
+
+Marketing and Social: Ad creatives, social posts, and story formats in portrait and landscape; fast remixing and reframing for each platform size.
+
+Design and Illustration: Concept art, storyboards, editorial illustration, and mood pieces that need controlled style, composition, and character continuity.`
+      },
+      {
+        title: 'Advanced Control & Workflow Tips',
+        content: `Prompt Craft: Combine subject, setting, mood, camera, and style; use negative prompts for unwanted artifacts (e.g., "no text," "avoid blur," "no extra limbs").
+
+Parameter Strategy: Start with BALANCED rendering speed; move to TURBO for quick ideation and QUALITY for final images. Use seeds to reproduce or iteratively refine good results.
+
+Aspect Ratio & Size: Choose square or square_hd for avatars and thumbnails; portrait_16_9 or portrait_4_3 for social stories; landscape_16_9 or landscape_4_3 for web, slides, and video frames.
+
+Character Consistency: For character modes, keep reference images clear and consistent; reuse reference_image_urls and seeds to maintain identity across scenes; use strength controls to balance between base image and new creative direction.`
+      }
+    ]
+  },
   'gpt-4o-image': {
     title: 'GPT 4o Image',
     category: 'Image',
@@ -1185,6 +1298,194 @@ Best for: Social media managers, marketers, content creators, educators, adverti
       {
         title: 'Try Wan on FuseAITools',
         content: `Wan on FuseAITools makes video creation as simple as writing a sentence. Whether you're generating from scratch, animating images, or transforming existing footage, Wan delivers professional results in seconds. With full control over duration, resolution, and shot style, it's the all-in-one video solution for modern creators. Start bringing your ideas to motion today.`
+      }
+    ]
+  },
+  hailuo: {
+    title: 'Hailuo',
+    category: 'Video',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Hailuo is MiniMax\'s high-fidelity AI video generation model designed to create realistic motion, expressive characters, and cinematic visuals. It supports both text-to-video and image-to-video, handling complex movements, lighting changes, and detailed facial expressions with stability and consistency.',
+    features: [
+      { name: 'Pro Image to Video', path: '/home/hailuo/image-to-video-pro', description: 'High-fidelity image-to-video with 6s or 10s duration, 768P or 1080P resolution. Best for cinematic quality and detailed motion. Note: 10s videos do not support 1080P.' },
+      { name: 'Standard Image to Video', path: '/home/hailuo/image-to-video-standard', description: 'Efficient image-to-video with the same controls: prompt, single image input, 6s/10s duration, 768P/1080P. Balanced quality and speed.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Motion and fidelity: Hailuo brings MiniMax's high-fidelity video generation to a single, easy-to-use workflow. Whether you choose Pro for maximum cinematic quality or Standard for faster iteration, you get realistic motion, expressive characters, and stable, consistent output.
+
+Image-to-video first: Both tiers focus on animating a single input image with a text prompt—ideal for concept art, product shots, character animation, and creative storytelling. No video editing expertise required.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `Pro Image to Video
+
+Prompt: Natural language description of the desired video animation; max 5000 characters.
+
+Input image: Single image required; formats JPEG, PNG, WebP; max 10MB.
+
+Duration: 6 seconds (standard) or 10 seconds (extended). Note: 10-second videos do not support 1080P resolution—use 768P.
+
+Resolution: 768P (web and social) or 1080P (full HD; only when duration is 6s).
+
+Use cases: Cinematic clips, character animation, product demos, high-quality social and marketing content.
+
+Standard Image to Video
+
+Same parameters as Pro: prompt (max 5000 characters), single image (JPEG/PNG/WebP, max 10MB), duration 6s or 10s, resolution 768P or 1080P (1080P not available for 10s).
+
+Optimized for speed and cost while maintaining strong motion and visual consistency.
+
+Use cases: Rapid prototyping, batch content, social shorts, and workflows where turnaround time matters.`
+      },
+      {
+        title: 'Use cases',
+        content: `Social media content: Create short, high-quality clips for TikTok, Instagram Reels, YouTube Shorts with 6s or 10s duration and 768P/1080P output.
+
+Advertising and marketing: Animate product shots, brand visuals, and concept art with realistic motion and lighting.
+
+Creative projects: Bring illustrations and character art to life with expressive motion and detailed facial expressions.
+
+Concept validation: Quickly test video ideas from a single image and prompt before committing to full production.
+
+Educational and explainer content: Produce clear, consistent motion for tutorials and visual explanations.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Prompt length: Up to 5000 characters for both Pro and Standard.
+
+Input: Single image; JPEG, PNG, or WebP; max 10MB.
+
+Duration: 6 seconds or 10 seconds. Important: 10-second videos are not supported at 1080P—select 768P when using 10s.
+
+Resolution: 768P (all duration options) or 1080P (6s only).
+
+Output: Video delivered via secure URL or direct download; format and codec follow platform defaults.
+
+Concurrency: Supports parallel requests with queue management; typical generation time varies by resolution and duration.`
+      },
+      {
+        title: 'Workflow',
+        content: `Choose tier: Select Pro Image to Video for highest quality or Standard Image to Video for balanced speed and quality.
+
+Upload image: Provide one image (JPEG, PNG, or WebP; max 10MB) as the base frame.
+
+Write prompt: Describe the desired animation—motion, lighting changes, character expression, scene evolution (up to 5000 characters).
+
+Set parameters: Pick duration (6s or 10s) and resolution (768P or 1080P; remember 1080P is only for 6s).
+
+Generate: Submit and wait for the result; preview in the result panel and download when ready.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt crafting: Be specific about motion, lighting, and expression. Example: "A graceful geisha performs a traditional Japanese dance indoors. Soft hand movements, sleeves flowing naturally. Warm ambient lighting, cinematic, soft depth of field" yields better results than a generic "person dancing."
+
+Duration and resolution: Use 6s + 1080P for final HD assets; use 10s + 768P when you need longer clips (1080P is not available for 10s).
+
+Image quality: Higher resolution, well-lit input images produce smoother and more consistent animations.
+
+Pro vs Standard: Use Pro for client work, hero content, and when quality is the priority; use Standard for drafts, batch runs, and faster iteration.`
+      },
+      {
+        title: 'Try Hailuo on FuseAITools',
+        content: `Hailuo on FuseAITools brings MiniMax's cinematic AI video to your workflow. Animate still images with realistic motion, expressive characters, and consistent lighting. Choose Pro for highest fidelity or Standard for faster results. Start with an image and a prompt to create video in seconds.`
+      }
+    ]
+  },
+  kling: {
+    title: 'Kling',
+    category: 'Video',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.',
+    features: [
+      { name: 'v2.5 Turbo I2V Pro', path: '/home/kling/v2-5-turbo-image-to-video-pro', description: 'Image-to-video with tail frame option, duration 5/10s, negative prompt, CFG scale. Max prompt 2500 characters.' },
+      { name: 'v2.5 Turbo T2V Pro', path: '/home/kling/v2-5-turbo-text-to-video-pro', description: 'Text-to-video with aspect ratio 16:9, 9:16, 1:1; duration 5/10s; negative prompt and CFG scale.' },
+      { name: '2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Text-to-video with sound on/off, aspect ratio 1:1/16:9/9:16, duration 5/10s.' },
+      { name: '2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Image-to-video with sound, duration 5/10s. Single image input.' },
+      { name: '2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + reference video; character orientation (image/video); 720p/1080p.' },
+      { name: 'AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio to talking-head video. Prompt max 5000 characters.' },
+      { name: 'AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'High-quality avatar image + audio to talking-head video. Prompt max 5000 characters.' },
+      { name: '3.0 Video', path: '/home/kling/v3-0-video', description: 'Single shot or multi-shot; image refs; duration 3–15s; sound. std/pro mode.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Motion and creativity: Kling brings Kuaishou's latest video models into a unified workflow. From text or image to video, motion control with reference assets, AI avatars driven by audio, to 3.0 multi-shot storytelling—each mode is tuned for quality, prompt adherence, and fluid motion.
+
+Multi-mode first: Eight distinct modes cover text-to-video, image-to-video, motion control, talking-head avatars, and advanced 3.0 single/multi-shot. Choose the right mode for your project without leaving the platform.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `v2.5 Turbo
+
+Image-to-video Pro: Single image (optional tail frame), duration 5s or 10s, negative prompt and CFG scale. Prompt up to 2500 characters.
+
+Text-to-video Pro: Aspect ratio 16:9, 9:16, 1:1; duration 5s or 10s; negative prompt and CFG scale for fine control.
+
+2.6 series
+
+Text to Video: Sound on/off, aspect ratio 1:1, 16:9, 9:16; duration 5s or 10s.
+
+Image to Video: Single image input, sound, duration 5s or 10s.
+
+Motion Control: Reference image plus reference video; character orientation from image or video; output 720p or 1080p.
+
+AI Avatar
+
+Standard and Pro: Upload avatar image and audio; generate talking-head video. Prompt up to 5000 characters. Pro tier for higher quality output.
+
+3.0 Video
+
+Single shot or multi-shot; image references; duration 3–15 seconds; optional sound; standard or pro mode.`
+      },
+      {
+        title: 'Use cases',
+        content: `Social and short-form: Create text-to-video or image-to-video clips for TikTok, Reels, and Shorts with flexible aspect ratio and 5–10s duration.
+
+Motion control: Use reference image and video to steer character pose and motion for consistent, controllable results.
+
+AI avatars: Turn avatar image and voiceover into talking-head videos for explainers, dubbing, and personalized content.
+
+Multi-shot storytelling: Use 3.0 Video with multiple image references and 3–15s duration for scenes and narrative clips.
+
+Advertising and marketing: Animate product shots and concept art with v2.5 Turbo or 2.6; add motion control or avatars as needed.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Prompt length: Up to 2500 characters (v2.5 Turbo); up to 5000 characters (AI Avatar, others as per mode).
+
+Input: Image(s) JPEG/PNG/WebP; video for motion control; audio for AI Avatar. Size and format limits follow each mode.
+
+Duration: 5s or 10s (v2.5, 2.6); 3–15s (3.0 Video).
+
+Resolution: 720p or 1080p where applicable (e.g. motion control, 2.6); aspect ratios 1:1, 16:9, 9:16 (and 21:9 for some modes).
+
+Output: Video via URL or download; optional sound where supported.`
+      },
+      {
+        title: 'Workflow',
+        content: `Choose mode: Pick the Kling mode that matches your goal—v2.5 Turbo I2V/T2V, 2.6 text/image/motion, AI Avatar Standard/Pro, or 3.0 Video.
+
+Upload assets: Provide image(s), and for motion control add reference video; for AI Avatar add audio.
+
+Set parameters: Select duration, aspect ratio, resolution, and options (sound, negative prompt, CFG, etc.) as shown in the form.
+
+Generate: Submit and wait for the result; preview in the result panel and download when ready.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt crafting: Be specific about motion, style, and composition. For avatars, clear speech and consistent tone in the audio improve lip-sync and expression.
+
+Mode choice: Use v2.5 Turbo for fast, high-quality text/image-to-video; 2.6 for sound and motion control; AI Avatar for talking-head; 3.0 for multi-shot and longer clips.
+
+Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). Use 1080p when the mode supports it for final deliverables.`
+      },
+      {
+        title: 'Try Kling on FuseAITools',
+        content: `Kling on FuseAITools brings Kuaishou's latest video models to your workflow. From text or image to video, motion control, AI avatars, and 3.0 multi-shot—choose the right mode and create video in seconds.`
       }
     ]
   },

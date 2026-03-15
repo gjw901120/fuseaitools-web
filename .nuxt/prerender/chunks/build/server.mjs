@@ -396,6 +396,9 @@ async function getRouteRules(arg) {
     return defu({}, ..._routeRulesMatcher.matchAll(path).reverse());
   }
 }
+const __nuxt_page_meta$2 = {
+  layout: "default"
+};
 const __nuxt_page_meta$1 = {
   key: (route2) => route2.params.slug
 };
@@ -409,191 +412,310 @@ const _routes = [
   {
     name: "index",
     path: "/",
-    component: () => import('./index-CmwVV0ME.mjs')
+    component: () => import('./index-C7uIg7fC.mjs')
+  },
+  {
+    name: "credits",
+    path: "/credits",
+    meta: __nuxt_page_meta$2 || {},
+    component: () => import('./credits-B3ThZoOZ.mjs')
   },
   {
     name: "pricing",
     path: "/pricing",
-    component: () => import('./pricing-BASf1fBj.mjs')
+    component: () => import('./pricing-Dq6NG0Gw.mjs')
   },
   {
     name: "home-gpt",
     path: "/home/gpt",
-    component: () => import('./gpt-EVjB1Mm0.mjs'),
+    component: () => import('./gpt-BTgFkrCI.mjs'),
     children: [
       {
         name: "home-gpt-generate",
         path: "generate",
-        component: () => import('./generate-DFZkK4QW.mjs')
+        component: () => import('./generate-BJItSmn2.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-wan",
+    path: "/home/wan",
+    component: () => import('./wan-CFCKFTW_.mjs'),
+    children: [
+      {
+        name: "home-wan-text-to-video",
+        path: "text-to-video",
+        component: () => import('./text-to-video-D3x9dnwd.mjs')
+      },
+      {
+        name: "home-wan-image-to-video",
+        path: "image-to-video",
+        component: () => import('./image-to-video-DulA05f_.mjs')
+      },
+      {
+        name: "home-wan-video-to-video",
+        path: "video-to-video",
+        component: () => import('./video-to-video-BWtBBWol.mjs')
       }
     ]
   },
   {
     name: "home-luma",
     path: "/home/luma",
-    component: () => import('./luma-sy5gmFTi.mjs'),
+    component: () => import('./luma-DaXl74_X.mjs'),
     children: [
       {
         name: "home-luma-generate",
         path: "generate",
-        component: () => import('./generate-TPj4QZVs.mjs')
+        component: () => import('./generate-Af-pKlqy.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-qwen",
+    path: "/home/qwen",
+    component: () => import('./qwen-DLyTWe6s.mjs'),
+    children: [
+      {
+        name: "home-qwen-z-image",
+        path: "z-image",
+        component: () => import('./z-image-B9RxAW6f.mjs')
+      },
+      {
+        name: "home-qwen-image-edit",
+        path: "image-edit",
+        component: () => import('./image-edit-BSzx9qpy.mjs')
+      },
+      {
+        name: "home-qwen-text-to-image",
+        path: "text-to-image",
+        component: () => import('./text-to-image-KBribJEU.mjs')
+      },
+      {
+        name: "home-qwen-image-to-image",
+        path: "image-to-image",
+        component: () => import('./image-to-image-C3OF_ayE.mjs')
       }
     ]
   },
   {
     name: "home-sora",
     path: "/home/sora",
-    component: () => import('./sora-Dz_tYMFL.mjs'),
+    component: () => import('./sora-C5oGIWsq.mjs'),
     children: [
       {
         name: "home-sora-text-to-video",
         path: "text-to-video",
-        component: () => import('./text-to-video-CMdwuwb2.mjs')
+        component: () => import('./text-to-video-DD290UK4.mjs')
       },
       {
         name: "home-sora-image-to-video",
         path: "image-to-video",
-        component: () => import('./image-to-video-BtTHQ-j3.mjs')
+        component: () => import('./image-to-video-DX8hvhoS.mjs')
       },
       {
         name: "home-sora-pro-storyboard",
         path: "pro-storyboard",
-        component: () => import('./pro-storyboard-pNlWQD_J.mjs')
+        component: () => import('./pro-storyboard-D2Ioj-P-.mjs')
       },
       {
         name: "home-sora-pro-text-to-video",
         path: "pro-text-to-video",
-        component: () => import('./pro-text-to-video-BRvjVHji.mjs')
+        component: () => import('./pro-text-to-video-CdMJrxvW.mjs')
       },
       {
         name: "home-sora-watermark-remover",
         path: "watermark-remover",
-        component: () => import('./watermark-remover-CC6b0hWa.mjs')
+        component: () => import('./watermark-remover-Cbh08NwK.mjs')
       },
       {
         name: "home-sora-pro-image-to-video",
         path: "pro-image-to-video",
-        component: () => import('./pro-image-to-video-DSszNFkL.mjs')
+        component: () => import('./pro-image-to-video-C4DDS6Tr.mjs')
       }
     ]
   },
   {
     name: "home-suno",
     path: "/home/suno",
-    component: () => import('./suno-CFHWSYBJ.mjs'),
+    component: () => import('./suno-DaAk7JdM.mjs'),
     children: [
       {
         name: "home-suno-extend",
         path: "extend",
-        component: () => import('./extend-C8rIgz5y.mjs')
+        component: () => import('./extend-BkkrQoej.mjs')
       },
       {
         name: "home-suno-generate",
         path: "generate",
-        component: () => import('./generate-DXci_IAh.mjs')
+        component: () => import('./generate-CSYNgGVJ.mjs')
       },
       {
         name: "home-suno-add-vocals",
         path: "add-vocals",
-        component: () => import('./add-vocals-BTrV6tXO.mjs')
+        component: () => import('./add-vocals-DZpAvLAT.mjs')
       },
       {
         name: "home-suno-upload-cover",
         path: "upload-cover",
-        component: () => import('./upload-cover-Cx9QQCb1.mjs')
+        component: () => import('./upload-cover-aTz5tnOy.mjs')
       },
       {
         name: "home-suno-upload-extend",
         path: "upload-extend",
-        component: () => import('./upload-extend-5IOCJXiM.mjs')
+        component: () => import('./upload-extend-Cy7cIhS8.mjs')
       },
       {
         name: "home-suno-add-instrumental",
         path: "add-instrumental",
-        component: () => import('./add-instrumental-BGUQ7Xam.mjs')
+        component: () => import('./add-instrumental-BLzH_WlO.mjs')
       }
     ]
   },
   {
     name: "home-veo3",
     path: "/home/veo3",
-    component: () => import('./veo3-BBy6iXRp.mjs'),
+    component: () => import('./veo3-BpUkMCFQ.mjs'),
     children: [
       {
         name: "home-veo3-extend",
         path: "extend",
-        component: () => import('./extend-d_-RWJVC.mjs')
+        component: () => import('./extend-BJ367pf8.mjs')
       },
       {
         name: "home-veo3-text-to-video",
         path: "text-to-video",
-        component: () => import('./text-to-video-pnqKGoHz.mjs')
+        component: () => import('./text-to-video-BaX3ioFw.mjs')
       },
       {
         name: "home-veo3-reference-to-video",
         path: "reference-to-video",
-        component: () => import('./reference-to-video-B2ki3qNV.mjs')
+        component: () => import('./reference-to-video-D3fU3EEz.mjs')
       },
       {
         name: "home-veo3-first-and-last-to-video",
         path: "first-and-last-to-video",
-        component: () => import('./first-and-last-to-video-BJRl9MA8.mjs')
+        component: () => import('./first-and-last-to-video-_-vA1IBI.mjs')
       }
     ]
   },
   {
     name: "home",
     path: "/home",
-    component: () => import('./index-BXMadX1q.mjs')
+    component: () => import('./index-C-CxyhTZ.mjs')
+  },
+  {
+    name: "home-kling",
+    path: "/home/kling",
+    component: () => import('./kling-Drx8X1-N.mjs'),
+    children: [
+      {
+        name: "home-kling-v3-0-video",
+        path: "v3-0-video",
+        component: () => import('./v3-0-video-D1CCQx9V.mjs')
+      },
+      {
+        name: "home-kling-ai-avatar-pro",
+        path: "ai-avatar-pro",
+        component: () => import('./ai-avatar-pro-DOxsXc8T.mjs')
+      },
+      {
+        name: "home-kling-ai-avatar-standard",
+        path: "ai-avatar-standard",
+        component: () => import('./ai-avatar-standard-EurJ5T_k.mjs')
+      },
+      {
+        name: "home-kling-v2-6-text-to-video",
+        path: "v2-6-text-to-video",
+        component: () => import('./v2-6-text-to-video-CJc0WDEz.mjs')
+      },
+      {
+        name: "home-kling-v2-6-image-to-video",
+        path: "v2-6-image-to-video",
+        component: () => import('./v2-6-image-to-video-DQHkSKJ0.mjs')
+      },
+      {
+        name: "home-kling-v2-6-motion-control",
+        path: "v2-6-motion-control",
+        component: () => import('./v2-6-motion-control-DOXWo5DF.mjs')
+      },
+      {
+        name: "home-kling-v2-5-turbo-text-to-video-pro",
+        path: "v2-5-turbo-text-to-video-pro",
+        component: () => import('./v2-5-turbo-text-to-video-pro-FP4SZcPC.mjs')
+      },
+      {
+        name: "home-kling-v2-5-turbo-image-to-video-pro",
+        path: "v2-5-turbo-image-to-video-pro",
+        component: () => import('./v2-5-turbo-image-to-video-pro-C87ZWTA1.mjs')
+      }
+    ]
   },
   {
     name: "news",
     path: "/news",
-    component: () => import('./index-B75p_JLW.mjs')
+    component: () => import('./index-BqOU0gF_.mjs')
   },
   {
     name: "home-claude",
     path: "/home/claude",
-    component: () => import('./claude-BoHzwBEi.mjs'),
+    component: () => import('./claude-Ek_tjIPn.mjs'),
     children: [
       {
         name: "home-claude-generate",
         path: "generate",
-        component: () => import('./generate-I71EdzV7.mjs')
+        component: () => import('./generate-ChylX_Ug.mjs')
       }
     ]
   },
   {
     name: "home-gemini",
     path: "/home/gemini",
-    component: () => import('./gemini-C2r_Fh2t.mjs'),
+    component: () => import('./gemini-BxoaZMat.mjs'),
     children: [
       {
         name: "home-gemini-generate",
         path: "generate",
-        component: () => import('./generate-CG9HhOwz.mjs')
+        component: () => import('./generate-C8Ehv9ko.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-hailuo",
+    path: "/home/hailuo",
+    component: () => import('./hailuo-DDQqj9n8.mjs'),
+    children: [
+      {
+        name: "home-hailuo-image-to-video-pro",
+        path: "image-to-video-pro",
+        component: () => import('./image-to-video-pro-BO8pfYCq.mjs')
+      },
+      {
+        name: "home-hailuo-image-to-video-standard",
+        path: "image-to-video-standard",
+        component: () => import('./image-to-video-standard-0XQmE3Ek.mjs')
       }
     ]
   },
   {
     name: "home-runway",
     path: "/home/runway",
-    component: () => import('./runway-CHoVtdCU.mjs'),
+    component: () => import('./runway-BSYs9LCT.mjs'),
     children: [
       {
         name: "home-runway-aleph",
         path: "aleph",
-        component: () => import('./aleph-DGq7l3SO.mjs')
+        component: () => import('./aleph-C-WLAX3y.mjs')
       },
       {
         name: "home-runway-extend",
         path: "extend",
-        component: () => import('./extend-Kz3icag7.mjs')
+        component: () => import('./extend-n4_v5CY8.mjs')
       },
       {
         name: "home-runway-generate",
         path: "generate",
-        component: () => import('./generate-E7VCu6OY.mjs')
+        component: () => import('./generate-CtHfEnqc.mjs')
       }
     ]
   },
@@ -601,7 +723,7 @@ const _routes = [
     name: "news-slug",
     path: "/news/:slug()",
     meta: __nuxt_page_meta$1 || {},
-    component: () => import('./_slug_-XvDrA-xc.mjs')
+    component: () => import('./_slug_-Ch4ZpI5p.mjs')
   },
   {
     name: "test-routes",
@@ -611,112 +733,185 @@ const _routes = [
   {
     name: "home-deepseek",
     path: "/home/deepseek",
-    component: () => import('./deepseek-D5_AmX1R.mjs'),
+    component: () => import('./deepseek-Dm3lTw4W.mjs'),
     children: [
       {
         name: "home-deepseek-generate",
         path: "generate",
-        component: () => import('./generate-CJ4DiYff.mjs')
+        component: () => import('./generate-DYoHaAfn.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-ideogram",
+    path: "/home/ideogram",
+    component: () => import('./ideogram-DdMWI0E4.mjs'),
+    children: [
+      {
+        name: "home-ideogram-generate",
+        path: "generate",
+        component: () => import('./generate-BaiesLmU.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-seedance",
+    path: "/home/seedance",
+    component: () => import('./seedance-Ds6iLmGQ.mjs'),
+    children: [
+      {
+        name: "home-seedance-v1-pro-text-to-video",
+        path: "v1-pro-text-to-video",
+        component: () => import('./v1-pro-text-to-video-C6E81gQv.mjs')
+      },
+      {
+        name: "home-seedance-v1-lite-text-to-video",
+        path: "v1-lite-text-to-video",
+        component: () => import('./v1-lite-text-to-video-DwQmAbwr.mjs')
+      },
+      {
+        name: "home-seedance-v1-pro-image-to-video",
+        path: "v1-pro-image-to-video",
+        component: () => import('./v1-pro-image-to-video-VIC9CYkv.mjs')
+      },
+      {
+        name: "home-seedance-v1-lite-image-to-video",
+        path: "v1-lite-image-to-video",
+        component: () => import('./v1-lite-image-to-video-4ZOxjwcN.mjs')
+      },
+      {
+        name: "home-seedance-v1-pro-fast-image-to-video",
+        path: "v1-pro-fast-image-to-video",
+        component: () => import('./v1-pro-fast-image-to-video-DFstDm7c.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-seedream",
+    path: "/home/seedream",
+    component: () => import('./seedream-D0T0_AnX.mjs'),
+    children: [
+      {
+        name: "home-seedream-1-5-lite-text-to-image",
+        path: "1-5-lite-text-to-image",
+        component: () => import('./1-5-lite-text-to-image-CS5quI8z.mjs')
+      },
+      {
+        name: "home-seedream-2-5-lite-image-to-image",
+        path: "2-5-lite-image-to-image",
+        component: () => import('./2-5-lite-image-to-image-BSVnvdJv.mjs')
+      }
+    ]
+  },
+  {
+    name: "home-gpt-image",
+    path: "/home/gpt-image",
+    component: () => import('./gpt-image-J6vNThFu.mjs'),
+    children: [
+      {
+        name: "home-gpt-image-generate",
+        path: "generate",
+        component: () => import('./generate-CAp511JN.mjs')
       }
     ]
   },
   {
     name: "home-elevenlabs",
     path: "/home/elevenlabs",
-    component: () => import('./elevenlabs-CJJpMTlA.mjs'),
+    component: () => import('./elevenlabs-Cw07biGK.mjs'),
     children: [
       {
         name: "home-elevenlabs-turbo-2-5",
         path: "turbo-2-5",
-        component: () => import('./turbo-2-5-CRlVJWWp.mjs')
+        component: () => import('./turbo-2-5-CidicT3b.mjs')
       },
       {
         name: "home-elevenlabs-speech-to-text",
         path: "speech-to-text",
-        component: () => import('./speech-to-text-z0YcnmWY.mjs')
+        component: () => import('./speech-to-text-KHSDCGEL.mjs')
       },
       {
         name: "home-elevenlabs-audio-isolation",
         path: "audio-isolation",
-        component: () => import('./audio-isolation-DoEiEgWP.mjs')
+        component: () => import('./audio-isolation-CWOG4u62.mjs')
       },
       {
         name: "home-elevenlabs-multilingual-v2",
         path: "multilingual-v2",
-        component: () => import('./multilingual-v2-wx1XFOO-.mjs')
+        component: () => import('./multilingual-v2-DX01jOlZ.mjs')
       },
       {
         name: "home-elevenlabs-sound-effect-v2",
         path: "sound-effect-v2",
-        component: () => import('./sound-effect-v2-Pps7QUZJ.mjs')
+        component: () => import('./sound-effect-v2-DjnymmOT.mjs')
       }
     ]
   },
   {
     name: "home-midjourney",
     path: "/home/midjourney",
-    component: () => import('./midjourney-DTUTSKXp.mjs'),
+    component: () => import('./midjourney-D4aEQgIz.mjs'),
     children: [
       {
         name: "home-midjourney-vary",
         path: "vary",
-        component: () => import('./vary-BnRhFvm0.mjs')
+        component: () => import('./vary-rt6_GW94.mjs')
       },
       {
         name: "home-midjourney-imagine",
         path: "imagine",
-        component: () => import('./imagine-Dm07eApN.mjs')
+        component: () => import('./imagine-D1EO9W7t.mjs')
       },
       {
         name: "home-midjourney-upscale",
         path: "upscale",
-        component: () => import('./upscale-BVH4VixD.mjs')
+        component: () => import('./upscale-MWElD57f.mjs')
       }
     ]
   },
   {
     name: "home-nano-banana",
     path: "/home/nano-banana",
-    component: () => import('./nano-banana-CWKD2cbm.mjs'),
+    component: () => import('./nano-banana-DIgqFTYc.mjs'),
     children: [
       {
         name: "home-nano-banana-edit",
         path: "edit",
-        component: () => import('./edit-DAICR2K9.mjs')
+        component: () => import('./edit-D7WiyuSy.mjs')
       },
       {
         name: "home-nano-banana-generate",
         path: "generate",
-        component: () => import('./generate-1zuNj3BR.mjs')
+        component: () => import('./generate-2exvYuta.mjs')
       },
       {
         name: "home-nano-banana-pro-generate",
         path: "pro-generate",
-        component: () => import('./pro-generate-DGcJMR6g.mjs')
+        component: () => import('./pro-generate-CWTTFNDp.mjs')
       }
     ]
   },
   {
     name: "home-flux-kontext",
     path: "/home/flux-kontext",
-    component: () => import('./flux-kontext-B6v2SQZE.mjs'),
+    component: () => import('./flux-kontext-D0EZDsIa.mjs'),
     children: [
       {
         name: "home-flux-kontext-generate",
         path: "generate",
-        component: () => import('./generate-D0h20iOS.mjs')
+        component: () => import('./generate-BwmcPk5e.mjs')
       }
     ]
   },
   {
     name: "home-gpt-4o-image",
     path: "/home/gpt-4o-image",
-    component: () => import('./gpt-4o-image-CkLT5eze.mjs'),
+    component: () => import('./gpt-4o-image-CcX7ALMV.mjs'),
     children: [
       {
         name: "home-gpt-4o-image-generate",
         path: "generate",
-        component: () => import('./generate-ByHo6Xx3.mjs')
+        component: () => import('./generate-D-WGQ1rk.mjs')
       }
     ]
   },
@@ -1251,7 +1446,7 @@ const plugins = [
   prerender_server_sqIxOBipVr4FbVMA9kqWL0wT8FPop6sKAXLVfifsJzk
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-CuUGEhOV.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-DNC7dnYr.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

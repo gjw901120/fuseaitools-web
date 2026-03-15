@@ -1,5 +1,6 @@
 import { defineEventHandler, getQuery, getHeader, createError } from 'file://C:/project/fuseaitools-web/node_modules/h3/dist/index.mjs';
-import { a as useRuntimeConfig } from '../../../_/nitro.mjs';
+import { g as getEffectiveApiBase } from '../../../_/getApiBase.mjs';
+import '../../../_/nitro.mjs';
 import 'file://C:/project/fuseaitools-web/node_modules/destr/dist/index.mjs';
 import 'file://C:/project/fuseaitools-web/node_modules/hookable/dist/index.mjs';
 import 'file://C:/project/fuseaitools-web/node_modules/ofetch/dist/node.mjs';
@@ -19,8 +20,7 @@ import 'node:url';
 import 'file://C:/project/fuseaitools-web/node_modules/pathe/dist/index.mjs';
 
 const list_get = defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiBase = config.public.apiBase;
+  const apiBase = getEffectiveApiBase(event);
   const query = getQuery(event);
   const page = query.page != null ? String(query.page) : "1";
   const size = query.size != null ? String(query.size) : "10";

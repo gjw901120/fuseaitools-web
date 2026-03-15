@@ -11,26 +11,18 @@
       </div>
     </div>
 
-    <!-- 功能选择区域 -->
-    <div class="function-selection-section">
-      <div class="function-tabs">
-        <div 
-          v-for="func in functionOptions" 
+    <!-- 功能选择区域：统一 mode-tabs 样式，主色 #6366f1 -->
+    <div class="mode-tabs-wrap">
+      <div class="mode-tabs">
+        <div
+          v-for="func in functionOptions"
           :key="func.id"
-          class="function-tab"
+          class="mode-tab"
           :class="{ active: formData.function === func.id }"
           @click="goToElevenLabsTab(func.id)"
         >
-          <div class="function-icon">
-            <i :class="func.icon"></i>
-          </div>
-          <div class="function-info">
-            <div class="function-name">{{ func.name }}</div>
-            <div class="function-description">{{ func.description }}</div>
-          </div>
-          <div class="function-info-icon" :title="func.detailDescription">
-            <i class="fas fa-info-circle"></i>
-          </div>
+          <i :class="func.icon"></i>
+          <span>{{ func.name }}</span>
         </div>
       </div>
     </div>
@@ -752,7 +744,7 @@ function goToElevenLabsTab(tabId) {
   const path = elevenlabsTabToPath[tabId] || elevenlabsTabToPath['multilingual-v2']
   router.push(path)
 }
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const batchUploadUrl = useBatchUploadUrl()
@@ -1392,7 +1384,7 @@ const generateContent = async () => {
     }
   } catch (error) {
     console.error('Generation failed:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -1546,135 +1538,57 @@ const shareResult = () => {
   } else {
     // 复制链接到剪贴板
     navigator.clipboard.writeText(displayResult.value.audioUrl)
-    alert('链接已复制到剪贴板')
+    showSuccess('Link copied to clipboard')
   }
 }
 </script>
 
 <style scoped>
-/* 功能选择区域样式 */
-.function-selection-section {
-  background: white;
+/* 功能选择区域：统一 mode-tabs 样式，主色 #6366f1 */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
-  padding: 16px 30px;
+  margin-bottom: 20px;
 }
 
-.function-tabs {
+.mode-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
 }
 
-.function-tab {
-  display: flex;
-  align-items: center;
-  padding: 10px 16px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
+.mode-tab {
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 0;
-  flex: 1;
-  height: 56px;
-  flex-shrink: 0;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
 }
 
-.function-tab:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.function-tab.active {
-  background: #6366f1;
+.mode-tab:hover {
   border-color: #6366f1;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-}
-
-.function-icon {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  margin-right: 10px;
-  flex-shrink: 0;
-}
-
-.function-tab.active .function-icon {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.function-icon i {
-  font-size: 14px;
   color: #6366f1;
 }
 
-.function-tab.active .function-icon i {
-  color: white;
+.mode-tab.active {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
 }
 
-.function-info {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
+.mode-tab i {
+  font-size: 1em;
 }
 
-.function-name {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 2px;
-  color: #1e293b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.function-tab.active .function-name {
-  color: white;
-}
-
-.function-description {
-  font-size: 11px;
-  color: #64748b;
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.function-tab.active .function-description {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.function-info-icon {
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  flex-shrink: 0;
-  margin-left: 6px;
-}
-
-.function-tab.active .function-info-icon {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.function-info-icon:hover {
-  color: #6366f1;
-}
-
-.function-tab.active .function-info-icon:hover {
-  color: white;
+.mode-tab span {
+  font-weight: 500;
 }
 
 .elevenlabs-tool {
@@ -1691,8 +1605,10 @@ const shareResult = () => {
 .tool-header {
   display: flex;
   align-items: center;
+  gap: 16px;
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
 .tool-avatar {
@@ -2484,26 +2400,6 @@ const shareResult = () => {
   font-size: 16px;
 }
 
-/* 响应式设计 */
-@media (max-width: 1200px) {
-  .function-tabs {
-    gap: 6px;
-  }
-  
-  .function-tab {
-    padding: 8px 12px;
-    height: 52px;
-  }
-  
-  .function-name {
-    font-size: 13px;
-  }
-  
-  .function-description {
-    font-size: 10px;
-  }
-}
-
 @media (max-width: 1024px) {
   .main-content {
     flex-direction: column;
@@ -2513,35 +2409,9 @@ const shareResult = () => {
   .result-panel {
     width: 100%;
   }
-  
-  .function-tabs {
-    gap: 4px;
-  }
-  
-  .function-tab {
-    padding: 6px 10px;
-    height: 48px;
-  }
-  
-  .function-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-  }
-  
-  .function-icon i {
-    font-size: 12px;
-  }
-  
-  .function-name {
-    font-size: 12px;
-  }
-  
-  .function-description {
-    font-size: 9px;
-  }
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .elevenlabs-tool {
     padding: 16px;
@@ -2557,44 +2427,13 @@ const shareResult = () => {
     padding: 0 0 16px 0;
   }
   
-  .function-selection-section {
-    padding: 12px 20px;
+  .mode-tabs {
+    gap: 6px;
   }
   
-  .function-tabs {
-    gap: 4px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .function-tab {
-    min-width: 100px;
-    padding: 6px 8px;
-    height: 44px;
-  }
-  
-  .function-icon {
-    width: 22px;
-    height: 22px;
-    margin-right: 6px;
-  }
-  
-  .function-icon i {
-    font-size: 11px;
-  }
-  
-  .function-name {
-    font-size: 11px;
-  }
-  
-  .function-description {
-    font-size: 8px;
-  }
-  
-  .function-info-icon {
-    width: 16px;
-    height: 16px;
-    margin-left: 4px;
+  .mode-tab {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
 </style>

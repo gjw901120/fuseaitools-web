@@ -83,16 +83,18 @@
 </template>
 
 <script setup>
+const router = useRouter()
+
 const scrollToTop = () => {
-  // 在路由跳转后滚动到顶部
-  // 使用 setTimeout 确保在路由跳转完成后执行
   setTimeout(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    })
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, 100)
+}
+
+/** Video 行使用显式 router.push，避免 NuxtLink 在部分环境下不跳转（如 Hailuo、Kling） */
+const goToVideo = (route) => {
+  if (route) router.push(route)
+  scrollToTop()
 }
 
 const chatModels = ref([
@@ -128,6 +130,16 @@ const imageModels = ref([
     title: 'GPT 4o Image',
     logo: '/tools-logo/ChatGPT4OImage.png',
     route: '/home/gpt-4o-image'
+  },
+  {
+    title: 'GPT Image',
+    logo: '/tools-logo/GPTImage.png',
+    route: '/home/gpt-image'
+  },
+  {
+    title: 'Ideogram',
+    logo: '/tools-logo/Ideogram.png',
+    route: '/home/ideogram'
   },
   {
     title: 'Flux Kontext',
@@ -194,6 +206,16 @@ const videoModels = ref([
     title: 'Seedance',
     logo: '/tools-logo/Seedance.png',
     route: '/home/seedance'
+  },
+  {
+    title: 'Hailuo',
+    logo: '/tools-logo/Hailuo.png',
+    route: '/home/hailuo'
+  },
+  {
+    title: 'Kling',
+    logo: '/tools-logo/Kling.png',
+    route: '/home/kling'
   }
 ])
 </script>

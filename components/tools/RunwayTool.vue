@@ -11,11 +11,11 @@
       </div>
     </div>
 
-    <!-- 生成模式选择（与 Veo3 一致，Tab 置于上方） -->
-    <div class="mode-section">
+    <!-- 生成模式选择：统一 mode-tabs-wrap 样式，主色 #3b82f6 -->
+    <div class="mode-tabs-wrap">
       <div class="mode-tabs">
-        <div 
-          v-for="tab in tabs" 
+        <div
+          v-for="tab in tabs"
           :key="tab.id"
           class="mode-tab"
           :class="{ active: activeTab === tab.id }"
@@ -829,17 +829,17 @@ const runwayGeneratePriceText = computed(() => {
     scene: 'generate'
   })
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 const runwayExtendPriceText = computed(() => {
   const credits = getPrice('runway_extend')
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 const runwayAlephPriceText = computed(() => {
   const credits = getPrice('runway_aleph')
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 // Watch for duration and quality conflicts
@@ -987,7 +987,7 @@ const generateVideo = async () => {
     formData.waterMark = ''
   } catch (error) {
     console.error('Video generation failed:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -1042,7 +1042,7 @@ const generateAlephVideo = async () => {
     generatedVideos.value.unshift(newVideo)
   } catch (error) {
     console.error('Failed to generate Aleph video:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -1097,7 +1097,7 @@ const generateExtendVideo = async () => {
     extendFormData.waterMark = ''
   } catch (error) {
     console.error('Failed to generate Extend video:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -1123,9 +1123,10 @@ const generateExtendVideo = async () => {
   gap: 20px;
 }
 
-.tool-header {
+ .tool-header {
   display: flex;
   align-items: center;
+  gap: 16px;
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
   margin-bottom: 20px;
@@ -1163,53 +1164,50 @@ const generateExtendVideo = async () => {
   color: #6b7280;
 }
 
-/* 上方模式选择（与 Veo3 一致） */
-.mode-section {
-  margin-bottom: 24px;
-  padding: 20px;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+/* 上方模式选择：统一 mode-tabs-wrap 样式，主色 #3b82f6 */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
 .mode-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .mode-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 8px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
   transition: all 0.3s ease;
-  text-align: center;
 }
 
 .mode-tab:hover {
   border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
+  color: #3b82f6;
 }
 
 .mode-tab.active {
-  border-color: #3b82f6;
   background: #3b82f6;
-  color: white;
+  color: #fff;
+  border-color: #3b82f6;
 }
 
 .mode-tab i {
-  font-size: 16px;
-  margin-bottom: 4px;
+  font-size: 1em;
 }
 
 .mode-tab span {
-  font-size: 12px;
   font-weight: 500;
 }
 
@@ -1775,7 +1773,7 @@ const generateExtendVideo = async () => {
 }
 
 .price-tag {
-  font-size: 12px;
+  font-size: 15px;
   opacity: 0.8;
   margin-left: 4px;
 }
@@ -1983,10 +1981,26 @@ const generateExtendVideo = async () => {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .usage-tips {
-    grid-template-columns: 1fr;
+  .runway-tool {
+    padding: 16px;
+  }
+  
+  .tool-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .mode-tabs {
+    gap: 6px;
+  }
+  
+  .mode-tab {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
+
 @media (max-width: 1024px) {
   .main-content {
     flex-direction: column;
@@ -1998,66 +2012,4 @@ const generateExtendVideo = async () => {
   }
 }
 
-@media (max-width: 768px) {
-  .runway-tool {
-    padding: 16px;
-  }
-  
-  .tool-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .mode-section {
-    padding: 12px 16px;
-    margin-bottom: 16px;
-  }
-
-  .mode-tabs {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-
-  .mode-tab {
-    padding: 10px 6px;
-    min-width: 0;
-  }
-
-  .mode-tab i {
-    font-size: 14px;
-  }
-
-  .mode-tab span {
-    font-size: 11px;
-  }
-  
-  .config-header {
-    padding: 0 0 16px 0;
-  }
-  
-  .settings-tabs {
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .tab-options {
-    flex-direction: column;
-  }
-  
-  .tab-option {
-    width: 100%;
-  }
-  
-  .empty-features {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .feature-item {
-    flex: 1;
-    min-width: 120px;
-  }
-}
 </style>

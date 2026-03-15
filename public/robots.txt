@@ -52,7 +52,7 @@ Disallow: /_nuxt/
 Disallow: /admin/
 
 # Sitemap
-Sitemap: https://fuseaitools.com/sitemap.xml
+Sitemap: https://www.fuseaitools.com/sitemap.xml
 
 
 

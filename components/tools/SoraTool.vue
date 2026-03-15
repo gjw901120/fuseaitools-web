@@ -599,7 +599,7 @@ const soraPriceText = computed(() => {
     })
   }
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 const handleSoraImagesUpdate = async (files) => {
@@ -802,7 +802,7 @@ const onSubmit = async () => {
     results.value.unshift(typeof payload === 'object' ? payload : { raw: payload })
   } catch (e) {
     console.error(e)
-    showError(e?.message || 'Request failed')
+    if (!e?.__fromApi) showError(e?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }

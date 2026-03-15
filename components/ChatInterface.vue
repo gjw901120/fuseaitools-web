@@ -238,16 +238,9 @@ async function loadChatDetailByRecordId(recordId) {
   chatDetailLoading.value = true
   try {
     const url = `/api/records/chat-detail?record-id=${encodeURIComponent(recordId)}`
-    const authToken = getAuthToken()
-    const headers = { 'Content-Type': 'application/json', Accept: 'application/json' }
-    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-    const response = await fetch(url, { method: 'GET', headers, credentials: 'include' })
-    const raw = await response.json().catch(() => null)
+    const raw = await get(url)
     if (!raw || typeof raw !== 'object') return
-    const errorCode = raw.errorCode ?? raw.error_code
-    const data = raw.data
-    if (errorCode !== '00000' || !data || typeof data !== 'object') return
-    const list = data.messageList
+    const list = raw.messageList
     if (Array.isArray(list) && list.length > 0) {
       chatMessages.value = list.map((item, i) => ({
         id: `msg-${recordId}-${i}-${Date.now()}`,
@@ -257,8 +250,8 @@ async function loadChatDetailByRecordId(recordId) {
         timestamp: new Date()
       }))
     }
-    if (data.conversionId != null && data.conversionId !== '') {
-      conversationId.value = String(data.conversionId)
+    if (raw.conversionId != null && raw.conversionId !== '') {
+      conversationId.value = String(raw.conversionId)
     }
     nextTick(() => scrollToBottom())
   } catch (e) {
@@ -340,38 +333,14 @@ const fetchModels = async () => {
   try {
     loadingModels.value = true
     const url = '/api/common/models/tree'
-    const authToken = getAuthToken()
-    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
-
     const result = await fetchWithCache('api_common_models_tree', async () => {
-      const response = await fetch(url, { method: 'GET', headers, credentials: 'include', mode: 'cors' })
-      if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
-      }
-      const data = await response.json()
-      const errorCode = data?.errorCode ?? data?.error_code
-      if (data && typeof data === 'object' && errorCode !== undefined && errorCode !== '00000') {
-        throw new Error(data?.userTip || data?.errorMessage || data?.error_message || 'Request failed')
-      }
-      if (data?.errorCode === '00000' && (!data?.data || typeof data?.data !== 'object')) {
-        throw new Error('Invalid response data structure')
-      }
-      return data
+      // useApi 已处理统一结构：成功时直接返回 data
+      return await get(url)
     })
 
-    const errorCode = result?.errorCode ?? result?.error_code
-    if (result && typeof result === 'object' && errorCode !== undefined) {
-      if (errorCode === '00000' && result.data && typeof result.data === 'object') {
-        modelsData.value = result.data
-        console.log('Models data received:', result.data)
-      } else if (errorCode !== '00000') {
-        modelsData.value = null
-      }
-    } else if (result && typeof result === 'object') {
+    if (result && typeof result === 'object') {
       modelsData.value = result
-      console.log('Models data received (direct):', result)
+      console.log('Models data received:', result)
     } else {
       modelsData.value = null
     }
@@ -747,7 +716,7 @@ const sendMessage = async () => {
   
   // 检查是否选择了模型
   if (!currentModelInfo.value) {
-    alert('Please select a model first')
+    showError('Please select a model first')
     return
   }
   

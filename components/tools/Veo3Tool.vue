@@ -11,52 +11,40 @@
       </div>
     </div>
 
-    <!-- 生成模式选择 -->
-    <div class="mode-section">
+    <!-- 生成模式选择：统一 mode-tabs-wrap 样式，主色 #3b82f6 -->
+    <div class="mode-tabs-wrap">
       <div class="mode-tabs">
-        <div 
+        <div
           class="mode-tab"
           :class="{ active: formData.generationType === 'TEXT_2_VIDEO' }"
           @click="goToVeo3Tab('TEXT_2_VIDEO')"
         >
           <i class="fas fa-font"></i>
           <span>Text to Video</span>
-          <div class="mode-info-icon" title="using only text prompts">
-            <i class="fas fa-info-circle"></i>
-          </div>
         </div>
-        <div 
+        <div
           class="mode-tab"
           :class="{ active: formData.generationType === 'FIRST_AND_LAST_FRAMES_2_VIDEO' }"
           @click="goToVeo3Tab('FIRST_AND_LAST_FRAMES_2_VIDEO')"
         >
           <i class="fas fa-images"></i>
           <span>First And Last Frames to Video</span>
-          <div class="mode-info-icon" title="Generate a transition video using two images">
-            <i class="fas fa-info-circle"></i>
-          </div>
         </div>
-        <div 
+        <div
           class="mode-tab"
           :class="{ active: formData.generationType === 'REFERENCE_2_VIDEO' }"
           @click="goToVeo3Tab('REFERENCE_2_VIDEO')"
         >
           <i class="fas fa-image"></i>
           <span>Image to Video</span>
-          <div class="mode-info-icon" title="Generated based on source images (only supports Fast model and 16:9 aspect ratio)">
-            <i class="fas fa-info-circle"></i>
-          </div>
         </div>
-        <div 
+        <div
           class="mode-tab"
           :class="{ active: formData.generationType === 'VIDEO_EXTEND' }"
           @click="goToVeo3Tab('VIDEO_EXTEND')"
         >
           <i class="fas fa-expand-arrows-alt"></i>
           <span>Video Extend</span>
-          <div class="mode-info-icon" title="This feature allows you to extend the duration or content of a video based on existing video clips and through prompt word descriptions.">
-            <i class="fas fa-info-circle"></i>
-          </div>
         </div>
       </div>
     </div>
@@ -461,7 +449,7 @@ const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 const { token } = useAuth()
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const { post, get } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
@@ -609,7 +597,7 @@ const veo3PriceText = computed(() => {
   const key = formData.generationType === 'VIDEO_EXTEND' ? 'veo3_extend' : (formData.model || 'veo3_fast')
   const credits = getPrice(key)
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 // 默认占位图文件名（仅用于展示，不参与上传与提交）
@@ -834,7 +822,7 @@ const generateVideo = async () => {
     }
   } catch (error) {
     console.error('Generation failed:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -863,7 +851,7 @@ const extendVideo = async () => {
     extendPrompt.value = ''
   } catch (error) {
     console.error('Extension failed:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }
@@ -886,7 +874,7 @@ const get1080PVideo = async () => {
     }
   } catch (error) {
     console.error('Failed to get 1080P video:', error)
-    alert('Failed to get 1080P video, please try again')
+    showError('Failed to get 1080P video, please try again')
   }
 }
 
@@ -909,9 +897,8 @@ const shareVideo = () => {
       url: displayResult.value.videoUrl
     })
   } else {
-    // 复制链接到剪贴板
     navigator.clipboard.writeText(displayResult.value.videoUrl)
-    alert('Video link copied to clipboard')
+    showSuccess('Video link copied to clipboard')
   }
 }
 </script>
@@ -929,13 +916,13 @@ const shareVideo = () => {
 }
 
 /* 工具头部 */
-.tool-header {
+ .tool-header {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
@@ -1063,92 +1050,51 @@ const shareVideo = () => {
   accent-color: #3b82f6;
 }
 
-/* 模式选择区域 */
-.mode-section {
-  margin-bottom: 24px;
-  padding: 20px;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+/* 模式选择区域：统一 mode-tabs-wrap 样式，主色 #3b82f6 */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
-.mode-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 12px;
-}
-
-/* 模式切换标签 */
 .mode-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 8px;
 }
 
 .mode-tab {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 8px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
   transition: all 0.3s ease;
-  text-align: center;
 }
 
 .mode-tab:hover {
   border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
-}
-
-.mode-tab.active {
-  border-color: #3b82f6;
-  background: #3b82f6;
-  color: white;
-}
-
-.mode-tab i {
-  font-size: 16px;
-  margin-bottom: 4px;
-}
-
-.mode-tab span {
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.mode-info-icon {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  cursor: help;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
-}
-
-.mode-tab.active .mode-info-icon {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.mode-info-icon:hover {
   color: #3b82f6;
 }
 
-.mode-tab.active .mode-info-icon:hover {
-  color: white;
+.mode-tab.active {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+}
+
+.mode-tab i {
+  font-size: 1em;
+}
+
+.mode-tab span {
+  font-weight: 500;
 }
 
 .mode-hint {
@@ -1238,7 +1184,7 @@ const shareVideo = () => {
 }
 
 .price-tag {
-  font-size: 12px;
+  font-size: 15px;
   opacity: 0.8;
   margin-left: 4px;
 }
@@ -1490,22 +1436,13 @@ const shareVideo = () => {
   }
   
   .mode-tabs {
-    grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
   
   .mode-tab {
-    padding: 10px 6px;
+    padding: 8px 12px;
+    font-size: 13px;
   }
-  
-  .mode-tab i {
-    font-size: 14px;
-  }
-  
-  .mode-tab span {
-    font-size: 11px;
-  }
-  
   
   .video-actions {
     flex-direction: column;

@@ -101,6 +101,10 @@
           
           <!-- GPT 4o Image 工具组件 -->
           <GPT4oImageTool v-else-if="getSelectedToolInfo().name === 'GPT 4o Image'" />
+          <!-- GPT Image 工具组件 -->
+          <GPTImageTool v-else-if="getSelectedToolInfo().name === 'GPT Image'" />
+          <!-- Ideogram 工具组件 -->
+          <IdeogramTool v-else-if="getSelectedToolInfo().name === 'Ideogram'" />
           
           <!-- Flux Kontext 工具组件 -->
           <FluxKontextTool v-else-if="getSelectedToolInfo().name === 'Flux Kontext'" />
@@ -120,6 +124,10 @@
           <WanTool v-else-if="getSelectedToolInfo().name === 'Wan'" />
           <!-- Seedance 工具组件 -->
           <SeedanceTool v-else-if="getSelectedToolInfo().name === 'Seedance'" />
+          <!-- Hailuo 工具组件 -->
+          <HailuoTool v-else-if="getSelectedToolInfo().name === 'Hailuo'" />
+          <!-- Kling 工具组件 -->
+          <KlingTool v-else-if="getSelectedToolInfo().name === 'Kling'" />
           <!-- Seedream 工具组件 -->
           <SeedreamTool v-else-if="getSelectedToolInfo().name === 'Seedream'" />
           <!-- Qwen 工具组件 -->
@@ -204,6 +212,8 @@ import RunwayTool from '~/components/tools/RunwayTool.vue'
 import LumaTool from '~/components/tools/LumaTool.vue'
 import MidjourneyTool from '~/components/tools/MidjourneyTool.vue'
 import GPT4oImageTool from '~/components/tools/GPT4oImageTool.vue'
+import GPTImageTool from '~/components/tools/GPTImageTool.vue'
+import IdeogramTool from '~/components/tools/IdeogramTool.vue'
 import NanoBananaTool from '~/components/tools/NanoBananaTool.vue'
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
 import FluxKontextTool from '~/components/tools/FluxKontextTool.vue'
@@ -211,6 +221,8 @@ import SunoTool from '~/components/tools/SunoTool.vue'
 import SoraTool from '~/components/tools/SoraTool.vue'
 import WanTool from '~/components/tools/WanTool.vue'
 import SeedanceTool from '~/components/tools/SeedanceTool.vue'
+import HailuoTool from '~/components/tools/HailuoTool.vue'
+import KlingTool from '~/components/tools/KlingTool.vue'
 import SeedreamTool from '~/components/tools/SeedreamTool.vue'
 import QwenTool from '~/components/tools/QwenTool.vue'
 import { useRouter } from 'vue-router'
@@ -227,6 +239,8 @@ const toolRouteMap = {
   'Luma': '/home/luma/generate',
   'Midjourney': '/home/midjourney/imagine',
   'GPT 4o Image': '/home/gpt-4o-image/generate',
+  'GPT Image': '/home/gpt-image/text-to-image',
+  'Ideogram': '/home/ideogram/v3-text-to-image',
   'Flux Kontext': '/home/flux-kontext/generate',
   'Nano Banana': '/home/nano-banana/generate',
   'Elevenlabs': '/home/elevenlabs/multilingual-v2',
@@ -234,6 +248,8 @@ const toolRouteMap = {
   'Sora': '/home/sora/text-to-video',
   'Wan': '/home/wan/text-to-video',
   'Seedance': '/home/seedance/v1-lite-text-to-video',
+  'Hailuo': '/home/hailuo/image-to-video-pro',
+  'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
   'Seedream': '/home/seedream/1-5-lite-text-to-image',
   'Qwen': '/home/qwen/text-to-image',
   // Chat tools
@@ -519,6 +535,24 @@ const allTools = ref([
     usageCount: 750
   },
   {
+    id: 16,
+    name: 'GPT Image',
+    type: 'image',
+    description: 'GPT Image is OpenAI\'s flagship image generation model for high-quality image creation and precise image editing, with strong instruction following and improved text rendering.',
+    icon: '/tools-logo/GPTImage.png',
+    rating: 4.7,
+    usageCount: 0
+  },
+  {
+    id: 17,
+    name: 'Ideogram',
+    type: 'image',
+    description: 'Ideogram  is  image generation model, offering text-to-image, image editing, reframing, and remixing with improved consistency and creative control.',
+    icon: '/tools-logo/Ideogram.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
     id: 7,
     name: 'Flux Kontext',
     type: 'image',
@@ -609,6 +643,24 @@ const allTools = ref([
     type: 'video',
     description: 'Seedance v1 Lite & Pro：文生视频、图生视频',
     icon: '/tools-logo/Seedance.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
+    id: 21,
+    name: 'Hailuo',
+    type: 'video',
+    description: 'Hailuo is MiniMax\'s high-fidelity AI video generation model designed to create realistic motion, expressive characters, and cinematic visuals. It supports both text-to-video and image-to-video, handling complex movements, lighting changes, and detailed facial expressions with stability and consistency.',
+    icon: '/tools-logo/Hailuo.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
+    id: 22,
+    name: 'Kling',
+    type: 'video',
+    description: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.',
+    icon: '/tools-logo/Kling.png',
     rating: 4.6,
     usageCount: 0
   },
@@ -960,6 +1012,19 @@ watch(() => route.path, (newPath) => {
     '/home/midjourney/vary': 'Midjourney',
     '/home/gpt-4o-image': 'GPT 4o Image',
     '/home/gpt-4o-image/generate': 'GPT 4o Image',
+    '/home/gpt-image': 'GPT Image',
+    '/home/gpt-image/generate': 'GPT Image',
+    '/home/gpt-image/text-to-image': 'GPT Image',
+    '/home/gpt-image/image-to-image': 'GPT Image',
+    '/home/ideogram': 'Ideogram',
+    '/home/ideogram/generate': 'Ideogram',
+    '/home/ideogram/v3-text-to-image': 'Ideogram',
+    '/home/ideogram/v3-edit': 'Ideogram',
+    '/home/ideogram/v3-remix': 'Ideogram',
+    '/home/ideogram/v3-reframe': 'Ideogram',
+    '/home/ideogram/character': 'Ideogram',
+    '/home/ideogram/character-edit': 'Ideogram',
+    '/home/ideogram/character-remix': 'Ideogram',
     '/home/flux-kontext': 'Flux Kontext',
     '/home/flux-kontext/generate': 'Flux Kontext',
     '/home/nano-banana': 'Nano Banana',

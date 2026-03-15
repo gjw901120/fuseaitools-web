@@ -53,6 +53,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+const { showError } = useToast()
 
 const props = defineProps({
   inputId: {
@@ -115,19 +116,19 @@ const validateAndSetFiles = (files) => {
   for (const file of files) {
     // 检查文件数量限制
     if (uploadedFiles.value.length + validFiles.length >= props.maxFiles) {
-      alert(`最多只能上传 ${props.maxFiles} 个文件`)
+      showError(`You can upload at most ${props.maxFiles} file(s)`)
       break
     }
     
     // 检查文件大小
     if (file.size > props.maxFileSize) {
-      alert(`文件 ${file.name} 大小不能超过 ${formatFileSize(props.maxFileSize)}`)
+      showError(`File ${file.name} size must not exceed ${formatFileSize(props.maxFileSize)}`)
       continue
     }
     
     // 检查文件类型
     if (props.accept !== '*/*' && !isFileTypeAccepted(file)) {
-      alert(`文件 ${file.name} 格式不支持`)
+      showError(`File format of ${file.name} is not supported`)
       continue
     }
     

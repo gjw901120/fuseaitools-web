@@ -11,23 +11,18 @@
       </div>
     </div>
 
-    <!-- 分类切换：Imagine | Upscale | Vary（样式参考 Nano Banana） -->
-    <div class="function-selection-section">
-      <div class="function-tabs">
-        <div 
+    <!-- 分类切换：Imagine | Upscale | Vary，样式与 Ideogram/Nano Banana 一致 -->
+    <div class="mode-tabs-wrap">
+      <div class="mode-tabs">
+        <div
           v-for="cat in categoryOptions"
           :key="cat.id"
-          class="function-tab"
+          class="mode-tab"
           :class="{ active: activeCategory === cat.id }"
           @click="goToMidjourneyTab(cat.id)"
         >
-          <div class="function-icon">
-            <i :class="cat.icon"></i>
-          </div>
-          <div class="function-info">
-            <div class="function-name">{{ cat.name }}</div>
-            <div class="function-description">{{ cat.description }}</div>
-          </div>
+          <i :class="cat.icon"></i>
+          <span>{{ cat.name }}</span>
         </div>
       </div>
     </div>
@@ -39,6 +34,7 @@
         <!-- Imagine 表单 -->
         <form v-if="activeCategory === 'imagine'" class="config-form" @submit.prevent="onSubmitImagine">
           <fieldset class="config-fieldset" :disabled="loading || isDetailView">
+          <p class="category-desc">Create a new image generation task using the Midjourney AI model.</p>
           <div class="form-group">
             <label>Task Type *</label>
             <div class="option-btn-group">
@@ -326,7 +322,7 @@ const midjourneyPriceText = computed(() => {
   const key = MIDJOURNEY_PRICE_KEYS[activeCategory.value] || 'midjourney_imagine'
   const credits = getPrice(key)
   const str = formatCredits(credits)
-  return str ? ` (${str})` : ''
+  return str ? ` · ${str} credits` : ''
 })
 
 const loading = ref(false)
@@ -614,7 +610,7 @@ const onSubmitImagine = async () => {
     form.fileUrls = []
   } catch (e) {
     pushResult({ error: e?.message || String(e) })
-    showError(e?.message || 'Request failed')
+    if (!e?.__fromApi) showError(e?.message || 'Request failed')
   } finally {
     loading.value = false
   }
@@ -643,7 +639,7 @@ const onSubmitUpscale = async () => {
     upscaleForm.imageIndex = 0
   } catch (e) {
     pushResult({ error: e?.message || String(e) })
-    showError(e?.message || 'Request failed')
+    if (!e?.__fromApi) showError(e?.message || 'Request failed')
   } finally {
     loading.value = false
   }
@@ -672,7 +668,7 @@ const onSubmitVary = async () => {
     varyForm.imageIndex = 1
   } catch (e) {
     pushResult({ error: e?.message || String(e) })
-    showError(e?.message || 'Request failed')
+    if (!e?.__fromApi) showError(e?.message || 'Request failed')
   } finally {
     loading.value = false
   }
@@ -766,153 +762,57 @@ const getResultType = (data) => {
   border-radius: 4px;
 }
 
-/* 功能选择区域样式 */
-.function-selection-section {
-  background: white;
+/* 分类切换：与 Ideogram/Nano Banana 一致 */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
-  padding: 20px 30px;
+  margin-bottom: 20px;
 }
 
-.function-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.mode-tabs-wrap .mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 0;
 }
 
-.function-tab {
-  display: flex;
-  align-items: center;
-  padding: 6px 9px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  height: 63px;
-}
-
-.function-tab:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.function-tab.active {
-  background: #667eea;
-  border-color: #667eea;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.function-icon {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  margin-right: 6px;
-  flex-shrink: 0;
-}
-
-.function-tab.active .function-icon {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.function-icon i {
-  font-size: 15px;
-  color: #667eea;
-}
-
-.function-tab.active .function-icon i {
-  color: white;
-}
-
-.function-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.function-name {
-  font-size: 13.5px;
-  font-weight: 600;
-  margin-bottom: 1px;
-  color: #1e293b;
-}
-
-.function-tab.active .function-name {
-  color: white;
-}
-
-.function-description {
-  font-size: 10.5px;
+.mode-tabs-wrap .mode-tab {
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
   color: #64748b;
-  line-height: 1.1;
-}
-
-.function-tab.active .function-description {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.function-info-icon {
-  width: 18px;
-  height: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  flex-shrink: 0;
+  gap: 6px;
 }
 
-.function-tab.active .function-info-icon {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.function-info-icon:hover {
+.mode-tabs-wrap .mode-tab:hover {
+  border-color: #667eea;
   color: #667eea;
 }
 
-.function-tab.active .function-info-icon:hover {
-  color: white;
+.mode-tabs-wrap .mode-tab.active {
+  background: #667eea;
+  color: #fff;
+  border-color: #667eea;
 }
 
-/* 功能选择区域响应式设计 */
-@media (max-width: 1200px) {
-  .function-tabs {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* 与 Ideogram/Nano Banana 一致：图标和文字不额外撑高 */
+.mode-tabs-wrap .mode-tab i {
+  font-size: 1em;
+  margin-bottom: 0;
+}
+.mode-tabs-wrap .mode-tab span {
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .function-tabs {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .function-tab {
-    height: auto;
-    padding: 4.5px 6px;
-  }
-  
-  .function-icon {
-    width: 27px;
-    height: 27px;
-    margin-right: 4.5px;
-  }
-  
-  .function-icon i {
-    font-size: 12px;
-  }
-  
-  .function-name {
-    font-size: 12px;
-  }
-  
-  .function-description {
-    font-size: 9px;
-  }
+  .mode-tabs-wrap .mode-tabs { gap: 6px; }
+  .mode-tabs-wrap .mode-tab { padding: 8px 12px; font-size: 13px; }
 }
 
 .main-content {
@@ -927,6 +827,7 @@ const getResultType = (data) => {
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
 
 .tool-avatar {

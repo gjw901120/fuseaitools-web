@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <div class="mode-section">
-      <div class="mode-tabs mode-tabs-five">
+    <div class="mode-tabs-wrap">
+      <div class="mode-tabs">
         <div
           v-for="m in modeList"
           :key="m.id"
@@ -279,7 +279,7 @@ const seedancePriceText = computed(() => {
     quality: formData.resolution
   })
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 const imageUploadRef = ref(null)
@@ -473,7 +473,7 @@ async function generate() {
     const url = data?.videoUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)
     result.value = url ? { videoUrl: url } : data
   } catch (err) {
-    showError(err?.message || 'Generation failed')
+    if (!err?.__fromApi) showError(err?.message || 'Generation failed')
   } finally {
     isGenerating.value = false
   }
@@ -519,17 +519,46 @@ watch(mode, (m) => {
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .tool-details p.tool-description { line-height: 1.55; }
 
-.mode-section { margin-bottom: 24px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
-.mode-tabs { display: grid; gap: 8px; }
-.mode-tabs-five { grid-template-columns: repeat(5, 1fr); }
-.mode-tab {
-  display: flex; flex-direction: column; align-items: center; padding: 10px 6px;
-  background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: center;
+/* 模式选择区域：统一 mode-tabs-wrap 样式，主色 #3b82f6 */
+.mode-tabs-wrap {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
 }
-.mode-tab:hover { border-color: #3b82f6; background: rgba(59,130,246,0.05); }
-.mode-tab.active { border-color: #3b82f6; background: #3b82f6; color: #fff; }
-.mode-tab i { font-size: 14px; margin-bottom: 2px; }
-.mode-tab span { font-size: 11px; font-weight: 500; }
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.mode-tab {
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.mode-tab:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.mode-tab.active {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+}
+.mode-tab i {
+  font-size: 1em;
+}
+.mode-tab span {
+  font-weight: 500;
+}
 
 .main-content { display: flex; flex: 1; min-height: 0; gap: 20px; }
 .config-panel {
@@ -594,7 +623,7 @@ watch(mode, (m) => {
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; }
 
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
-.price-tag { font-size: 12px; opacity: 0.8; margin-left: 4px; }
+.price-tag { font-size: 15px; opacity: 0.8; margin-left: 4px; }
 .btn-primary {
   width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
   border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -623,14 +652,18 @@ watch(mode, (m) => {
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 
 @media (max-width: 1200px) {
-  .mode-tabs-five { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; }
   .config-panel, .result-panel { width: 100%; }
-  .mode-tabs-five { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .mode-tabs-five { grid-template-columns: 1fr; }
+  .mode-tabs {
+    gap: 6px;
+  }
+  .mode-tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }
 </style>

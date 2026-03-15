@@ -1,10 +1,12 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useState } from 'nuxt/app'
+import { useApi } from '~/composables/useApi'
 
 export const useHomeLayout = () => {
   const router = useRouter()
   const route = useRoute()
+  const { get } = useApi()
 
   // API category -> 路由（历史记录点击跳转，仅用分类即可）
   const categoryToRoute = {
@@ -18,6 +20,8 @@ export const useHomeLayout = () => {
     'Luma': '/home/luma/generate',
     'Midjourney': '/home/midjourney/imagine',
     'GPT 4o Image': '/home/gpt-4o-image/generate',
+    'GPT Image': '/home/gpt-image/text-to-image',
+    'Ideogram': '/home/ideogram/v3-text-to-image',
     'Flux Kontext': '/home/flux-kontext/generate',
     'Nano Banana': '/home/nano-banana/generate',
     'Suno': '/home/suno/generate',
@@ -26,6 +30,8 @@ export const useHomeLayout = () => {
     'Sora': '/home/sora/text-to-video',
     'Wan': '/home/wan/text-to-video',
     'Seedance': '/home/seedance/v1-lite-text-to-video',
+    'Hailuo': '/home/hailuo/image-to-video-pro',
+    'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/1-5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image'
   }
@@ -33,8 +39,8 @@ export const useHomeLayout = () => {
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
-    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'video', 'Seedance': 'video',
-    'Midjourney': 'image', 'GPT 4o Image': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image',
+    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'video', 'Seedance': 'video', 'Hailuo': 'video',
+    'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
   }
 
@@ -51,10 +57,14 @@ export const useHomeLayout = () => {
     'Sora': '/tools-logo/sora.png',
     'Wan': '/tools-logo/Wan.png',
     'Seedance': '/tools-logo/Seedance.png',
+    'Hailuo': '/tools-logo/Hailuo.png',
+    'Kling': '/tools-logo/Kling.png',
     'Seedream': '/tools-logo/Seedream.png',
     'Qwen': '/tools-logo/QWen.png',
     'Midjourney': '/tools-logo/Midjourney.png',
     'GPT 4o Image': '/tools-logo/ChatGPT4OImage.png',
+    'GPT Image': '/tools-logo/GPTImage.png',
+    'Ideogram': '/tools-logo/Ideogram.png',
     'Flux Kontext': '/tools-logo/FluxKontext.png',
     'Nano Banana': '/tools-logo/NanoBanana.png',
     'Suno': '/tools-logo/suno.png',
@@ -69,6 +79,8 @@ export const useHomeLayout = () => {
     'Luma': '/home/luma/generate',
     'Midjourney': '/home/midjourney/imagine',
     'GPT 4o Image': '/home/gpt-4o-image/generate',
+    'GPT Image': '/home/gpt-image/text-to-image',
+    'Ideogram': '/home/ideogram/v3-text-to-image',
     'Flux Kontext': '/home/flux-kontext/generate',
     'Nano Banana': '/home/nano-banana/generate',
     'Elevenlabs': '/home/elevenlabs/multilingual-v2',
@@ -76,6 +88,8 @@ export const useHomeLayout = () => {
     'Sora': '/home/sora/text-to-video',
     'Wan': '/home/wan/text-to-video',
     'Seedance': '/home/seedance/v1-lite-text-to-video',
+    'Hailuo': '/home/hailuo/image-to-video-pro',
+    'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/1-5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image',
     // Chat tools
@@ -179,6 +193,24 @@ export const useHomeLayout = () => {
       usageCount: 750
     },
     {
+      id: 16,
+      name: 'GPT Image',
+      type: 'image',
+      description: 'GPT Image is OpenAI\'s flagship image generation model for high-quality image creation and precise image editing, with strong instruction following and improved text rendering.',
+      icon: '/tools-logo/ChatGpt.png',
+      rating: 4.7,
+      usageCount: 0
+    },
+    {
+      id: 17,
+      name: 'Ideogram',
+      type: 'image',
+      description: 'Ideogram  is  image generation model, offering text-to-image, image editing, reframing, and remixing with improved consistency and creative control.',
+      icon: '/tools-logo/Ideogram.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
       id: 7,
       name: 'Flux Kontext',
       type: 'image',
@@ -256,7 +288,7 @@ export const useHomeLayout = () => {
       id: 16,
       name: 'Sora',
       type: 'video',
-      description: 'Sora 2 视频生成（Text-to-Video / Image-to-Video）',
+      description: 'Sora 2 video generation (Text-to-Video / Image-to-Video)',
       icon: '/tools-logo/Veo.png',
       rating: 4.7,
       usageCount: 0
@@ -276,6 +308,24 @@ export const useHomeLayout = () => {
       type: 'video',
       description: 'Seedance v1 Lite & Pro: text-to-video, image-to-video',
       icon: '/tools-logo/Seedance.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
+      id: 21,
+      name: 'Hailuo',
+      type: 'video',
+      description: 'Hailuo is MiniMax\'s high-fidelity AI video generation model designed to create realistic motion, expressive characters, and cinematic visuals. It supports both text-to-video and image-to-video, handling complex movements, lighting changes, and detailed facial expressions with stability and consistency.',
+      icon: '/tools-logo/Hailuo.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
+      id: 22,
+      name: 'Kling',
+      type: 'video',
+      description: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.',
+      icon: '/tools-logo/Kling.png',
       rating: 4.6,
       usageCount: 0
     },
@@ -367,6 +417,17 @@ export const useHomeLayout = () => {
     'sora-2-pro-image-to-video': '/home/sora/pro-image-to-video',
     'sora-watermark-remover': '/home/sora/watermark-remover',
     'sora-2-pro-storyboard': '/home/sora/pro-storyboard',
+    // Hailuo（二级路由）
+    '2-3-image-to-video-pro': '/home/hailuo/image-to-video-pro',
+    '2-3-image-to-video-standard': '/home/hailuo/image-to-video-standard',
+    'v2-5-turbo-image-to-video-pro': '/home/kling/v2-5-turbo-image-to-video-pro',
+    'v2-5-turbo-text-to-video-pro': '/home/kling/v2-5-turbo-text-to-video-pro',
+    '2-6-text-to-video': '/home/kling/v2-6-text-to-video',
+    '2-6-image-to-video': '/home/kling/v2-6-image-to-video',
+    '2-6-motion-control': '/home/kling/v2-6-motion-control',
+    'ai-avatar-standard': '/home/kling/ai-avatar-standard',
+    'ai-avatar-pro': '/home/kling/ai-avatar-pro',
+    '3-0-video': '/home/kling/v3-0-video',
     // ElevenLabs（三级路由）
     elevenlabs_text_to_speech_multilingual: '/home/elevenlabs/multilingual-v2',
     elevenlabs_text_to_speech_turbo: '/home/elevenlabs/turbo-2-5',
@@ -465,17 +526,6 @@ export const useHomeLayout = () => {
   }
 
   // 从 API 加载历史记录（10 条一页）
-  const getAuthToken = () => {
-    if (typeof window === 'undefined') return null
-    try {
-      const { token } = useAuth()
-      if (token?.value) return token.value
-      return localStorage.getItem('auth_token')
-    } catch {
-      return localStorage.getItem('auth_token')
-    }
-  }
-
   const mapHistoryItem = (item) => {
     const category = (item.category || '').trim()
     const type = categoryToType[category] || 'chat'
@@ -508,17 +558,9 @@ export const useHomeLayout = () => {
     isLoading.value = true
     try {
       const url = `/api/records/list?page=${currentPage.value}&size=${itemsPerPage}`
-      const headers = { Accept: 'application/json' }
-      const token = getAuthToken()
-      if (token) headers['Authorization'] = `Bearer ${token}`
-      const response = await fetch(url, { method: 'GET', headers, credentials: 'include' })
-      const raw = await response.json().catch(() => null)
-      if (!raw || typeof raw !== 'object') {
-        historyHasMore.value = false
-        return
-      }
-      const data = raw.data
-      const list = Array.isArray(data) ? data : []
+      const raw = await get(url)
+      // useApi 已将 { errorCode, data } 解包为 data，这里 raw 可能是数组或对象
+      const list = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : [])
       const mapped = list.map(mapHistoryItem)
       if (isFirstPage) {
         usageHistory.value = mapped
@@ -572,6 +614,19 @@ export const useHomeLayout = () => {
       '/home/midjourney/vary': 'Midjourney',
       '/home/gpt-4o-image': 'GPT 4o Image',
       '/home/gpt-4o-image/generate': 'GPT 4o Image',
+      '/home/gpt-image': 'GPT Image',
+      '/home/gpt-image/generate': 'GPT Image',
+      '/home/gpt-image/text-to-image': 'GPT Image',
+      '/home/gpt-image/image-to-image': 'GPT Image',
+      '/home/ideogram': 'Ideogram',
+      '/home/ideogram/generate': 'Ideogram',
+      '/home/ideogram/v3-text-to-image': 'Ideogram',
+      '/home/ideogram/v3-edit': 'Ideogram',
+      '/home/ideogram/v3-remix': 'Ideogram',
+      '/home/ideogram/v3-reframe': 'Ideogram',
+      '/home/ideogram/character': 'Ideogram',
+      '/home/ideogram/character-edit': 'Ideogram',
+      '/home/ideogram/character-remix': 'Ideogram',
       '/home/flux-kontext': 'Flux Kontext',
       '/home/flux-kontext/generate': 'Flux Kontext',
       '/home/nano-banana': 'Nano Banana',
@@ -608,6 +663,18 @@ export const useHomeLayout = () => {
       '/home/seedance/v1-pro-text-to-video': 'Seedance',
       '/home/seedance/v1-pro-image-to-video': 'Seedance',
       '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
+      '/home/hailuo': 'Hailuo',
+      '/home/hailuo/image-to-video-pro': 'Hailuo',
+      '/home/hailuo/image-to-video-standard': 'Hailuo',
+      '/home/kling': 'Kling',
+      '/home/kling/v2-5-turbo-image-to-video-pro': 'Kling',
+      '/home/kling/v2-5-turbo-text-to-video-pro': 'Kling',
+      '/home/kling/v2-6-text-to-video': 'Kling',
+      '/home/kling/v2-6-image-to-video': 'Kling',
+      '/home/kling/v2-6-motion-control': 'Kling',
+      '/home/kling/ai-avatar-standard': 'Kling',
+      '/home/kling/ai-avatar-pro': 'Kling',
+      '/home/kling/v3-0-video': 'Kling',
       '/home/seedream': 'Seedream',
       '/home/seedream/1-5-lite-text-to-image': 'Seedream',
       '/home/seedream/2-5-lite-image-to-image': 'Seedream',

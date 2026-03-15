@@ -318,7 +318,7 @@ watch(() => route.query['record-id'], (recordId) => {
 const lumaPriceText = computed(() => {
   const credits = getPrice('Luma')
   const str = formatCredits(credits)
-  return str ? `(${str})` : ''
+  return str ? `· ${str} credits` : ''
 })
 
 // 处理视频上传：选择后立即调用上传服务，与 Runway Aleph 一致
@@ -401,7 +401,7 @@ const modifyVideo = async () => {
     clearReferenceVideo()
   } catch (error) {
     console.error('Failed to modify video:', error)
-    showError(error?.message || 'Request failed')
+    if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
   }

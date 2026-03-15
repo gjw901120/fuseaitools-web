@@ -1,9 +1,14 @@
 /**
  * 统一的 API 请求封装
- * 处理统一的响应结构：{ errorCode, errorMessage, data }
- * 自动在登录状态下添加认证头
+ * - 处理统一的响应结构：{ errorCode, errorMessage, data }
+ * - 自动在登录状态下添加认证头
+ * - 根据运行环境与 runtimeConfig.public.apiBase 选择实际后端基地址：
+ *   - 生产：强制走 https://api.fuseaitools.com/**（通过配置 apiBase）
+ *   - 本地开发：走 http://127.0.0.1:8080/**，不再通过 http://localhost:3000/api 代理
  */
 export const useApi = () => {
+  const runtimeConfig = useRuntimeConfig()
+  const apiBase = runtimeConfig.public?.apiBase || ''
   /**
    * 获取认证 token
    * @returns {string|null} 返回 token 或 null
@@ -37,6 +42,26 @@ export const useApi = () => {
       // 获取认证 token
       const token = getAuthToken()
       
+      // 计算实际请求 URL：
+      // - 绝对地址（http/https 开头）直接使用
+      // - 相对地址（通常是以 /api/ 开头）在有 apiBase 时改为直连后端：
+      //   - 例如：/api/records/list -> https://api.fuseaitools.com/api/records/list
+      let finalUrl = url
+      if (typeof url === 'string' && !/^https?:\/\//i.test(url) && apiBase) {
+        // 统一去掉 apiBase 末尾的 /
+        const base = apiBase.replace(/\/$/, '')
+        if (url.startsWith('/api/')) {
+          // 如果 apiBase 已包含 /api，则只拼接后半部分
+          if (base.endsWith('/api')) {
+            finalUrl = base + url.replace(/^\/api/, '')
+          } else {
+            finalUrl = base + url
+          }
+        } else {
+          finalUrl = base + url
+        }
+      }
+
       // 在客户端使用 fetch，服务端使用 $fetch
       const fetchOptions = {
         ...options,
@@ -58,7 +83,7 @@ export const useApi = () => {
         fetchOptions.mode = 'cors'
       }
       
-      const response = await $fetch(url, fetchOptions)
+      const response = await $fetch(finalUrl, fetchOptions)
 
       // 检查响应结构
       if (response && typeof response === 'object' && 'errorCode' in response) {

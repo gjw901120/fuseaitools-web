@@ -138,24 +138,27 @@ const currentPage = ref(1)
 const articlesPerPage = ref(10)
 
 // 调用后端 /api/news/list，返回 { errorCode, errorMessage, data: { records, total, current, size, pages } }
-const { data: newsData, pending, error, refresh } = await useFetch('/api/news/list', {
-  query: computed(() => {
-    const categoryParam = selectedCategory.value !== 'All' ? CATEGORY_VALUES[selectedCategory.value] : undefined
-    return {
-      page: currentPage.value,
-      size: articlesPerPage.value,
-      ...(categoryParam != null ? { category: categoryParam } : {})
-    }
-  })
+const { data: newsData, pending, error, refresh } = await useAsyncData('news-list', async () => {
+  const { get } = useApi()
+  const categoryParam = selectedCategory.value !== 'All' ? CATEGORY_VALUES[selectedCategory.value] : undefined
+  const query = {
+    page: currentPage.value,
+    size: articlesPerPage.value,
+    ...(categoryParam != null ? { category: categoryParam } : {})
+  }
+  const queryString = new URLSearchParams(Object.entries(query).filter(([, v]) => v != null)).toString()
+  const url = `/api/news/list?${queryString}`
+  // useApi 会根据 runtimeConfig.public.apiBase 重写为 api.fuseaitools.com 或 127.0.0.1:8080
+  return await get(url)
 })
 
-// 接口失败时（errorCode !== '00000'）视为无数据
-const apiFailed = computed(() => newsData.value?.errorCode && newsData.value.errorCode !== '00000')
+// 接口失败由 useAsyncData 的 error 处理；这里不再根据 errorCode 判定
+const apiFailed = computed(() => false)
 
 // 适配列表：后端 record 为 { id, title, category, path, description }，无 image/publishDate/readTime 时不展示
 const articles = computed(() => {
   if (apiFailed.value) return []
-  const raw = newsData.value?.data?.records || []
+  const raw = newsData.value?.records || []
   if (!Array.isArray(raw)) return []
   return raw.map((r) => ({
     id: r.id,
@@ -172,7 +175,7 @@ const articles = computed(() => {
 const categories = computed(() => ['All', 'Chat', 'Image', 'Audio', 'Video'])
 
 const pagination = computed(() => {
-  const d = newsData.value?.data
+  const d = newsData.value
   if (!d) return { currentPage: 1, totalPages: 1, totalItems: 0, hasMore: false }
   const total = Number(d.total) || 0
   const current = Number(d.current) || 1

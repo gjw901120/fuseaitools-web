@@ -1668,7 +1668,7 @@ const _lazy_hmLe3_ = () => Promise.resolve().then(function () { return textToSpe
 const _lazy_RVFVuq = () => Promise.resolve().then(function () { return addInstrumental_post$1; });
 const _lazy_oW5mok = () => Promise.resolve().then(function () { return addVocals_post$1; });
 const _lazy_cZyyQR = () => Promise.resolve().then(function () { return extend_post$5; });
-const _lazy_mnZvgB = () => Promise.resolve().then(function () { return generate_post$j; });
+const _lazy_mnZvgB = () => Promise.resolve().then(function () { return generate_post$l; });
 const _lazy_NpQTCQ = () => Promise.resolve().then(function () { return uploadCover_post$1; });
 const _lazy_wcOIaV = () => Promise.resolve().then(function () { return uploadExtend_post$1; });
 const _lazy_9_jlhG = () => Promise.resolve().then(function () { return chatgpt_post$1; });
@@ -1678,8 +1678,18 @@ const _lazy_xBiUVd = () => Promise.resolve().then(function () { return gemini_po
 const _lazy_XVNUbh = () => Promise.resolve().then(function () { return batchUpload_post$1; });
 const _lazy_Vz7ILQ = () => Promise.resolve().then(function () { return price_get$1; });
 const _lazy_eQ36Mn = () => Promise.resolve().then(function () { return tree_get$1; });
-const _lazy_67lOnD = () => Promise.resolve().then(function () { return generate_post$h; });
-const _lazy_eKX6sF = () => Promise.resolve().then(function () { return generate_post$f; });
+const _lazy_67lOnD = () => Promise.resolve().then(function () { return generate_post$j; });
+const _lazy_KMWTf_ = () => Promise.resolve().then(function () { return imageToImage_post$3; });
+const _lazy_xdmaRS = () => Promise.resolve().then(function () { return textToImage_post$3; });
+const _lazy_eKX6sF = () => Promise.resolve().then(function () { return generate_post$h; });
+const _lazy_w7Xo6v = () => Promise.resolve().then(function () { return characterEdit_post$1; });
+const _lazy_qU7eOq = () => Promise.resolve().then(function () { return characterRemix_post$1; });
+const _lazy_pHqBcQ = () => Promise.resolve().then(function () { return character_post$1; });
+const _lazy_XK6oKJ = () => Promise.resolve().then(function () { return generate_post$f; });
+const _lazy_lv5TwP = () => Promise.resolve().then(function () { return v3Edit_post$1; });
+const _lazy_taHZP7 = () => Promise.resolve().then(function () { return v3Reframe_post$1; });
+const _lazy_G3_mul = () => Promise.resolve().then(function () { return v3Remix_post$1; });
+const _lazy_ngBgjT = () => Promise.resolve().then(function () { return v3TextToImage_post$1; });
 const _lazy_qqfBr2 = () => Promise.resolve().then(function () { return generate_post$d; });
 const _lazy_FTuawy = () => Promise.resolve().then(function () { return edit_post$1; });
 const _lazy_guMvLE = () => Promise.resolve().then(function () { return generate_post$b; });
@@ -1713,6 +1723,16 @@ const _lazy_J0ejHy = () => Promise.resolve().then(function () { return refreshTi
 const _lazy_9KA_u2 = () => Promise.resolve().then(function () { return creditsDetail_get$1; });
 const _lazy_FeFrNq = () => Promise.resolve().then(function () { return loginByEmail_post$1; });
 const _lazy_qjMUPF = () => Promise.resolve().then(function () { return sendEmailCode_post$1; });
+const _lazy_qOz6pW = () => Promise.resolve().then(function () { return imageToVideoPro_post$1; });
+const _lazy_jTz2Ya = () => Promise.resolve().then(function () { return imageToVideoStandard_post$1; });
+const _lazy_wmPuCb = () => Promise.resolve().then(function () { return _26ImageToVideo_post$1; });
+const _lazy_tPVUKN = () => Promise.resolve().then(function () { return _26MotionControl_post$1; });
+const _lazy_rNnSXt = () => Promise.resolve().then(function () { return _26TextToVideo_post$1; });
+const _lazy_ku4ezm = () => Promise.resolve().then(function () { return _30Video_post$1; });
+const _lazy_DpYPJk = () => Promise.resolve().then(function () { return aiAvatarPro_post$1; });
+const _lazy_ogCNsr = () => Promise.resolve().then(function () { return aiAvatarStandard_post$1; });
+const _lazy_eEbYT_ = () => Promise.resolve().then(function () { return v25TurboImageToVideoPro_post$1; });
+const _lazy_3igsmN = () => Promise.resolve().then(function () { return v25TurboTextToVideoPro_post$1; });
 const _lazy_jQelEb = () => Promise.resolve().then(function () { return generate_post$9; });
 const _lazy_Aq6nFl = () => Promise.resolve().then(function () { return aleph_post$1; });
 const _lazy_TashgN = () => Promise.resolve().then(function () { return extend_post$3; });
@@ -1754,7 +1774,17 @@ const handlers = [
   { route: '/api/common/models/price', handler: _lazy_Vz7ILQ, lazy: true, middleware: false, method: "get" },
   { route: '/api/common/models/tree', handler: _lazy_eQ36Mn, lazy: true, middleware: false, method: "get" },
   { route: '/api/image/flux-kontext/generate', handler: _lazy_67lOnD, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/gpt-image/image-to-image', handler: _lazy_KMWTf_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/gpt-image/text-to-image', handler: _lazy_xdmaRS, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt4o-image/generate', handler: _lazy_eKX6sF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/character-edit', handler: _lazy_w7Xo6v, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/character-remix', handler: _lazy_qU7eOq, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/character', handler: _lazy_pHqBcQ, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/generate', handler: _lazy_XK6oKJ, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/v3-edit', handler: _lazy_lv5TwP, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/v3-reframe', handler: _lazy_taHZP7, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/v3-remix', handler: _lazy_G3_mul, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/ideogram/v3-text-to-image', handler: _lazy_ngBgjT, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana-pro/generate', handler: _lazy_qqfBr2, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana/edit', handler: _lazy_FTuawy, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/nano-banana/generate', handler: _lazy_guMvLE, lazy: true, middleware: false, method: "post" },
@@ -1788,6 +1818,16 @@ const handlers = [
   { route: '/api/user/credits-detail', handler: _lazy_9KA_u2, lazy: true, middleware: false, method: "get" },
   { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/hailuo/image-to-video-pro', handler: _lazy_qOz6pW, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/hailuo/image-to-video-standard', handler: _lazy_jTz2Ya, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/2-6-image-to-video', handler: _lazy_wmPuCb, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/2-6-motion-control', handler: _lazy_tPVUKN, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/2-6-text-to-video', handler: _lazy_rNnSXt, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/3-0-video', handler: _lazy_ku4ezm, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/ai-avatar-pro', handler: _lazy_DpYPJk, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/ai-avatar-standard', handler: _lazy_ogCNsr, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/v2-5-turbo-image-to-video-pro', handler: _lazy_eEbYT_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/kling/v2-5-turbo-text-to-video-pro', handler: _lazy_3igsmN, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/luma/generate', handler: _lazy_jQelEb, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/aleph', handler: _lazy_Aq6nFl, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/runway/extend', handler: _lazy_TashgN, lazy: true, middleware: false, method: "post" },
@@ -2336,7 +2376,7 @@ const extend_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
   default: extend_post$4
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const generate_post$i = defineEventHandler(async (event) => {
+const generate_post$k = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/audio/suno/generate`;
@@ -2356,9 +2396,9 @@ const generate_post$i = defineEventHandler(async (event) => {
   }
 });
 
-const generate_post$j = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const generate_post$l = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: generate_post$i
+  default: generate_post$k
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const uploadCover_post = defineEventHandler(async (event) => {
@@ -2713,7 +2753,7 @@ const tree_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
   default: tree_get
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const generate_post$g = defineEventHandler(async (event) => {
+const generate_post$i = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/flux-kontext/generate`;
@@ -2745,12 +2785,62 @@ const generate_post$g = defineEventHandler(async (event) => {
   }
 });
 
-const generate_post$h = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const generate_post$j = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: generate_post$g
+  default: generate_post$i
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const generate_post$e = defineEventHandler(async (event) => {
+const imageToImage_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/gpt-image/image-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("GPT Image image-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToImage_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const textToImage_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/gpt-image/text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("GPT Image text-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const textToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: textToImage_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$g = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/gpt4o-image/generate`;
@@ -2780,9 +2870,291 @@ const generate_post$e = defineEventHandler(async (event) => {
   }
 });
 
+const generate_post$h = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: generate_post$g
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const characterEdit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/character-edit`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram character-edit proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const characterEdit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: characterEdit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const characterRemix_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/character-remix`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram character-remix proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const characterRemix_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: characterRemix_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const character_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/character`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram character proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const character_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: character_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const generate_post$e = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/generate`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram generate proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Image generation failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
 const generate_post$f = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: generate_post$e
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v3Edit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/v3-edit`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram v3-edit proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const v3Edit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v3Edit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v3Reframe_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/v3-reframe`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram v3-reframe proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const v3Reframe_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v3Reframe_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v3Remix_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/v3-remix`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram v3-remix proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const v3Remix_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v3Remix_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v3TextToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/ideogram/v3-text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Ideogram v3-text-to-image proxy error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Request failed: " + (error.message || "Unknown error")
+    });
+  }
+});
+
+const v3TextToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v3TextToImage_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const generate_post$c = defineEventHandler(async (event) => {
@@ -3722,6 +4094,256 @@ const sendEmailCode_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defi
   default: sendEmailCode_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const imageToVideoPro_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/hailuo/image-to-video-pro`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Hailuo image-to-video-pro proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToVideoPro_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToVideoPro_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const imageToVideoStandard_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/hailuo/image-to-video-standard`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Hailuo image-to-video-standard proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToVideoStandard_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToVideoStandard_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _26ImageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/2-6-image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling 2-6-image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const _26ImageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _26ImageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _26MotionControl_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/2-6-motion-control`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling 2-6-motion-control proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const _26MotionControl_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _26MotionControl_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _26TextToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/2-6-text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling 2-6-text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const _26TextToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _26TextToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _30Video_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/3-0-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling 3-0-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const _30Video_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _30Video_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const aiAvatarPro_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/ai-avatar-pro`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling ai-avatar-pro proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const aiAvatarPro_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: aiAvatarPro_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const aiAvatarStandard_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/ai-avatar-standard`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling ai-avatar-standard proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const aiAvatarStandard_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: aiAvatarStandard_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v25TurboImageToVideoPro_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/v2-5-turbo-image-to-video-pro`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling v2-5-turbo-image-to-video-pro proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const v25TurboImageToVideoPro_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v25TurboImageToVideoPro_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v25TurboTextToVideoPro_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/kling/v2-5-turbo-text-to-video-pro`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Kling v2-5-turbo-text-to-video-pro proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + ((error == null ? void 0 : error.message) || "Unknown error") });
+  }
+});
+
+const v25TurboTextToVideoPro_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v25TurboTextToVideoPro_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const generate_post$8 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -4175,7 +4797,7 @@ const videoToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
 const sitemap_xml_get = defineEventHandler(async (event) => {
   var _a;
   setHeader(event, "Content-Type", "application/xml");
-  const baseUrl = "https://fuseaitools.com";
+  const baseUrl = "https://www.fuseaitools.com";
   const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
   let newsPages = [];
   try {
@@ -4225,247 +4847,127 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
       changefreq: "daily",
       priority: "0.5"
     },
-    // 14 个工具二级详情页（模型介绍 + 功能入口，利于 SEO 层级与长尾）
+    {
+      loc: "/credits",
+      lastmod: currentDate,
+      changefreq: "monthly",
+      priority: "0.6"
+    },
+    // 22 个工具二级详情页（模型介绍 + 功能入口，利于 SEO 层级与长尾）
     { loc: "/home/gpt", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/deepseek", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/claude", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/gemini", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/gpt-4o-image", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/gpt-image", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/ideogram", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/flux-kontext", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/nano-banana", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/midjourney", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/seedream", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/qwen", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/suno", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/elevenlabs", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/veo3", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/runway", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/luma", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/sora", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
-    // Chat AI Tools（三级 /generate）
-    {
-      loc: "/home/gpt/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/deepseek/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/claude/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/gemini/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    // Image Generation Tools
-    {
-      loc: "/home/gpt-4o-image/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/midjourney/imagine",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/midjourney/upscale",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/midjourney/vary",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/flux-kontext/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/nano-banana/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/nano-banana/edit",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/nano-banana/pro-generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    // Audio Processing Tools
-    {
-      loc: "/home/elevenlabs/multilingual-v2",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/elevenlabs/turbo-2-5",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/elevenlabs/speech-to-text",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/elevenlabs/sound-effect-v2",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/elevenlabs/audio-isolation",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/suno/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/suno/extend",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/suno/upload-cover",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/suno/upload-extend",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/suno/add-instrumental",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/suno/add-vocals",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    // Video Generation Tools（三级路由）
-    {
-      loc: "/home/veo3/text-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/veo3/first-and-last-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/veo3/reference-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/veo3/extend",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/runway/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/runway/extend",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/runway/aleph",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.7"
-    },
-    {
-      loc: "/home/luma/generate",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/sora/text-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/sora/image-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/sora/pro-text-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/sora/pro-image-to-video",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/sora/watermark-remover",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    },
-    {
-      loc: "/home/sora/pro-storyboard",
-      lastmod: currentDate,
-      changefreq: "weekly",
-      priority: "0.8"
-    }
+    { loc: "/home/wan", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/kling", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/seedance", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/hailuo", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    // GPT (Chat)
+    { loc: "/home/gpt/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // DeepSeek (Chat)
+    { loc: "/home/deepseek/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Claude (Chat)
+    { loc: "/home/claude/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Gemini (Chat)
+    { loc: "/home/gemini/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // GPT-4o Image (Image)
+    { loc: "/home/gpt-4o-image/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // GPT Image (Image，二级 tab；/generate 已重定向到 text-to-image，不收录)
+    { loc: "/home/gpt-image/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/gpt-image/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Ideogram (Image，二级 tab；/generate 已重定向到 v3-text-to-image，不收录)
+    { loc: "/home/ideogram/v3-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/ideogram/v3-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/ideogram/v3-remix", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/ideogram/v3-reframe", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/ideogram/character", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/ideogram/character-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/ideogram/character-remix", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Midjourney (Image)
+    { loc: "/home/midjourney/imagine", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/midjourney/upscale", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/midjourney/vary", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Flux-Kontext (Image)
+    { loc: "/home/flux-kontext/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Nano-Banana (Image)
+    { loc: "/home/nano-banana/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/nano-banana/edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/nano-banana/pro-generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // ElevenLabs (Audio)
+    { loc: "/home/elevenlabs/multilingual-v2", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/elevenlabs/turbo-2-5", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/elevenlabs/speech-to-text", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/elevenlabs/sound-effect-v2", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/elevenlabs/audio-isolation", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    // Suno (Audio)
+    { loc: "/home/suno/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/suno/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/suno/upload-cover", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/suno/upload-extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/suno/add-instrumental", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/suno/add-vocals", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    // Veo3 (Video)
+    { loc: "/home/veo3/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/veo3/first-and-last-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/veo3/reference-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/veo3/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    // Runway (Video)
+    { loc: "/home/runway/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/runway/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    { loc: "/home/runway/aleph", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
+    // Luma (Video)
+    { loc: "/home/luma/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Sora (Video)
+    { loc: "/home/sora/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/sora/image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/sora/pro-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/sora/pro-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/sora/watermark-remover", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/sora/pro-storyboard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Qwen (Image)
+    { loc: "/home/qwen/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/z-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Wan (Video)
+    { loc: "/home/wan/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/video-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Kling (Video)
+    { loc: "/home/kling/v2-5-turbo-image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/v2-5-turbo-text-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/v2-6-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/v2-6-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/v2-6-motion-control", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/ai-avatar-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/ai-avatar-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/kling/v3-0-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Seedream (Image)
+    { loc: "/home/seedream/1-5-lite-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedream/2-5-lite-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Seedance (Video)
+    { loc: "/home/seedance/v1-lite-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedance/v1-lite-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedance/v1-pro-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedance/v1-pro-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedance/v1-pro-fast-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    // Hailuo (Video)
+    { loc: "/home/hailuo/image-to-video-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/hailuo/image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" }
   ];
   const pages = [...staticPages, ...newsPages];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
