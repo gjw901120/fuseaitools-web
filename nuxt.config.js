@@ -174,6 +174,8 @@ export default defineNuxtConfig({
   },
 
   // 生产 API 基地址带 /api 前缀，与后端路径一致（如 /api/common/models/tree）
+  // 构建时：若未设置 NUXT_PUBLIC_API_BASE，则根据 NODE_ENV 决定。生产构建请使用 NODE_ENV=production 或显式设置 NUXT_PUBLIC_API_BASE=https://api.fuseaitools.com/api
+  // 客户端：useApi / useBatchUploadUrl 会根据当前域名（www.fuseaitools.com）再次修正，避免构建时 apiBase 错误导致请求 127.0.0.1
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE

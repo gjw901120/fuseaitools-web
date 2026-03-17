@@ -15,11 +15,10 @@ services:
       - HOST=0.0.0.0
       - PORT=3000
       - NITRO_PRESET=node-server
-      # API 基础路径（根据实际情况修改）
-      # 如果后端 API 在同一网络，可以使用服务名
+      # API 基础路径：生产环境（up.sh 部署）使用公网 API；本地/内网可改为下面注释中的地址
+      - NUXT_PUBLIC_API_BASE=https://api.fuseaitools.com/api
       # - NUXT_PUBLIC_API_BASE=http://api-service:8080/api
-      # 或者使用本地地址
-      - NUXT_PUBLIC_API_BASE=http://127.0.0.1:8080/api
+      # - NUXT_PUBLIC_API_BASE=http://127.0.0.1:8080/api
     restart: unless-stopped
     networks:
       - fuseaitools-network

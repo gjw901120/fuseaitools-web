@@ -1,14 +1,29 @@
+/** 生产环境 API 基地址（与 server/utils/getApiBase.js 一致） */
+const PRODUCTION_API_BASE = 'https://api.fuseaitools.com/api'
+
+/**
+ * 客户端根据当前域名得到有效的 apiBase，避免构建时未设置 NODE_ENV 导致用错 127.0.0.1
+ */
+function getEffectiveApiBaseForClient(configApiBase) {
+  if (typeof window === 'undefined') return configApiBase || ''
+  const host = (window.location?.hostname || '').toLowerCase()
+  if (host === 'www.fuseaitools.com' || host === 'fuseaitools.com') {
+    if (!configApiBase || configApiBase.includes('127.0.0.1')) return PRODUCTION_API_BASE
+  }
+  return configApiBase || ''
+}
+
 /**
  * 统一的 API 请求封装
  * - 处理统一的响应结构：{ errorCode, errorMessage, data }
  * - 自动在登录状态下添加认证头
  * - 根据运行环境与 runtimeConfig.public.apiBase 选择实际后端基地址：
- *   - 生产：强制走 https://api.fuseaitools.com/**（通过配置 apiBase）
+ *   - 生产：强制走 https://api.fuseaitools.com/**（通过配置或客户端域名修正）
  *   - 本地开发：走 http://127.0.0.1:8080/**，不再通过 http://localhost:3000/api 代理
  */
 export const useApi = () => {
   const runtimeConfig = useRuntimeConfig()
-  const apiBase = runtimeConfig.public?.apiBase || ''
+  const apiBase = getEffectiveApiBaseForClient(runtimeConfig.public?.apiBase || '')
   /**
    * 获取认证 token
    * @returns {string|null} 返回 token 或 null
