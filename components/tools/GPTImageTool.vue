@@ -125,7 +125,7 @@
               <div class="form-help">
                 <span>medium = balanced; high = slower, more detail.</span>
                 <span v-if="currentCredits !== null" style="margin-left: 8px; font-weight: 500;">
-                  · {{ currentCredits }} credits / job
+                  · {{ currentCredits }} credits<span v-if="discountText">{{ discountText }}</span> / job
                 </span>
               </div>
             </div>
@@ -137,7 +137,7 @@
                 <span v-if="isGenerating">Generating...</span>
                 <span v-else>
                   Generate
-                  <span v-if="currentCredits !== null">· {{ currentCredits }} credits</span>
+                  <span v-if="currentCredits !== null">· {{ currentCredits }} credits<span v-if="discountText">{{ discountText }}</span></span>
                 </span>
               </button>
             </div>
@@ -200,6 +200,7 @@ import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useRecordPolling } from '~/composables/useRecordPolling'
+import { useModelPrice } from '~/composables/useModelPrice'
 
 const { showError } = useToast()
 const { post } = useApi()
@@ -208,6 +209,7 @@ const batchUploadUrl = useBatchUploadUrl()
 const router = useRouter()
 const route = useRoute()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
+const { discount } = useModelPrice()
 
 const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
@@ -255,6 +257,14 @@ const form = reactive({
   aspect_ratio: '1:1',
   quality: 'medium',
   input_urls: []
+})
+
+// 折扣文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
 })
 
 // 模型价格配置（按 size 匹配 Quality，仅使用 credits）

@@ -174,6 +174,7 @@ declare global {
   const useToolOverviewPage: typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']
   const useToolSEO: typeof import('../../composables/useToolSEO')['useToolSEO']
   const useTransitionState: typeof import('../../node_modules/vue')['useTransitionState']
+  const useUserDetail: typeof import('../../composables/useUserDetail')['useUserDetail']
   const watch: typeof import('../../node_modules/vue')['watch']
   const watchEffect: typeof import('../../node_modules/vue')['watchEffect']
   const watchPostEffect: typeof import('../../node_modules/vue')['watchPostEffect']
@@ -368,6 +369,7 @@ declare module 'vue' {
     readonly useToolOverviewPage: UnwrapRef<typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']>
     readonly useToolSEO: UnwrapRef<typeof import('../../composables/useToolSEO')['useToolSEO']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
+    readonly useUserDetail: UnwrapRef<typeof import('../../composables/useUserDetail')['useUserDetail']>
     readonly watch: UnwrapRef<typeof import('../../node_modules/vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('../../node_modules/vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('../../node_modules/vue')['watchPostEffect']>

@@ -210,7 +210,7 @@ const router = useRouter()
 const route = useRoute()
 const addToUsageHistory = inject('addToUsageHistory')
 const { token } = useAuth()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const { showError } = useToast()
 const { post } = useApi()
@@ -318,7 +318,13 @@ watch(() => route.query['record-id'], (recordId) => {
 const lumaPriceText = computed(() => {
   const credits = getPrice('Luma')
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  const rate = Number(discount?.value ?? 1)
+  let discountText = ''
+  if (!Number.isNaN(rate) && rate > 0 && rate !== 1) {
+    const percent = (rate * 100).toFixed(0)
+    discountText = ` · ${percent}%`
+  }
+  return str ? `· ${str} credits${discountText}` : ''
 })
 
 // 处理视频上传：选择后立即调用上传服务，与 Runway Aleph 一致

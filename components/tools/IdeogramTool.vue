@@ -219,7 +219,7 @@ import { useRouter, useRoute } from 'vue-router'
 const { showError } = useToast()
 const { post } = useApi()
 const { token } = useAuth()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const batchUploadUrl = useBatchUploadUrl()
 const router = useRouter()
 const route = useRoute()
@@ -282,6 +282,14 @@ const isUploadingRefs = ref(false)
 const isGenerating = ref(false)
 const results = ref([])
 
+// 折扣文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：Ideogram 7 模式统一通过 Rendering speed -> price.rules[].speed 匹配 credits
 const IDEOGRAM_PRICE_KEY_BY_MODE = {
   'v3-text-to-image': 'ideogram-v3-text-to-image',
@@ -301,7 +309,7 @@ const ideogramCreditsText = computed(() => {
     scene: 'generate'
   })
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  return str ? `· ${str} credits${discountText.value}` : ''
 })
 
 function needsPrompt (m) {

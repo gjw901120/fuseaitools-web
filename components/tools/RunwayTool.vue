@@ -614,7 +614,7 @@ const isClient = typeof window !== 'undefined'
 const { token } = useAuth()
 const { showError } = useToast()
 const { get, post } = useApi()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const router = useRouter()
 const route = useRoute()
@@ -821,6 +821,14 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
+// 折扣展示：仅展示折扣比例，不参与 credits 计算
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：Generate -> runway_generate(RULE: duration, quality)；Extend -> runway_extend；Aleph -> runway_aleph
 const runwayGeneratePriceText = computed(() => {
   const credits = getPrice('runway_generate', {
@@ -829,17 +837,20 @@ const runwayGeneratePriceText = computed(() => {
     scene: 'generate'
   })
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 const runwayExtendPriceText = computed(() => {
   const credits = getPrice('runway_extend')
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 const runwayAlephPriceText = computed(() => {
   const credits = getPrice('runway_aleph')
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 // Watch for duration and quality conflicts

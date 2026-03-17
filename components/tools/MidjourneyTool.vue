@@ -310,11 +310,19 @@ const route = useRoute()
 const { token } = useAuth()
 const { showError } = useToast()
 const { post } = useApi()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+
+// 折扣文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
 
 // 价格按分类匹配：Imagine -> midjourney_imagine，Upscale -> midjourney_upscale，Vary -> midjourney_vary
 const MIDJOURNEY_PRICE_KEYS = { imagine: 'midjourney_imagine', upscale: 'midjourney_upscale', vary: 'midjourney_vary' }
@@ -322,7 +330,8 @@ const midjourneyPriceText = computed(() => {
   const key = MIDJOURNEY_PRICE_KEYS[activeCategory.value] || 'midjourney_imagine'
   const credits = getPrice(key)
   const str = formatCredits(credits)
-  return str ? ` · ${str} credits` : ''
+  if (!str) return ''
+  return ` · ${str} credits${discountText.value}`
 })
 
 const loading = ref(false)

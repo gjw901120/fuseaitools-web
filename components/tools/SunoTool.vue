@@ -594,6 +594,14 @@
         </div>
 
         <div class="result-content">
+          <!-- 实战教程展示（英文） -->
+          <div class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/create-lofi-study-playlist-with-suno-v5" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create a LoFi study playlist with Suno V5</a>
+              <a href="https://www.fuseaitools.com/news/suno-generate-epic-podcast-opening-30s" target="_blank" rel="noopener noreferrer" class="tutorial-link">30-second epic podcast intro with Suno V5</a>
+            </div>
+          </div>
           <!-- 详情页：status 3 失败 -->
           <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
             <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
@@ -720,7 +728,7 @@ const route = useRoute()
 const { token } = useAuth()
 const { showError, showSuccess } = useToast()
 const { post, get } = useApi()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 onMounted(() => { fetchPrices() })
@@ -735,12 +743,20 @@ const SUNO_MODEL_KEY = {
   cover: 'suno_upload_cover',
   accompaniment: 'suno_add_instrumental'
 }
+
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
 const sunoPriceText = computed(() => {
   const key = SUNO_MODEL_KEY[formData.function]
   if (!key) return ''
   const credits = getPrice(key)
   const str = formatCredits(credits)
-  return str ? ` · ${str} credits` : ''
+  if (!str) return ''
+  return ` · ${str} credits${discountText.value}`
 })
 
 const getAuthToken = () => {
@@ -2000,6 +2016,33 @@ const shareResult = () => {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+
+.tutorial-showcase {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
 }
 
 .detail-loading-state, .detail-failure-state {

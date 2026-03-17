@@ -6,12 +6,14 @@
  */
 import { ref, computed } from 'vue'
 import { fetchWithCache } from '~/composables/useApiCache'
+import { useUserDetail } from '~/composables/useUserDetail'
 
 const CACHE_KEY_PRICE = 'api_common_models_price'
 const priceDataCache = ref(null)
 
 export function useModelPrice() {
   const { get } = useApi()
+  const { discount } = useUserDetail()
 
   /**
    * 拉取价格数据（先读本地 1 小时缓存，无有效缓存时请求接口并写入缓存）
@@ -81,6 +83,8 @@ export function useModelPrice() {
     priceData: priceDataCache,
     fetchPrices,
     getPrice,
-    formatCredits
+    formatCredits,
+    // 方便业务侧直接使用当前折扣系数做展示
+    discount
   }
 }

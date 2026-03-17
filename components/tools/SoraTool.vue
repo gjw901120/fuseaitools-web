@@ -379,7 +379,7 @@ const isClient = typeof window !== 'undefined'
 const { token } = useAuth()
 const { showError } = useToast()
 const { post } = useApi()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus, pollRecordDetail } = useRecordPolling()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
@@ -572,6 +572,14 @@ function clearResults() {
   results.value = []
 }
 
+// 折扣展示文本（仅展示比例）
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：Frames 表单字段 (n_frames) 映射为价格规则中的 duration；watermark-remover->sora-watermark-remover；pro-storyboard->sora-2-pro-storyboard(duration)；text/image->sora-2-*；pro-text/image->sora-2-pro-*(duration+size)
 const soraPriceText = computed(() => {
   const model = form.model
@@ -599,7 +607,8 @@ const soraPriceText = computed(() => {
     })
   }
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 const handleSoraImagesUpdate = async (files) => {

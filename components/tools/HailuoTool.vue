@@ -153,7 +153,7 @@ const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const batchUploadUrl = useBatchUploadUrl()
 
 const modeTabToPath = {
@@ -270,6 +270,13 @@ const displayResult = computed(() => {
   return result.value
 })
 
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 const hailuoPriceText = computed(() => {
   const modelKey = mode.value === 'image-to-video-pro'
     ? 'hailuo-2-3-image-to-video-pro'
@@ -282,7 +289,8 @@ const hailuoPriceText = computed(() => {
     scene: 'generate'
   })
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 async function generate() {

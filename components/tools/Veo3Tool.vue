@@ -445,7 +445,7 @@ function goToVeo3Tab(generationType) {
 function getVeo3RecordPath() {
   return veo3TabToPath[formData.generationType] || '/home/veo3/text-to-video'
 }
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 const { token } = useAuth()
@@ -592,12 +592,21 @@ watch(() => route.query['record-id'], (recordId) => {
   }
 }, { immediate: true })
 
+// 折扣展示：仅展示折扣比例，不参与 credits 计算
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：Video Extend -> veo3_extend；Text/First And Last Frames/Image to Video -> veo3(Standard) / veo3_fast(Fast)
 const veo3PriceText = computed(() => {
   const key = formData.generationType === 'VIDEO_EXTEND' ? 'veo3_extend' : (formData.model || 'veo3_fast')
   const credits = getPrice(key)
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 // 默认占位图文件名（仅用于展示，不参与上传与提交）

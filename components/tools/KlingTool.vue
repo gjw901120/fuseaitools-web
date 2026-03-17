@@ -355,7 +355,7 @@ const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const batchUploadUrl = useBatchUploadUrl()
 
 const modeList = [
@@ -442,6 +442,14 @@ const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
 
+// 折扣文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：
 // - v2.5 Turbo T2V/I2V Pro：按 Duration 匹配 RULE（scene 固定 generate）
 // - 2.6 Text/Image to Video：按 Duration + Sound 匹配 RULE（sound=false -> without_sound；true -> with_sound）
@@ -454,27 +462,27 @@ const klingPriceText = computed(() => {
     modelKey = 'kling-v2-5-turbo-image-to-video-pro'
     const credits = getPrice(modelKey, { duration: durationNum, scene: 'generate' })
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v2-5-turbo-text-to-video-pro') {
     modelKey = 'kling-v2-5-turbo-text-to-video-pro'
     const credits = getPrice(modelKey, { duration: durationNum, scene: 'generate' })
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v2-6-text-to-video') {
     modelKey = 'kling-2.6-text-to-video'
     const scene = formData.sound ? 'with_sound' : 'without_sound'
     const credits = getPrice(modelKey, { duration: durationNum, scene })
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v2-6-image-to-video') {
     modelKey = 'kling-2.6-image-to-video'
     const scene = formData.sound ? 'with_sound' : 'without_sound'
     const credits = getPrice(modelKey, { duration: durationNum, scene })
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v3-0-video') {
     modelKey = 'kling-3.0-video'
@@ -494,7 +502,7 @@ const klingPriceText = computed(() => {
       scene
     })
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v2-6-motion-control') {
     modelKey = 'kling-2.6-motion-control'
@@ -505,19 +513,19 @@ const klingPriceText = computed(() => {
       scene: 'generate'
     })
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'ai-avatar-standard') {
     modelKey = 'kling-ai-avatar-standard'
     const credits = getPrice(modelKey)
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'ai-avatar-pro') {
     modelKey = 'kling-ai-avatar-pro'
     const credits = getPrice(modelKey)
     const str = formatCredits(credits)
-    return str ? `· ${str} credits` : ''
+    return str ? `· ${str} credits${discountText.value}` : ''
   }
   return ''
 })

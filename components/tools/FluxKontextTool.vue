@@ -378,17 +378,26 @@ const { token } = useAuth()
 const { showError, showSuccess } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+
+// 折扣展示文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
 
 // 价格：根据 Model Version 匹配 price 接口的 flux-kontext-pro(8) / flux-kontext-max(16)
 const fluxKontextPriceText = computed(() => {
   const modelKey = formData.model || 'flux-kontext-pro'
   const credits = getPrice(modelKey)
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 // 表单数据（与后端 DTO 对应）

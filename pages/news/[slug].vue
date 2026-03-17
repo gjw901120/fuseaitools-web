@@ -31,6 +31,31 @@
           <article class="main-content">
             <div class="article-body html-content" v-html="articleBodyHtml" />
           </article>
+
+          <!-- Prev / Next navigation -->
+          <nav
+            v-if="prevSlug || nextSlug"
+            class="article-nav"
+            aria-label="Article navigation"
+          >
+            <NuxtLink
+              v-if="prevSlug"
+              :to="`/news/${prevSlug}`"
+              class="article-nav-link prev-link"
+            >
+              <i class="fas fa-arrow-left"></i>
+              <span>Previous article</span>
+            </NuxtLink>
+            <div v-else class="article-nav-placeholder"></div>
+            <NuxtLink
+              v-if="nextSlug"
+              :to="`/news/${nextSlug}`"
+              class="article-nav-link next-link"
+            >
+              <span>Next article</span>
+              <i class="fas fa-arrow-right"></i>
+            </NuxtLink>
+          </nav>
         </div>
       </div>
     </section>
@@ -115,7 +140,9 @@ const article = computed(() => {
     updatedAt: d.gmtModified || null,
     readTime: d.readTime ?? null,
     keyword: d.keyword || '',
-    content: d.content || ''
+    content: d.content || '',
+    prevPath: d.prevPath || '',
+    nextPath: d.nextPath || ''
   }
 })
 
@@ -132,6 +159,9 @@ const articleBodyHtml = computed(() => {
     .replace(/<\/?body[^>]*>/gi, '')
   return stripDoc.trim()
 })
+
+const prevSlug = computed(() => article.value?.prevPath || '')
+const nextSlug = computed(() => article.value?.nextPath || '')
 
 const relatedArticles = computed(() => {
   const list = detailData.value?.data?.relatedList || detailData.value?.relatedArticles
@@ -245,6 +275,53 @@ const navigateToDetail = (slug) => {
 .error-content p {
   color: #6b7280;
   margin-bottom: 2rem;
+}
+
+.article-nav {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.article-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 999px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.article-nav-link i {
+  font-size: 0.9rem;
+}
+
+.article-nav-link:hover {
+  background-color: #eef2ff;
+  border-color: #6366f1;
+  color: #111827;
+}
+
+.article-nav-placeholder {
+  flex: 1;
+}
+
+.prev-link {
+  justify-content: flex-start;
+}
+
+.next-link {
+  margin-left: auto;
+  justify-content: flex-end;
 }
 
 .back-btn {

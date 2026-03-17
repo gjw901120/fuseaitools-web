@@ -543,6 +543,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useModelPrice } from '~/composables/useModelPrice'
+import { useUserDetail } from '~/composables/useUserDetail'
 import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
@@ -722,19 +723,28 @@ watch(() => route.query['record-id'], (recordId) => {
   else { loadingRecordId.value = null; detailData.value = null }
 }, { immediate: true })
 
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
 
 const nanoBananaPriceText = computed(() => {
   const credits = getPrice('nano-banana')
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 const nanoBananaEditPriceText = computed(() => {
   const credits = getPrice('nano-banana-edit')
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 const nanoBananaProPriceText = computed(() => {
   const credits = getPrice('nano-banana-pro', {
@@ -746,7 +756,8 @@ const nanoBananaProPriceText = computed(() => {
     scene: 'generate'
   })
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 const getAuthToken = () => {

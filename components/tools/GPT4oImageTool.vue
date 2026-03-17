@@ -237,16 +237,25 @@ const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
 const { showError, showSuccess } = useToast()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+
+// 折扣展示文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
 
 // 价格：GPT 4o Image 对应模型 key GPT_4o_image
 const gpt4oImagePriceText = computed(() => {
   const credits = getPrice('GPT_4o_image')
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 const formData = reactive({

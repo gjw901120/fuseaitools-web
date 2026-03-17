@@ -218,7 +218,7 @@ const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 
@@ -263,6 +263,14 @@ const formData = reactive({
   enableSafetyChecker: true
 })
 
+// 折扣文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：按 Duration + Resolution 匹配，与 Veo3/Runway 等视频模型定价规则一致
 const seedancePriceModelKeyMap = {
   'v1-lite-text-to-video': 'seedance-v1-lite-text-to-video',
@@ -279,7 +287,8 @@ const seedancePriceText = computed(() => {
     quality: formData.resolution
   })
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 const imageUploadRef = ref(null)

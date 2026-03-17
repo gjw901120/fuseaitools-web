@@ -720,12 +720,15 @@ import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useRecordPolling } from '~/composables/useRecordPolling'
 import elevenlabsVoices from '~/data/elevenlabs-voices.js'
+import { useModelPrice } from '~/composables/useModelPrice'
 
 const router = useRouter()
 const route = useRoute()
 const { token } = useAuth()
 
 // Tab 与三级路由同步：/home/elevenlabs/multilingual-v2 等
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
+
 const elevenlabsTabToPath = {
   'multilingual-v2': '/home/elevenlabs/multilingual-v2',
   'turbo-2-5': '/home/elevenlabs/turbo-2-5',
@@ -748,6 +751,8 @@ const { showError, showSuccess } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const batchUploadUrl = useBatchUploadUrl()
+
+onMounted(() => { fetchPrices() })
 
 const getAuthToken = () => {
   if (!process.client) return null
@@ -1002,15 +1007,27 @@ const getButtonText = () => {
   return texts[formData.function] || 'Generate'
 }
 
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 const getButtonPrice = () => {
-  const prices = {
-    'multilingual-v2': '20/1K chars',
-    'turbo-2-5': '10/1K chars',
-    'speech-to-text': '6/minute',
-    'sound-effect-v2': '24/minute',
-    'audio-isolation': '20/minute'
+  const keyMap = {
+    'multilingual-v2': 'elevenlabs_text_to_speech_multilingual',
+    'turbo-2-5': 'elevenlabs_text_to_speech_turbo',
+    'speech-to-text': 'elevenlabs_speech_to_text',
+    'sound-effect-v2': 'elevenlabs_sound_effect',
+    'audio-isolation': 'elevenlabs_audio_isolation'
   }
-  return prices[formData.function] || ''
+  const modelKey = keyMap[formData.function]
+  if (!modelKey) return ''
+  const credits = getPrice(modelKey)
+  const str = formatCredits(credits)
+  if (!str) return ''
+  return `${str} credits${discountText.value}`
 }
 
 const getEmptyStateIcon = () => {

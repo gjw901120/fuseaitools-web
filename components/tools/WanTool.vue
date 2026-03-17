@@ -197,7 +197,7 @@ const route = useRoute()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const { fetchPrices, getPrice, formatCredits } = useModelPrice()
+const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 
@@ -260,6 +260,14 @@ watch(() => route.query['record-id'], (recordId) => {
   else detailData.value = null
 }, { immediate: true })
 
+// 折扣文本
+const discountText = computed(() => {
+  const rate = Number(discount?.value ?? 1)
+  if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
+  const percent = (rate * 100).toFixed(0)
+  return ` · ${percent}%`
+})
+
 // 价格：按 Duration + Resolution 匹配，与 Veo3/Runway 等视频模型定价规则一致
 const wanPriceModelKeyMap = {
   'text-to-video': 'wan-2-6-text-to-video',
@@ -274,7 +282,8 @@ const wanPriceText = computed(() => {
     quality: formData.resolution
   })
   const str = formatCredits(credits)
-  return str ? `· ${str} credits` : ''
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
 })
 
 const getAuthToken = () => {

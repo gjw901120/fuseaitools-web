@@ -209,6 +209,7 @@ const navigateToDetail = (article) => {
 const changeCategory = async (category) => {
   selectedCategory.value = category
   currentPage.value = 1
+  await refresh()
 }
 
 const goToPage = async (page) => {
