@@ -438,13 +438,50 @@ export const useHomeLayout = () => {
     elevenlabs_audio_isolation: '/home/elevenlabs/audio-isolation'
   }
 
+  // 分类 -> 路由前缀（用于防止异常 model 导致串路由）
+  const categoryRoutePrefix = {
+    'GPT': '/home/gpt',
+    'DeepSeek': '/home/deepseek',
+    'Deepseek': '/home/deepseek',
+    'Claude': '/home/claude',
+    'Gemini': '/home/gemini',
+    'Veo3': '/home/veo3',
+    'Runway': '/home/runway',
+    'Luma': '/home/luma',
+    'Midjourney': '/home/midjourney',
+    'GPT 4o Image': '/home/gpt-4o-image',
+    'GPT Image': '/home/gpt-image',
+    'Ideogram': '/home/ideogram',
+    'Flux Kontext': '/home/flux-kontext',
+    'Nano Banana': '/home/nano-banana',
+    'Suno': '/home/suno',
+    'Elevenlabs': '/home/elevenlabs',
+    'ElevenLabs': '/home/elevenlabs',
+    'Sora': '/home/sora',
+    'Wan': '/home/wan',
+    'Seedance': '/home/seedance',
+    'Hailuo': '/home/hailuo',
+    'Kling': '/home/kling',
+    'Seedream': '/home/seedream',
+    'Qwen': '/home/qwen'
+  }
+
   // 根据 category/model 取路由（历史项点击跳转；无 recordId 时只跳工具页）
   const getHistoryItemRoute = (record) => {
     const category = (record.category || record.toolName || '').trim()
+    const categoryLower = category.toLowerCase()
     const model = (record.model || '').trim().toLowerCase()
     let path = model && modelToPath[model]
       ? modelToPath[model]
       : (categoryToRoute[category] || categoryToRoute[record.model] || null)
+
+    // 优先保证 ElevenLabs 分类不会被其它模型前缀误导（例如后端返回了异常 model）
+    if (categoryLower === 'elevenlabs') {
+      if (!model.startsWith('elevenlabs_')) {
+        path = '/home/elevenlabs/multilingual-v2'
+      }
+    }
+
     if (!path) {
       if (model.startsWith('midjourney_')) path = '/home/midjourney/imagine'
       else if (model.startsWith('elevenlabs_')) path = '/home/elevenlabs/multilingual-v2'
@@ -452,6 +489,13 @@ export const useHomeLayout = () => {
       else if (model.startsWith('sora')) path = '/home/sora/text-to-video'
       else path = categoryToRoute[category] || null
     }
+
+    // 通用防串：如果模型映射出来的 path 与分类前缀不一致，则回退分类默认路由
+    const expectedPrefix = categoryRoutePrefix[category]
+    if (path && expectedPrefix && !path.startsWith(expectedPrefix)) {
+      path = categoryToRoute[category] || path
+    }
+
     if (!path) return null
     const recordId = record.recordId || (typeof record.id === 'string' ? record.id : null)
     if (!recordId) return path

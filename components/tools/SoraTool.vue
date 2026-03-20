@@ -321,7 +321,7 @@
         </div>
 
         <!-- 右侧：实战教程展示（仅非详情页） -->
-        <div v-if="!isDetailView" class="tutorial-showcase">
+        <div v-if="!isDetailView && route.path === '/home/sora/text-to-video'" class="tutorial-showcase">
           <p class="tutorial-showcase-title">🎬 Tutorial Showcase</p>
           <div class="tutorial-showcase-links">
             <a
@@ -693,7 +693,10 @@ watch(() => route.path, (path) => {
 const switchMode = (model) => {
   form.model = model
   const path = soraModeToPath[model] || soraModeToPath['text-to-video']
-  router.push({ path, query: { ...route.query } })
+  // Tab 切换不携带 record-id，避免保留详情态
+  const nextQuery = { ...route.query }
+  delete nextQuery['record-id']
+  router.push({ path, query: nextQuery })
 }
 
 // 获取视频列表
@@ -975,7 +978,7 @@ const onSubmit = async () => {
 .empty-icon { font-size: 72px; color: #cbd5e1; margin-bottom: 24px; }
 
 .tutorial-showcase {
-  margin: 0 20px 20px 20px;
+  margin: 16px 20px 20px 20px;
   padding: 14px 16px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;

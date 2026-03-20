@@ -595,7 +595,7 @@
 
         <div class="result-content">
           <!-- 实战教程展示（英文） -->
-          <div class="tutorial-showcase">
+          <div v-if="!isDetailView && route.path === '/home/suno/generate'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
               <a href="https://www.fuseaitools.com/news/create-lofi-study-playlist-with-suno-v5" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create a LoFi study playlist with Suno V5</a>
