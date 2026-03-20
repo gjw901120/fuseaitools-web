@@ -191,7 +191,33 @@
           <button v-if="results.length > 0" type="button" class="btn-secondary" @click="clearResults"><i class="fas fa-trash"></i> Clear</button>
         </div>
         <div class="result-container">
-          <template v-if="results.length > 0">
+          <template v-if="isDetailView && (loadingRecordId || (!detailData && routeRecordId))">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin empty-icon"></i>
+              <p>Loading record...</p>
+            </div>
+          </template>
+          <template v-else-if="isDetailView && detailData && Number(detailData.status) === 1">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin empty-icon"></i>
+              <p>Generating...</p>
+            </div>
+          </template>
+          <template v-else-if="isDetailView && detailData && Number(detailData.status) === 3">
+            <div class="empty-state">
+              <i class="fas fa-exclamation-circle empty-icon"></i>
+              <p>Generation failed.</p>
+            </div>
+          </template>
+          <template v-else-if="isDetailView && detailData && Number(detailData.status) === 2">
+            <div v-if="detailOutputItems.length > 0" class="result-item" v-for="(item, idx) in detailOutputItems" :key="`detail-${idx}`">
+              <img :src="item.url" :alt="'Output ' + (idx + 1)" class="result-image" loading="lazy" />
+            </div>
+            <div v-else class="result-item">
+              <pre class="payload-json">{{ JSON.stringify(detailData, null, 2) }}</pre>
+            </div>
+          </template>
+          <template v-else-if="results.length > 0">
             <div v-for="(item, idx) in results" :key="idx" class="result-item">
               <img v-if="item.url" :src="item.url" :alt="'Output ' + (idx + 1)" class="result-image" loading="lazy" />
               <pre v-else class="payload-json">{{ typeof item === 'object' ? JSON.stringify(item, null, 2) : item }}</pre>
@@ -215,11 +241,13 @@ import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useModelPrice } from '~/composables/useModelPrice'
 import { useRouter, useRoute } from 'vue-router'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const { showError } = useToast()
 const { post } = useApi()
 const { token } = useAuth()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const batchUploadUrl = useBatchUploadUrl()
 const router = useRouter()
 const route = useRoute()
@@ -255,6 +283,57 @@ function goToTab (m) {
 watch(() => route.path, (path) => {
   const m = pathToMode[path]
   if (m && mode.value !== m) mode.value = m
+}, { immediate: true })
+
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const detailOutputItems = computed(() => {
+  if (!detailData.value || Number(detailData.value.status) !== 2) return []
+  const urls = Array.isArray(detailData.value.outputUrls) ? detailData.value.outputUrls : []
+  return urls
+    .map((u) => (typeof u === 'string' ? u : (u?.url ?? u?.imageUrl ?? '')))
+    .filter(Boolean)
+    .map((url) => ({ url }))
+})
+
+function getRouteRecordId () {
+  return route.query['record-id'] || ''
+}
+
+async function loadDetailByRecordId (recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, {
+        getIsCancelled: () => getRouteRecordId() !== recordId
+      }).then((res) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = res
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else {
+    loadingRecordId.value = null
+    detailData.value = null
+  }
 }, { immediate: true })
 const form = reactive({
   prompt: '',
@@ -541,6 +620,11 @@ const onSubmit = async () => {
     }
 
     const data = await post(apiPath, body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid) {
+      router.push((modeTabToPath[mode.value] || '/home/ideogram/v3-text-to-image') + '?record-id=' + encodeURIComponent(rid))
+      return
+    }
     const payload = data?.data ?? data
     const urls = payload?.outputUrls ?? payload?.urls ?? payload?.images ?? (Array.isArray(payload) ? payload : [])
     if (Array.isArray(urls) && urls.length > 0) {
@@ -566,7 +650,7 @@ const clearResults = () => { results.value = [] }
 .ideogram-tool { width: 100%; height: 100%; padding: 20px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
 .tool-header { display: flex; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; margin-right: 16px; flex-shrink: 0; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
 .tool-details .tool-description { margin: 0; font-size: 14px; color: #6b7280; }
 

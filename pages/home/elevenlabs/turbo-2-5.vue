@@ -8,16 +8,20 @@
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'ElevenLabs Turbo 2.5',
-  description: 'ElevenLabs Turbo 2.5 - Fast voice synthesis. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'ElevenLabs Turbo 2.5 TTS',
+  description: 'Fast voice synthesis with ElevenLabs Turbo 2.5. 10 credits per 1K characters.',
   category: 'audio',
   route: '/home/elevenlabs/turbo-2-5',
   keywords: ['ElevenLabs', 'Turbo', 'voice synthesis', 'TTS'],
-  applicationCategory: 'AudioApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Audio Processing',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: '10 credits per 1K characters.',
+  priceFromApi: { modelKey: 'elevenlabs_text_to_speech_turbo', eligibleQuantityName: 'Credits per 1K characters' },
+  priceSpecification: { price: 10, minValue: 10, maxValue: 10, eligibleQuantityName: 'Credits per 1K characters' }
 })
 useHead(seoConfig)
 </script>

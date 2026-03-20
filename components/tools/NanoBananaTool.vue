@@ -4,7 +4,7 @@
     <div class="tool-header">
       <div class="header-left">
         <div class="tool-icon">
-          <img src="/tools-logo/NanoBanana.png" alt="Nano Banana" />
+          <img src="/tools-logo/NanoBanana.png?v=20260319b" alt="Nano Banana" />
         </div>
         <div class="tool-info">
           <h3>Nano Banana</h3>
@@ -1059,15 +1059,17 @@ const clearResults = () => {
   border-radius: 8px;
   overflow: hidden;
   margin-right: 16px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .tool-icon img {
-  width: 48px;
-  height: 48px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .tool-info h3 {
@@ -1457,7 +1459,9 @@ const clearResults = () => {
 .image-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* 按长边等比缩放，完整显示图片，不做裁剪 */
+  object-fit: contain;
+  object-position: center;
 }
 
 .image-overlay {

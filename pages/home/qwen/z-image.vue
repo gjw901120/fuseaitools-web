@@ -8,16 +8,19 @@
 
 <script setup>
 import QwenTool from '~/components/tools/QwenTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Qwen Z-Image',
-  description: 'Qwen Z-Image - Text-to-image with aspect ratio. Prompt max 1000 characters.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Qwen Z-Image Generator',
+  description: 'Text-to-image with aspect ratio using Qwen Z-Image. Pay per image with credits.',
   category: 'image',
   route: '/home/qwen/z-image',
   keywords: ['Qwen', 'Z-Image', 'AI image'],
-  applicationCategory: 'ImageApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'qwen-z-image', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

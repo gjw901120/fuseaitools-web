@@ -8,16 +8,19 @@
 
 <script setup>
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'Ideogram V3 Reframe',
-  description: 'Ideogram V3 Reframe - Reframe images with new aspect ratio and composition.',
+  description: 'Reframe images with new aspect ratio and composition using Ideogram V3. Pay per image with credits.',
   category: 'image',
   route: '/home/ideogram/v3-reframe',
   keywords: ['Ideogram', 'V3', 'Reframe', 'AI image reframe', 'aspect ratio'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'ideogram-v3-reframe', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

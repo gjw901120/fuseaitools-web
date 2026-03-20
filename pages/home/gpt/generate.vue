@@ -19,7 +19,10 @@ const seoConfig = useToolSEO({
   route: '/home/gpt/generate',
   keywords: ['GPT', 'ChatGPT', 'OpenAI', 'AI chat', 'conversational AI', 'GPT-4', 'AI assistant', 'free ChatGPT', 'online chat AI'],
   applicationCategory: 'ChatApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationSubCategory: 'AI Chat',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Credits-based pricing for GPT chat.',
+  priceSpecification: { price: 450, minValue: 20, maxValue: 450, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

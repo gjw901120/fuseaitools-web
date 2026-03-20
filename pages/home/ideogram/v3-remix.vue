@@ -8,16 +8,19 @@
 
 <script setup>
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'Ideogram V3 Remix',
-  description: 'Ideogram V3 Remix - Remix images with strength and style control.',
+  description: 'Remix images with strength and style control using Ideogram V3. Pay per image with credits.',
   category: 'image',
   route: '/home/ideogram/v3-remix',
   keywords: ['Ideogram', 'V3', 'Remix', 'AI image remix'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'ideogram-v3-remix', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

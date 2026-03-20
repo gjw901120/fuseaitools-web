@@ -28,6 +28,7 @@ declare global {
   const getAppManifest: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']
   const getCurrentInstance: typeof import('../../node_modules/vue')['getCurrentInstance']
   const getCurrentScope: typeof import('../../node_modules/vue')['getCurrentScope']
+  const getPriceRangeFromData: typeof import('../../composables/useModelPrice')['getPriceRangeFromData']
   const getRouteRules: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']
   const h: typeof import('../../node_modules/vue')['h']
   const hasInjectionContext: typeof import('../../node_modules/vue')['hasInjectionContext']
@@ -173,6 +174,7 @@ declare global {
   const useToast: typeof import('../../composables/useToast')['useToast']
   const useToolOverviewPage: typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']
   const useToolSEO: typeof import('../../composables/useToolSEO')['useToolSEO']
+  const useToolSEOAsync: typeof import('../../composables/useToolSEO')['useToolSEOAsync']
   const useTransitionState: typeof import('../../node_modules/vue')['useTransitionState']
   const useUserDetail: typeof import('../../composables/useUserDetail')['useUserDetail']
   const watch: typeof import('../../node_modules/vue')['watch']
@@ -223,6 +225,7 @@ declare module 'vue' {
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
+    readonly getPriceRangeFromData: UnwrapRef<typeof import('../../composables/useModelPrice')['getPriceRangeFromData']>
     readonly getRouteRules: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']>
     readonly h: UnwrapRef<typeof import('../../node_modules/vue')['h']>
     readonly hasInjectionContext: UnwrapRef<typeof import('../../node_modules/vue')['hasInjectionContext']>
@@ -368,6 +371,7 @@ declare module 'vue' {
     readonly useToast: UnwrapRef<typeof import('../../composables/useToast')['useToast']>
     readonly useToolOverviewPage: UnwrapRef<typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']>
     readonly useToolSEO: UnwrapRef<typeof import('../../composables/useToolSEO')['useToolSEO']>
+    readonly useToolSEOAsync: UnwrapRef<typeof import('../../composables/useToolSEO')['useToolSEOAsync']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
     readonly useUserDetail: UnwrapRef<typeof import('../../composables/useUserDetail')['useUserDetail']>
     readonly watch: UnwrapRef<typeof import('../../node_modules/vue')['watch']>

@@ -8,16 +8,19 @@
 
 <script setup>
 import WanTool from '~/components/tools/WanTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Wan Text to Video',
-  description: 'Wan Text to Video - Generate AI video from text prompts. Supports Chinese and English, duration 5/10/15s, 720p/1080p.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Wan Text to Video Generator',
+  description: 'Generate AI video from text with Wan. Pay per video with credits.',
   category: 'video',
   route: '/home/wan/text-to-video',
   keywords: ['Wan', 'Text to Video', 'AI video', 'video generation'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'wan-2-6-text-to-video', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

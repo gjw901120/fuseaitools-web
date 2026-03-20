@@ -8,16 +8,20 @@
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs Speech to Text',
-  description: 'ElevenLabs Speech to Text - Convert speech to text. Use for free online.',
+  description: 'Convert speech to text with ElevenLabs. 6 credits per minute.',
   category: 'audio',
   route: '/home/elevenlabs/speech-to-text',
   keywords: ['ElevenLabs', 'Speech to Text', 'STT', 'transcription'],
-  applicationCategory: 'AudioApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Audio Processing',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: '6 credits per minute.',
+  priceFromApi: { modelKey: 'elevenlabs_speech_to_text', eligibleQuantityName: 'Credits per minute' },
+  priceSpecification: { price: 6, minValue: 6, maxValue: 6, eligibleQuantityName: 'Credits per minute' }
 })
 useHead(seoConfig)
 </script>

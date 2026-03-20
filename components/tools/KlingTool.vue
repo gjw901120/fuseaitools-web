@@ -1047,12 +1047,12 @@ watch(mode, (m) => {
 }
 .tool-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .mode-tabs-wrap { padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .mode-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
-.mode-tab { padding: 9px 14px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+.mode-tab { padding: 9px 14px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
 .mode-tab:hover { border-color: #3b82f6; color: #3b82f6; }
 .mode-tab.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
 .main-content { display: flex; flex: 1; min-height: 0; gap: 20px; }
@@ -1069,9 +1069,9 @@ watch(mode, (m) => {
 .form-hint { font-size: 12px; color: #6b7280; }
 .char-count { font-size: 12px; color: #6b7280; text-align: right; }
 .tab-group { display: flex; gap: 8px; flex-wrap: wrap; }
-.tab-option { flex: 1; min-width: 60px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; color: #64748b; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
-.tab-option:hover { background: #f8fafc; border-color: #3b82f6; color: #3b82f6; }
-.tab-option.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+.tab-option { flex: 1; min-width: 60px; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; background: #f8fafc; color: #374151; cursor: pointer; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+.tab-option:hover { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6; color: #3b82f6; }
+.tab-option.active { border-color: #3b82f6; background: #3b82f6; color: #fff; }
 .file-input-hidden { position: absolute; opacity: 0; width: 0; height: 0; }
 .upload-area { padding: 12px; border: 1px dashed #d1d5db; border-radius: 8px; background: #f9fafb; cursor: pointer; font-size: 14px; color: #6b7280; }
 .upload-area:hover { border-color: #3b82f6; color: #3b82f6; }

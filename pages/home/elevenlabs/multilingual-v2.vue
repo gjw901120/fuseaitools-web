@@ -8,16 +8,20 @@
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'ElevenLabs Multilingual v2',
-  description: 'ElevenLabs Multilingual v2 - Multilingual Voice Synthesis. AI voice synthesis in 100+ languages. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'ElevenLabs Multilingual v2 TTS',
+  description: 'Multilingual voice synthesis in 100+ languages with ElevenLabs. 20 credits per 1K characters.',
   category: 'audio',
   route: '/home/elevenlabs/multilingual-v2',
   keywords: ['ElevenLabs', 'Multilingual v2', 'voice synthesis', 'TTS', 'multilingual voice'],
-  applicationCategory: 'AudioApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Audio Processing',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: '20 credits per 1K characters.',
+  priceFromApi: { modelKey: 'elevenlabs_text_to_speech_multilingual', eligibleQuantityName: 'Credits per 1K characters' },
+  priceSpecification: { price: 20, minValue: 20, maxValue: 20, eligibleQuantityName: 'Credits per 1K characters' }
 })
 useHead(seoConfig)
 </script>

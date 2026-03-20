@@ -24,7 +24,21 @@
 ```
 
 - **ONCE**：直接使用 `once.credits`，无需表单字段匹配。
-- **RULE**：用传入的 `formFields` 与 `rules` 中每条规则做**全字段匹配**，命中则取该条的 `credits`。未传的 key 不参与匹配。
+- **RULE**：以**前端实际传入的 `formFields` 字段集合**为准，对 `rules` 中每条规则做“按字段逐个比对（AND）”匹配，命中则取该条 `credits`。**未传的 key 不参与匹配**。
+  - 匹配逻辑实现位于：`composables/useModelPrice.js`（`getPrice`）与各工具组件（构造 `formFields`）。
+  - 若某工具的匹配字段/默认值不明确，请以该工具的实际代码为准（见对应 `components/tools/*Tool.vue`），不要按统一模板臆断。
+
+### SEO 中 credits 区间（minValue / maxValue）的取值规则
+
+工具页 JSON-LD 里 `offers.priceSpecification.eligibleQuantity.minValue` / `maxValue` 由同一套定价数据按以下规则计算（实现：`composables/useModelPrice.js` 的 `getPriceRangeFromData`，被 `composables/useToolSEO.js` 的 `useToolSEOAsync` 调用）：
+
+| 定价类型 | minValue | maxValue |
+|----------|----------|----------|
+| **ONCE** | `once.credits` | `once.credits` |
+| **RULE** | `min(rules[].credits)` | `max(rules[].credits)` |
+
+- 不依赖表单或 `formFields`，仅根据接口返回的该 modelKey 下 **ONCE 单值** 或 **RULE 下全部规则的 credits** 取最小/最大。
+- 若接口返回为统一包裹格式 `{ errorCode, data }`，则使用 `data` 作为上述结构的输入。
 
 ---
 
@@ -48,7 +62,8 @@
 | Flux Kontext Max | `flux_kontext_max` | ONCE  | Model Version 选 Max |
 
 - **组件**：`components/tools/FluxKontextTool.vue`
-- **表单字段**：`formData.model` 为 `'flux-kontext-pro'` 或 `'flux-kontext-max'`，分别对应上述两个 modelKey。
+- **modelKey 以本表为准**（下划线）。表单里 `formData.model` 为 `'flux-kontext-pro'` 或 `'flux-kontext-max'`（连字符），分别对应上表两个 modelKey。
+- 若定价接口返回的 key 为连字符形式（如 `flux-kontext-pro`），前端 `getPrice` / `useToolSEOAsync` 会做下划线↔连字符兼容查找。
 
 ---
 
@@ -68,21 +83,79 @@
 
 ### 4. Midjourney
 
-| 前端功能       | 表单 tab id | modelKey              | 类型  |
-|----------------|-------------|------------------------|-------|
-| Imagine        | `imagine`   | `midjourney_imagine`   | ONCE  |
-| Upscale        | `upscale`   | `midjourney_upscale`   | ONCE  |
-| Vary           | `vary`      | `midjourney_vary`      | ONCE  |
-| Blend          | `blend`     | `midjourney_blend`     | ONCE  |
-| Describe       | `describe`  | `midjourney_describe`  | ONCE  |
-| Swap Face      | `swap`      | `midjourney_swapface`  | ONCE  |
+| 前端功能       | 表单 tab id | modelKey              | 类型  | 说明 |
+|----------------|-------------|------------------------|-------|------|
+| Imagine        | `imagine`   | `midjourney_imagine`   | RULE  | 按 speed（relaxed / fast / turbo）匹配 |
+| Upscale        | `upscale`   | `midjourney_upscale`   | ONCE  | |
+| Vary           | `vary`      | `midjourney_vary`      | ONCE  | |
+| Blend          | `blend`     | `midjourney_blend`     | ONCE  | |
+| Describe       | `describe`  | `midjourney_describe`  | ONCE  | |
+| Swap Face      | `swap`      | `midjourney_swapface`  | ONCE  | |
 
 - **组件**：`components/tools/MidjourneyTool.vue`
-- **价格匹配**：`MIDJOURNEY_PRICE_KEYS`，由 `activeCategory`（imagine | upscale | vary）取对应 modelKey；Imagine → `midjourney_imagine`，Upscale → `midjourney_upscale`，Vary → `midjourney_vary`。
+- **价格匹配**：`MIDJOURNEY_PRICE_KEYS` 由 `activeCategory` 取 modelKey。**Imagine（RULE）**：传入 `formFields` 为 `{ duration: 0, quality: '', size: '', batchSize: 1, speed: form.speed, scene: 'generate' }`，与 rules 的 `speed`（relaxed / fast / turbo）匹配；Upscale、Vary 为 ONCE，无需 formFields。
 
 ---
 
-### 5. Suno
+### 5. Seedream
+
+| 前端模式（tab/mode）     | modelKey                          | 类型  | 说明 |
+|--------------------------|------------------------------------|-------|------|
+| 1.5 Lite Text to Image   | `seedream-5-lite-text-to-image`   | ONCE  | 文生图 |
+| 2.5 Lite Image to Image  | `seedream-5-lite-image-to-image`   | ONCE  | 图生图（若接口改为 RULE，则按 aspectRatio、quality 匹配） |
+
+- **组件**：`components/tools/SeedreamTool.vue`
+- **映射**：`seedreamPriceModelKeyMap` 由 `mode` 取 modelKey。
+- **formFields**：当前组件统一传 `{ aspectRatio: formData.aspectRatio, quality: formData.quality }`；接口为 ONCE 时忽略，为 RULE 时与 rules 匹配。
+
+---
+
+### 6. Qwen
+
+| 前端模式（tab）   | modelKey               | 类型  | 说明 |
+|-------------------|------------------------|-------|------|
+| text-to-image     | `qwen-text-to-image`   | ONCE  | 文生图 |
+| image-to-image    | `qwen-image-to-image`  | ONCE  | 图生图 |
+| image-edit        | `qwen-image-edit`      | ONCE  | 图像编辑 |
+| z-image           | `qwen-z-image`        | ONCE  | Z-Image |
+
+- **组件**：`components/tools/QwenTool.vue`
+- **映射**：`qwenPriceModelKeyMap` 由 `mode` 取 modelKey。
+- **formFields**：当前接口多为 ONCE；若某 mode 为 RULE，组件会传 `imageSize`（text-to-image / image-edit）、`numImages`（image-edit）、`aspectRatio`（z-image），以实际 rules 字段为准。
+
+---
+
+### 7. Ideogram
+
+| 前端模式（tab）      | modelKey                    | 类型  | 说明 |
+|----------------------|-----------------------------|-------|------|
+| v3-text-to-image     | `ideogram-v3-text-to-image` | RULE  | 按 speed（TURBO/BALANCED/QUALITY）匹配 |
+| v3-edit              | `ideogram-v3-edit`          | RULE  | 同上 |
+| v3-remix             | `ideogram-v3-remix`         | RULE  | 同上 |
+| v3-reframe           | `ideogram-v3-reframe`       | RULE  | 同上 |
+| character            | `ideogram-character`        | RULE  | 同上 |
+| character-edit       | `ideogram-character-edit`   | RULE  | 同上 |
+| character-remix      | `ideogram-character-remix`  | RULE  | 同上 |
+
+- **组件**：`components/tools/IdeogramTool.vue`
+- **映射**：`IDEOGRAM_PRICE_KEY_BY_MODE` 由 `mode` 取 modelKey。
+- **所有模式（RULE）**：统一传入 `formFields` 为 `{ speed: form.rendering_speed, scene: 'generate' }`。`rendering_speed` 对应 rules 的 `speed`（如 TURBO、BALANCED、QUALITY）。
+
+---
+
+### 8. GPT Image
+
+| 前端模式（tab）   | modelKey                         | 类型  | 说明 |
+|-------------------|----------------------------------|-------|------|
+| text-to-image     | `gpt-image-1.5-text-to-image`   | RULE  | 按 size（Quality：medium/high）匹配 |
+| image-to-image    | `gpt-image-1.5-image-to-image`  | RULE  | 同上 |
+
+- **组件**：`components/tools/GPTImageTool.vue`
+- **价格匹配**：`currentModelKey` 由 `mode` 取；RULE 匹配字段为 **size**，对应表单 **Quality**（`form.quality`：`medium` / `high`）。组件当前使用本地 `modelPricing` 与 `form.quality` 匹配；若对接接口 getPrice，应传 `formFields` 为 `{ duration: 0, quality: '', size: form.quality, batchSize: 1, speed: 'none', scene: 'generate' }`（与接口 rules 字段一致）。
+
+---
+
+### 9. Suno
 
 | 前端功能           | 表单 function   | modelKey              | 类型  |
 |--------------------|-----------------|------------------------|-------|
@@ -98,7 +171,23 @@
 
 ---
 
-### 6. Veo 3
+### 10. ElevenLabs
+
+| 前端功能（路由/function） | modelKey                              | 类型  | 单价说明 |
+|---------------------------|----------------------------------------|-------|----------|
+| Multilingual v2（/multilingual-v2） | `elevenlabs_text_to_speech_multilingual` | ONCE  | 20 credits/1K 字符 |
+| Turbo 2.5（/turbo-2-5）   | `elevenlabs_text_to_speech_turbo`      | ONCE  | 10 credits/1K 字符 |
+| Speech to Text（/speech-to-text） | `elevenlabs_speech_to_text`         | ONCE  | 6 credits/分钟 |
+| Sound Effect v2（/sound-effect-v2） | `elevenlabs_sound_effect`          | ONCE  | 18 credits/分钟 |
+| Audio Isolation（/audio-isolation） | `elevenlabs_audio_isolation`        | ONCE  | 21 credits/分钟 |
+
+- **组件**：`components/tools/ElevenLabsTool.vue`
+- **映射**：`keyMap` 由 `formData.function`（multilingual-v2 | turbo-2-5 | speech-to-text | sound-effect-v2 | audio-isolation）取 modelKey。
+- **展示**：提交按钮旁显示「X credits / 1K」或「X credits / minute」（见组件 `getButtonPrice` 与 `creditsUnitMap`）。
+
+---
+
+### 11. Veo 3
 
 | 前端模式 / 模型     | modelKey     | 类型  | 说明 |
 |---------------------|--------------|-------|------|
@@ -108,10 +197,13 @@
 
 - **组件**：`components/tools/Veo3Tool.vue`
 - **逻辑**：`formData.generationType === 'VIDEO_EXTEND'` 用 `veo3_extend`，否则用 `formData.model`（`veo3` 或 `veo3_fast`）作为 modelKey。
+- **SEO minValue/maxValue**：
+  - `/home/veo3/extend`：仅取 `veo3_extend`（ONCE，当前为 200/200）。
+  - `/home/veo3/text-to-video`、`/home/veo3/reference-to-video`、`/home/veo3/first-and-last-to-video`：按 `Model Type` 兼容 `standard -> veo3` 与 `fast -> veo3_fast`，SEO 区间取两者合并后的最小/最大值（当前为 36/200）。
 
 ---
 
-### 7. Runway
+### 12. Runway
 
 | 前端功能   | modelKey         | 类型  | 说明 |
 |------------|------------------|-------|------|
@@ -124,7 +216,7 @@
 
 ---
 
-### 8. Luma
+### 13. Luma
 
 | 前端展示名称 | modelKey | 类型  |
 |-------------|----------|-------|
@@ -134,7 +226,72 @@
 
 ---
 
-### 9. Sora
+### 14. Wan
+
+| 前端模式（tab）   | modelKey                   | 类型  | 说明 |
+|-------------------|----------------------------|-------|------|
+| text-to-video     | `wan-2-6-text-to-video`    | RULE  | 按 duration、quality(720p/1080p) 匹配 |
+| image-to-video    | `wan-2-6-image-to-video`   | RULE  | 同上 |
+| video-to-video    | `wan-2-6-video-to-video`   | RULE  | 同上 |
+
+- **组件**：`components/tools/WanTool.vue`
+- **映射**：`wanPriceModelKeyMap` 由 `mode` 取 modelKey。
+- **formFields**：`{ duration: formData.duration, quality: formData.resolution }`，与 rules 的 duration、quality（如 720p/1080p）匹配。
+
+---
+
+### 15. Seedance
+
+| 前端模式（tab）              | modelKey                                | 类型  | 说明 |
+|------------------------------|-----------------------------------------|-------|------|
+| v1-lite-text-to-video        | `seedance-v1-lite-text-to-video`        | RULE  | 按 duration、quality(480p/720p/1080p) 匹配 |
+| v1-lite-image-to-video       | `seedance-v1-lite-image-to-video`        | RULE  | 同上 |
+| v1-pro-text-to-video         | `seedance-v1-pro-text-to-video`         | RULE  | 同上 |
+| v1-pro-image-to-video        | `seedance-v1-pro-image-to-video`        | RULE  | 同上 |
+| v1-pro-fast-image-to-video   | `seedance-v1-pro-fast-image-to-video`    | RULE  | 同上 |
+
+- **组件**：`components/tools/SeedanceTool.vue`
+- **映射**：`seedancePriceModelKeyMap` 由 `mode` 取 modelKey。
+- **formFields**：`{ duration: formData.duration, quality: formData.resolution }`，与 rules 匹配。
+
+---
+
+### 16. Hailuo
+
+| 前端模式（tab）            | modelKey                                | 类型  | 说明 |
+|----------------------------|-----------------------------------------|-------|------|
+| image-to-video-standard    | `hailuo-2-3-image-to-video-standard`    | RULE  | 按 duration、quality(768p/1080p)、scene 匹配 |
+| image-to-video-pro         | `hailuo-2-3-image-to-video-pro`         | RULE  | 同上 |
+
+- **组件**：`components/tools/HailuoTool.vue`
+- **modelKey**：由 `mode`（`image-to-video-standard` / `image-to-video-pro`）取。
+- **formFields**：`{ duration: Number(formData.duration), quality: String(formData.resolution).toLowerCase(), scene: 'generate' }`（如 768p、1080p）。
+
+---
+
+### 17. Kling
+
+| 前端模式（tab）                  | modelKey                                | 类型  | 说明 |
+|----------------------------------|-----------------------------------------|-------|------|
+| v2-5-turbo-image-to-video-pro    | `kling-v2-5-turbo-image-to-video-pro`   | RULE  | 按 duration、scene: generate 匹配 |
+| v2-5-turbo-text-to-video-pro     | `kling-v2-5-turbo-text-to-video-pro`    | RULE  | 同上 |
+| v2-6-text-to-video               | `kling-2.6-text-to-video`              | RULE  | 按 duration、scene(with_sound/without_sound) 匹配 |
+| v2-6-image-to-video              | `kling-2.6-image-to-video`              | RULE  | 同上 |
+| v3-0-video                       | `kling-3.0-video`                       | RULE  | 按 duration、size(std/pro)、scene 匹配；多镜头为 shots duration 之和 |
+| v2-6-motion-control              | `kling-2.6-motion-control`              | RULE  | 按 duration、quality(720p/1080p)、scene: generate 匹配 |
+| ai-avatar-standard               | `kling-ai-avatar-standard`              | ONCE  | |
+| ai-avatar-pro                    | `kling-ai-avatar-pro`                   | ONCE  | |
+
+- **组件**：`components/tools/KlingTool.vue`
+- **v2.5 Turbo**：`formFields` 为 `{ duration: formData.duration, scene: 'generate' }`。
+- **2.6 Text/Image to Video**：`scene` 由 `formData.sound` 得 `with_sound` 或 `without_sound`；`formFields` 含 `duration`、`scene`。
+- **3.0 Video**：`formFields` 含 `duration`（单镜头为第一条 prompt 的 duration，多镜头为各 shot duration 之和）、`size: formData.kling_mode`（std/pro）、`scene`。
+- **2.6 Motion Control**：`formFields` 为 `{ duration, quality: formData.mode }`（如 720p）、`scene: 'generate'`。
+- **AI Avatar**：ONCE，无需 formFields。
+
+---
+
+### 18. Sora
 
 | 前端模式           | 表单 model            | modelKey                    | 类型  | 说明 |
 |--------------------|------------------------|-----------------------------|-------|------|
@@ -159,6 +316,17 @@
 | modelKey                    | 参与匹配的表单字段说明 |
 |-----------------------------|------------------------|
 | `nano-banana-pro`           | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
+| `midjourney_imagine`        | speed（relaxed/fast/turbo）、duration、quality、size、batchSize、scene |
+| `seedream-5-lite-image-to-image`（若为 RULE） | aspectRatio、quality |
+| `ideogram-v3-*` / `ideogram-character*` | speed（TURBO/BALANCED/QUALITY）、scene |
+| `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | size（medium/high，对应 Quality） |
+| `wan-2-6-*`                | duration、quality（720p/1080p，对应 Resolution） |
+| `seedance-v1-*`             | duration、quality（480p/720p/1080p，对应 Resolution） |
+| `hailuo-2-3-image-to-video-*` | duration、quality（768p/1080p）、scene |
+| `kling-v2-5-turbo-*`        | duration、scene: generate |
+| `kling-2.6-text-to-video` / `kling-2.6-image-to-video` | duration、scene（with_sound/without_sound） |
+| `kling-3.0-video`           | duration、size（std/pro）、scene |
+| `kling-2.6-motion-control`  | duration、quality（720p/1080p）、scene |
 | `runway_generate`           | duration、quality（如 720p）、scene |
 | `sora-2-pro-storyboard`     | duration（Frames）、scene |
 | `sora-2-pro-text-to-video` | duration（Frames）、size（standard/high） |

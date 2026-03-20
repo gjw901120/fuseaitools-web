@@ -3,8 +3,12 @@
     <!-- Tool Header -->
     <div class="tool-header">
       <div class="header-left">
-        <div class="tool-icon">
-          <img src="/tools-logo/ChatGPT4OImage.png" alt="GPT-4o Image" />
+        <div class="tool-icon" style="width: 48px; height: 48px; flex: 0 0 48px;">
+          <img
+            src="/tools-logo/ChatGPT4OImage.png?v=20260319b"
+            alt="GPT-4o Image"
+            style="display: block; width: 100% !important; height: 100% !important; min-width: 100%; min-height: 100%; object-fit: cover !important; object-position: center;"
+          />
         </div>
         <div class="tool-info">
           <h3>GPT 4o Image</h3>
@@ -527,9 +531,9 @@ const clearResults = () => {
 }
 
 .tool-icon img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tool-info h3 {

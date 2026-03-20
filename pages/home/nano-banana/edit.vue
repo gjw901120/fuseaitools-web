@@ -8,16 +8,19 @@
 
 <script setup>
 import NanoBananaTool from '~/components/tools/NanoBananaTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Nano Banana Edit',
-  description: 'Nano Banana Edit - Image to Image. Edit and generate images based on uploaded photos. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Nano Banana Edit - Image to Image',
+  description: 'Edit and generate images from uploaded photos with Nano Banana. Pay per image with credits.',
   category: 'image',
   route: '/home/nano-banana/edit',
   keywords: ['Nano Banana Edit', 'Image to Image', 'AI image edit', 'image editing', 'AI art'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'nano-banana-edit', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

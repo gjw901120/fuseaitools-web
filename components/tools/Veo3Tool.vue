@@ -935,7 +935,7 @@ const shareVideo = () => {
 }
 
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; image-rendering: auto; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
 
 .tool-details h3 {
   margin: 0 0 4px 0;

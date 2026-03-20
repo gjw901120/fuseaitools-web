@@ -19,7 +19,10 @@ const seoConfig = useToolSEO({
   route: '/home/gemini/generate',
   keywords: ['Gemini', 'Google Gemini', 'Gemini AI', 'AI chat', 'conversational AI', 'Google AI', 'multimodal AI', 'free Gemini'],
   applicationCategory: 'ChatApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationSubCategory: 'AI Chat',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Credits-based pricing for Gemini chat.',
+  priceSpecification: { price: 260, minValue: 40, maxValue: 260, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

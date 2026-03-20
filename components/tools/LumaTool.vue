@@ -916,7 +916,7 @@ const clearResults = () => {
 .btn-primary {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
   border: none;
   border-radius: 12px;

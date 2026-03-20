@@ -8,16 +8,19 @@
 
 <script setup>
 import SeedreamTool from '~/components/tools/SeedreamTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Seedream 2.5 Lite Image to Image',
-  description: 'Seedream 2.5 Lite Image to Image - Edit images with text. Upload image(s), aspect ratio 1:1–21:9, quality Basic/High, prompt max 2996 characters.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Seedream 2.5 Lite Image to Image Generator',
+  description: 'Edit images with text using Seedream 2.5 Lite. Pay per image with credits.',
   category: 'image',
   route: '/home/seedream/2-5-lite-image-to-image',
   keywords: ['Seedream', 'Image to Image', 'AI image', '2.5 Lite'],
-  applicationCategory: 'ImageApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'seedream-5-lite-image-to-image', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

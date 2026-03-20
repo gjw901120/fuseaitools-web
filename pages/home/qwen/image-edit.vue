@@ -8,16 +8,19 @@
 
 <script setup>
 import QwenTool from '~/components/tools/QwenTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'Qwen Image Edit',
-  description: 'Qwen Image Edit - Edit image with prompt. Size, steps, num images, sync mode, guidance.',
+  description: 'Edit image with prompt using Qwen. Pay per image with credits.',
   category: 'image',
   route: '/home/qwen/image-edit',
   keywords: ['Qwen', 'Image Edit', 'AI image'],
-  applicationCategory: 'ImageApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'qwen-image-edit', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

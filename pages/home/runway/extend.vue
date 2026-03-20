@@ -8,16 +8,19 @@
 
 <script setup>
 import RunwayTool from '~/components/tools/RunwayTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Runway Extend',
-  description: 'Runway Extend - Extend video with AI. Use Runway for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Runway Video Extend',
+  description: 'Extend video with AI using Runway. Pay per extend with credits.',
   category: 'video',
   route: '/home/runway/extend',
   keywords: ['Runway', 'Extend', 'AI video', 'video extend'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per extend with credits.',
+  priceFromApi: { modelKey: 'runway_extend', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

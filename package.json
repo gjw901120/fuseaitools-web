@@ -12,10 +12,13 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "nuxt": "^3.13.0",
-    "baseline-browser-mapping": "latest"
+    "baseline-browser-mapping": "latest",
+    "nuxt": "^3.13.0"
   },
   "dependencies": {
-    "@nuxtjs/tailwindcss": "^6.8.0"
+    "@nuxtjs/tailwindcss": "^6.8.0",
+    "icojs": "^0.20.1",
+    "pngjs": "^7.0.0",
+    "semver": "^7.7.4"
   }
 }

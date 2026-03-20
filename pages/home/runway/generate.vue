@@ -8,16 +8,19 @@
 
 <script setup>
 import RunwayTool from '~/components/tools/RunwayTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Runway Generate',
-  description: 'Runway Generate - AI video from text and images. Use Runway for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Runway Video Generator',
+  description: 'Generate AI video from text and images with Runway. Pay per video with credits.',
   category: 'video',
   route: '/home/runway/generate',
   keywords: ['Runway', 'Generate', 'AI video', 'text to video'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'runway_generate', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

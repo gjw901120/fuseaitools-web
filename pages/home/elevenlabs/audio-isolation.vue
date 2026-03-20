@@ -8,16 +8,20 @@
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs Audio Isolation',
-  description: 'ElevenLabs Audio Isolation - Isolate vocals or instruments. Use for free online.',
+  description: 'Isolate vocals or instruments with ElevenLabs. 21 credits per minute.',
   category: 'audio',
   route: '/home/elevenlabs/audio-isolation',
   keywords: ['ElevenLabs', 'Audio Isolation', 'vocal isolation'],
-  applicationCategory: 'AudioApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Audio Processing',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: '21 credits per minute.',
+  priceFromApi: { modelKey: 'elevenlabs_audio_isolation', eligibleQuantityName: 'Credits per minute' },
+  priceSpecification: { price: 21, minValue: 21, maxValue: 21, eligibleQuantityName: 'Credits per minute' }
 })
 useHead(seoConfig)
 </script>

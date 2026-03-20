@@ -8,16 +8,19 @@
 
 <script setup>
 import MidjourneyTool from '~/components/tools/MidjourneyTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Midjourney - Upscale',
-  description: 'Create an upscale task based on previously generated Midjourney images. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Midjourney Upscale - AI Image Upscaler',
+  description: 'Upscale Midjourney images. Pay per upscale with credits.',
   category: 'image',
   route: '/home/midjourney/upscale',
   keywords: ['Midjourney', 'Upscale', 'AI image', 'image upscale'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per upscale with credits.',
+  priceFromApi: { modelKey: 'midjourney_upscale', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

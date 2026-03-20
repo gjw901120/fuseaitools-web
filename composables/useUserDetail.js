@@ -8,6 +8,7 @@
  */
 import { ref, computed } from 'vue'
 import { fetchWithCache } from '~/composables/useApiCache'
+import { useAuth } from '~/composables/useAuth'
 
 const CACHE_KEY_USER_DETAIL = 'api_user_detail'
 
@@ -18,6 +19,7 @@ const loading = ref(false)
 
 export function useUserDetail() {
   const { get } = useApi()
+  const { isAuthenticated } = useAuth()
 
   /**
    * 通过缓存获取用户详情：
@@ -25,6 +27,12 @@ export function useUserDetail() {
    * - 无缓存或已过期时，请求 /api/user/detail 并写入缓存
    */
   const loadUserDetail = async () => {
+    // 未登录不请求用户详情
+    if (!isAuthenticated.value) {
+      userDetailRef.value = null
+      loaded.value = true
+      return null
+    }
     try {
       const data = await fetchWithCache(CACHE_KEY_USER_DETAIL, async () => {
         const res = await get('/api/user/detail')
@@ -48,6 +56,7 @@ export function useUserDetail() {
    * - 如果没有，则触发一次 loadUserDetail（内部带 1 小时缓存）
    */
   const ensureUserDetail = async () => {
+    if (!isAuthenticated.value) return null
     if (userDetailRef.value != null) return userDetailRef.value
     // 避免并发重复请求
     if (loading.value) return userDetailRef.value
@@ -72,7 +81,7 @@ export function useUserDetail() {
 
   // 当在工具页面等位置首次使用该 composable 且参数为空时，
   // 触发一次异步加载（不阻塞调用方），后续计算会自动使用最新的 discount。
-  if (process.client && !loaded.value && !loading.value) {
+  if (process.client && isAuthenticated.value && !loaded.value && !loading.value) {
     loading.value = true
     loadUserDetail().finally(() => {
       loading.value = false

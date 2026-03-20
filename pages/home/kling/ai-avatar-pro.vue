@@ -8,16 +8,19 @@
 
 <script setup>
 import KlingTool from '~/components/tools/KlingTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'Kling AI Avatar Pro',
-  description: 'Kling AI Avatar Pro - High-quality avatar image + audio to talking-head video. Prompt max 5000 characters.',
+  description: 'High-quality talking-head video from avatar and audio with Kling Pro. Pay per video with credits.',
   category: 'video',
   route: '/home/kling/ai-avatar-pro',
   keywords: ['Kling', 'Kuaishou', 'AI Avatar Pro', 'talking head', 'video'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'kling-ai-avatar-pro', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

@@ -8,16 +8,19 @@
 
 <script setup>
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Ideogram Character',
-  description: 'Ideogram Character - Generate consistent characters from reference images.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Ideogram Character Generator',
+  description: 'Generate consistent characters from reference images with Ideogram. Pay per image with credits.',
   category: 'image',
   route: '/home/ideogram/character',
   keywords: ['Ideogram', 'Character', 'AI character generation', 'consistent character'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'ideogram-character', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

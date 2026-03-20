@@ -13,16 +13,19 @@
 
 <script setup>
 import SoraTool from '~/components/tools/SoraTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Sora - Image to Video',
-  description: 'Use Sora 2 for free online. Image-to-video AI video generation from reference images.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Sora Image to Video Generator',
+  description: 'Generate videos from reference images using OpenAI Sora 2. Pay per video with credits.',
   category: 'video',
   route: '/home/sora/image-to-video',
   keywords: ['Sora', 'Sora 2', 'image-to-video', 'AI video generation', 'OpenAI Sora'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'sora-2-image-to-video', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

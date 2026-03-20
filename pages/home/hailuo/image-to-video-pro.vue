@@ -8,16 +8,19 @@
 
 <script setup>
 import HailuoTool from '~/components/tools/HailuoTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Hailuo Pro Image to Video',
-  description: 'Hailuo Pro - MiniMax high-fidelity AI image-to-video. Realistic motion, expressive characters, cinematic visuals. 6s/10s, 768P/1080P.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Hailuo Pro Image to Video Generator',
+  description: 'High-fidelity image-to-video with Hailuo MiniMax Pro. Pay per video with credits.',
   category: 'video',
   route: '/home/hailuo/image-to-video-pro',
   keywords: ['Hailuo', 'MiniMax', 'Image to Video', 'AI video', '2.3 Pro'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'hailuo-2-3-image-to-video-pro', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

@@ -8,16 +8,19 @@
 
 <script setup>
 import RunwayTool from '~/components/tools/RunwayTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Runway Aleph',
-  description: 'Runway Aleph - AI video generation. Use Runway for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Runway Aleph Video Generator',
+  description: 'AI video generation with Runway Aleph. Pay per video with credits.',
   category: 'video',
   route: '/home/runway/aleph',
   keywords: ['Runway', 'Aleph', 'AI video'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'runway_aleph', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

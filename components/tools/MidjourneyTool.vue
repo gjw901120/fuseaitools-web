@@ -324,11 +324,14 @@ const discountText = computed(() => {
   return ` · ${percent}%`
 })
 
-// 价格按分类匹配：Imagine -> midjourney_imagine，Upscale -> midjourney_upscale，Vary -> midjourney_vary
+// 价格按分类匹配：Imagine -> midjourney_imagine（RULE，按 speed 匹配），Upscale/Vary -> ONCE
 const MIDJOURNEY_PRICE_KEYS = { imagine: 'midjourney_imagine', upscale: 'midjourney_upscale', vary: 'midjourney_vary' }
 const midjourneyPriceText = computed(() => {
   const key = MIDJOURNEY_PRICE_KEYS[activeCategory.value] || 'midjourney_imagine'
-  const credits = getPrice(key)
+  const formFields = activeCategory.value === 'imagine'
+    ? { duration: 0, quality: '', size: '', batchSize: 1, speed: form.speed, scene: 'generate' }
+    : {}
+  const credits = getPrice(key, formFields)
   const str = formatCredits(credits)
   if (!str) return ''
   return ` · ${str} credits${discountText.value}`

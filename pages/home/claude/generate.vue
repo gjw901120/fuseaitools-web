@@ -19,7 +19,10 @@ const seoConfig = useToolSEO({
   route: '/home/claude/generate',
   keywords: ['Claude', 'Claude AI', 'Anthropic', 'AI chat', 'conversational AI', 'AI assistant', 'free Claude', 'Anthropic Claude'],
   applicationCategory: 'ChatApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationSubCategory: 'AI Chat',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Credits-based pricing for Claude chat.',
+  priceSpecification: { price: 650, minValue: 130, maxValue: 650, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

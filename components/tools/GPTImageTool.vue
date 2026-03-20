@@ -435,7 +435,7 @@ const clearResults = () => {
 }
 .tool-header { display: flex; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; margin-right: 16px; flex-shrink: 0; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
 .tool-details .tool-description { margin: 0; font-size: 14px; color: #6b7280; }
 

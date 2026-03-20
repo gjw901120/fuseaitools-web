@@ -135,15 +135,49 @@
           <!-- 宽高比选择 -->
           <div class="form-group" v-if="!formData.imageFile">
             <label>Video Aspect Ratio *</label>
-            <div class="select-wrapper">
-              <select v-model="formData.aspectRatio" required>
-                <option value="16:9">16:9 (Landscape)</option>
-                <option value="4:3">4:3 (Standard)</option>
-                <option value="1:1">1:1 (Square)</option>
-                <option value="3:4">3:4 (Portrait)</option>
-                <option value="9:16">9:16 (Mobile)</option>
-              </select>
-              <i class="fas fa-chevron-down"></i>
+            <div class="tab-group">
+              <div class="tab-options">
+                <button
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.aspectRatio === '16:9' }"
+                  @click="formData.aspectRatio = '16:9'"
+                >
+                  16:9
+                </button>
+                <button
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.aspectRatio === '4:3' }"
+                  @click="formData.aspectRatio = '4:3'"
+                >
+                  4:3
+                </button>
+                <button
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.aspectRatio === '1:1' }"
+                  @click="formData.aspectRatio = '1:1'"
+                >
+                  1:1
+                </button>
+                <button
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.aspectRatio === '3:4' }"
+                  @click="formData.aspectRatio = '3:4'"
+                >
+                  3:4
+                </button>
+                <button
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.aspectRatio === '9:16' }"
+                  @click="formData.aspectRatio = '9:16'"
+                >
+                  9:16
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1331,10 +1365,10 @@ const generateExtendVideo = async () => {
 
 .tab-group {
   flex: 1;
-  border: 1px solid #e5e7eb;
+  border: none;
   border-radius: 12px;
   overflow: hidden;
-  background: white;
+  background: transparent;
 }
 
 .tab-header {
@@ -1356,35 +1390,36 @@ const generateExtendVideo = async () => {
 .tab-options {
   display: flex;
   gap: 8px;
+  background: transparent;
 }
 
 .tab-option {
   flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  color: #64748b;
+  padding: 10px 12px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  color: #374151;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 6px;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .tab-option:hover:not(:disabled) {
   border-color: #3b82f6;
-  background: #f8fafc;
+  background: rgba(59, 130, 246, 0.05);
   color: #3b82f6;
 }
 
 .tab-option.active {
+  border-color: #3b82f6;
   background: #3b82f6;
   color: white;
-  border-color: #3b82f6;
 }
 
 .tab-option:disabled {

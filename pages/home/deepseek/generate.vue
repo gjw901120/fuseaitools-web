@@ -19,7 +19,10 @@ const seoConfig = useToolSEO({
   route: '/home/deepseek/generate',
   keywords: ['Deepseek', 'DeepSeek AI', 'AI chat', 'conversational AI', 'AI assistant', 'free AI chat', 'coding AI'],
   applicationCategory: 'ChatApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationSubCategory: 'AI Chat',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Credits-based pricing for DeepSeek chat.',
+  priceSpecification: { price: 260, minValue: 260, maxValue: 260, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

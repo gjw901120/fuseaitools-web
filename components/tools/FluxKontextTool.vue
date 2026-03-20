@@ -391,9 +391,10 @@ const discountText = computed(() => {
   return ` · ${percent}%`
 })
 
-// 价格：根据 Model Version 匹配 price 接口的 flux-kontext-pro(8) / flux-kontext-max(16)
+// 价格：modelKey 以 PRICING_MAPPING 为准（下划线）；表单值为连字符，此处映射后再查价
 const fluxKontextPriceText = computed(() => {
-  const modelKey = formData.model || 'flux-kontext-pro'
+  const model = formData.model || 'flux-kontext-pro'
+  const modelKey = model === 'flux-kontext-max' ? 'flux_kontext_max' : 'flux_kontext_pro'
   const credits = getPrice(modelKey)
   const str = formatCredits(credits)
   if (!str) return ''
@@ -581,7 +582,7 @@ const aspectRatioMap = {
   '9:16': 'RATIO_9_16'
 }
 const outputFormatMap = { jpeg: 'JPEG', png: 'PNG' }
-// Model Version：接口使用连字符 flux-kontext-pro / flux-kontext-max
+// Model Version：PRICING_MAPPING 中 modelKey 为 flux_kontext_pro / flux_kontext_max；表单与接口用连字符 flux-kontext-pro / flux-kontext-max
 
 // 生成图像
 const generateImage = async () => {

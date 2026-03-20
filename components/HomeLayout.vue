@@ -106,7 +106,9 @@
           <Breadcrumb 
             v-if="selectedCategoryName && selectedToolName"
             :category="selectedCategoryName" 
-            :current-page="selectedToolName" 
+            :parent-label="breadcrumbParentLabel"
+            :parent-to="breadcrumbParentTo"
+            :current-page="breadcrumbCurrentPage"
           />
           <div :key="route.path" class="tool-interface-slot">
             <slot />
@@ -163,6 +165,32 @@ const selectedCategoryName = computed(() => {
 const selectedToolName = computed(() => {
   const tool = allTools.value.find(t => t.id === selectedTool.value)
   return tool ? tool.name : null
+})
+
+const soraRouteToLabel = {
+  '/home/sora/text-to-video': 'Text to Video',
+  '/home/sora/image-to-video': 'Image to Video',
+  '/home/sora/pro-text-to-video': 'Pro Text to Video',
+  '/home/sora/pro-image-to-video': 'Pro Image to Video',
+  '/home/sora/watermark-remover': 'Watermark Remover',
+  '/home/sora/pro-storyboard': 'Pro Storyboard'
+}
+
+const breadcrumbParentLabel = computed(() => {
+  if (route.path.startsWith('/home/sora/')) return 'Sora'
+  return ''
+})
+
+const breadcrumbParentTo = computed(() => {
+  if (route.path.startsWith('/home/sora/')) return '/home/sora'
+  return ''
+})
+
+const breadcrumbCurrentPage = computed(() => {
+  if (route.path.startsWith('/home/sora/')) {
+    return soraRouteToLabel[route.path] || 'Sora'
+  }
+  return selectedToolName.value || ''
 })
 
 // 提供给子组件使用

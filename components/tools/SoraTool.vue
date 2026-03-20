@@ -320,6 +320,25 @@
           </div>
         </div>
 
+        <!-- 右侧：实战教程展示（仅非详情页） -->
+        <div v-if="!isDetailView" class="tutorial-showcase">
+          <p class="tutorial-showcase-title">🎬 Tutorial Showcase</p>
+          <div class="tutorial-showcase-links">
+            <a
+              href="/news/sora-2-landscape-text-to-video-4k-dynamic-wallpaper"
+              class="tutorial-link"
+            >
+              One Text Prompt to a 4K Dynamic Wallpaper? Sora-2 Turns Landscape Descriptions into “Breathing” Video
+            </a>
+            <a
+              href="/news/sora-2-portrait-text-to-video-tutorial"
+              class="tutorial-link"
+            >
+              Goodbye Stiff Photos: Turn Text Prompts into Lifelike Portrait Videos with Sora-2
+            </a>
+          </div>
+        </div>
+
         <div class="video-container">
           <!-- 详情页：根据 record-id 拉取后的状态展示 -->
           <div v-if="isDetailView && (loadingRecordId || (!detailData && routeRecordId))" class="empty-state">
@@ -803,11 +822,16 @@ const onSubmit = async () => {
       data = await post('/api/video/sora/generate', body)
     }
 
-    let payload = data?.data ?? data
-    if (data?.recordId && !(Array.isArray(payload?.outputUrls) && payload.outputUrls.length)) {
-      const detail = await pollRecordDetail(data.recordId)
-      payload = typeof payload === 'object' ? { ...payload, ...detail } : detail
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      const path = soraModeToPath[form.model] || route.path
+      await router.push({
+        path,
+        query: { ...route.query, 'record-id': String(recordId) }
+      })
+      return
     }
+    let payload = data?.data ?? data
     results.value.unshift(typeof payload === 'object' ? payload : { raw: payload })
   } catch (e) {
     console.error(e)
@@ -837,16 +861,16 @@ const onSubmit = async () => {
 }
 .tool-header { display: flex; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; margin-right: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; image-rendering: auto; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
 .tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 14px; color: #6b7280; }
 
 /* 顶部模式切换 */
 .mode-tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; padding: 12px 0 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
-.mode-tab { width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; transition: all .2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; min-height: 40px; word-break: break-word; }
-.mode-tab:hover { border-color: #3b82f6; background: #f8fafc; color: #3b82f6; }
+.mode-tab { width: 100%; box-sizing: border-box; padding: 9px 14px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 500; min-height: 40px; word-break: break-word; }
+.mode-tab:hover { border-color: #3b82f6; color: #3b82f6; }
 .mode-tab.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
-.mode-tab i { font-size: 14px; }
+.mode-tab i { font-size: 1em; }
 
 .main-content { display: flex; flex: 1; min-height: 0; gap: 20px; }
 .config-panel { width: 35%; background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; min-height: 0; }
@@ -863,11 +887,11 @@ const onSubmit = async () => {
 .char-count { text-align: right; font-size: 12px; color: #64748b; margin-top: 4px; }
 .form-help { font-size: 11px; color: #6b7280; font-weight: 400; margin-top: 4px; line-height: 1.4; }
 
-.tab-group { flex: 1; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: white; }
+.tab-group { flex: 1; border: none; border-radius: 12px; overflow: hidden; background: white; }
 .tab-options { display: flex; gap: 8px; }
-.tab-option { flex: 1; padding: 12px 16px; border: 1px solid #e5e7eb; background: white; color: #64748b; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 500; }
-.tab-option:hover { border-color: #3b82f6; background: #f8fafc; color: #3b82f6; }
-.tab-option.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+.tab-option { flex: 1; padding: 10px 12px; border: 2px solid #e2e8f0; background: #f8fafc; color: #374151; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500; }
+.tab-option:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); color: #3b82f6; }
+.tab-option.active { border-color: #3b82f6; background: #3b82f6; color: white; }
 
 .select-wrapper { position: relative; }
 .select-wrapper select { appearance: none; padding-right: 40px; }
@@ -904,7 +928,7 @@ const onSubmit = async () => {
 .sora-video-upload-area:hover { border-color: #3b82f6; background: #f0f7ff; }
 .sora-video-upload-area .sora-video-uploading { color: #64748b; }
 .sora-video-preview-wrap { position: relative; width: 100%; max-width: 280px; height: 160px; flex-shrink: 0; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; background: #000; }
-.sora-video-preview { width: 100%; height: 100%; object-fit: contain; display: block; vertical-align: middle; }
+.sora-video-preview { width: 100%; height: 100%; object-fit: contain; display: block; }
 .sora-video-remove { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; border-radius: 50%; background: rgba(0,0,0,0.6); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1; }
 .sora-video-remove:hover { background: #dc2626; }
 .sora-video-meta { font-size: 12px; color: #64748b; display: flex; gap: 12px; flex-shrink: 0; }
@@ -920,7 +944,7 @@ const onSubmit = async () => {
 /* 隐藏数字输入的上下微调箭头（若浏览器仍显示） */
 .duration-field::-webkit-outer-spin-button,
 .duration-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.duration-field[type=number] { -moz-appearance: textfield; }
+.duration-field[type=number] { -moz-appearance: textfield; appearance: textfield; }
 .duration-s { display: inline-block; padding: 3px 4px; background: #eef2ff; color: #475569; border-radius: 6px; font-size: 9px; }
 .shot-delete { border: 1px solid #ef4444; background: #fff1f2; color: #ef4444; border-radius: 6px; font-size: 12px; padding: 6px 10px; cursor: pointer; }
 .shot-delete:hover { background: #ffe4e6; }
@@ -946,9 +970,37 @@ const onSubmit = async () => {
 .payload-json { margin: 0; padding: 16px; font-size: 12px; line-height: 1.5; background: #0f172a; color: #e2e8f0; white-space: pre-wrap; }
 .detail-output-item { margin-bottom: 16px; border-radius: 8px; overflow: hidden; background: #000; }
 .detail-output-item .detail-video { width: 100%; max-height: 70vh; display: block; }
-.detail-output-item .detail-image { width: 100%; height: auto; display: block; vertical-align: middle; }
+.detail-output-item .detail-image { width: 100%; height: auto; display: block; }
 .empty-state { text-align: center; color: #64748b; max-width: 500px; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .empty-icon { font-size: 72px; color: #cbd5e1; margin-bottom: 24px; }
+
+.tutorial-showcase {
+  margin: 0 20px 20px 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+  word-break: break-word;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; }

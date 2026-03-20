@@ -8,16 +8,20 @@
 
 <script setup>
 import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs Sound Effect v2',
-  description: 'ElevenLabs Sound Effect v2 - Generate sound effects. Use for free online.',
+  description: 'Generate sound effects with ElevenLabs Sound Effect v2. 18 credits per minute.',
   category: 'audio',
   route: '/home/elevenlabs/sound-effect-v2',
   keywords: ['ElevenLabs', 'Sound Effect', 'AI sound'],
-  applicationCategory: 'AudioApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Audio Processing',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: '18 credits per minute.',
+  priceFromApi: { modelKey: 'elevenlabs_sound_effect', eligibleQuantityName: 'Credits per minute' },
+  priceSpecification: { price: 18, minValue: 18, maxValue: 18, eligibleQuantityName: 'Credits per minute' }
 })
 useHead(seoConfig)
 </script>

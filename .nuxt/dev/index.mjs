@@ -2693,20 +2693,43 @@ const batchUpload_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.define
   default: batchUpload_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+let _cacheValue = null;
+let _cacheExpireAt = 0;
 const price_get = defineEventHandler(async (event) => {
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/common/models/price`;
+  const ttlSecondsRaw = process.env.PRICE_MODELS_TTL_SECONDS;
+  const ttlSeconds = (() => {
+    const n = Number(ttlSecondsRaw);
+    return Number.isFinite(n) && n > 0 ? n : 600;
+  })();
+  const now = Date.now();
+  if (_cacheValue && _cacheExpireAt > now) {
+    return _cacheValue;
+  }
   const headers = {
     "Content-Type": "application/json",
     Accept: "application/json"
   };
   const authHeader = getHeader(event, "authorization");
-  if (authHeader) headers["Authorization"] = authHeader;
+  if (authHeader) {
+    headers["Authorization"] = authHeader;
+  } else {
+    const serverAuth = process.env.PRICE_MODELS_AUTHORIZATION;
+    const serverToken = process.env.PRICE_MODELS_BEARER_TOKEN;
+    if (serverAuth) {
+      headers["Authorization"] = serverAuth;
+    } else if (serverToken) {
+      headers["Authorization"] = `Bearer ${serverToken}`;
+    }
+  }
   try {
     const response = await $fetch(targetUrl, {
       method: "GET",
       headers
     });
+    _cacheValue = response;
+    _cacheExpireAt = now + ttlSeconds * 1e3;
     return response;
   } catch (error) {
     console.error("Price proxy error:", error);

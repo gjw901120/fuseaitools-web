@@ -13,16 +13,19 @@
 
 <script setup>
 import SoraTool from '~/components/tools/SoraTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Sora - Watermark Remover',
-  description: 'Use Sora watermark remover for free online. Remove watermarks from generated videos.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Sora Watermark Remover',
+  description: 'Remove watermarks from Sora-generated videos. Pay per use with credits.',
   category: 'video',
   route: '/home/sora/watermark-remover',
   keywords: ['Sora', 'watermark remover', 'AI video', 'OpenAI Sora'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per use with credits.',
+  priceFromApi: { modelKey: 'sora-watermark-remover', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

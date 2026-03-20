@@ -8,16 +8,19 @@
 
 <script setup>
 import KlingTool from '~/components/tools/KlingTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
+const seoConfig = await useToolSEOAsync({
   name: 'Kling v2.5 Turbo Text to Video Pro',
-  description: 'Kling v2.5 Turbo Text to Video Pro - Text-to-video with aspect ratio 16:9/9:16/1:1, duration 5/10s.',
+  description: 'Fast text-to-video with Kling v2.5 Turbo Pro. Pay per video with credits.',
   category: 'video',
   route: '/home/kling/v2-5-turbo-text-to-video-pro',
   keywords: ['Kling', 'Kuaishou', 'Text to Video', 'AI video', 'v2.5 Turbo'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'kling-v2-5-turbo-text-to-video-pro', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

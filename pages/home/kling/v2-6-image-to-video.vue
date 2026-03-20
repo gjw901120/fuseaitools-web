@@ -8,16 +8,19 @@
 
 <script setup>
 import KlingTool from '~/components/tools/KlingTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Kling 2.6 Image to Video',
-  description: 'Kling 2.6 Image to Video - Image-to-video with sound, duration 5/10s.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Kling 2.6 Image to Video Generator',
+  description: 'Generate image-to-video with Kling 2.6. Pay per video with credits.',
   category: 'video',
   route: '/home/kling/v2-6-image-to-video',
   keywords: ['Kling', 'Kuaishou', 'Image to Video', 'AI video', '2.6'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'kling-2.6-image-to-video', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

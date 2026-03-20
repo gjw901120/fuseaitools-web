@@ -1,1 +1,0 @@
-import{u as s,_ as a}from"./CZzH4EBU.js";import{x as n,g as o,o as t,B as i}from"./DBjyR4jR.js";import"./BoSiGPrs.js";import"./DJQvlHF7.js";import"./DeQ6hRQa.js";const k={__name:"seedream",setup(m){const{isOverviewPage:_,overviewConfig:e}=s();return(p,u)=>{const r=a,c=i;return o(_)&&o(e)?(t(),n(r,{key:0,config:o(e)},null,8,["config"])):(t(),n(c,{key:1}))}}};export{k as default};

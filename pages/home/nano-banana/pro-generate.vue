@@ -8,16 +8,19 @@
 
 <script setup>
 import NanoBananaTool from '~/components/tools/NanoBananaTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Nano Banana Pro',
-  description: 'Nano Banana Pro - Advanced AI image generation with higher resolution (1K/2K/4K). Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Nano Banana Pro Image Generator',
+  description: 'Advanced AI image generation with higher resolution (1K/2K/4K) using Nano Banana Pro. Pay per image with credits.',
   category: 'image',
   route: '/home/nano-banana/pro-generate',
   keywords: ['Nano Banana Pro', 'AI image generation', 'high resolution', '4K image', 'AI art'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'nano-banana-pro', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

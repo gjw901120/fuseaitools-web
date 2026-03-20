@@ -13,16 +13,19 @@
 
 <script setup>
 import SoraTool from '~/components/tools/SoraTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Sora - Pro Storyboard',
-  description: 'Use Sora 2 Pro Storyboard for free online. Create multi-scene storyboard videos.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Sora Pro Storyboard Generator',
+  description: 'Create multi-scene storyboard videos with Sora 2 Pro. Pay per generation with credits.',
   category: 'video',
   route: '/home/sora/pro-storyboard',
   keywords: ['Sora', 'Sora 2 Pro', 'storyboard', 'AI video generation'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per generation with credits.',
+  priceFromApi: { modelKey: 'sora-2-pro-storyboard', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

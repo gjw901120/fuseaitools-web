@@ -3,7 +3,7 @@
     <!-- 工具信息头部 -->
     <div class="tool-header">
       <div class="tool-avatar">
-        <img src="/tools-logo/Elevenlabs.png" alt="ElevenLabs" />
+        <img src="/tools-logo/Elevenlabs.png?v=20260319a" alt="ElevenLabs" />
       </div>
       <div class="tool-details">
         <h3>ElevenLabs</h3>
@@ -498,7 +498,7 @@
           <button type="submit" class="generate-btn" :disabled="!canGenerate || isGenerating">
             <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else :class="getButtonIcon()"></i> 
-            {{ isGenerating ? 'Generating...' : getButtonText() }} ({{ getButtonPrice() }})
+            {{ isGenerating ? getButtonLoadingText() : getButtonLabel() }}
           </button>
           </fieldset>
         </form>
@@ -1007,6 +1007,23 @@ const getButtonText = () => {
   return texts[formData.function] || 'Generate'
 }
 
+const getButtonLoadingText = () => {
+  const texts = {
+    'multilingual-v2': 'Generating...',
+    'turbo-2-5': 'Generating...',
+    'speech-to-text': 'Recognizing...',
+    'sound-effect-v2': 'Generating...',
+    'audio-isolation': 'Isolating...'
+  }
+  return texts[formData.function] || 'Generating...'
+}
+
+const getButtonLabel = () => {
+  const price = getButtonPrice()
+  if (!price) return getButtonText()
+  return `${getButtonText()} · ${price}`
+}
+
 const discountText = computed(() => {
   const rate = Number(discount?.value ?? 1)
   if (Number.isNaN(rate) || rate <= 0 || rate === 1) return ''
@@ -1014,6 +1031,21 @@ const discountText = computed(() => {
   return ` · ${percent}%`
 })
 
+// 与 PRICING_MAPPING 一致：TTS 为 credits/1K 字符，STT/Sound Effect/Isolation 为 credits/分钟
+const creditsUnitMap = {
+  'multilingual-v2': '/ 1K',
+  'turbo-2-5': '/ 1K',
+  'speech-to-text': '/ min',
+  'sound-effect-v2': '/ min',
+  'audio-isolation': '/ min'
+}
+const fallbackCreditsMap = {
+  'multilingual-v2': 20,
+  'turbo-2-5': 10,
+  'speech-to-text': 6,
+  'sound-effect-v2': 18,
+  'audio-isolation': 21
+}
 const getButtonPrice = () => {
   const keyMap = {
     'multilingual-v2': 'elevenlabs_text_to_speech_multilingual',
@@ -1025,9 +1057,11 @@ const getButtonPrice = () => {
   const modelKey = keyMap[formData.function]
   if (!modelKey) return ''
   const credits = getPrice(modelKey)
-  const str = formatCredits(credits)
+  const effectiveCredits = credits != null ? credits : fallbackCreditsMap[formData.function]
+  const str = formatCredits(effectiveCredits)
   if (!str) return ''
-  return `${str} credits${discountText.value}`
+  const unit = creditsUnitMap[formData.function] || ''
+  return `${str} credits${unit}${discountText.value}`
 }
 
 const getEmptyStateIcon = () => {
@@ -1634,12 +1668,18 @@ const shareResult = () => {
   border-radius: 8px;
   overflow: hidden;
   margin-right: 16px;
+  flex: 0 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tool-avatar img {
-  width: 48px;
-  height: 48px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .tool-details h3 {

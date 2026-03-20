@@ -2,11 +2,13 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useState } from 'nuxt/app'
 import { useApi } from '~/composables/useApi'
+import { useAuth } from '~/composables/useAuth'
 
 export const useHomeLayout = () => {
   const router = useRouter()
   const route = useRoute()
   const { get } = useApi()
+  const { isAuthenticated } = useAuth()
 
   // API category -> 路由（历史记录点击跳转，仅用分类即可）
   const categoryToRoute = {
@@ -285,7 +287,7 @@ export const useHomeLayout = () => {
       usageCount: 650
     },
     {
-      id: 16,
+      id: 23,
       name: 'Sora',
       type: 'video',
       description: 'Sora 2 video generation (Text-to-Video / Image-to-Video)',
@@ -294,7 +296,7 @@ export const useHomeLayout = () => {
       usageCount: 0
     },
     {
-      id: 17,
+      id: 24,
       name: 'Wan',
       type: 'video',
       description: 'Wan AI video: text-to-video, image-to-video, video-to-video',
@@ -550,6 +552,8 @@ export const useHomeLayout = () => {
 
   const loadHistoryData = async (forceReload = false) => {
     if (typeof window === 'undefined') return
+    // 未登录不请求历史列表接口
+    if (!isAuthenticated.value) return
     // 10 分钟内：仅「刷新」或「加载更多」可请求；首次加载或 tab 切换不再重复请求
     const isFirstPage = currentPage.value === 1
     if (!forceReload && isFirstPage && lastHistoryLoadAt.value > 0 && (Date.now() - lastHistoryLoadAt.value < HISTORY_COOLDOWN_MS)) {
@@ -587,6 +591,8 @@ export const useHomeLayout = () => {
 
   // 刷新历史：重置到第一页并强制重新请求（绕过 10 分钟冷却），请求成功后重置计时
   const refreshHistory = async () => {
+    // 未登录时不触发请求
+    if (!isAuthenticated.value) return
     currentPage.value = 1
     await loadHistoryData(true)
   }
@@ -775,6 +781,20 @@ export const useHomeLayout = () => {
     syncRouteToSelection()
   }, { immediate: true })
 
+  // 登录后再拉取一次历史列表；登出后清空历史展示
+  watch(isAuthenticated, (authed) => {
+    if (authed) {
+      const inCooldown = lastHistoryLoadAt.value > 0 && (Date.now() - lastHistoryLoadAt.value < HISTORY_COOLDOWN_MS)
+      if (!(inCooldown && usageHistory.value.length > 0)) {
+        currentPage.value = 1
+        loadHistoryData()
+      }
+    } else {
+      usageHistory.value = []
+      historyHasMore.value = false
+    }
+  })
+
   // 初始化选中的工具 + 仅首次进入 home 时拉取历史（tab 切换不重复请求）
   onMounted(() => {
     if (route.path === '/home') {
@@ -794,9 +814,15 @@ export const useHomeLayout = () => {
       }
     }
     // 10 分钟内且已有列表数据时，不再请求（避免「加载更多」后 currentPage=2 导致冷却判断被绕过）
-    const inCooldown = lastHistoryLoadAt.value > 0 && (Date.now() - lastHistoryLoadAt.value < HISTORY_COOLDOWN_MS)
-    if (inCooldown && usageHistory.value.length > 0) return
-    loadHistoryData()
+    // 仅登录后拉取历史列表
+    if (isAuthenticated.value) {
+      const inCooldown = lastHistoryLoadAt.value > 0 && (Date.now() - lastHistoryLoadAt.value < HISTORY_COOLDOWN_MS)
+      if (inCooldown && usageHistory.value.length > 0) return
+      loadHistoryData()
+    } else {
+      usageHistory.value = []
+      historyHasMore.value = false
+    }
   })
 
   return {

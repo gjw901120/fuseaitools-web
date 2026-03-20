@@ -8,16 +8,19 @@
 
 <script setup>
 import MidjourneyTool from '~/components/tools/MidjourneyTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Midjourney - Imagine',
-  description: 'Create a new image generation task using the Midjourney AI model. Professional AI image generation.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Midjourney Imagine - AI Image Generator',
+  description: 'Create images with Midjourney Imagine. Pay per image with credits.',
   category: 'image',
   route: '/home/midjourney/imagine',
   keywords: ['Midjourney', 'Imagine', 'AI image generation', 'art creation'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'midjourney_imagine', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

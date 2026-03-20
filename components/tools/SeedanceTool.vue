@@ -523,7 +523,7 @@ watch(mode, (m) => {
   border-bottom: 1px solid #e2e8f0;
 }
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .tool-details p.tool-description { line-height: 1.55; }
@@ -604,13 +604,13 @@ watch(mode, (m) => {
   flex: 1;
   min-width: 60px;
   padding: 10px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  background: white;
-  color: #64748b;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #374151;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
+  transition: all 0.3s ease;
+  font-size: 13px;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -618,13 +618,13 @@ watch(mode, (m) => {
   gap: 6px;
 }
 .tab-option:hover {
-  background: #f8fafc;
+  background: rgba(59, 130, 246, 0.05);
   border-color: #3b82f6;
   color: #3b82f6;
 }
 .tab-option.active {
-  background: #3b82f6;
   border-color: #3b82f6;
+  background: #3b82f6;
   color: white;
 }
 

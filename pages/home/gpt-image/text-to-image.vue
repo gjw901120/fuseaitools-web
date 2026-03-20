@@ -8,16 +8,19 @@
 
 <script setup>
 import GPTImageTool from '~/components/tools/GPTImageTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'GPT Image Text to Image',
-  description: 'GPT Image Text to Image - Generate images from text with aspect ratio and quality options.',
+const seoConfig = await useToolSEOAsync({
+  name: 'GPT Image Text to Image Generator',
+  description: 'Generate images from text with GPT Image. Pay per image with credits.',
   category: 'image',
   route: '/home/gpt-image/text-to-image',
   keywords: ['GPT Image', 'OpenAI', 'Text to Image', 'AI image generation'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'gpt-image-1.5-text-to-image', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

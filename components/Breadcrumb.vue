@@ -2,10 +2,16 @@
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <ol class="breadcrumb-list">
       <li class="breadcrumb-item">
-        <NuxtLink to="/" class="breadcrumb-link">
+        <NuxtLink to="/home" class="breadcrumb-link">
           <i class="fas fa-home"></i>
           <span>Home</span>
         </NuxtLink>
+      </li>
+      <li v-if="parentLabel" class="breadcrumb-item">
+        <NuxtLink v-if="parentTo" :to="parentTo" class="breadcrumb-link">
+          <span>{{ parentLabel }}</span>
+        </NuxtLink>
+        <span v-else class="breadcrumb-current">{{ parentLabel }}</span>
       </li>
       <li class="breadcrumb-item" aria-current="page">
         <span class="breadcrumb-current">{{ currentPage }}</span>
@@ -24,6 +30,14 @@ const props = defineProps({
   currentPage: {
     type: String,
     required: true
+  },
+  parentLabel: {
+    type: String,
+    default: ''
+  },
+  parentTo: {
+    type: String,
+    default: ''
   }
 })
 </script>

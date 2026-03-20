@@ -8,16 +8,19 @@
 
 <script setup>
 import MidjourneyTool from '~/components/tools/MidjourneyTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Midjourney - Vary',
-  description: 'Create a vary task to enhance image clarity and simulate styles based on previously generated Midjourney images. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Midjourney Vary - AI Image Variation',
+  description: 'Enhance clarity and vary styles on Midjourney images. Pay per task with credits.',
   category: 'image',
   route: '/home/midjourney/vary',
   keywords: ['Midjourney', 'Vary', 'AI image', 'image variation'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per task with credits.',
+  priceFromApi: { modelKey: 'midjourney_vary', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

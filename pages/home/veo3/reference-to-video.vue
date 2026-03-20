@@ -8,16 +8,19 @@
 
 <script setup>
 import Veo3Tool from '~/components/tools/Veo3Tool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Veo3 Reference to Video',
-  description: 'Veo3 Reference to Video - Generate video from reference images. Use Google Veo 3 for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Veo 3 Reference to Video Generator',
+  description: 'Generate high-fidelity videos from reference images using Google Veo 3. Pay per video with credits.',
   category: 'video',
   route: '/home/veo3/reference-to-video',
   keywords: ['Veo3', 'Reference to Video', 'AI video', 'Google Veo'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: ['veo3', 'veo3_fast'], eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

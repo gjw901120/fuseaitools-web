@@ -8,16 +8,19 @@
 
 <script setup>
 import SunoTool from '~/components/tools/SunoTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Suno - Accompaniment',
-  description: 'Generate accompaniment with Suno AI. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Suno Accompaniment',
+  description: 'Generate accompaniment with Suno AI. Pay per generation with credits.',
   category: 'audio',
   route: '/home/suno/add-instrumental',
   keywords: ['Suno', 'Accompaniment', 'AI music'],
   applicationCategory: 'AudioApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationSubCategory: 'Audio Processing',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Consumes credits per generation. Credits are purchased separately.',
+  priceFromApi: { modelKey: 'suno_add_instrumental', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

@@ -8,16 +8,19 @@
 
 <script setup>
 import WanTool from '~/components/tools/WanTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Wan Image to Video',
-  description: 'Wan Image to Video - Animate images with text prompts. Min 256×256px, duration 5/10/15s, 720p/1080p.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Wan Image to Video Generator',
+  description: 'Animate images with text prompts using Wan. Pay per video with credits.',
   category: 'video',
   route: '/home/wan/image-to-video',
   keywords: ['Wan', 'Image to Video', 'AI video', 'animate image'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per video with credits.',
+  priceFromApi: { modelKey: 'wan-2-6-image-to-video', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

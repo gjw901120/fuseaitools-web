@@ -8,16 +8,19 @@
 
 <script setup>
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Ideogram V3 Edit',
-  description: 'Ideogram V3 Edit - Edit images with mask and prompt for precise control.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Ideogram V3 Image Edit',
+  description: 'Edit images with mask and prompt using Ideogram V3. Pay per image with credits.',
   category: 'image',
   route: '/home/ideogram/v3-edit',
   keywords: ['Ideogram', 'V3', 'Image Edit', 'mask', 'AI image editing'],
-  applicationCategory: 'GraphicsApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Image Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per image with credits.',
+  priceFromApi: { modelKey: 'ideogram-v3-edit', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

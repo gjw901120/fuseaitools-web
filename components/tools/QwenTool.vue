@@ -548,7 +548,7 @@ watch(mode, (m) => {
   margin-bottom: 20px;
 }
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
-.tool-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .tool-details p.tool-description { line-height: 1.55; }

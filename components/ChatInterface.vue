@@ -1202,14 +1202,14 @@ const generateAIResponse = (userInput) => {
 .chat-tool-info {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .tool-avatar {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  min-height: 40px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -1226,15 +1226,15 @@ const generateAIResponse = (userInput) => {
 
 .tool-details h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: #1f2937;
 }
 
 .tool-details p {
   margin: 0;
-  font-size: 12px;
-  color: #64748b;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 .chat-messages {

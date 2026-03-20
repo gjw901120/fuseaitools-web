@@ -8,16 +8,19 @@
 
 <script setup>
 import Veo3Tool from '~/components/tools/Veo3Tool.vue'
-import { useToolSEO } from '~/composables/useToolSEO'
+import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-const seoConfig = useToolSEO({
-  name: 'Veo3 Video Extend',
-  description: 'Veo3 Video Extend - Extend video duration or content from existing clips. Use for free online.',
+const seoConfig = await useToolSEOAsync({
+  name: 'Veo 3 Video Extend',
+  description: 'Extend video duration or content from existing clips using Google Veo 3. Pay per extend with credits.',
   category: 'video',
   route: '/home/veo3/extend',
   keywords: ['Veo3', 'Video Extend', 'extend video', 'AI video'],
-  applicationCategory: 'VideoApplication',
-  offers: { price: '0', priceCurrency: 'USD' }
+  applicationCategory: 'MultimediaApplication',
+  applicationSubCategory: 'Video Generation',
+  offers: { price: '0', priceCurrency: 'USD' },
+  offerDescription: 'Pay per extend with credits.',
+  priceFromApi: { modelKey: 'veo3_extend', eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>
