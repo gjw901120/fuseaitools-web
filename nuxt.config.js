@@ -27,7 +27,9 @@ export default defineNuxtConfig({
     '/home/elevenlabs-turbo-2-5': { redirect: { to: '/home/elevenlabs/turbo-2-5', statusCode: 301 } },
     '/home/elevenlabs-speech-to-text': { redirect: { to: '/home/elevenlabs/speech-to-text', statusCode: 301 } },
     '/home/elevenlabs-sound-effect-v2': { redirect: { to: '/home/elevenlabs/sound-effect-v2', statusCode: 301 } },
-    '/home/elevenlabs-audio-isolation': { redirect: { to: '/home/elevenlabs/audio-isolation', statusCode: 301 } }
+    '/home/elevenlabs-audio-isolation': { redirect: { to: '/home/elevenlabs/audio-isolation', statusCode: 301 } },
+    '/home/seedream/1-5-lite-text-to-image': { redirect: { to: '/home/seedream/5-lite-text-to-image', statusCode: 301 } },
+    '/home/seedream/2-5-lite-image-to-image': { redirect: { to: '/home/seedream/5-lite-image-to-image', statusCode: 301 } }
   },
 
   nitro: {
@@ -110,8 +112,8 @@ export default defineNuxtConfig({
         '/home/seedance/v1-pro-image-to-video',
         '/home/seedance/v1-pro-fast-image-to-video',
         '/home/seedream',
-        '/home/seedream/1-5-lite-text-to-image',
-        '/home/seedream/2-5-lite-image-to-image',
+        '/home/seedream/5-lite-text-to-image',
+        '/home/seedream/5-lite-image-to-image',
         '/home/qwen',
         '/home/qwen/text-to-image',
         '/home/qwen/image-to-image',

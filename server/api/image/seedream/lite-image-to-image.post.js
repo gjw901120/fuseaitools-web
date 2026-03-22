@@ -1,5 +1,5 @@
 /**
- * Seedream 2.5 Lite 图生图接口（代理）
+ * Seedream 5 Lite 图生图接口（代理）
  * 后端：POST /api/image/seedream/lite-image-to-image
  */
 export default defineEventHandler(async (event) => {

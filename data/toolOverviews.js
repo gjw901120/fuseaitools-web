@@ -557,8 +557,8 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
     introFullWidth: true,
     intro: 'Seedream is a unified multimodal image generation model by ByteDance, designed for multimodal reasoning, deep understanding, and controllable visual creation. It supports text-to-image and image editing workflows with improved consistency and real-time knowledge integration.',
     features: [
-      { name: '1.5 Lite Text to Image', path: '/home/seedream/1-5-lite-text-to-image', description: 'Generate images from text descriptions with aspect ratio options from 1:1 to 21:9. Choose Basic (2K) or High (3K) quality. Prompt length up to 2995 characters.' },
-      { name: '2.5 Lite Image to Image', path: '/home/seedream/2-5-lite-image-to-image', description: 'Transform existing images via text instructions—adjust lighting, apply style transfer, or refine details. Upload one or more images (JPEG, PNG, WebP; max 10MB each), set aspect ratio and quality, and guide the result with natural language prompts up to 2996 characters.' }
+      { name: '5 Lite Text to Image', path: '/home/seedream/5-lite-text-to-image', description: 'Generate images from text descriptions with aspect ratio options from 1:1 to 21:9. Choose Basic (2K) or High (3K) quality. Prompt length up to 2995 characters.' },
+      { name: '5 Lite Image to Image', path: '/home/seedream/5-lite-image-to-image', description: 'Transform existing images via text instructions—adjust lighting, apply style transfer, or refine details. Upload one or more images (JPEG, PNG, WebP; max 10MB each), set aspect ratio and quality, and guide the result with natural language prompts up to 2996 characters.' }
     ],
     sections: [
       {
@@ -569,7 +569,7 @@ Simplicity without compromise: With straightforward parameters and generous prom
       },
       {
         title: 'Core capabilities',
-        content: `1.5 Lite Text to Image
+        content: `5 Lite Text to Image
 
 Describe your vision in detail—up to 2995 characters.
 
@@ -579,7 +579,7 @@ Choose quality: Basic 2K (fast, efficient) or High 3K (enhanced detail and clari
 
 Ideal for concept art, stickers, social posts, and rapid visual exploration.
 
-2.5 Lite Image to Image
+5 Lite Image to Image
 
 Upload one or more images (JPEG, PNG, WebP; max 10MB each).
 

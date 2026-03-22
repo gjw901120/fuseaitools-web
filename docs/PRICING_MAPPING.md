@@ -101,8 +101,8 @@
 
 | 前端模式（tab/mode）     | modelKey                          | 类型  | 说明 |
 |--------------------------|------------------------------------|-------|------|
-| 1.5 Lite Text to Image   | `seedream-5-lite-text-to-image`   | ONCE  | 文生图 |
-| 2.5 Lite Image to Image  | `seedream-5-lite-image-to-image`   | ONCE  | 图生图（若接口改为 RULE，则按 aspectRatio、quality 匹配） |
+| 5 Lite Text to Image     | `seedream-5-lite-text-to-image`   | ONCE  | 文生图 |
+| 5 Lite Image to Image    | `seedream-5-lite-image-to-image`   | ONCE  | 图生图（若接口改为 RULE，则按 aspectRatio、quality 匹配） |
 
 - **组件**：`components/tools/SeedreamTool.vue`
 - **映射**：`seedreamPriceModelKeyMap` 由 `mode` 取 modelKey。

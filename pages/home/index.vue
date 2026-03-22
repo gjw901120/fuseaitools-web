@@ -250,7 +250,7 @@ const toolRouteMap = {
   'Seedance': '/home/seedance/v1-lite-text-to-video',
   'Hailuo': '/home/hailuo/image-to-video-pro',
   'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
-  'Seedream': '/home/seedream/1-5-lite-text-to-image',
+  'Seedream': '/home/seedream/5-lite-text-to-image',
   'Qwen': '/home/qwen/text-to-image',
   // Chat tools
   'GPT': '/home/gpt/generate',
@@ -668,7 +668,7 @@ const allTools = ref([
     id: 19,
     name: 'Seedream',
     type: 'image',
-    description: 'Seedream 1.5 Lite & 2.5 Lite：文生图、图生图',
+    description: 'Seedream 5 Lite：文生图、图生图',
     icon: '/tools-logo/Seedream.png',
     rating: 4.6,
     usageCount: 0
@@ -1058,8 +1058,8 @@ watch(() => route.path, (newPath) => {
     '/home/seedance/v1-pro-image-to-video': 'Seedance',
     '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
     '/home/seedream': 'Seedream',
-    '/home/seedream/1-5-lite-text-to-image': 'Seedream',
-    '/home/seedream/2-5-lite-image-to-image': 'Seedream',
+    '/home/seedream/5-lite-text-to-image': 'Seedream',
+    '/home/seedream/5-lite-image-to-image': 'Seedream',
     '/home/qwen': 'Qwen',
     '/home/qwen/text-to-image': 'Qwen',
     '/home/qwen/image-to-image': 'Qwen',

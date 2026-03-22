@@ -14,19 +14,19 @@
       <div class="mode-tabs">
         <div
           class="mode-tab"
-          :class="{ active: mode === '1-5-lite-text-to-image' }"
-          @click="goToTab('1-5-lite-text-to-image')"
+          :class="{ active: mode === '5-lite-text-to-image' }"
+          @click="goToTab('5-lite-text-to-image')"
         >
           <i class="fas fa-font"></i>
-          <span>1.5 Lite Text to Image</span>
+          <span>5 Lite Text to Image</span>
         </div>
         <div
           class="mode-tab"
-          :class="{ active: mode === '2-5-lite-image-to-image' }"
-          @click="goToTab('2-5-lite-image-to-image')"
+          :class="{ active: mode === '5-lite-image-to-image' }"
+          @click="goToTab('5-lite-image-to-image')"
         >
           <i class="fas fa-image"></i>
-          <span>2.5 Lite Image to Image</span>
+          <span>5 Lite Image to Image</span>
         </div>
       </div>
     </div>
@@ -48,15 +48,15 @@
                 class="form-input"
                 rows="4"
                 placeholder="A text description of the image you want to generate"
-                :maxlength="mode === '2-5-lite-image-to-image' ? 2996 : 2995"
+                :maxlength="mode === '5-lite-image-to-image' ? 2996 : 2995"
                 required
               ></textarea>
               <div class="char-count" v-if="formData.prompt">
-                {{ formData.prompt.length }}/{{ mode === '2-5-lite-image-to-image' ? 2996 : 2995 }}
+                {{ formData.prompt.length }}/{{ mode === '5-lite-image-to-image' ? 2996 : 2995 }}
               </div>
             </div>
 
-            <div v-if="mode === '2-5-lite-image-to-image'" class="form-group">
+            <div v-if="mode === '5-lite-image-to-image'" class="form-group">
               <label class="form-label">
                 Image(s) <span class="required">*</span>
               </label>
@@ -161,18 +161,21 @@ onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 
 const modeTabToPath = {
-  '1-5-lite-text-to-image': '/home/seedream/1-5-lite-text-to-image',
-  '2-5-lite-image-to-image': '/home/seedream/2-5-lite-image-to-image'
+  '5-lite-text-to-image': '/home/seedream/5-lite-text-to-image',
+  '5-lite-image-to-image': '/home/seedream/5-lite-image-to-image'
 }
 const pathToMode = {
-  '/home/seedream/1-5-lite-text-to-image': '1-5-lite-text-to-image',
-  '/home/seedream/2-5-lite-image-to-image': '2-5-lite-image-to-image'
+  '/home/seedream/5-lite-text-to-image': '5-lite-text-to-image',
+  '/home/seedream/5-lite-image-to-image': '5-lite-image-to-image',
+  // 旧 URL（若未触发 Nitro 301，仍同步 tab）
+  '/home/seedream/1-5-lite-text-to-image': '5-lite-text-to-image',
+  '/home/seedream/2-5-lite-image-to-image': '5-lite-image-to-image'
 }
 
-const mode = ref('1-5-lite-text-to-image')
+const mode = ref('5-lite-text-to-image')
 function goToTab(m) {
   mode.value = m
-  router.push(modeTabToPath[m] || modeTabToPath['1-5-lite-text-to-image'])
+  router.push(modeTabToPath[m] || modeTabToPath['5-lite-text-to-image'])
 }
 
 watch(() => route.path, (path) => {
@@ -197,8 +200,8 @@ const discountText = computed(() => {
 
 // 价格：按 mode 取 modelKey，可选按 aspectRatio + quality 匹配 RULE
 const seedreamPriceModelKeyMap = {
-  '1-5-lite-text-to-image': 'seedream-5-lite-text-to-image',
-  '2-5-lite-image-to-image': 'seedream-5-lite-image-to-image'
+  '5-lite-text-to-image': 'seedream-5-lite-text-to-image',
+  '5-lite-image-to-image': 'seedream-5-lite-image-to-image'
 }
 const seedreamPriceText = computed(() => {
   const modelKey = seedreamPriceModelKeyMap[mode.value]
@@ -269,11 +272,11 @@ async function handleImageFiles(files) {
   }
 }
 
-const maxPromptLen = computed(() => mode.value === '2-5-lite-image-to-image' ? 2996 : 2995)
+const maxPromptLen = computed(() => mode.value === '5-lite-image-to-image' ? 2996 : 2995)
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
   if (!p || p.length > maxPromptLen.value) return false
-  if (mode.value === '2-5-lite-image-to-image') return formData.imageUrls.length > 0
+  if (mode.value === '5-lite-image-to-image') return formData.imageUrls.length > 0
   return true
 })
 
@@ -308,7 +311,7 @@ async function generate() {
   const p = (formData.prompt || '').trim()
   isGenerating.value = true
   try {
-    const isTextMode = mode.value === '1-5-lite-text-to-image'
+    const isTextMode = mode.value === '5-lite-text-to-image'
     const apiPath = isTextMode
       ? '/api/image/seedream/lite-text-to-image'
       : '/api/image/seedream/lite-image-to-image'
@@ -323,7 +326,7 @@ async function generate() {
     const data = await post(apiPath, body)
     const rid = data?.recordId ?? data?.data?.recordId
     if (rid) {
-      router.push((modeTabToPath[mode.value] || '/home/seedream/1-5-lite-text-to-image') + '?record-id=' + encodeURIComponent(rid))
+      router.push((modeTabToPath[mode.value] || '/home/seedream/5-lite-text-to-image') + '?record-id=' + encodeURIComponent(rid))
       return
     }
     const url = data?.imageUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)

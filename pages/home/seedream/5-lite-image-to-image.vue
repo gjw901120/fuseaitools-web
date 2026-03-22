@@ -11,11 +11,11 @@ import SeedreamTool from '~/components/tools/SeedreamTool.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
-  name: 'Seedream 2.5 Lite Image to Image Generator',
-  description: 'Edit images with text using Seedream 2.5 Lite. Pay per image with credits.',
+  name: 'Seedream 5 Lite Image to Image Generator',
+  description: 'Edit images with text using Seedream 5 Lite. Pay per image with credits.',
   category: 'image',
-  route: '/home/seedream/2-5-lite-image-to-image',
-  keywords: ['Seedream', 'Image to Image', 'AI image', '2.5 Lite'],
+  route: '/home/seedream/5-lite-image-to-image',
+  keywords: ['Seedream', 'Image to Image', 'AI image', '5 Lite'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Image Generation',
   offers: { price: '0', priceCurrency: 'USD' },

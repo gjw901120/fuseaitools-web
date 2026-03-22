@@ -374,6 +374,15 @@
         </div>
         
         <div class="image-container">
+          <!-- 实战教程（仅 Text to Image /generate，非详情页；与 Suno generate 一致） -->
+          <div v-if="!isDetailView && route.path === '/home/nano-banana/generate'" class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/nano-banana-cozy-social-media-illustration-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create healing social media illustrations: cozy flat style (16:9)</a>
+              <a href="https://www.fuseaitools.com/news/nano-banana-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create cinematic short-video covers: vertical 9:16 thumbnails</a>
+            </div>
+          </div>
+          <div class="image-container-main">
           <!-- 详情页：status 2 展示 outputUrls -->
           <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
@@ -460,6 +469,7 @@
                 <span>Lightweight</span>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -1426,9 +1436,49 @@ const clearResults = () => {
   flex: 1;
   padding: 30px;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 80vh;
+  min-height: 0;
+  gap: 0;
+}
+
+.image-container-main {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
+  min-height: 0;
+  width: 100%;
+}
+
+.tutorial-showcase {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
 }
 
 .image-showcase {

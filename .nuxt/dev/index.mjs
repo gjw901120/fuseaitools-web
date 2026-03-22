@@ -773,6 +773,18 @@ const _inlineRuntimeConfig = {
           "statusCode": 301
         }
       },
+      "/home/seedream/1-5-lite-text-to-image": {
+        "redirect": {
+          "to": "/home/seedream/5-lite-text-to-image",
+          "statusCode": 301
+        }
+      },
+      "/home/seedream/2-5-lite-image-to-image": {
+        "redirect": {
+          "to": "/home/seedream/5-lite-image-to-image",
+          "statusCode": 301
+        }
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -4980,8 +4992,8 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
     { loc: "/home/kling/ai-avatar-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v3-0-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     // Seedream (Image)
-    { loc: "/home/seedream/1-5-lite-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    { loc: "/home/seedream/2-5-lite-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedream/5-lite-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedream/5-lite-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     // Seedance (Video)
     { loc: "/home/seedance/v1-lite-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-lite-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
