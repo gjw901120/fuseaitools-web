@@ -134,8 +134,8 @@
               </div>
             </template>
 
-            <!-- 2.6-motion-control: input_urls (image), video_urls, character_orientation, mode -->
-            <template v-if="mode === 'v2-6-motion-control'">
+            <!-- motion-control: input_urls (image), video_urls, character_orientation, mode -->
+            <template v-if="mode === 'v2-6-motion-control' || mode === 'v3-0-motion-control'">
               <div class="form-group">
                 <label class="form-label">Reference image <span class="required">*</span></label>
                 <UploadImage ref="motionImageRef" input-id="kling-motion-img" label="" upload-text="Click to upload reference image" upload-hint="JPG/PNG, max 10MB, min 300px" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/jpg" :multiple="false" @update:files="handleMotionImage" />
@@ -176,10 +176,24 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-label">Resolution</label>
+                <label class="form-label">{{ mode === 'v3-0-motion-control' ? 'Quality mode' : 'Resolution' }}</label>
                 <div class="tab-group">
-                  <button type="button" class="tab-option" :class="mode720Class()" @click="formData.mode = '720p'">720p</button>
-                  <button type="button" class="tab-option" :class="mode1080Class()" @click="formData.mode = '1080p'">1080p</button>
+                  <template v-if="mode === 'v3-0-motion-control'">
+                    <button type="button" class="tab-option" :class="{ active: formData.mode === 'std' }" @click="formData.mode = 'std'">std</button>
+                    <button type="button" class="tab-option" :class="{ active: formData.mode === 'pro' }" @click="formData.mode = 'pro'">pro</button>
+                  </template>
+                  <template v-else>
+                    <button type="button" class="tab-option" :class="mode720Class()" @click="formData.mode = '720p'">720p</button>
+                    <button type="button" class="tab-option" :class="mode1080Class()" @click="formData.mode = '1080p'">1080p</button>
+                  </template>
+                </div>
+                <p v-if="mode === 'v3-0-motion-control'" class="form-hint">std: standard 720p, pro: professional 1080p.</p>
+              </div>
+              <div class="form-group" v-if="mode === 'v3-0-motion-control'">
+                <label class="form-label">Background source</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="{ active: formData.background_source === 'input_video' }" @click="formData.background_source = 'input_video'">video</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.background_source === 'input_image' }" @click="formData.background_source = 'input_image'">image</button>
                 </div>
               </div>
             </template>
@@ -299,8 +313,9 @@
             </div>
 
             <div class="form-actions">
-              <div v-if="mode === 'v2-6-motion-control'" class="form-hint motion-price-hint">
-                720p: 9 credits per second, 1080p: 15 credits per second (billed by uploaded video duration)
+              <div v-if="mode === 'v2-6-motion-control' || mode === 'v3-0-motion-control'" class="form-hint motion-price-hint">
+                <span v-if="mode === 'v2-6-motion-control'">720p: 9 credits per second, 1080p: 15 credits per second (billed by uploaded video duration)</span>
+                <span v-else>std: 30 credits per second, pro: 40 credits per second (billed by uploaded video duration)</span>
               </div>
               <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
@@ -364,6 +379,7 @@ const modeList = [
   { id: 'v2-6-text-to-video', label: '2.6 Text to Video', icon: 'fas fa-font' },
   { id: 'v2-6-image-to-video', label: '2.6 Image to Video', icon: 'fas fa-image' },
   { id: 'v2-6-motion-control', label: '2.6 Motion Control', icon: 'fas fa-route' },
+  { id: 'v3-0-motion-control', label: '3.0 Motion Control', icon: 'fas fa-bezier-curve' },
   { id: 'ai-avatar-standard', label: 'AI Avatar Standard', icon: 'fas fa-user' },
   { id: 'ai-avatar-pro', label: 'AI Avatar Pro', icon: 'fas fa-user-tie' },
   { id: 'v3-0-video', label: '3.0 Video', icon: 'fas fa-film' }
@@ -375,6 +391,7 @@ const modeTabToPath = {
   'v2-6-text-to-video': '/home/kling/v2-6-text-to-video',
   'v2-6-image-to-video': '/home/kling/v2-6-image-to-video',
   'v2-6-motion-control': '/home/kling/v2-6-motion-control',
+  'v3-0-motion-control': '/home/kling/v3-0-motion-control',
   'ai-avatar-standard': '/home/kling/ai-avatar-standard',
   'ai-avatar-pro': '/home/kling/ai-avatar-pro',
   'v3-0-video': '/home/kling/v3-0-video'
@@ -385,6 +402,8 @@ Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
 const mode = ref('v2-5-turbo-image-to-video-pro')
 function goToTab(m) {
   mode.value = m
+  if (m === 'v3-0-motion-control' && (formData.mode !== 'std' && formData.mode !== 'pro')) formData.mode = 'std'
+  if (m === 'v2-6-motion-control' && (formData.mode !== '720p' && formData.mode !== '1080p')) formData.mode = '720p'
   router.push(modeTabToPath[m] || modeTabToPath['v2-5-turbo-image-to-video-pro'])
 }
 
@@ -402,6 +421,7 @@ const formData = reactive({
   video_urls: [],
   character_orientation: 'video',
   mode: '720p',
+  background_source: 'input_video',
   audio_url: '',
   kling_mode: 'std',
   kling_image_urls: [],
@@ -515,6 +535,14 @@ const klingPriceText = computed(() => {
     const str = formatCredits(credits)
     return str ? `· ${str} credits${discountText.value}` : ''
   }
+  if (m === 'v3-0-motion-control') {
+    modelKey = 'kling-3.0-motion-control'
+    const duration = Number(formData.duration) || 0
+    const quality = formData.mode === 'pro' ? '1080p' : '720p'
+    const credits = getPrice(modelKey, { duration, quality, scene: 'generate' })
+    const str = formatCredits(credits)
+    return str ? `· ${str} credits${discountText.value}` : ''
+  }
   if (m === 'ai-avatar-standard') {
     modelKey = 'kling-ai-avatar-standard'
     const credits = getPrice(modelKey)
@@ -530,7 +558,7 @@ const klingPriceText = computed(() => {
   return ''
 })
 
-const showPrompt = computed(() => ['v2-5-turbo-image-to-video-pro', 'v2-5-turbo-text-to-video-pro', 'v2-6-text-to-video', 'v2-6-image-to-video', 'v2-6-motion-control', 'ai-avatar-standard', 'ai-avatar-pro'].includes(mode.value))
+const showPrompt = computed(() => ['v2-5-turbo-image-to-video-pro', 'v2-5-turbo-text-to-video-pro', 'v2-6-text-to-video', 'v2-6-image-to-video', 'v2-6-motion-control', 'v3-0-motion-control', 'ai-avatar-standard', 'ai-avatar-pro'].includes(mode.value))
 const modeAvatar = computed(() => mode.value === 'ai-avatar-standard' || mode.value === 'ai-avatar-pro')
 const promptMaxLength = computed(() => modeAvatar.value ? 5000 : 2500)
 const promptPlaceholder = computed(() => modeAvatar.value ? 'Prompt for video generation (max 5000)' : 'Text description for the video (max 2500)')
@@ -814,6 +842,7 @@ const canGenerate = computed(() => {
   if (m === 'v2-6-text-to-video') return p.length <= 2500
   if (m === 'v2-6-image-to-video') return p.length <= 2500 && formData.image_urls.length > 0
   if (m === 'v2-6-motion-control') return formData.input_urls.length > 0 && formData.video_urls.length > 0
+  if (m === 'v3-0-motion-control') return p.length <= 2500 && formData.input_urls.length > 0 && formData.video_urls.length > 0
   if (m === 'ai-avatar-standard' || m === 'ai-avatar-pro') return !!formData.image_url && !!formData.audio_url && p.length <= 5000
   if (m === 'v3-0-video') {
     const shots = formData.v3_multi_prompt || []
@@ -865,6 +894,7 @@ const apiPathByMode = {
   'v2-6-text-to-video': '/api/video/kling/2-6-text-to-video',
   'v2-6-image-to-video': '/api/video/kling/2-6-image-to-video',
   'v2-6-motion-control': '/api/video/kling/2-6-motion-control',
+  'v3-0-motion-control': '/api/video/kling/3-0-motion-control',
   'ai-avatar-standard': '/api/video/kling/ai-avatar-standard',
   'ai-avatar-pro': '/api/video/kling/ai-avatar-pro',
   'v3-0-video': '/api/video/kling/3-0-video'
@@ -891,7 +921,7 @@ watch(() => route.query['record-id'], (recordId) => {
 async function generate() {
   if (!canGenerate.value) return
   const m = mode.value
-  if (showPrompt.value && !(formData.prompt || '').trim()) {
+  if (showPrompt.value && !['v2-6-motion-control', 'v3-0-motion-control'].includes(m) && !(formData.prompt || '').trim()) {
     showError('Prompt is required')
     return
   }
@@ -943,6 +973,16 @@ async function generate() {
         characterOrientation: formData.character_orientation,
         mode: formData.mode,
         duration: formData.duration ? String(formData.duration) : undefined
+      }
+    } else if (m === 'v3-0-motion-control') {
+      body = {
+        model: 'kling-3.0-motion-control',
+        prompt: (formData.prompt || '').trim() || undefined,
+        inputUrls: formData.input_urls,
+        videoUrls: formData.video_urls,
+        mode: (formData.mode === 'pro' || formData.mode === 'std') ? formData.mode : 'std',
+        characterOrientation: formData.character_orientation || 'video',
+        backgroundSource: formData.background_source || 'input_video'
       }
     } else if (m === 'ai-avatar-standard' || m === 'ai-avatar-pro') {
       body = {
@@ -1030,7 +1070,11 @@ function downloadVideo() {
 
 watch(() => route.path, (path) => {
   const next = pathToMode[path]
-  if (next && mode.value !== next) mode.value = next
+  if (next && mode.value !== next) {
+    mode.value = next
+    if (next === 'v3-0-motion-control' && (formData.mode !== 'std' && formData.mode !== 'pro')) formData.mode = 'std'
+    if (next === 'v2-6-motion-control' && (formData.mode !== '720p' && formData.mode !== '1080p')) formData.mode = '720p'
+  }
 }, { immediate: true })
 watch(mode, (m) => {
   const path = modeTabToPath[m]

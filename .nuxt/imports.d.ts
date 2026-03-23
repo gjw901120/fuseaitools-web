@@ -41,5 +41,6 @@ export { useToast } from '../composables/useToast';
 export { useToolOverviewPage } from '../composables/useToolOverviewPage';
 export { useToolSEO, useToolSEOAsync } from '../composables/useToolSEO';
 export { useUserDetail } from '../composables/useUserDetail';
+export { TOOL_PARENT_LABEL_BY_SLUG, CHILD_LABEL_OVERRIDES_BY_ROUTE, getToolBreadcrumbByRoute } from '../utils/toolBreadcrumbs';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';

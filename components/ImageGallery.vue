@@ -160,6 +160,11 @@ const imageModels = ref([
     title: 'Qwen',
     logo: '/tools-logo/QWen.png',
     route: '/home/qwen'
+  },
+  {
+    title: 'Imagen4',
+    logo: '/tools-logo/Imagen4.png',
+    route: '/home/imagen4'
   }
 ])
 

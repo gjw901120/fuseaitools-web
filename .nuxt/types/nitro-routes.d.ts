@@ -54,6 +54,18 @@ declare module "nitropack/types" {
     '/api/common/models/tree': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/common/models/tree.get').default>>>>
     }
+    '/api/image/flux-kontext/flux-2-image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/flux-2-image-to-image.post').default>>>>
+    }
+    '/api/image/flux-kontext/flux-2-pro-image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/flux-2-pro-image-to-image.post').default>>>>
+    }
+    '/api/image/flux-kontext/flux-2-pro-text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/flux-2-pro-text-to-image.post').default>>>>
+    }
+    '/api/image/flux-kontext/flux-2-text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/flux-2-text-to-image.post').default>>>>
+    }
     '/api/image/flux-kontext/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/flux-kontext/generate.post').default>>>>
     }
@@ -89,6 +101,18 @@ declare module "nitropack/types" {
     }
     '/api/image/ideogram/v3-text-to-image': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/v3-text-to-image.post').default>>>>
+    }
+    '/api/image/imagen4/imagen4-fast': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/imagen4/imagen4-fast.post').default>>>>
+    }
+    '/api/image/imagen4/imagen4-generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/imagen4/imagen4-generate.post').default>>>>
+    }
+    '/api/image/imagen4/imagen4-ultra': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/imagen4/imagen4-ultra.post').default>>>>
+    }
+    '/api/image/nano-banana-2/generate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana-2/generate.post').default>>>>
     }
     '/api/image/nano-banana-pro/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/nano-banana-pro/generate.post').default>>>>
@@ -204,6 +228,9 @@ declare module "nitropack/types" {
     '/api/video/kling/2-6-text-to-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/2-6-text-to-video.post').default>>>>
     }
+    '/api/video/kling/3-0-motion-control': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/3-0-motion-control.post').default>>>>
+    }
     '/api/video/kling/3-0-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/3-0-video.post').default>>>>
     }
@@ -230,6 +257,9 @@ declare module "nitropack/types" {
     }
     '/api/video/runway/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/runway/generate.post').default>>>>
+    }
+    '/api/video/seedance/1-5-pro': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/1-5-pro.post').default>>>>
     }
     '/api/video/seedance/lite-image-to-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/lite-image-to-video.post').default>>>>

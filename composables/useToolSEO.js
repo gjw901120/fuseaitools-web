@@ -2,6 +2,7 @@
  * 工具页面 SEO 配置 composable
  * 为所有工具页面提供统一的 SEO 配置
  */
+import { getToolBreadcrumbByRoute } from '~/utils/toolBreadcrumbs'
 
 /**
  * 可选入参（每个工具页独立传）：
@@ -40,30 +41,47 @@ export const useToolSEO = (toolInfo) => {
     video: 'Video Generation'
   }
 
+  const routeBreadcrumb = getToolBreadcrumbByRoute(route, name)
+  const breadcrumbItems = [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": baseUrl
+    }
+  ]
+  if (routeBreadcrumb.parentLabel && routeBreadcrumb.parentTo) {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      "position": 2,
+      "name": routeBreadcrumb.parentLabel,
+      "item": `${baseUrl}${routeBreadcrumb.parentTo}`
+    })
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      "position": 3,
+      "name": routeBreadcrumb.currentLabel || name,
+      "item": fullUrl
+    })
+  } else {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      "position": 2,
+      "name": categoryLabels[category] || "AI Tools",
+      "item": `${baseUrl}/home`
+    })
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      "position": 3,
+      "name": name,
+      "item": fullUrl
+    })
+  }
   // 生成面包屑导航
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": baseUrl
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": categoryLabels[category] || "AI Tools",
-        "item": `${baseUrl}/home`
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": name,
-        "item": fullUrl
-      }
-    ]
+    "itemListElement": breadcrumbItems
   }
 
   const computeCreditsFromPriceData = (data, modelKey, formFields = {}) => {

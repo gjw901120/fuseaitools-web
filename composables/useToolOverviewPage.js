@@ -13,6 +13,7 @@ const OVERVIEW_KEY_TO_LOGO = {
   'ideogram': '/tools-logo/Ideogram.png',
   'flux-kontext': '/tools-logo/FluxKontext.png',
   'nano-banana': '/tools-logo/NanoBanana.png',
+  imagen4: '/tools-logo/Imagen4.png',
   midjourney: '/tools-logo/Midjourney.png',
   seedream: '/tools-logo/Seedream.png',
   qwen: '/tools-logo/QWen.png',

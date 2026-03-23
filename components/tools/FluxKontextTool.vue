@@ -11,6 +11,15 @@
       </div>
     </div>
 
+    <div class="mode-tabs-wrap">
+      <div class="mode-tabs">
+        <div v-for="tab in tabList" :key="tab.id" class="mode-tab" :class="{ active: activeTab === tab.id }" @click="goToTab(tab.id)">
+          <i :class="tab.icon"></i>
+          <span>{{ tab.label }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- 主内容区域：左右布局 -->
     <div class="main-content">
       <!-- 左侧：参数配置面板 (1/3) -->
@@ -19,8 +28,9 @@
           <h4>Image Generation Configuration</h4>
         </div>
 
-        <form class="config-form" @submit.prevent="generateImage">
+        <form class="config-form" @submit.prevent="onSubmit">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
+          <template v-if="activeTab === 'generate'">
           <!-- 模式选择 -->
           <div class="form-group">
             <label class="form-label">Mode Selection *</label>
@@ -252,6 +262,52 @@
               Optional, if provided will add a watermark to the output image
             </div>
           </div>
+          </template>
+
+          <template v-else>
+            <div class="form-group">
+              <label class="form-label">Prompt <span class="required">*</span></label>
+              <textarea v-model="flux2Form.prompt" class="form-input" rows="4" maxlength="5000" placeholder="Prompt (3-5000 characters)" required></textarea>
+            </div>
+            <div class="form-group" v-if="isFlux2ImageToImage">
+              <UploadImage
+                ref="flux2InputImagesUploadRef"
+                input-id="flux2-input-images"
+                label="Input Image(s) *"
+                upload-icon="fas fa-cloud-upload-alt"
+                upload-text="Click to upload image(s)"
+                upload-hint="Supports .jpeg, .jpg, .png, .webp; max 10MB each"
+                :multiple="true"
+                :max-files="8"
+                :max-file-size="10 * 1024 * 1024"
+                additional-hint="Upload 1-8 reference images"
+                theme-color="#667eea"
+                @update:files="handleFlux2InputImages"
+              />
+              <div v-if="isUploadingFlux2Images" class="uploading-hint">
+                <i class="fas fa-spinner fa-spin"></i> Uploading image(s)...
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Aspect Ratio</label>
+              <div class="tab-group">
+                <div class="tab-options">
+                  <button v-for="ratio in flux2AspectRatios" :key="ratio" type="button" class="tab-option" :class="{ active: flux2Form.aspectRatio === ratio }" @click="flux2Form.aspectRatio = ratio">
+                    <span>{{ ratio }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Resolution</label>
+              <div class="tab-group">
+                <div class="tab-options">
+                  <button type="button" class="tab-option" :class="{ active: flux2Form.resolution === '1K' }" @click="flux2Form.resolution = '1K'"><span>1K</span></button>
+                  <button type="button" class="tab-option" :class="{ active: flux2Form.resolution === '2K' }" @click="flux2Form.resolution = '2K'"><span>2K</span></button>
+                </div>
+              </div>
+            </div>
+          </template>
 
           <!-- 生成按钮容器 -->
           <div class="generate-btn-container">
@@ -383,6 +439,28 @@ const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 
+const tabList = [
+  { id: 'generate', label: 'Generate', icon: 'fas fa-wand-magic-sparkles' },
+  { id: 'flux-2-text-to-image', label: 'Flux 2 T2I', icon: 'fas fa-font' },
+  { id: 'flux-2-image-to-image', label: 'Flux 2 I2I', icon: 'fas fa-image' },
+  { id: 'flux-2-pro-text-to-image', label: 'Flux 2 Pro T2I', icon: 'fas fa-pen-ruler' },
+  { id: 'flux-2-pro-image-to-image', label: 'Flux 2 Pro I2I', icon: 'fas fa-layer-group' }
+]
+const tabToPath = {
+  generate: '/home/flux-kontext/generate',
+  'flux-2-text-to-image': '/home/flux-kontext/flux-2-text-to-image',
+  'flux-2-image-to-image': '/home/flux-kontext/flux-2-image-to-image',
+  'flux-2-pro-text-to-image': '/home/flux-kontext/flux-2-pro-text-to-image',
+  'flux-2-pro-image-to-image': '/home/flux-kontext/flux-2-pro-image-to-image'
+}
+const pathToTab = {}
+Object.keys(tabToPath).forEach(k => { pathToTab[tabToPath[k]] = k })
+const activeTab = ref('generate')
+function goToTab(tabId) {
+  activeTab.value = tabId
+  router.push(tabToPath[tabId] || tabToPath.generate)
+}
+
 // 折扣展示文本
 const discountText = computed(() => {
   const rate = Number(discount?.value ?? 1)
@@ -393,6 +471,16 @@ const discountText = computed(() => {
 
 // 价格：modelKey 以 PRICING_MAPPING 为准（下划线）；表单值为连字符，此处映射后再查价
 const fluxKontextPriceText = computed(() => {
+  if (activeTab.value !== 'generate') {
+    const modelKey = activeTab.value
+    const credits = getPrice(modelKey, {
+      quality: flux2Form.resolution,
+      scene: 'generate'
+    })
+    const str = formatCredits(credits)
+    if (!str) return ''
+    return `· ${str} credits${discountText.value}`
+  }
   const model = formData.model || 'flux-kontext-pro'
   const modelKey = model === 'flux-kontext-max' ? 'flux_kontext_max' : 'flux_kontext_pro'
   const credits = getPrice(modelKey)
@@ -415,13 +503,22 @@ const formData = reactive({
   safetyTolerance: 2,
   watermark: ''
 })
+const flux2Form = reactive({
+  prompt: '',
+  inputUrls: [],
+  aspectRatio: '1:1',
+  resolution: '1K'
+})
+const flux2AspectRatios = ['1:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3', 'auto']
 
 // 状态管理
 const mode = ref('generate') // 'generate' 或 'edit'
 const isGenerating = ref(false)
 const isUploadingImage = ref(false)
+const isUploadingFlux2Images = ref(false)
 const generatedImages = ref([])
 const inputImageUploadRef = ref(null)
+const flux2InputImagesUploadRef = ref(null)
 
 // 详情页：仅从 URL 读取 record-id
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -448,6 +545,7 @@ const detailOutputImages = computed(() => {
     prompt
   })).filter(img => img.url)
 })
+const isFlux2ImageToImage = computed(() => ['flux-2-image-to-image', 'flux-2-pro-image-to-image'].includes(activeTab.value))
 
 function fillFormFromOriginalData(originalData) {
   if (!originalData || typeof originalData !== 'object') return
@@ -495,6 +593,10 @@ async function loadDetailByRecordId(recordId) {
 watch(() => route.query['record-id'], (recordId) => {
   if (recordId) loadDetailByRecordId(recordId)
   else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+watch(() => route.path, (path) => {
+  const tab = pathToTab[path]
+  if (tab) activeTab.value = tab
 }, { immediate: true })
 
 const getAuthToken = () => {
@@ -565,8 +667,60 @@ const handleInputImage = async (files) => {
   }
 }
 
+const uploadFilesAndGetUrls = async (files) => {
+  const fileList = Array.isArray(files) ? files : [files]
+  const urls = []
+  for (const fileObj of fileList) {
+    if (!fileObj) continue
+    const formDataUpload = new FormData()
+    formDataUpload.append('file', fileObj)
+    const headers = { Accept: 'application/json' }
+    const authToken = getAuthToken()
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+    const response = await fetch(batchUploadUrl, {
+      method: 'POST',
+      headers,
+      body: formDataUpload,
+      credentials: 'include'
+    })
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData?.errorMessage || errorData?.message || 'Upload failed')
+    }
+    const data = await response.json()
+    const uploaded = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+    if (Array.isArray(uploaded) && uploaded[0]) urls.push(uploaded[0])
+  }
+  return urls
+}
+
+const handleFlux2InputImages = async (files) => {
+  if (!files || files.length === 0) {
+    flux2Form.inputUrls = []
+    return
+  }
+  isUploadingFlux2Images.value = true
+  try {
+    const selected = (Array.isArray(files) ? files : [files]).slice(0, 8)
+    const urls = await uploadFilesAndGetUrls(selected)
+    flux2Form.inputUrls = urls
+  } catch (error) {
+    showError(error.message || 'Failed to upload image(s)', 5000)
+    flux2Form.inputUrls = []
+    flux2InputImagesUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingFlux2Images.value = false
+  }
+}
+
 // 计算属性
 const canGenerate = computed(() => {
+  if (activeTab.value !== 'generate') {
+    const p = (flux2Form.prompt || '').trim()
+    if (p.length < 3 || p.length > 5000) return false
+    if (isFlux2ImageToImage.value) return flux2Form.inputUrls.length >= 1 && flux2Form.inputUrls.length <= 8
+    return true
+  }
   if (!formData.prompt.trim()) return false
   if (mode.value === 'edit') return !!formData.imageUrl
   return true
@@ -583,6 +737,65 @@ const aspectRatioMap = {
 }
 const outputFormatMap = { jpeg: 'JPEG', png: 'PNG' }
 // Model Version：PRICING_MAPPING 中 modelKey 为 flux_kontext_pro / flux_kontext_max；表单与接口用连字符 flux-kontext-pro / flux-kontext-max
+
+const flux2ApiPathByTab = {
+  'flux-2-text-to-image': '/api/image/flux-kontext/flux-2-text-to-image',
+  'flux-2-image-to-image': '/api/image/flux-kontext/flux-2-image-to-image',
+  'flux-2-pro-text-to-image': '/api/image/flux-kontext/flux-2-pro-text-to-image',
+  'flux-2-pro-image-to-image': '/api/image/flux-kontext/flux-2-pro-image-to-image'
+}
+
+const onSubmit = async () => {
+  if (activeTab.value === 'generate') return generateImage()
+  return generateFlux2()
+}
+
+const generateFlux2 = async () => {
+  if (!canGenerate.value) return
+  const tab = activeTab.value
+  const apiPath = flux2ApiPathByTab[tab]
+  if (!apiPath) return
+  const promptTrim = (flux2Form.prompt || '').trim()
+  isGenerating.value = true
+  try {
+    const body = {
+      model: tab,
+      prompt: promptTrim,
+      aspectRatio: flux2Form.aspectRatio,
+      resolution: flux2Form.resolution
+    }
+    if (isFlux2ImageToImage.value) body.inputUrls = flux2Form.inputUrls
+    const data = await post(apiPath, body)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`${tabToPath[tab] || tabToPath.generate}?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    let urls = data?.outputUrls
+    if (!Array.isArray(urls) || urls.length === 0) {
+      const single = data?.url ?? data?.imageUrl
+      if (single) urls = [single]
+    }
+    const url = Array.isArray(urls) && urls[0] ? (typeof urls[0] === 'string' ? urls[0] : urls[0]?.url ?? urls[0]?.imageUrl) : null
+    if (!url || typeof url !== 'string') {
+      showError('No image URL in response')
+      return
+    }
+    generatedImages.value.unshift({
+      url,
+      prompt: flux2Form.prompt,
+      aspectRatio: flux2Form.aspectRatio,
+      format: 'png',
+      model: tab,
+      timestamp: new Date()
+    })
+  } catch (error) {
+    console.error('Flux2 image generation failed:', error)
+    if (!error?.__fromApi) showError(error.message || 'Image generation failed, please try again')
+  } finally {
+    isGenerating.value = false
+  }
+}
 
 // 生成图像
 const generateImage = async () => {
@@ -618,7 +831,7 @@ const generateImage = async () => {
     const data = await post('/api/image/flux-kontext/generate', requestBody)
     const recordId = data?.recordId ?? data?.data?.recordId
     if (recordId) {
-      router.push(`/home/flux-kontext/generate?record-id=${encodeURIComponent(recordId)}`)
+      router.push(`${tabToPath.generate}?record-id=${encodeURIComponent(recordId)}`)
       return
     }
     let urls = data?.outputUrls
@@ -728,6 +941,39 @@ const clearResults = () => {
   line-height: 1.55;
 }
 
+.mode-tabs-wrap {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.mode-tab {
+  padding: 9px 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.mode-tab:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+.mode-tab.active {
+  background: #667eea;
+  color: #fff;
+  border-color: #667eea;
+}
+
 
 .action-btn {
   width: 36px;
@@ -755,7 +1001,7 @@ const clearResults = () => {
 }
 
 .config-panel {
-  width: 35%;
+  width: 42%;
   background: #f8fafc;
   border-radius: 12px;
   padding: 20px;
@@ -763,7 +1009,7 @@ const clearResults = () => {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .config-header {
@@ -781,6 +1027,7 @@ const clearResults = () => {
 
 .config-form {
   flex: 1;
+  overflow: visible;
 }
 
 .config-fieldset {
@@ -927,10 +1174,11 @@ const clearResults = () => {
 .tab-options {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .tab-option {
-  flex: 1;
+  flex: 1 1 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1014,7 +1262,7 @@ const clearResults = () => {
 }
 
 .result-panel {
-  width: 65%;
+  width: 58%;
   background: #ffffff;
   border-radius: 12px;
   padding: 20px;

@@ -60,10 +60,15 @@
 |----------------|--------------------|-------|------|
 | Flux Kontext Pro | `flux_kontext_pro` | ONCE  | Model Version 选 Pro |
 | Flux Kontext Max | `flux_kontext_max` | ONCE  | Model Version 选 Max |
+| Flux 2 Text to Image | `flux-2-text-to-image` | RULE | 按 quality(1K/2K) 匹配 |
+| Flux 2 Image to Image | `flux-2-image-to-image` | RULE | 按 quality(1K/2K) 匹配 |
+| Flux 2 Pro Text to Image | `flux-2-pro-text-to-image` | RULE | 按 quality(1K/2K) 匹配 |
+| Flux 2 Pro Image to Image | `flux-2-pro-image-to-image` | RULE | 按 quality(1K/2K) 匹配 |
 
 - **组件**：`components/tools/FluxKontextTool.vue`
 - **modelKey 以本表为准**（下划线）。表单里 `formData.model` 为 `'flux-kontext-pro'` 或 `'flux-kontext-max'`（连字符），分别对应上表两个 modelKey。
 - 若定价接口返回的 key 为连字符形式（如 `flux-kontext-pro`），前端 `getPrice` / `useToolSEOAsync` 会做下划线↔连字符兼容查找。
+- **Flux 2 系列（RULE）**：`quality = resolution`（`1K` / `2K`），`scene` 固定 `generate`。
 
 ---
 
@@ -74,10 +79,12 @@
 | Nano Banana（文生图）   | `nano-banana`     | ONCE  | 普通生成 |
 | Nano Banana（图生图）  | `nano-banana-edit`| ONCE  | 编辑模式 |
 | Nano Banana Pro        | `nano-banana-pro` | RULE  | 按 resolution(quality) 等匹配 |
+| Nano Banana 2          | `nano-banana-2`   | RULE  | 按 resolution 映射 quality（1K/2K/4K），scene: generate |
 
 - **组件**：`components/tools/NanoBananaTool.vue`
 - **Nano Banana**：由 `formData.mode === 'image-to-image'` 决定用 `nano-banana-edit` 还是 `nano-banana`。
 - **Nano Banana Pro（RULE）**：表单 **Resolution** 映射到规则字段 **quality**（1K/2K/4K）。传入 `formFields` 为 `quality: proFormData.resolution`、`duration: 0`、`size: ''`、`batchSize: 1`、`speed: 'none'`、`scene: 'generate'`，与 rules 匹配。
+- **Nano Banana 2（RULE）**：`quality = resolution`（1K/2K/4K）；传入 `scene: 'generate'`。其余参数（`aspect_ratio`、`image_input`、`output_format`）不参与价格匹配。
 
 ---
 
@@ -143,7 +150,21 @@
 
 ---
 
-### 8. GPT Image
+### 8. Imagen4
+
+| 前端模式（tab）   | modelKey           | 类型  | 说明 |
+|-------------------|--------------------|-------|------|
+| imagen4-generate  | `imagen4-generate` | ONCE / RULE | 常规生成 |
+| imagen4-fast      | `imagen4-fast`     | ONCE / RULE | 快速生成（支持 1-4 张） |
+| imagen4-ultra     | `imagen4-ultra`    | ONCE  | 直接匹配 once，当前为 18 credits |
+
+- **组件**：`components/tools/Imagen4Tool.vue`
+- **映射**：按当前 tab 直接使用同名 modelKey。
+- **Ultra 价格规则**：`imagen4-ultra` 为 ONCE，直接取 `once.credits = 18`，无需表单字段匹配。
+
+---
+
+### 9. GPT Image
 
 | 前端模式（tab）   | modelKey                         | 类型  | 说明 |
 |-------------------|----------------------------------|-------|------|
@@ -155,7 +176,7 @@
 
 ---
 
-### 9. Suno
+### 10. Suno
 
 | 前端功能           | 表单 function   | modelKey              | 类型  |
 |--------------------|-----------------|------------------------|-------|
@@ -171,7 +192,7 @@
 
 ---
 
-### 10. ElevenLabs
+### 11. ElevenLabs
 
 | 前端功能（路由/function） | modelKey                              | 类型  | 单价说明 |
 |---------------------------|----------------------------------------|-------|----------|
@@ -187,7 +208,7 @@
 
 ---
 
-### 11. Veo 3
+### 12. Veo 3
 
 | 前端模式 / 模型     | modelKey     | 类型  | 说明 |
 |---------------------|--------------|-------|------|
@@ -203,7 +224,7 @@
 
 ---
 
-### 12. Runway
+### 13. Runway
 
 | 前端功能   | modelKey         | 类型  | 说明 |
 |------------|------------------|-------|------|
@@ -216,7 +237,7 @@
 
 ---
 
-### 13. Luma
+### 14. Luma
 
 | 前端展示名称 | modelKey | 类型  |
 |-------------|----------|-------|
@@ -226,7 +247,7 @@
 
 ---
 
-### 14. Wan
+### 15. Wan
 
 | 前端模式（tab）   | modelKey                   | 类型  | 说明 |
 |-------------------|----------------------------|-------|------|
@@ -240,7 +261,7 @@
 
 ---
 
-### 15. Seedance
+### 16. Seedance
 
 | 前端模式（tab）              | modelKey                                | 类型  | 说明 |
 |------------------------------|-----------------------------------------|-------|------|
@@ -249,14 +270,16 @@
 | v1-pro-text-to-video         | `seedance-v1-pro-text-to-video`         | RULE  | 同上 |
 | v1-pro-image-to-video        | `seedance-v1-pro-image-to-video`        | RULE  | 同上 |
 | v1-pro-fast-image-to-video   | `seedance-v1-pro-fast-image-to-video`    | RULE  | 同上 |
+| v1-5-pro                     | `seedance-1.5-pro`                      | RULE  | 按 duration(4/8/12)、quality(480p/720p/1080p)、scene(with_sound/without_sound) 匹配；图生时支持可选 inputUrls(0-2) |
 
 - **组件**：`components/tools/SeedanceTool.vue`
 - **映射**：`seedancePriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields**：`{ duration: formData.duration, quality: formData.resolution }`，与 rules 匹配。
+- **formFields**：`{ duration: formData.duration, quality: formData.resolution }`；`v1-5-pro` 额外传 `scene`（`generateAudio=true -> with_sound`，否则 `without_sound`）。
+- **v1.5 Pro 参数补充**：`prompt` 必填（3-2500）；`inputUrls` 可选（0-2）；`aspectRatio` 默认 `1:1`；`resolution` 默认 `720p`；`duration` 默认 `8`；支持 `fixedLens` 与 `generateAudio`。
 
 ---
 
-### 16. Hailuo
+### 17. Hailuo
 
 | 前端模式（tab）            | modelKey                                | 类型  | 说明 |
 |----------------------------|-----------------------------------------|-------|------|
@@ -269,7 +292,7 @@
 
 ---
 
-### 17. Kling
+### 18. Kling
 
 | 前端模式（tab）                  | modelKey                                | 类型  | 说明 |
 |----------------------------------|-----------------------------------------|-------|------|
@@ -277,21 +300,23 @@
 | v2-5-turbo-text-to-video-pro     | `kling-v2-5-turbo-text-to-video-pro`    | RULE  | 同上 |
 | v2-6-text-to-video               | `kling-2.6-text-to-video`              | RULE  | 按 duration、scene(with_sound/without_sound) 匹配 |
 | v2-6-image-to-video              | `kling-2.6-image-to-video`              | RULE  | 同上 |
-| v3-0-video                       | `kling-3.0-video`                       | RULE  | 按 duration、size(std/pro)、scene 匹配；多镜头为 shots duration 之和 |
 | v2-6-motion-control              | `kling-2.6-motion-control`              | RULE  | 按 duration、quality(720p/1080p)、scene: generate 匹配 |
+| v3-0-motion-control              | `kling-3.0-motion-control`              | RULE  | 按 duration(上传视频时长)、quality(720p/1080p)、scene: generate 匹配；std→720p，pro→1080p |
 | ai-avatar-standard               | `kling-ai-avatar-standard`              | ONCE  | |
 | ai-avatar-pro                    | `kling-ai-avatar-pro`                   | ONCE  | |
+| v3-0-video                       | `kling-3.0-video`                       | RULE  | 按 duration、size(std/pro)、scene 匹配；多镜头为 shots duration 之和 |
 
 - **组件**：`components/tools/KlingTool.vue`
 - **v2.5 Turbo**：`formFields` 为 `{ duration: formData.duration, scene: 'generate' }`。
 - **2.6 Text/Image to Video**：`scene` 由 `formData.sound` 得 `with_sound` 或 `without_sound`；`formFields` 含 `duration`、`scene`。
-- **3.0 Video**：`formFields` 含 `duration`（单镜头为第一条 prompt 的 duration，多镜头为各 shot duration 之和）、`size: formData.kling_mode`（std/pro）、`scene`。
 - **2.6 Motion Control**：`formFields` 为 `{ duration, quality: formData.mode }`（如 720p）、`scene: 'generate'`。
+- **3.0 Motion Control**：`formFields` 为 `{ duration, quality, scene: 'generate' }`，其中 `duration` 取上传视频时长，`quality` 由 `mode` 映射（`std -> 720p`，`pro -> 1080p`）。
 - **AI Avatar**：ONCE，无需 formFields。
+- **3.0 Video**：`formFields` 含 `duration`（单镜头为第一条 prompt 的 duration，多镜头为各 shot duration 之和）、`size: formData.kling_mode`（std/pro）、`scene`。
 
 ---
 
-### 18. Sora
+### 19. Sora
 
 | 前端模式           | 表单 model            | modelKey                    | 类型  | 说明 |
 |--------------------|------------------------|-----------------------------|-------|------|
@@ -316,17 +341,21 @@
 | modelKey                    | 参与匹配的表单字段说明 |
 |-----------------------------|------------------------|
 | `nano-banana-pro`           | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
+| `nano-banana-2`             | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
 | `midjourney_imagine`        | speed（relaxed/fast/turbo）、duration、quality、size、batchSize、scene |
+| `flux-2-*` / `flux-2-pro-*` | quality（1K/2K，对应 Resolution）、scene |
 | `seedream-5-lite-image-to-image`（若为 RULE） | aspectRatio、quality |
 | `ideogram-v3-*` / `ideogram-character*` | speed（TURBO/BALANCED/QUALITY）、scene |
 | `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | size（medium/high，对应 Quality） |
 | `wan-2-6-*`                | duration、quality（720p/1080p，对应 Resolution） |
 | `seedance-v1-*`             | duration、quality（480p/720p/1080p，对应 Resolution） |
+| `seedance-1.5-pro`          | duration、quality（480p/720p/1080p，对应 Resolution）、scene（with_sound/without_sound） |
 | `hailuo-2-3-image-to-video-*` | duration、quality（768p/1080p）、scene |
 | `kling-v2-5-turbo-*`        | duration、scene: generate |
 | `kling-2.6-text-to-video` / `kling-2.6-image-to-video` | duration、scene（with_sound/without_sound） |
-| `kling-3.0-video`           | duration、size（std/pro）、scene |
 | `kling-2.6-motion-control`  | duration、quality（720p/1080p）、scene |
+| `kling-3.0-motion-control`  | duration（上传视频时长）、quality（720p/1080p，std/pro 映射）、scene |
+| `kling-3.0-video`           | duration、size（std/pro）、scene |
 | `runway_generate`           | duration、quality（如 720p）、scene |
 | `sora-2-pro-storyboard`     | duration（Frames）、scene |
 | `sora-2-pro-text-to-video` | duration（Frames）、size（standard/high） |

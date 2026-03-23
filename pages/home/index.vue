@@ -132,6 +132,8 @@
           <SeedreamTool v-else-if="getSelectedToolInfo().name === 'Seedream'" />
           <!-- Qwen 工具组件 -->
           <QwenTool v-else-if="getSelectedToolInfo().name === 'Qwen'" />
+          <!-- Imagen4 工具组件 -->
+          <Imagen4Tool v-else-if="getSelectedToolInfo().name === 'Imagen4'" />
           
           <!-- 其他工具的聊天界面 -->
           <div v-else class="chat-interface">
@@ -225,6 +227,7 @@ import HailuoTool from '~/components/tools/HailuoTool.vue'
 import KlingTool from '~/components/tools/KlingTool.vue'
 import SeedreamTool from '~/components/tools/SeedreamTool.vue'
 import QwenTool from '~/components/tools/QwenTool.vue'
+import Imagen4Tool from '~/components/tools/Imagen4Tool.vue'
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
 import { watch, provide, onMounted, onUnmounted, nextTick } from 'vue'
@@ -252,6 +255,7 @@ const toolRouteMap = {
   'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
   'Seedream': '/home/seedream/5-lite-text-to-image',
   'Qwen': '/home/qwen/text-to-image',
+  'Imagen4': '/home/imagen4/imagen4-generate',
   // Chat tools
   'GPT': '/home/gpt/generate',
   'Deepseek': '/home/deepseek/generate',
@@ -683,6 +687,15 @@ const allTools = ref([
     usageCount: 0
   },
   {
+    id: 23,
+    name: 'Imagen4',
+    type: 'image',
+    description: 'Imagen4：Generate、Fast、Ultra',
+    icon: '/tools-logo/Imagen4.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
     id: 15,
     name: 'Midjourney',
     type: 'image',
@@ -1027,10 +1040,15 @@ watch(() => route.path, (newPath) => {
     '/home/ideogram/character-remix': 'Ideogram',
     '/home/flux-kontext': 'Flux Kontext',
     '/home/flux-kontext/generate': 'Flux Kontext',
+    '/home/flux-kontext/flux-2-text-to-image': 'Flux Kontext',
+    '/home/flux-kontext/flux-2-image-to-image': 'Flux Kontext',
+    '/home/flux-kontext/flux-2-pro-text-to-image': 'Flux Kontext',
+    '/home/flux-kontext/flux-2-pro-image-to-image': 'Flux Kontext',
     '/home/nano-banana': 'Nano Banana',
     '/home/nano-banana/generate': 'Nano Banana',
     '/home/nano-banana/edit': 'Nano Banana',
     '/home/nano-banana/pro-generate': 'Nano Banana',
+    '/home/nano-banana/nano-banana-2': 'Nano Banana',
     '/home/elevenlabs': 'Elevenlabs',
     '/home/elevenlabs/multilingual-v2': 'Elevenlabs',
     '/home/elevenlabs/turbo-2-5': 'Elevenlabs',
@@ -1057,6 +1075,7 @@ watch(() => route.path, (newPath) => {
     '/home/seedance/v1-pro-text-to-video': 'Seedance',
     '/home/seedance/v1-pro-image-to-video': 'Seedance',
     '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
+    '/home/seedance/v1-5-pro': 'Seedance',
     '/home/seedream': 'Seedream',
     '/home/seedream/5-lite-text-to-image': 'Seedream',
     '/home/seedream/5-lite-image-to-image': 'Seedream',
@@ -1065,6 +1084,10 @@ watch(() => route.path, (newPath) => {
     '/home/qwen/image-to-image': 'Qwen',
     '/home/qwen/image-edit': 'Qwen',
     '/home/qwen/z-image': 'Qwen',
+    '/home/imagen4': 'Imagen4',
+    '/home/imagen4/imagen4-generate': 'Imagen4',
+    '/home/imagen4/imagen4-fast': 'Imagen4',
+    '/home/imagen4/imagen4-ultra': 'Imagen4',
     // Chat tools
     '/home/gpt': 'GPT',
     '/home/gpt/generate': 'GPT',

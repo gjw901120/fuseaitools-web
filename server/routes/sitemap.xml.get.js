@@ -133,11 +133,16 @@ export default defineEventHandler(async (event) => {
 
     // Flux-Kontext (Image)
     { loc: '/home/flux-kontext/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/flux-kontext/flux-2-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/flux-kontext/flux-2-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/flux-kontext/flux-2-pro-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/flux-kontext/flux-2-pro-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
 
     // Nano-Banana (Image)
     { loc: '/home/nano-banana/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/nano-banana/edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/nano-banana/pro-generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/nano-banana/nano-banana-2', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
 
     // ElevenLabs (Audio)
     { loc: '/home/elevenlabs/multilingual-v2', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -181,6 +186,9 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/qwen/image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/qwen/image-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/qwen/z-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/imagen4/imagen4-generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/imagen4/imagen4-fast', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/imagen4/imagen4-ultra', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
 
     // Wan (Video)
     { loc: '/home/wan/text-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -193,6 +201,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/kling/v2-6-text-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/kling/v2-6-image-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/kling/v2-6-motion-control', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/kling/v3-0-motion-control', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/kling/ai-avatar-standard', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/kling/ai-avatar-pro', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/kling/v3-0-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -207,6 +216,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/seedance/v1-pro-text-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/seedance/v1-pro-image-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/seedance/v1-pro-fast-image-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/seedance/v1-5-pro', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
 
     // Hailuo (Video)
     { loc: '/home/hailuo/image-to-video-standard', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },

@@ -360,6 +360,84 @@
           </button>
           </fieldset>
         </form>
+
+        <!-- Nano Banana 2 Form -->
+        <form v-if="activeTab === 'nano-banana-2'" class="config-form" @submit.prevent="generateImageV2">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
+          <div class="form-group">
+            <label>Prompt *</label>
+            <textarea
+              v-model="nano2FormData.prompt"
+              placeholder="Prompt for Nano Banana 2"
+              rows="6"
+              maxlength="20000"
+              class="form-input"
+              required
+            ></textarea>
+            <div class="char-count">{{ nano2FormData.prompt.length }}/20000</div>
+          </div>
+          <div class="form-group">
+            <label>Input Images (optional, 0-14)</label>
+            <UploadImage
+              ref="nano2ImageUploadRef"
+              input-id="nano-banana-2-image-upload"
+              label=""
+              upload-icon="fas fa-cloud-upload-alt"
+              upload-text="Click to upload images"
+              upload-hint="JPEG, PNG, WEBP, max 30MB each"
+              additional-hint="Optional image input, up to 14 images"
+              theme-color="#667eea"
+              :max-files="14"
+              :max-file-size="30 * 1024 * 1024"
+              accept="image/jpeg,image/png,image/webp"
+              :multiple="true"
+              @update:files="handleNano2ImageUpdate"
+            />
+            <div v-if="isUploadingNano2" class="uploading-hint">
+              <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Aspect Ratio</label>
+            <div class="tab-group">
+              <div
+                v-for="ratio in nano2AspectRatios"
+                :key="ratio"
+                class="tab-option"
+                :class="{ active: nano2FormData.aspect_ratio === ratio }"
+                @click="nano2FormData.aspect_ratio = ratio"
+              >
+                <span>{{ ratio }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Resolution</label>
+            <div class="tab-group">
+              <div class="tab-option" :class="{ active: nano2FormData.resolution === '1K' }" @click="nano2FormData.resolution = '1K'"><span>1K</span></div>
+              <div class="tab-option" :class="{ active: nano2FormData.resolution === '2K' }" @click="nano2FormData.resolution = '2K'"><span>2K</span></div>
+              <div class="tab-option" :class="{ active: nano2FormData.resolution === '4K' }" @click="nano2FormData.resolution = '4K'"><span>4K</span></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Output Format</label>
+            <div class="tab-group">
+              <div class="tab-option" :class="{ active: nano2FormData.output_format === 'jpg' }" @click="nano2FormData.output_format = 'jpg'">
+                <i class="fas fa-file-image"></i><span>JPG</span>
+              </div>
+              <div class="tab-option" :class="{ active: nano2FormData.output_format === 'png' }" @click="nano2FormData.output_format = 'png'">
+                <i class="fas fa-file-image"></i><span>PNG</span>
+              </div>
+            </div>
+          </div>
+          <button type="submit" :disabled="isGenerating || !canGenerateNano2" class="generate-btn">
+            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+            <i v-else class="fas fa-wand-magic-sparkles"></i>
+            {{ isGenerating ? 'Generating...' : 'Generate Image' }}
+            <span v-if="nanoBanana2PriceText" class="price-tag">{{ nanoBanana2PriceText }}</span>
+          </button>
+          </fieldset>
+        </form>
       </div>
 
       <!-- Right: Image Display Area -->
@@ -569,13 +647,15 @@ const activeTab = ref('nano-banana')
 const nanoBananaTabToPath = {
   'nano-banana': '/home/nano-banana/generate',
   'nano-banana-edit': '/home/nano-banana/edit',
-  'nano-banana-pro': '/home/nano-banana/pro-generate'
+  'nano-banana-pro': '/home/nano-banana/pro-generate',
+  'nano-banana-2': '/home/nano-banana/nano-banana-2'
 }
 
 const nanoBananaPathToTab = {
   '/home/nano-banana/generate': 'nano-banana',
   '/home/nano-banana/edit': 'nano-banana-edit',
-  '/home/nano-banana/pro-generate': 'nano-banana-pro'
+  '/home/nano-banana/pro-generate': 'nano-banana-pro',
+  '/home/nano-banana/nano-banana-2': 'nano-banana-2'
 }
 
 function goToNanoBananaTab(tabId) {
@@ -593,13 +673,15 @@ watch(() => route.path, (path) => {
 const functionOptions = ref([
   { id: 'nano-banana', name: 'Nano Banana', description: 'Text to Image', icon: 'fas fa-image' },
   { id: 'nano-banana-edit', name: 'Nano Banana Edit', description: 'Image to Image', icon: 'fas fa-edit' },
-  { id: 'nano-banana-pro', name: 'Nano Banana Pro', description: 'Advanced Image Generation', icon: 'fas fa-star' }
+  { id: 'nano-banana-pro', name: 'Nano Banana Pro', description: 'Advanced Image Generation', icon: 'fas fa-star' },
+  { id: 'nano-banana-2', name: 'Nano Banana 2', description: 'V2 Generation', icon: 'fas fa-cubes' }
 ])
 
 const configHeaderTitle = computed(() => {
   if (activeTab.value === 'nano-banana') return 'Nano Banana Configuration'
   if (activeTab.value === 'nano-banana-edit') return 'Nano Banana Edit Configuration'
-  return 'Nano Banana Pro Configuration'
+  if (activeTab.value === 'nano-banana-pro') return 'Nano Banana Pro Configuration'
+  return 'Nano Banana 2 Configuration'
 })
 
 // Nano Banana form data（仅 Text to Image）
@@ -628,12 +710,22 @@ const INIT_NANO_BANANA_PRO_FORM = {
   output_format: 'png'
 }
 const proFormData = reactive({ ...INIT_NANO_BANANA_PRO_FORM })
+const INIT_NANO_BANANA_2_FORM = {
+  prompt: '',
+  aspect_ratio: 'auto',
+  image_input: [],
+  output_format: 'jpg',
+  resolution: '1K'
+}
+const nano2FormData = reactive({ ...INIT_NANO_BANANA_2_FORM })
+const nano2AspectRatios = ['auto', '1:1', '1:4', '16:9', '1:8', '21:9', '2:3', '3:2', '3:4', '4:1', '4:3', '4:5', '5:4', '8:1', '9:16']
 
 // 切换 Tab 时当前表单恢复为初始状态
 watch(activeTab, (tab) => {
   if (tab === 'nano-banana') Object.assign(formData, INIT_NANO_BANANA_FORM)
   else if (tab === 'nano-banana-edit') Object.assign(editFormData, INIT_NANO_BANANA_EDIT_FORM)
   else if (tab === 'nano-banana-pro') Object.assign(proFormData, INIT_NANO_BANANA_PRO_FORM)
+  else if (tab === 'nano-banana-2') Object.assign(nano2FormData, INIT_NANO_BANANA_2_FORM)
 })
 
 // Aspect ratios for Pro（与后端 imageSize 一致）
@@ -645,9 +737,11 @@ const resolutions = ['1K', '2K', '4K']
 const isGenerating = ref(false)
 const isUploadingEdit = ref(false)
 const isUploadingPro = ref(false)
+const isUploadingNano2 = ref(false)
 const generatedImages = ref([])
 const editImageUploadRef = ref(null)
 const proImageUploadRef = ref(null)
+const nano2ImageUploadRef = ref(null)
 
 // 详情页：仅从 URL 读取 record-id
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -674,6 +768,18 @@ function fillFormFromOriginalData(originalData) {
   if (!originalData || typeof originalData !== 'object') return
   const o = originalData
   if (o.model === 'nano-banana-pro' || o.imageInput || o.image_input != null || o.resolution) {
+    if (o.model === 'nano-banana-2') {
+      activeTab.value = 'nano-banana-2'
+      if (o.prompt != null) nano2FormData.prompt = o.prompt
+      if (Array.isArray(o.imageInput)) nano2FormData.image_input = [...o.imageInput]
+      else if (Array.isArray(o.image_input)) nano2FormData.image_input = [...o.image_input]
+      if (o.aspect_ratio) nano2FormData.aspect_ratio = o.aspect_ratio
+      if (o.imageSize) nano2FormData.aspect_ratio = o.imageSize
+      if (o.resolution) nano2FormData.resolution = o.resolution
+      if (o.outputFormat) nano2FormData.output_format = o.outputFormat === 'jpeg' ? 'jpg' : (o.outputFormat || 'jpg')
+      if (o.output_format) nano2FormData.output_format = o.output_format === 'jpeg' ? 'jpg' : (o.output_format || 'jpg')
+      return
+    }
     activeTab.value = 'nano-banana-pro'
     if (o.prompt != null) proFormData.prompt = o.prompt
     if (Array.isArray(o.imageInput)) proFormData.image_input = [...o.imageInput]
@@ -769,6 +875,19 @@ const nanoBananaProPriceText = computed(() => {
   if (!str) return ''
   return `· ${str} credits${discountText.value}`
 })
+const nanoBanana2PriceText = computed(() => {
+  const credits = getPrice('nano-banana-2', {
+    quality: nano2FormData.resolution,
+    duration: 0,
+    size: '',
+    batchSize: 1,
+    speed: 'none',
+    scene: 'generate'
+  })
+  const str = formatCredits(credits)
+  if (!str) return ''
+  return `· ${str} credits${discountText.value}`
+})
 
 const getAuthToken = () => {
   if (!process.client) return null
@@ -819,6 +938,11 @@ const canGenerateEdit = computed(() => {
 const canGeneratePro = computed(() => {
   const promptOk = proFormData.prompt.trim().length > 0
   const imagesOk = proFormData.image_input.length >= 1 && proFormData.image_input.length <= 10
+  return promptOk && imagesOk
+})
+const canGenerateNano2 = computed(() => {
+  const promptOk = nano2FormData.prompt.trim().length > 0 && nano2FormData.prompt.trim().length <= 20000
+  const imagesOk = nano2FormData.image_input.length >= 0 && nano2FormData.image_input.length <= 14
   return promptOk && imagesOk
 })
 
@@ -873,6 +997,29 @@ const handleProImageUpdate = async (files) => {
     proImageUploadRef.value?.clearFiles?.()
   } finally {
     isUploadingPro.value = false
+  }
+}
+const handleNano2ImageUpdate = async (files) => {
+  if (!files || (Array.isArray(files) && files.length === 0)) {
+    nano2FormData.image_input = []
+    nano2ImageUploadRef.value?.clearFiles?.()
+    return
+  }
+  const fileList = Array.isArray(files) ? files : [files]
+  if (fileList.length > 14) {
+    showError('Image files must contain up to 14 images')
+    return
+  }
+  isUploadingNano2.value = true
+  try {
+    nano2FormData.image_input = await uploadFilesToUrls(fileList)
+  } catch (error) {
+    console.error('Nano Banana 2 images upload error:', error)
+    showError(error.message || 'Failed to upload images')
+    nano2FormData.image_input = []
+    nano2ImageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingNano2.value = false
   }
 }
 
@@ -1018,6 +1165,50 @@ const generateImagePro = async () => {
         aspect_ratio: proFormData.aspect_ratio,
         resolution: proFormData.resolution,
         output_format: proFormData.output_format,
+        timestamp: new Date().toLocaleTimeString()
+      })
+    } else {
+      showError('No image URL in response')
+    }
+  } catch (error) {
+    console.error('Failed to generate image:', error)
+    if (!error?.__fromApi) showError(error.message || 'Failed to generate image, please try again')
+  } finally {
+    isGenerating.value = false
+  }
+}
+const generateImageV2 = async () => {
+  if (!canGenerateNano2.value) return
+  const promptTrim = nano2FormData.prompt.trim()
+  if (promptTrim.length > 20000) {
+    showError('Prompt cannot exceed 20000 characters')
+    return
+  }
+  isGenerating.value = true
+  try {
+    const body = {
+      model: 'nano-banana-2',
+      prompt: promptTrim,
+      aspectRatio: nano2FormData.aspect_ratio,
+      outputFormat: nano2FormData.output_format,
+      resolution: nano2FormData.resolution
+    }
+    if (nano2FormData.image_input.length > 0) body.imageInput = nano2FormData.image_input
+    const data = await post('/api/image/nano-banana-2/generate', body)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`${nanoBananaTabToPath[activeTab.value] || '/home/nano-banana/nano-banana-2'}?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl
+    if (url && typeof url === 'string') {
+      generatedImages.value.unshift({
+        id: Date.now(),
+        url,
+        prompt: nano2FormData.prompt,
+        aspect_ratio: nano2FormData.aspect_ratio,
+        resolution: nano2FormData.resolution,
+        output_format: nano2FormData.output_format,
         timestamp: new Date().toLocaleTimeString()
       })
     } else {

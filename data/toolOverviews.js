@@ -395,7 +395,11 @@ Unified: Context and style consistency across the chat; full history and rollbac
     introFullWidth: true,
     intro: 'Flux is Black Forest Labs\' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.',
     features: [
-      { name: 'Generate', path: '/home/flux-kontext/generate', description: 'Pro or Max: single-prompt photorealistic or artistic images with style, composition, and lighting control.' }
+      { name: 'Generate', path: '/home/flux-kontext/generate', description: 'Current Flux Kontext generate/edit workflow with Pro/Max model controls.' },
+      { name: 'Flux 2 Text to Image', path: '/home/flux-kontext/flux-2-text-to-image', description: 'Prompt-based image generation with aspect ratio and 1K/2K resolution.' },
+      { name: 'Flux 2 Image to Image', path: '/home/flux-kontext/flux-2-image-to-image', description: 'Reference-based image editing with 1-8 input images, prompt, aspect ratio, and resolution.' },
+      { name: 'Flux 2 Pro Text to Image', path: '/home/flux-kontext/flux-2-pro-text-to-image', description: 'Higher-fidelity text-to-image generation with Flux 2 Pro settings.' },
+      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'Higher-fidelity image-to-image generation with 1-8 input images and prompt control.' }
     ],
     sections: [
       {
@@ -451,7 +455,8 @@ Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techni
     features: [
       { name: 'Text to Image', path: '/home/nano-banana/generate', description: 'Sub-20s generation; social sizes (1080×1080, 1080×1920), web and 16:9; style and mood presets.' },
       { name: 'Image to Image', path: '/home/nano-banana/edit', description: 'Style and theme transfer, detail polish, natural-language edit; batch style unification.' },
-      { name: 'Pro Generate', path: '/home/nano-banana/pro-generate', description: 'Up to 4K, fine detail and color; composition, style, and lighting control for final assets.' }
+      { name: 'Pro Generate', path: '/home/nano-banana/pro-generate', description: 'Up to 4K, fine detail and color; composition, style, and lighting control for final assets.' },
+      { name: 'Nano Banana 2', path: '/home/nano-banana/nano-banana-2', description: 'Prompt up to 20000 chars, optional 0-14 image inputs, aspect ratio presets including auto, JPG/PNG output, and 1K/2K/4K resolution.' }
     ],
     sections: [
       {
@@ -1406,6 +1411,7 @@ Pro vs Standard: Use Pro for client work, hero content, and when quality is the 
       { name: '2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Text-to-video with sound on/off, aspect ratio 1:1/16:9/9:16, duration 5/10s.' },
       { name: '2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Image-to-video with sound, duration 5/10s. Single image input.' },
       { name: '2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + reference video; character orientation (image/video); 720p/1080p.' },
+      { name: '3.0 Motion Control', path: '/home/kling/v3-0-motion-control', description: 'Reference image + reference video; optional prompt; std/pro mode; character orientation and background source.' },
       { name: 'AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio to talking-head video. Prompt max 5000 characters.' },
       { name: 'AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'High-quality avatar image + audio to talking-head video. Prompt max 5000 characters.' },
       { name: '3.0 Video', path: '/home/kling/v3-0-video', description: 'Single shot or multi-shot; image refs; duration 3–15s; sound. std/pro mode.' }
@@ -1415,7 +1421,7 @@ Pro vs Standard: Use Pro for client work, hero content, and when quality is the 
         title: 'Platform philosophy',
         content: `Motion and creativity: Kling brings Kuaishou's latest video models into a unified workflow. From text or image to video, motion control with reference assets, AI avatars driven by audio, to 3.0 multi-shot storytelling—each mode is tuned for quality, prompt adherence, and fluid motion.
 
-Multi-mode first: Eight distinct modes cover text-to-video, image-to-video, motion control, talking-head avatars, and advanced 3.0 single/multi-shot. Choose the right mode for your project without leaving the platform.`
+Multi-mode first: Nine distinct modes cover text-to-video, image-to-video, motion control, talking-head avatars, and advanced 3.0 single/multi-shot. Choose the right mode for your project without leaving the platform.`
       },
       {
         title: 'Core capabilities',
@@ -1500,7 +1506,8 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
       { name: 'v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate images quickly with optional end image for controlled transitions. Same resolution, duration, and camera controls as Lite Text to Video. Ideal for rapid prototyping and social content.' },
       { name: 'v1 Pro Text to Video', path: '/home/seedance/v1-pro-text-to-video', description: 'Professional text-to-video with expanded aspect ratios (21:9 to 9:16). Choose 480p/720p/1080p, 5s/10s duration, seed control, and safety checker. Higher quality output for production-ready assets.' },
       { name: 'v1 Pro Image to Video', path: '/home/seedance/v1-pro-image-to-video', description: 'Professional image animation with enhanced quality and detail. Full resolution and duration options, camera control, seed, and safety checker. Perfect for brand content and creative projects.' },
-      { name: 'v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Ultra-fast image-to-video generation without compromising quality. 720p or 1080p resolution, 5s or 10s duration, and support for prompts up to 10,000 characters. Optimized for speed when you need results now.' }
+      { name: 'v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Ultra-fast image-to-video generation without compromising quality. 720p or 1080p resolution, 5s or 10s duration, and support for prompts up to 10,000 characters. Optimized for speed when you need results now.' },
+      { name: 'v1.5 Pro', path: '/home/seedance/v1-5-pro', description: 'Text-to-video or image-to-video in one mode. Prompt 3-2500 chars, optional 0-2 image inputs, aspect ratio 1:1 to 21:9, 480p/720p/1080p, duration 4/8/12s, fixed lens, and optional audio generation.' }
     ],
     sections: [
       {
@@ -1606,6 +1613,121 @@ Best for: Social media managers, marketers, content creators, advertisers, creat
       {
         title: 'Try Seedance on FuseAITools',
         content: `Seedance on FuseAITools puts professional video creation at your fingertips—whether you need lightning-fast drafts or production-ready assets. With Lite and Pro tiers, comprehensive aspect ratio support, and full control over resolution, duration, camera, and seed, Seedance adapts to your creative process. Start transforming text and images into compelling video today.`
+      }
+    ]
+  },
+  imagen4: {
+    title: 'Imagen4',
+    category: 'Image',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Imagen4 is a versatile text-to-image generation model offering three distinct modes: Generate, Fast, and Ultra, designed to balance speed and quality for diverse creative needs. With support for detailed prompts, negative prompting, and precise control over aspect ratio and seed, Imagen4 delivers flexibility from rapid ideation to high-fidelity final assets.',
+    features: [
+      { name: 'Imagen4 Generate', path: '/home/imagen4/imagen4-generate', description: 'Standard mode for balanced, high-quality image generation. Supports prompt-based creation with optional negative prompts, aspect ratio, and seed control.' },
+      { name: 'Imagen4 Fast', path: '/home/imagen4/imagen4-fast', description: 'Optimized for speed and iterative exploration. Generates 1-4 images per request, ideal for quick concept variations and high-volume testing.' },
+      { name: 'Imagen4 Ultra', path: '/home/imagen4/imagen4-ultra', description: 'Premium mode focused on maximum detail and visual fidelity. Designed for final assets where quality is paramount.' }
+    ],
+    sections: [
+      {
+        title: 'Platform philosophy',
+        content: `Precision and flexibility: Imagen4 puts creative control at the forefront. Choose from standard, fast, or ultra modes to match your workflow. With optional negative prompts, adjustable aspect ratios, and seed parameters, you can fine-tune results to meet exact specifications.
+
+Simplicity without compromise: Whether generating a single polished image or exploring dozens of variations, Imagen4 balances intuitive operation with professional-grade capabilities. Generous prompt limits and straightforward controls make it accessible for creators at every level.`
+      },
+      {
+        title: 'Core capabilities',
+        content: `Imagen4 Generate
+
+Prompt required (up to 5000 characters)
+Optional negative prompt (up to 5000 characters)
+Aspect ratio: 1:1, 16:9, 9:16, 3:4, 4:3
+Optional seed string (up to 500 characters)
+Ideal for general-purpose image creation: marketing assets, social media visuals, concept art, and drafts.
+
+Imagen4 Fast
+
+Prompt required (up to 5000 characters)
+Optional negative prompt (up to 5000 characters)
+Aspect ratio defaults to 16:9
+Number of images: 1-4 per request
+Optional integer seed
+Ideal for high-speed exploration, A/B testing, and generating multiple variants in a single run.
+
+Imagen4 Ultra
+
+Prompt required (up to 5000 characters)
+Optional negative prompt (up to 5000 characters)
+Aspect ratio defaults to 1:1
+Optional seed string (up to 500 characters)
+Ideal for premium-quality outputs: final assets, high-resolution visuals, and detail-sensitive projects.`
+      },
+      {
+        title: 'Use cases',
+        content: `Marketing assets: Generate consistent, on-brand visuals for campaigns, ads, and social content across multiple aspect ratios.
+
+Concept iteration: Use Fast mode to explore dozens of variations quickly; refine with Generate or Ultra for final execution.
+
+Polished final assets: Leverage Ultra mode for high-fidelity images suitable for print, hero visuals, or client presentations.
+
+Creative exploration: Experiment with prompts and negative prompts to refine style, composition, and subject matter.
+
+Batch ideation: Fast mode's multi-output capability supports rapid prototyping and team brainstorming sessions.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Generate mode: Balanced speed and quality; typical generation time varies based on prompt complexity and aspect ratio.
+
+Fast mode: Optimized for speed; supports parallel generation of up to 4 images per request for rapid iteration.
+
+Ultra mode: Prioritizes detail and fidelity; longer generation time suited for final assets.
+
+Prompt length: Up to 5000 characters for both prompts and negative prompts, enabling highly detailed and nuanced instructions.
+
+Aspect ratios: Supports 1:1, 16:9, 9:16, 3:4, 4:3 across all modes for flexible output formatting.
+
+Seed control: Allows reproducibility and fine-grained variation tuning via optional seed parameters.`
+      },
+      {
+        title: 'Workflow',
+        content: `Quick create: Write a detailed prompt -> select mode (Generate, Fast, or Ultra) -> set aspect ratio and optional negative prompt -> generate -> review and refine.
+
+Multi-output exploration: Use Fast mode with num_images set to 2-4 -> generate multiple variations simultaneously -> compare and select the best direction.
+
+Reproducible generation: Set a seed value in Generate or Ultra mode to recreate consistent results across sessions or team workflows.
+
+Team collaboration: Share generated assets and seed values to ensure alignment; iterate using negative prompts to eliminate unwanted elements.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt crafting: Be specific and structured: [Subject] + [Action/Scene] + [Style/Composition] + [Key details]. For negative prompts, clearly list elements to avoid (e.g., "no text, no watermark, no blurry background").
+
+Mode selection: Use Fast for early-stage ideation and volume generation. Use Generate for refined concepts. Use Ultra for final, high-stakes outputs where detail matters most.
+
+Aspect ratio strategy: Match aspect ratio to intended use: 16:9 for widescreen visuals, 1:1 for social posts, 9:16 for vertical stories.
+
+Seed utilization: When iterating, lock the seed to maintain composition consistency while tweaking prompts; change the seed to explore new compositions.
+
+Quality control: Run initial explorations in Fast mode to validate prompt effectiveness; scale to Generate or Ultra once the creative direction is locked.`
+      },
+      {
+        title: 'Platform advantages',
+        content: `Three distinct modes: Tailor speed and quality to your workflow from rapid ideation to premium output.
+
+Long prompt support: Up to 5000 characters for both prompts and negative prompts enables precise creative direction.
+
+Negative prompting: Explicitly exclude unwanted elements for cleaner, more accurate results.
+
+Flexible aspect ratios: Cover modern formats including square, widescreen, and vertical orientations.
+
+Seed control: Ensure reproducibility and fine-tune variation across generations.
+
+Multi-output capability: Fast mode supports 1-4 images per request for efficient exploration.
+
+Best for: Designers, marketers, content creators, and teams requiring flexible, high-quality image generation with control over speed, fidelity, and output consistency.`
+      },
+      {
+        title: 'Try Imagen4',
+        content: `Imagen4 combines speed, quality, and precision in one unified platform. Whether you are iterating rapidly in Fast mode, balancing quality in Generate, or perfecting final assets in Ultra, Imagen4 gives you the tools to create exactly what you envision. Start bringing your ideas to life today.`
       }
     ]
   }

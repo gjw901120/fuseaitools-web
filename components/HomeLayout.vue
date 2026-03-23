@@ -123,6 +123,7 @@
 import { provide, computed, ref, nextTick } from 'vue'
 import Breadcrumb from '~/components/Breadcrumb.vue'
 import { useHomeLayout } from '~/composables/useHomeLayout'
+import { getToolBreadcrumbByRoute } from '~/utils/toolBreadcrumbs'
 
 const {
   route,
@@ -167,30 +168,18 @@ const selectedToolName = computed(() => {
   return tool ? tool.name : null
 })
 
-const soraRouteToLabel = {
-  '/home/sora/text-to-video': 'Text to Video',
-  '/home/sora/image-to-video': 'Image to Video',
-  '/home/sora/pro-text-to-video': 'Pro Text to Video',
-  '/home/sora/pro-image-to-video': 'Pro Image to Video',
-  '/home/sora/watermark-remover': 'Watermark Remover',
-  '/home/sora/pro-storyboard': 'Pro Storyboard'
-}
+const routeBreadcrumb = computed(() => getToolBreadcrumbByRoute(route.path, selectedToolName.value || ''))
 
 const breadcrumbParentLabel = computed(() => {
-  if (route.path.startsWith('/home/sora/')) return 'Sora'
-  return ''
+  return routeBreadcrumb.value.parentLabel
 })
 
 const breadcrumbParentTo = computed(() => {
-  if (route.path.startsWith('/home/sora/')) return '/home/sora'
-  return ''
+  return routeBreadcrumb.value.parentTo
 })
 
 const breadcrumbCurrentPage = computed(() => {
-  if (route.path.startsWith('/home/sora/')) {
-    return soraRouteToLabel[route.path] || 'Sora'
-  }
-  return selectedToolName.value || ''
+  return routeBreadcrumb.value.currentLabel
 })
 
 // 提供给子组件使用

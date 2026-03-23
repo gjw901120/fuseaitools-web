@@ -69,6 +69,53 @@ const props = defineProps({
 const route = useRoute()
 const baseUrl = 'https://fuseaitools.com'
 const canonicalUrl = `${baseUrl}${route.path}`.replace(/\/$/, '') || baseUrl
+const overviewPath = (route.path || '').replace(/\/$/, '')
+
+const breadcrumbSchema = computed(() => ({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": baseUrl
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": props.config.title,
+      "item": `${baseUrl}${overviewPath}`
+    }
+  ]
+}))
+
+const featureItemListSchema = computed(() => ({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": `${props.config.title} Features`,
+  "itemListElement": (props.config.features || []).map((f, idx) => ({
+    "@type": "ListItem",
+    "position": idx + 1,
+    "name": f.name,
+    "url": `${baseUrl}${f.path}`
+  }))
+}))
+
+const overviewPageSchema = computed(() => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `${props.config.title} - AI Tools | FuseAITools`,
+  "description": props.config.intro,
+  "url": canonicalUrl,
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": props.config.title,
+    "applicationCategory": props.config.category || "AI Tools",
+    "operatingSystem": "Web",
+    "url": canonicalUrl
+  }
+}))
 
 function sectionParagraphs(content) {
   if (!content || typeof content !== 'string') return []
@@ -82,6 +129,20 @@ useHead({
   ],
   link: [
     { rel: 'canonical', href: canonicalUrl }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbSchema.value)
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(overviewPageSchema.value)
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(featureItemListSchema.value)
+    }
   ]
 })
 </script>

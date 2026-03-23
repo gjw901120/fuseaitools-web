@@ -307,7 +307,13 @@ const modelToPathMap = {
   'GPT Image': { default: '/home/gpt-image/text-to-image' },
   'Ideogram': { default: '/home/ideogram/v3-text-to-image' },
   'Flux Kontext': { default: '/home/flux-kontext/generate' },
-  'Nano Banana': { default: '/home/nano-banana/generate' },
+  'Nano Banana': { default: '/home/nano-banana/generate', 'nano-banana-2': '/home/nano-banana/nano-banana-2' },
+  Imagen4: {
+    'imagen4-generate': '/home/imagen4/imagen4-generate',
+    'imagen4-fast': '/home/imagen4/imagen4-fast',
+    'imagen4-ultra': '/home/imagen4/imagen4-ultra',
+    default: '/home/imagen4/imagen4-generate'
+  },
   Suno: { default: '/home/suno/generate' },
   GPT: { default: '/home/gpt/generate' },
   DeepSeek: { default: '/home/deepseek/generate' },

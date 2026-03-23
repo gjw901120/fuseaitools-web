@@ -41,11 +41,11 @@
                 v-model="formData.prompt"
                 class="form-input"
                 rows="4"
-                placeholder="The text prompt used to generate the video (max 10000 characters)"
-                maxlength="10000"
+                :placeholder="promptPlaceholder"
+                :maxlength="promptMaxLength"
                 required
               ></textarea>
-              <div class="char-count" v-if="formData.prompt">{{ formData.prompt.length }}/10000</div>
+              <div class="char-count" v-if="formData.prompt">{{ formData.prompt.length }}/{{ promptMaxLength }}</div>
             </div>
 
             <!-- Image modes: imageUrl (required) -->
@@ -86,12 +86,38 @@
               <span v-if="isUploadingEndImage" class="form-hint">Uploading...</span>
             </div>
 
+            <!-- v1.5-pro: optional input_urls (0-2) -->
+            <div v-if="mode === 'v1-5-pro'" class="form-group">
+              <label class="form-label">Input Image URLs (optional, 0-2)</label>
+              <UploadImage
+                ref="pro15ImageUploadRef"
+                input-id="seedance-pro15-image-upload"
+                label=""
+                upload-text="Click to upload image(s)"
+                upload-hint="JPEG, PNG, WebP; max 10MB each; up to 2 images"
+                :max-files="2"
+                :max-file-size="10 * 1024 * 1024"
+                accept="image/jpeg,image/png,image/webp"
+                :multiple="true"
+                @update:files="handlePro15ImageFiles"
+              />
+              <span v-if="isUploadingPro15Images" class="form-hint">Uploading...</span>
+            </div>
+
             <!-- Aspect ratio: text-to-video modes only -->
-            <div v-if="isTextToVideoMode" class="form-group">
+            <div v-if="isTextToVideoMode || mode === 'v1-5-pro'" class="form-group">
               <label for="seedance-aspect" class="form-label">Aspect Ratio</label>
               <div class="select-with-arrow">
                 <select id="seedance-aspect" v-model="formData.aspectRatio" class="form-input">
-                  <template v-if="mode === 'v1-lite-text-to-video'">
+                  <template v-if="mode === 'v1-5-pro'">
+                    <option value="1:1">1:1</option>
+                    <option value="4:3">4:3</option>
+                    <option value="3:4">3:4</option>
+                    <option value="16:9">16:9</option>
+                    <option value="9:16">9:16</option>
+                    <option value="21:9">21:9</option>
+                  </template>
+                  <template v-else-if="mode === 'v1-lite-text-to-video'">
                     <option value="16:9">16:9</option>
                     <option value="4:3">4:3</option>
                     <option value="1:1">1:1</option>
@@ -124,13 +150,20 @@
             <div class="form-group">
               <label class="form-label">Duration</label>
               <div class="tab-group">
-                <button type="button" class="tab-option" :class="{ active: formData.duration === '5' }" @click="formData.duration = '5'">5s</button>
-                <button type="button" class="tab-option" :class="{ active: formData.duration === '10' }" @click="formData.duration = '10'">10s</button>
+                <template v-if="mode === 'v1-5-pro'">
+                  <button type="button" class="tab-option" :class="{ active: formData.duration === '4' }" @click="formData.duration = '4'">4s</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.duration === '8' }" @click="formData.duration = '8'">8s</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.duration === '12' }" @click="formData.duration = '12'">12s</button>
+                </template>
+                <template v-else>
+                  <button type="button" class="tab-option" :class="{ active: formData.duration === '5' }" @click="formData.duration = '5'">5s</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.duration === '10' }" @click="formData.duration = '10'">10s</button>
+                </template>
               </div>
             </div>
 
             <!-- cameraFixed, seed, enableSafetyChecker: not in pro-fast -->
-            <template v-if="mode !== 'v1-pro-fast-image-to-video'">
+            <template v-if="mode !== 'v1-pro-fast-image-to-video' && mode !== 'v1-5-pro'">
               <div class="form-group">
                 <label class="checkbox-label">
                   <input v-model="formData.cameraFixed" type="checkbox" />
@@ -155,6 +188,22 @@
                   <input v-model="formData.enableSafetyChecker" type="checkbox" />
                   <span>Enable safety checker</span>
                 </label>
+              </div>
+            </template>
+            <template v-if="mode === 'v1-5-pro'">
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input v-model="formData.fixedLens" type="checkbox" />
+                  <span>Fixed lens</span>
+                </label>
+                <div class="form-hint">Dynamic camera movement feature. Enable to lock camera and produce stable static shots.</div>
+              </div>
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input v-model="formData.generateAudio" type="checkbox" />
+                  <span>Generate audio</span>
+                </label>
+                <div class="form-hint">Generate audio for the video. Enabling audio increases generation cost.</div>
               </div>
             </template>
 
@@ -227,7 +276,8 @@ const modeList = [
   { id: 'v1-lite-image-to-video', label: 'v1 Lite I2V', icon: 'fas fa-image' },
   { id: 'v1-pro-text-to-video', label: 'v1 Pro T2V', icon: 'fas fa-font' },
   { id: 'v1-pro-image-to-video', label: 'v1 Pro I2V', icon: 'fas fa-image' },
-  { id: 'v1-pro-fast-image-to-video', label: 'v1 Pro Fast I2V', icon: 'fas fa-bolt' }
+  { id: 'v1-pro-fast-image-to-video', label: 'v1 Pro Fast I2V', icon: 'fas fa-bolt' },
+  { id: 'v1-5-pro', label: 'v1.5 Pro', icon: 'fas fa-video' }
 ]
 
 const modeTabToPath = {
@@ -235,7 +285,8 @@ const modeTabToPath = {
   'v1-lite-image-to-video': '/home/seedance/v1-lite-image-to-video',
   'v1-pro-text-to-video': '/home/seedance/v1-pro-text-to-video',
   'v1-pro-image-to-video': '/home/seedance/v1-pro-image-to-video',
-  'v1-pro-fast-image-to-video': '/home/seedance/v1-pro-fast-image-to-video'
+  'v1-pro-fast-image-to-video': '/home/seedance/v1-pro-fast-image-to-video',
+  'v1-5-pro': '/home/seedance/v1-5-pro'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -259,6 +310,9 @@ const formData = reactive({
   resolution: '720p',
   duration: '5',
   cameraFixed: false,
+  inputUrls: [],
+  fixedLens: false,
+  generateAudio: false,
   seed: -1,
   enableSafetyChecker: true
 })
@@ -277,15 +331,20 @@ const seedancePriceModelKeyMap = {
   'v1-lite-image-to-video': 'seedance-v1-lite-image-to-video',
   'v1-pro-text-to-video': 'seedance-v1-pro-text-to-video',
   'v1-pro-image-to-video': 'seedance-v1-pro-image-to-video',
-  'v1-pro-fast-image-to-video': 'seedance-v1-pro-fast-image-to-video'
+  'v1-pro-fast-image-to-video': 'seedance-v1-pro-fast-image-to-video',
+  'v1-5-pro': 'seedance-1.5-pro'
 }
 const seedancePriceText = computed(() => {
   const modelKey = seedancePriceModelKeyMap[mode.value]
   if (!modelKey) return ''
-  const credits = getPrice(modelKey, {
+  const priceFields = {
     duration: formData.duration,
     quality: formData.resolution
-  })
+  }
+  if (mode.value === 'v1-5-pro') {
+    priceFields.scene = formData.generateAudio ? 'with_sound' : 'without_sound'
+  }
+  const credits = getPrice(modelKey, priceFields)
   const str = formatCredits(credits)
   if (!str) return ''
   return `· ${str} credits${discountText.value}`
@@ -293,8 +352,10 @@ const seedancePriceText = computed(() => {
 
 const imageUploadRef = ref(null)
 const endImageUploadRef = ref(null)
+const pro15ImageUploadRef = ref(null)
 const isUploadingImage = ref(false)
 const isUploadingEndImage = ref(false)
+const isUploadingPro15Images = ref(false)
 const result = ref(null)
 const isGenerating = ref(false)
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -307,6 +368,11 @@ const isImageMode = computed(() => [
   'v1-pro-image-to-video',
   'v1-pro-fast-image-to-video'
 ].includes(mode.value))
+const promptMaxLength = computed(() => mode.value === 'v1-5-pro' ? 2500 : 10000)
+const promptPlaceholder = computed(() => mode.value === 'v1-5-pro'
+  ? 'Prompt for Seedance 1.5 Pro (3-2500 characters)'
+  : 'The text prompt used to generate the video (max 10000 characters)'
+)
 
 async function uploadFileToUrl(file) {
   if (!file) return ''
@@ -367,8 +433,35 @@ async function handleEndImageFile(files) {
   }
 }
 
+async function handlePro15ImageFiles(files) {
+  if (!files?.length) {
+    formData.inputUrls = []
+    return
+  }
+  isUploadingPro15Images.value = true
+  try {
+    const list = Array.isArray(files) ? files.slice(0, 2) : [files]
+    const urls = []
+    for (const f of list) {
+      const url = await uploadFileToUrl(f)
+      if (url) urls.push(url)
+    }
+    formData.inputUrls = urls
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.inputUrls = []
+    pro15ImageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingPro15Images.value = false
+  }
+}
+
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
+  if (mode.value === 'v1-5-pro') {
+    if (p.length < 3 || p.length > 2500) return false
+    return formData.inputUrls.length <= 2
+  }
   if (!p || p.length > 10000) return false
   if (isImageMode.value) return !!formData.imageUrl
   return true
@@ -462,7 +555,7 @@ async function generate() {
         seed: toSeed(formData.seed),
         enableSafetyChecker: !!formData.enableSafetyChecker
       }
-    } else {
+    } else if (modeVal === 'v1-pro-fast-image-to-video') {
       apiPath = '/api/video/seedance/pro-fast-image-to-video'
       body = {
         model: 'seedance-v1-pro-fast-image-to-video',
@@ -470,6 +563,18 @@ async function generate() {
         imageUrl: formData.imageUrl,
         resolution: formData.resolution,
         duration: String(formData.duration)
+      }
+    } else {
+      apiPath = '/api/video/seedance/1-5-pro'
+      body = {
+        model: 'seedance-1.5-pro',
+        prompt: p,
+        inputUrls: formData.inputUrls.length ? formData.inputUrls : undefined,
+        aspectRatio: formData.aspectRatio,
+        resolution: formData.resolution,
+        duration: Number(formData.duration) || 8,
+        fixedLens: !!formData.fixedLens,
+        generateAudio: !!formData.generateAudio
       }
     }
 
@@ -498,6 +603,13 @@ function downloadVideo() {
 }
 
 watch(mode, (m) => {
+  if (m === 'v1-5-pro') {
+    formData.aspectRatio = '1:1'
+    formData.resolution = '720p'
+    formData.duration = '8'
+    formData.fixedLens = false
+    formData.generateAudio = false
+  }
   const path = modeTabToPath[m]
   if (path && route.path !== path) router.replace(path)
 })

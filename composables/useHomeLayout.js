@@ -35,14 +35,15 @@ export const useHomeLayout = () => {
     'Hailuo': '/home/hailuo/image-to-video-pro',
     'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/5-lite-text-to-image',
-    'Qwen': '/home/qwen/text-to-image'
+    'Qwen': '/home/qwen/text-to-image',
+    'Imagen4': '/home/imagen4/imagen4-generate'
   }
 
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
     'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'video', 'Seedance': 'video', 'Hailuo': 'video',
-    'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image',
+    'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image', 'Imagen4': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
   }
 
@@ -71,7 +72,8 @@ export const useHomeLayout = () => {
     'Nano Banana': '/tools-logo/NanoBanana.png',
     'Suno': '/tools-logo/suno.png',
     'Elevenlabs': '/tools-logo/Elevenlabs.png',
-    'ElevenLabs': '/tools-logo/Elevenlabs.png'
+    'ElevenLabs': '/tools-logo/Elevenlabs.png',
+    'Imagen4': '/tools-logo/Imagen4.png'
   }
 
   // 工具名称到路由的映射（导航用）
@@ -94,6 +96,7 @@ export const useHomeLayout = () => {
     'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image',
+    'Imagen4': '/home/imagen4/imagen4-generate',
     // Chat tools
     'GPT': '/home/gpt/generate',
     'Deepseek': '/home/deepseek/generate',
@@ -348,6 +351,15 @@ export const useHomeLayout = () => {
       icon: '/tools-logo/QWen.png',
       rating: 4.6,
       usageCount: 0
+    },
+    {
+      id: 23,
+      name: 'Imagen4',
+      type: 'image',
+      description: 'Imagen4 series: generate, fast, ultra',
+      icon: '/tools-logo/Imagen4.png',
+      rating: 4.6,
+      usageCount: 0
     }
   ])
 
@@ -393,6 +405,7 @@ export const useHomeLayout = () => {
     'nano-banana': '/home/nano-banana/generate',
     'nano-banana-edit': '/home/nano-banana/edit',
     'nano-banana-pro': '/home/nano-banana/pro-generate',
+    'nano-banana-2': '/home/nano-banana/nano-banana-2',
     // Suno（三级路由）
     suno_generate: '/home/suno/generate',
     suno_extend: '/home/suno/extend',
@@ -422,11 +435,22 @@ export const useHomeLayout = () => {
     // Hailuo（二级路由）
     '2-3-image-to-video-pro': '/home/hailuo/image-to-video-pro',
     '2-3-image-to-video-standard': '/home/hailuo/image-to-video-standard',
+    // Flux 2（二级路由）
+    'flux-2-text-to-image': '/home/flux-kontext/flux-2-text-to-image',
+    'flux-2-image-to-image': '/home/flux-kontext/flux-2-image-to-image',
+    'flux-2-pro-text-to-image': '/home/flux-kontext/flux-2-pro-text-to-image',
+    'flux-2-pro-image-to-image': '/home/flux-kontext/flux-2-pro-image-to-image',
+    'imagen4-generate': '/home/imagen4/imagen4-generate',
+    'imagen4-fast': '/home/imagen4/imagen4-fast',
+    'imagen4-ultra': '/home/imagen4/imagen4-ultra',
+    'seedance-1.5-pro': '/home/seedance/v1-5-pro',
     'v2-5-turbo-image-to-video-pro': '/home/kling/v2-5-turbo-image-to-video-pro',
     'v2-5-turbo-text-to-video-pro': '/home/kling/v2-5-turbo-text-to-video-pro',
     '2-6-text-to-video': '/home/kling/v2-6-text-to-video',
     '2-6-image-to-video': '/home/kling/v2-6-image-to-video',
     '2-6-motion-control': '/home/kling/v2-6-motion-control',
+    '3-0-motion-control': '/home/kling/v3-0-motion-control',
+    'kling-3.0-motion-control': '/home/kling/v3-0-motion-control',
     'ai-avatar-standard': '/home/kling/ai-avatar-standard',
     'ai-avatar-pro': '/home/kling/ai-avatar-pro',
     '3-0-video': '/home/kling/v3-0-video',
@@ -463,7 +487,8 @@ export const useHomeLayout = () => {
     'Hailuo': '/home/hailuo',
     'Kling': '/home/kling',
     'Seedream': '/home/seedream',
-    'Qwen': '/home/qwen'
+    'Qwen': '/home/qwen',
+    'Imagen4': '/home/imagen4'
   }
 
   // 根据 category/model 取路由（历史项点击跳转；无 recordId 时只跳工具页）
@@ -679,10 +704,15 @@ export const useHomeLayout = () => {
       '/home/ideogram/character-remix': 'Ideogram',
       '/home/flux-kontext': 'Flux Kontext',
       '/home/flux-kontext/generate': 'Flux Kontext',
+      '/home/flux-kontext/flux-2-text-to-image': 'Flux Kontext',
+      '/home/flux-kontext/flux-2-image-to-image': 'Flux Kontext',
+      '/home/flux-kontext/flux-2-pro-text-to-image': 'Flux Kontext',
+      '/home/flux-kontext/flux-2-pro-image-to-image': 'Flux Kontext',
       '/home/nano-banana': 'Nano Banana',
       '/home/nano-banana/generate': 'Nano Banana',
       '/home/nano-banana/edit': 'Nano Banana',
       '/home/nano-banana/pro-generate': 'Nano Banana',
+      '/home/nano-banana/nano-banana-2': 'Nano Banana',
       '/home/elevenlabs': 'Elevenlabs',
       '/home/elevenlabs/multilingual-v2': 'Elevenlabs',
       '/home/elevenlabs/turbo-2-5': 'Elevenlabs',
@@ -713,6 +743,7 @@ export const useHomeLayout = () => {
       '/home/seedance/v1-pro-text-to-video': 'Seedance',
       '/home/seedance/v1-pro-image-to-video': 'Seedance',
       '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
+      '/home/seedance/v1-5-pro': 'Seedance',
       '/home/hailuo': 'Hailuo',
       '/home/hailuo/image-to-video-pro': 'Hailuo',
       '/home/hailuo/image-to-video-standard': 'Hailuo',
@@ -722,6 +753,7 @@ export const useHomeLayout = () => {
       '/home/kling/v2-6-text-to-video': 'Kling',
       '/home/kling/v2-6-image-to-video': 'Kling',
       '/home/kling/v2-6-motion-control': 'Kling',
+      '/home/kling/v3-0-motion-control': 'Kling',
       '/home/kling/ai-avatar-standard': 'Kling',
       '/home/kling/ai-avatar-pro': 'Kling',
       '/home/kling/v3-0-video': 'Kling',
@@ -733,6 +765,10 @@ export const useHomeLayout = () => {
       '/home/qwen/image-to-image': 'Qwen',
       '/home/qwen/image-edit': 'Qwen',
       '/home/qwen/z-image': 'Qwen',
+      '/home/imagen4': 'Imagen4',
+      '/home/imagen4/imagen4-generate': 'Imagen4',
+      '/home/imagen4/imagen4-fast': 'Imagen4',
+      '/home/imagen4/imagen4-ultra': 'Imagen4',
       '/home/gpt': 'GPT',
       '/home/gpt/generate': 'GPT',
       '/home/deepseek': 'Deepseek',

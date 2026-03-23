@@ -40,6 +40,7 @@ interface _GlobalComponents {
     'ToolsGPTImageTool': typeof import("../components/tools/GPTImageTool.vue")['default']
     'ToolsHailuoTool': typeof import("../components/tools/HailuoTool.vue")['default']
     'ToolsIdeogramTool': typeof import("../components/tools/IdeogramTool.vue")['default']
+    'ToolsImagen4Tool': typeof import("../components/tools/Imagen4Tool.vue")['default']
     'ToolsKlingTool': typeof import("../components/tools/KlingTool.vue")['default']
     'ToolsLumaTool': typeof import("../components/tools/LumaTool.vue")['default']
     'ToolsMidjourneyTool': typeof import("../components/tools/MidjourneyTool.vue")['default']
@@ -106,6 +107,7 @@ interface _GlobalComponents {
     'LazyToolsGPTImageTool': LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
     'LazyToolsHailuoTool': LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
     'LazyToolsIdeogramTool': LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
+    'LazyToolsImagen4Tool': LazyComponent<typeof import("../components/tools/Imagen4Tool.vue")['default']>
     'LazyToolsKlingTool': LazyComponent<typeof import("../components/tools/KlingTool.vue")['default']>
     'LazyToolsLumaTool': LazyComponent<typeof import("../components/tools/LumaTool.vue")['default']>
     'LazyToolsMidjourneyTool': LazyComponent<typeof import("../components/tools/MidjourneyTool.vue")['default']>
@@ -178,6 +180,7 @@ export const ToolsGPT4oImageTool: typeof import("../components/tools/GPT4oImageT
 export const ToolsGPTImageTool: typeof import("../components/tools/GPTImageTool.vue")['default']
 export const ToolsHailuoTool: typeof import("../components/tools/HailuoTool.vue")['default']
 export const ToolsIdeogramTool: typeof import("../components/tools/IdeogramTool.vue")['default']
+export const ToolsImagen4Tool: typeof import("../components/tools/Imagen4Tool.vue")['default']
 export const ToolsKlingTool: typeof import("../components/tools/KlingTool.vue")['default']
 export const ToolsLumaTool: typeof import("../components/tools/LumaTool.vue")['default']
 export const ToolsMidjourneyTool: typeof import("../components/tools/MidjourneyTool.vue")['default']
@@ -244,6 +247,7 @@ export const LazyToolsGPT4oImageTool: LazyComponent<typeof import("../components
 export const LazyToolsGPTImageTool: LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
 export const LazyToolsHailuoTool: LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
 export const LazyToolsIdeogramTool: LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
+export const LazyToolsImagen4Tool: LazyComponent<typeof import("../components/tools/Imagen4Tool.vue")['default']>
 export const LazyToolsKlingTool: LazyComponent<typeof import("../components/tools/KlingTool.vue")['default']>
 export const LazyToolsLumaTool: LazyComponent<typeof import("../components/tools/LumaTool.vue")['default']>
 export const LazyToolsMidjourneyTool: LazyComponent<typeof import("../components/tools/MidjourneyTool.vue")['default']>
