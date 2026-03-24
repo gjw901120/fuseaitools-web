@@ -23,7 +23,7 @@
           <h4>{{ mode }}</h4>
         </div>
         <form class="config-form" @submit.prevent="onSubmit">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
 
             <!-- Prompt (all except v3-reframe) -->
             <div v-if="mode !== 'v3-reframe'" class="form-group">
@@ -171,7 +171,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn-primary" :disabled="!canSubmit || isGenerating">
+              <button type="submit" class="btn-primary" :disabled="!canSubmit || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-magic"></i>
                 <span v-if="isGenerating">Generating...</span>

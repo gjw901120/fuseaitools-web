@@ -20,7 +20,7 @@
         </div>
 
         <form class="config-form" @submit.prevent="modifyVideo">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <!-- Prompt 输入 -->
           <div class="form-group">
             <label for="prompt">Modification Description *</label>

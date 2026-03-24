@@ -31,7 +31,7 @@
           <h4>Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
 
             <!-- Prompt: most modes -->
             <div class="form-group" v-if="showPrompt">
@@ -302,7 +302,7 @@
               <div v-if="mode === 'v2-6-motion-control'" class="form-hint motion-price-hint">
                 720p: 9 credits per second, 1080p: 15 credits per second (billed by uploaded video duration)
               </div>
-              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating">
+              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-play"></i>
                 <span v-if="isGenerating">Generating...</span>

@@ -35,7 +35,7 @@
           <h4>{{ mode === 'text-to-image' ? 'Text to Image' : 'Image to Image' }}</h4>
         </div>
         <form class="config-form" @submit.prevent="onSubmit">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
 
             <!-- image-to-image only: upload input -->
             <div v-if="mode === 'image-to-image'" class="form-group">
@@ -131,7 +131,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn-primary" :disabled="!canSubmit || isGenerating">
+              <button type="submit" class="btn-primary" :disabled="!canSubmit || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-magic"></i>
                 <span v-if="isGenerating">Generating...</span>
