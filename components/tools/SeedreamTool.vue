@@ -37,7 +37,7 @@
           <h4>Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
             <div class="form-group">
               <label for="seedream-prompt" class="form-label">
                 Prompt <span class="required">*</span>
@@ -99,7 +99,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating">
+              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-magic"></i>
                 {{ isGenerating ? 'Generating...' : 'Generate Image' }}
@@ -111,29 +111,41 @@
       </div>
 
       <div class="result-panel">
-        <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
-          <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
-          <p class="failure-message">Generation failed. You can try again with different parameters.</p>
-        </div>
-        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
-          <i class="fas fa-spinner fa-spin detail-spinner"></i>
-          <p>Generating...</p>
-        </div>
-        <div v-else-if="!displayResult" class="empty-state">
-          <h4>No image generated yet</h4>
-          <p>Fill in the form and click "Generate Image" to start.</p>
-        </div>
-        <div v-else class="result-display">
-          <div class="image-result">
-            <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" />
-            <div v-else class="image-placeholder">
-              <i class="fas fa-spinner fa-spin"></i>
+        <div class="image-container">
+          <div v-if="!isDetailView && route.path === '/home/seedream/5-lite-text-to-image'" class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/seedream-abstract-tech-blog-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create abstract tech blog covers with Seedream 5 Lite (16:9)</a>
+              <a href="https://www.fuseaitools.com/news/seedream-vertical-social-story-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create vertical social story covers with Seedream 5 Lite (9:16)</a>
+            </div>
+          </div>
+
+          <div class="image-container-main">
+            <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+              <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+              <p class="failure-message">Generation failed. You can try again with different parameters.</p>
+            </div>
+            <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+              <i class="fas fa-spinner fa-spin detail-spinner"></i>
               <p>Generating...</p>
             </div>
-            <div v-if="displayResult.imageUrl" class="image-actions">
-              <button @click="downloadImage" class="action-btn">
-                <i class="fas fa-download"></i> Download
-              </button>
+            <div v-else-if="!displayResult" class="empty-state">
+              <h4>No image generated yet</h4>
+              <p>Fill in the form and click "Generate Image" to start.</p>
+            </div>
+            <div v-else class="result-display">
+              <div class="image-result">
+                <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" />
+                <div v-else class="image-placeholder">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <p>Generating...</p>
+                </div>
+                <div v-if="displayResult.imageUrl" class="image-actions">
+                  <button @click="downloadImage" class="action-btn">
+                    <i class="fas fa-download"></i> Download
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -490,6 +502,44 @@ watch(mode, (m) => {
 
 .result-panel {
   width: 65%; background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column;
+}
+.image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+.image-container-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tutorial-showcase {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 12px 14px;
+}
+.tutorial-showcase-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tutorial-showcase-links .tutorial-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 13px;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
 }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; }
 .empty-state h4 { margin: 0; font-size: 18px; color: #374151; }

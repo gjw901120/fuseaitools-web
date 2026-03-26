@@ -45,7 +45,7 @@
           <h4>Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
             <div class="form-group">
               <label for="wan-prompt" class="form-label">
                 Prompt <span class="required">*</span>
@@ -138,7 +138,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating">
+              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-play"></i>
                 {{ isGenerating ? 'Generating...' : 'Generate Video' }}
