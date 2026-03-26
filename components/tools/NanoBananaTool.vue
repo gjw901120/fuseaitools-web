@@ -820,7 +820,8 @@ async function loadDetailByRecordId(recordId) {
     if (getRouteRecordId() !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)
-    if (data != null && Number(data.status) === 1) {
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((result) => {
         if (getRouteRecordId() !== recordId) return
         detailData.value = result
@@ -1195,9 +1196,15 @@ const generateImageV2 = async () => {
     }
     if (nano2FormData.image_input.length > 0) body.imageInput = nano2FormData.image_input
     const data = await post('/api/image/nano-banana-2/generate', body)
-    const recordId = data?.recordId ?? data?.data?.recordId
+    const recordId = data?.recordId ?? data?.data?.recordId ?? data?.data?.id ?? data?.id
     if (recordId) {
-      router.push(`${nanoBananaTabToPath[activeTab.value] || '/home/nano-banana/nano-banana-2'}?record-id=${encodeURIComponent(recordId)}`)
+      const target = `${nanoBananaTabToPath[activeTab.value] || '/home/nano-banana/nano-banana-2'}?record-id=${encodeURIComponent(recordId)}`
+      detailData.value = null
+      generatedImages.value = []
+      await router.push(target)
+      if (String(getRouteRecordId()) === String(recordId)) {
+        loadDetailByRecordId(String(recordId))
+      }
       return
     }
     const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl

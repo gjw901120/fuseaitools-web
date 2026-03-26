@@ -1,11 +1,8 @@
-/**
- * Imagen4 fast 接口（代理）
- * 后端：POST /api/image/imagen4/imagen4-fast
- */
+/** Flux 2 text-to-image proxy */
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
-  const targetUrl = `${apiBase}/image/imagen4/imagen4-fast`
+  const targetUrl = `${apiBase}/image/flux-2/text-to-image`
   try {
     const authHeader = getHeader(event, 'authorization')
     const headers = { 'Content-Type': 'application/json', Accept: 'application/json' }
@@ -17,7 +14,7 @@ export default defineEventHandler(async (event) => {
     setResponseStatus(event, response.status)
     return data
   } catch (error) {
-    console.error('Imagen4 fast proxy error:', error)
-    throw createError({ statusCode: 500, message: 'Request failed: ' + (error.message || 'Unknown error') })
+    console.error('Flux 2 text-to-image proxy error:', error)
+    throw createError({ statusCode: 500, message: 'Request failed: ' + (error?.message || 'Unknown error') })
   }
 })

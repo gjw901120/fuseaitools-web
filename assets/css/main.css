@@ -81,3 +81,28 @@ body {
 .select-with-arrow select:disabled ~ .select-arrow-icon {
     color: #94a3b8;
 }
+
+/* 统一工具页左右布局比例：表单区 2，结果区 3 */
+.tool-interface .main-content > .config-panel {
+    flex: 2 1 0 !important;
+    width: auto !important;
+    min-width: 0;
+}
+
+.tool-interface .main-content > .result-panel,
+.tool-interface .main-content > .image-display-panel,
+.tool-interface .main-content > .results-display-panel {
+    flex: 3 1 0 !important;
+    width: auto !important;
+    min-width: 0;
+}
+
+@media (max-width: 1024px) {
+    .tool-interface .main-content > .config-panel,
+    .tool-interface .main-content > .result-panel,
+    .tool-interface .main-content > .image-display-panel,
+    .tool-interface .main-content > .results-display-panel {
+        flex: 1 1 auto !important;
+        width: 100% !important;
+    }
+}

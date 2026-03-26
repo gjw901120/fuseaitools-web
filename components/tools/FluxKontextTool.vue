@@ -739,10 +739,10 @@ const outputFormatMap = { jpeg: 'JPEG', png: 'PNG' }
 // Model Version：PRICING_MAPPING 中 modelKey 为 flux_kontext_pro / flux_kontext_max；表单与接口用连字符 flux-kontext-pro / flux-kontext-max
 
 const flux2ApiPathByTab = {
-  'flux-2-text-to-image': '/api/image/flux-kontext/flux-2-text-to-image',
-  'flux-2-image-to-image': '/api/image/flux-kontext/flux-2-image-to-image',
-  'flux-2-pro-text-to-image': '/api/image/flux-kontext/flux-2-pro-text-to-image',
-  'flux-2-pro-image-to-image': '/api/image/flux-kontext/flux-2-pro-image-to-image'
+  'flux-2-text-to-image': '/api/image/flux-2/text-to-image',
+  'flux-2-image-to-image': '/api/image/flux-2/text-to-image',
+  'flux-2-pro-text-to-image': '/api/image/flux-2-pro/text-to-image',
+  'flux-2-pro-image-to-image': '/api/image/flux-2-pro/image-to-image'
 }
 
 const onSubmit = async () => {

@@ -1,11 +1,11 @@
 /**
  * Seedance 1.5 Pro 视频生成接口（代理）
- * 后端：POST /api/video/seedance/1-5-pro
+ * 后端：POST /api/video/seedance/pro-15-image-to-video
  */
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
-  const targetUrl = `${apiBase}/video/seedance/1-5-pro`
+  const targetUrl = `${apiBase}/video/seedance/pro-15-image-to-video`
   try {
     const authHeader = getHeader(event, 'authorization')
     const headers = { 'Content-Type': 'application/json', Accept: 'application/json' }
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     setResponseStatus(event, response.status)
     return data
   } catch (error) {
-    console.error('Seedance 1-5-pro proxy error:', error)
+    console.error('Seedance pro-15-image-to-video proxy error:', error)
     throw createError({ statusCode: 500, message: 'Request failed: ' + (error.message || 'Unknown error') })
   }
 })

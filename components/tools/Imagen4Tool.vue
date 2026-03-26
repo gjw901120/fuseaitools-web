@@ -23,7 +23,7 @@
       <div class="config-panel">
         <div class="config-header"><h4>Configuration</h4></div>
         <form class="config-form" @submit.prevent="generate">
-          <fieldset class="config-fieldset" :disabled="isGenerating">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
             <div class="form-group">
               <label class="form-label">Prompt <span class="required">*</span></label>
               <textarea v-model="formData.prompt" class="form-input" rows="4" maxlength="5000" placeholder="Prompt (max 5000)" required></textarea>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating">
+              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-magic"></i>
                 {{ isGenerating ? 'Generating...' : 'Generate Image' }}
@@ -195,7 +195,8 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
       if (routeRecordId.value === recordId) detailData.value = res
     }
@@ -212,9 +213,9 @@ async function generate() {
   isGenerating.value = true
   try {
     const modeVal = mode.value
-    let apiPath = '/api/image/imagen4/imagen4-generate'
-    if (modeVal === 'imagen4-fast') apiPath = '/api/image/imagen4/imagen4-fast'
-    if (modeVal === 'imagen4-ultra') apiPath = '/api/image/imagen4/imagen4-ultra'
+    let apiPath = '/api/image/imagen4/generate'
+    if (modeVal === 'imagen4-fast') apiPath = '/api/image/imagen4/fast-generate'
+    if (modeVal === 'imagen4-ultra') apiPath = '/api/image/imagen4/ultra-generate'
     const body = {
       model: modeVal,
       prompt: p,
@@ -228,9 +229,15 @@ async function generate() {
       body.seed = formData.seedText
     }
     const data = await post(apiPath, body)
-    const rid = data?.recordId ?? data?.data?.recordId
+    const rid = data?.recordId ?? data?.data?.recordId ?? data?.data?.id ?? data?.id
     if (rid) {
-      router.push((modeTabToPath[modeVal] || '/home/imagen4/imagen4-generate') + '?record-id=' + encodeURIComponent(rid))
+      const target = (modeTabToPath[modeVal] || '/home/imagen4/imagen4-generate') + '?record-id=' + encodeURIComponent(rid)
+      detailData.value = null
+      result.value = null
+      await router.push(target)
+      if (routeRecordId.value === String(rid)) {
+        loadDetailByRecordId(String(rid))
+      }
       return
     }
     const url = data?.imageUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)

@@ -697,17 +697,23 @@ async function getVideoDurationSeconds(file) {
 
 async function handleMotionVideo(e) {
   const file = e.target?.files?.[0]
-  if (!file) return
+  if (!file) {
+    formData.video_urls = []
+    if (mode.value === 'v3-0-motion-control') formData.duration = ''
+    return
+  }
   if (file.size > 100 * 1024 * 1024) { showError('Video max 100MB'); e.target.value = ''; return }
   isUploadingMotionVideo.value = true
   try {
     const secs = await getVideoDurationSeconds(file)
     if (secs > 0) formData.duration = String(Math.ceil(secs))
+    else if (mode.value === 'v3-0-motion-control') formData.duration = ''
     const url = await uploadOneFile(file, true)
     formData.video_urls = url ? [url] : []
   } catch (err) {
     showError(err?.message || 'Upload failed')
     formData.video_urls = []
+    if (mode.value === 'v3-0-motion-control') formData.duration = ''
   } finally { isUploadingMotionVideo.value = false; e.target.value = '' }
 }
 async function handleAvatarImage(files) {
@@ -842,7 +848,10 @@ const canGenerate = computed(() => {
   if (m === 'v2-6-text-to-video') return p.length <= 2500
   if (m === 'v2-6-image-to-video') return p.length <= 2500 && formData.image_urls.length > 0
   if (m === 'v2-6-motion-control') return formData.input_urls.length > 0 && formData.video_urls.length > 0
-  if (m === 'v3-0-motion-control') return p.length <= 2500 && formData.input_urls.length > 0 && formData.video_urls.length > 0
+  if (m === 'v3-0-motion-control') {
+    const motionDuration = Number(formData.duration)
+    return p.length <= 2500 && formData.input_urls.length > 0 && formData.video_urls.length > 0 && Number.isFinite(motionDuration) && motionDuration > 0
+  }
   if (m === 'ai-avatar-standard' || m === 'ai-avatar-pro') return !!formData.image_url && !!formData.audio_url && p.length <= 5000
   if (m === 'v3-0-video') {
     const shots = formData.v3_multi_prompt || []
@@ -907,7 +916,8 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
       if (routeRecordId.value === recordId) detailData.value = res
     }
@@ -975,11 +985,17 @@ async function generate() {
         duration: formData.duration ? String(formData.duration) : undefined
       }
     } else if (m === 'v3-0-motion-control') {
+      const motionDuration = Number(formData.duration)
+      if (!Number.isFinite(motionDuration) || motionDuration <= 0) {
+        showError('Duration from uploaded video is required')
+        return
+      }
       body = {
         model: 'kling-3.0-motion-control',
         prompt: (formData.prompt || '').trim() || undefined,
         inputUrls: formData.input_urls,
         videoUrls: formData.video_urls,
+        duration: Math.ceil(motionDuration),
         mode: (formData.mode === 'pro' || formData.mode === 'std') ? formData.mode : 'std',
         characterOrientation: formData.character_orientation || 'video',
         backgroundSource: formData.background_source || 'input_video'
@@ -1045,9 +1061,15 @@ async function generate() {
       }
     }
     const data = await post(apiPath, body)
-    const rid = data?.recordId ?? data?.data?.recordId
+    const rid = data?.recordId ?? data?.data?.recordId ?? data?.data?.id ?? data?.id
     if (rid) {
-      router.push((modeTabToPath[m] || '/home/kling/v2-5-turbo-image-to-video-pro') + '?record-id=' + encodeURIComponent(rid))
+      const target = (modeTabToPath[m] || '/home/kling/v2-5-turbo-image-to-video-pro') + '?record-id=' + encodeURIComponent(rid)
+      detailData.value = null
+      result.value = null
+      await router.push(target)
+      if (routeRecordId.value === String(rid)) {
+        loadDetailByRecordId(String(rid))
+      }
       return
     }
     const url = data?.videoUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)

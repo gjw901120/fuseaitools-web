@@ -482,7 +482,8 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
       if (routeRecordId.value === recordId) detailData.value = res
     }
@@ -565,23 +566,30 @@ async function generate() {
         duration: String(formData.duration)
       }
     } else {
-      apiPath = '/api/video/seedance/1-5-pro'
+      apiPath = '/api/video/seedance/pro-15-image-to-video'
       body = {
         model: 'seedance-1.5-pro',
         prompt: p,
         inputUrls: formData.inputUrls.length ? formData.inputUrls : undefined,
         aspectRatio: formData.aspectRatio,
         resolution: formData.resolution,
-        duration: Number(formData.duration) || 8,
+        duration: String(formData.duration || '8'),
         fixedLens: !!formData.fixedLens,
         generateAudio: !!formData.generateAudio
       }
     }
 
     const data = await post(apiPath, body)
-    const rid = data?.recordId ?? data?.data?.recordId
+    const rid = data?.recordId ?? data?.data?.recordId ?? data?.data?.id ?? data?.id
     if (rid) {
-      router.push((modeTabToPath[modeVal] || '/home/seedance/v1-lite-text-to-video') + '?record-id=' + encodeURIComponent(rid))
+      // 跳详情后立即触发一次加载，避免依赖路由 watch 的时序抖动
+      const target = (modeTabToPath[modeVal] || '/home/seedance/v1-lite-text-to-video') + '?record-id=' + encodeURIComponent(rid)
+      detailData.value = null
+      result.value = null
+      await router.push(target)
+      if (routeRecordId.value === String(rid)) {
+        loadDetailByRecordId(String(rid))
+      }
       return
     }
     const url = data?.videoUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)
