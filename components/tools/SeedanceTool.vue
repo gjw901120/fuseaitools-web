@@ -220,31 +220,51 @@
       </div>
 
       <div class="result-panel">
-        <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
-          <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
-          <p class="failure-message">Generation failed. You can try again with different parameters.</p>
+        <div class="video-header">
+          <h4>Result Preview</h4>
+          <div class="video-actions" v-if="result && !isDetailView">
+            <button type="button" @click="clearResults" class="btn-secondary">
+              <i class="fas fa-trash"></i> Clear
+            </button>
+          </div>
         </div>
-        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
-          <i class="fas fa-spinner fa-spin detail-spinner"></i>
-          <p>Generating...</p>
+
+        <div v-if="!isDetailView && route.path === '/home/seedance/v1-5-pro'" class="tutorial-showcase">
+          <p class="tutorial-showcase-title">🎬 Tutorial Showcase</p>
+          <div class="tutorial-showcase-links">
+            <a href="/news/seedance-nezha-i2v-props-race-tutorial" class="tutorial-link">
+              From Images to Video: Seedance I2V — Props Race &amp; Fight (Nezha &amp; Ao Bing) — sample workflow &amp; video
+            </a>
+          </div>
         </div>
-        <div v-else-if="!displayResult" class="empty-state">
-          <h4>No video generated yet</h4>
-          <p>Fill in the form and click "Generate Video" to start.</p>
-        </div>
-        <div v-else class="result-display">
-          <div class="video-result">
-            <div class="video-player">
-              <video v-if="displayResult.videoUrl" :src="displayResult.videoUrl" controls class="video-element"></video>
-              <div v-else class="video-placeholder">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Generating...</p>
+
+        <div class="video-container">
+          <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+            <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p class="failure-message">Generation failed. You can try again with different parameters.</p>
+          </div>
+          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <i class="fas fa-spinner fa-spin detail-spinner"></i>
+            <p>Generating...</p>
+          </div>
+          <div v-else-if="!displayResult" class="empty-state">
+            <h4>No video generated yet</h4>
+            <p>Fill in the form and click "Generate Video" to start.</p>
+          </div>
+          <div v-else class="result-display">
+            <div class="video-result">
+              <div class="video-player">
+                <video v-if="displayResult.videoUrl" :src="displayResult.videoUrl" controls class="video-element"></video>
+                <div v-else class="video-placeholder">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <p>Generating...</p>
+                </div>
               </div>
-            </div>
-            <div class="video-actions">
-              <button v-if="displayResult.videoUrl" @click="downloadVideo" class="action-btn">
-                <i class="fas fa-download"></i> Download
-              </button>
+              <div class="video-actions">
+                <button v-if="displayResult.videoUrl" @click="downloadVideo" class="action-btn">
+                  <i class="fas fa-download"></i> Download
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -493,6 +513,10 @@ watch(() => route.query['record-id'], (recordId) => {
   if (recordId) loadDetailByRecordId(recordId)
   else detailData.value = null
 }, { immediate: true })
+
+function clearResults() {
+  result.value = null
+}
 
 async function generate() {
   if (!canGenerate.value) return
@@ -761,9 +785,80 @@ watch(mode, (m) => {
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 .result-panel {
-  width: 65%; background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column;
+  width: 65%; background: #fff; border-radius: 12px; padding: 0; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column; min-height: 0;
 }
-.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; }
+.video-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.video-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+.video-header .video-actions {
+  display: flex;
+  gap: 8px;
+}
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+.tutorial-showcase {
+  margin: 16px 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+  word-break: break-word;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
+}
+.video-container {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  box-sizing: border-box;
+}
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; width: 100%; }
 .empty-state h4 { margin: 0; font-size: 18px; color: #374151; }
 .video-result { display: flex; flex-direction: column; gap: 16px; }
 .video-player { background: #000; border-radius: 8px; overflow: hidden; }

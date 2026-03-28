@@ -40,7 +40,7 @@ const faqItems = ref([
   },
   {
     question: "How to use FuseAI?",
-    answer: "<p>Users can access the platform simply by completing registration. Upon registration, users can enjoy over 50 professional AI models and tools. FuseAI is designed to meet various needs, whether it's getting inspiration through intelligent dialogue, creating visual works with text-to-image tools, processing and optimizing audio, or generating high-quality video content.</p>",
+    answer: "<p>Users can access the platform simply by completing registration. Upon registration, users can enjoy over 100 professional AI models and tools. FuseAI is designed to meet various needs, whether it's getting inspiration through intelligent dialogue, creating visual works with text-to-image tools, processing and optimizing audio, or generating high-quality video content.</p>",
     isOpen: false
   },
   {

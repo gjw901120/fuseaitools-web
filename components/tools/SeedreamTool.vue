@@ -115,8 +115,15 @@
           <div v-if="!isDetailView && route.path === '/home/seedream/5-lite-text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://www.fuseaitools.com/news/seedream-abstract-tech-blog-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create abstract tech blog covers with Seedream 5 Lite (16:9)</a>
-              <a href="https://www.fuseaitools.com/news/seedream-vertical-social-story-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create vertical social story covers with Seedream 5 Lite (9:16)</a>
+              <a href="https://www.fuseaitools.com/news/seedream-nezha-first-last-frame-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">First &amp; last frame images for video (Nezha &amp; Ao Bing sprint) — Seedream 5 Lite</a>
+            </div>
+          </div>
+
+          <div v-if="!isDetailView && route.path === '/home/seedream/5-lite-image-to-image'" class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/seedream-nezha-first-last-frame-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">First &amp; last frame images for video (Nezha &amp; Ao Bing sprint) — Seedream 5 Lite</a>
+              <a href="https://www.fuseaitools.com/news/seedance-nezha-i2v-props-race-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Turn those frames into video with Seedance 1.5 Pro (I2V walkthrough)</a>
             </div>
           </div>
 

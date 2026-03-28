@@ -267,7 +267,7 @@ const toolRouteMap = {
 useHead({
   title: 'AI Tools Platform - FuseAI',
   meta: [
-    { name: 'description', content: 'Discover and use the most advanced AI tools to enhance your work efficiency and creativity. Includes 500+ curated AI tools covering writing, design, programming, data analysis and more.' },
+    { name: 'description', content: 'Discover and use the most advanced AI tools to enhance your work efficiency and creativity. Includes 100+ curated AI tools covering writing, design, programming, data analysis and more.' },
     { name: 'keywords', content: 'AI tools, artificial intelligence, AI applications, work efficiency, tool recommendations, FuseAI' }
   ]
 })

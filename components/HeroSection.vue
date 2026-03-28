@@ -5,10 +5,10 @@
         <div class="hero-text">
           <h1 class="hero-title">
             All-in-One AI Platform
-            <span class="gradient-text">50+ AI Models & Tools Free</span>
+            <span class="gradient-text">100+ AI Models & Tools Free</span>
           </h1>
           <p class="hero-description">
-            Access over 50 AI models and tools in one platform—Chat, Image, Audio, and Video. Everything you need to work smarter.
+            Access over 100 AI models and tools in one platform—Chat, Image, Audio, and Video. Everything you need to work smarter.
           </p>
           <p class="hero-credits">
             <strong>Register now and get <span class="credits-highlight">100 credits free</span>.</strong> No credit card required.
@@ -28,7 +28,7 @@
             </div>
             <div class="feature-pill" @click="goToHome">
               <i class="fas fa-brain"></i>
-              50+ AI Models
+              100+ AI Models
             </div>
           </div>
         </div>
