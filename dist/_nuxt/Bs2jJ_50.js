@@ -1,0 +1,1 @@
+import{C as a,c as o,U as r,o as c}from"./DVxQpBlO.js";const p={__name:"generate",async setup(n){let e,t;return[e,t]=a(()=>r("/home/gpt-image/text-to-image",{replace:!0})),await e,t(),(s,_)=>(c(),o("div"))}};export{p as default};

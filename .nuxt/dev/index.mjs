@@ -3,7 +3,7 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getHeader, setHeader, readMultipartFormData, getResponseStatusText } from 'file://C:/project/fuseaitools-web/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getHeader, setHeader, readMultipartFormData, getMethod, getResponseStatusText } from 'file://C:/project/fuseaitools-web/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://C:/project/fuseaitools-web/node_modules/@vue/shared/dist/shared.cjs.js';
 import { promises, readFileSync } from 'node:fs';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/project/fuseaitools-web/node_modules/vue-bundle-renderer/dist/runtime.mjs';
@@ -1776,7 +1776,7 @@ const _lazy_nwJeW1 = () => Promise.resolve().then(function () { return generate_
 const _lazy_b90URI = () => Promise.resolve().then(function () { return imageToVideo_post$1; });
 const _lazy_47YsKd = () => Promise.resolve().then(function () { return textToVideo_post$1; });
 const _lazy_jTvRhe = () => Promise.resolve().then(function () { return videoToVideo_post$1; });
-const _lazy_38TWWp = () => Promise.resolve().then(function () { return sitemap_xml_get$1; });
+const _lazy_Asy3Hv = () => Promise.resolve().then(function () { return sitemap_xml$1; });
 const _lazy_T022gR = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
@@ -1884,7 +1884,7 @@ const handlers = [
   { route: '/api/video/wan/image-to-video', handler: _lazy_b90URI, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/wan/text-to-video', handler: _lazy_47YsKd, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/wan/video-to-video', handler: _lazy_jTvRhe, lazy: true, middleware: false, method: "post" },
-  { route: '/sitemap.xml', handler: _lazy_38TWWp, lazy: true, middleware: false, method: "get" },
+  { route: '/sitemap.xml', handler: _lazy_Asy3Hv, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined }
@@ -5180,9 +5180,17 @@ const videoToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defin
   default: videoToVideo_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const sitemap_xml_get = defineEventHandler(async (event) => {
+const sitemap_xml = defineEventHandler(async (event) => {
   var _a;
-  setHeader(event, "Content-Type", "application/xml");
+  const method = getMethod(event);
+  if (method !== "GET" && method !== "HEAD") {
+    throw createError({ statusCode: 405, statusMessage: "Method Not Allowed" });
+  }
+  setHeader(event, "Content-Type", "application/xml; charset=utf-8");
+  setHeader(event, "Cache-Control", "public, max-age=300, s-maxage=600");
+  if (method === "HEAD") {
+    return "";
+  }
   const baseUrl = "https://www.fuseaitools.com";
   const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
   let newsPages = [];
@@ -5202,44 +5210,12 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
   } catch (_) {
   }
   const staticPages = [
-    // Main pages
-    {
-      loc: "/",
-      lastmod: currentDate,
-      changefreq: "daily",
-      priority: "1.0"
-    },
-    {
-      loc: "/home",
-      lastmod: currentDate,
-      changefreq: "daily",
-      priority: "0.9"
-    },
-    {
-      loc: "/about",
-      lastmod: currentDate,
-      changefreq: "monthly",
-      priority: "0.6"
-    },
-    {
-      loc: "/pricing",
-      lastmod: currentDate,
-      changefreq: "monthly",
-      priority: "0.7"
-    },
-    {
-      loc: "/news",
-      lastmod: currentDate,
-      changefreq: "daily",
-      priority: "0.5"
-    },
-    {
-      loc: "/credits",
-      lastmod: currentDate,
-      changefreq: "monthly",
-      priority: "0.6"
-    },
-    // 22 个工具二级详情页（模型介绍 + 功能入口，利于 SEO 层级与长尾）
+    { loc: "/", lastmod: currentDate, changefreq: "daily", priority: "1.0" },
+    { loc: "/home", lastmod: currentDate, changefreq: "daily", priority: "0.9" },
+    { loc: "/about", lastmod: currentDate, changefreq: "monthly", priority: "0.6" },
+    { loc: "/pricing", lastmod: currentDate, changefreq: "monthly", priority: "0.7" },
+    { loc: "/news", lastmod: currentDate, changefreq: "daily", priority: "0.5" },
+    { loc: "/credits", lastmod: currentDate, changefreq: "monthly", priority: "0.6" },
     { loc: "/home/gpt", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/deepseek", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/claude", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
@@ -5247,6 +5223,7 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
     { loc: "/home/gpt-4o-image", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/gpt-image", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/ideogram", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/imagen4", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/flux-kontext", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/nano-banana", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/midjourney", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
@@ -5262,20 +5239,13 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
     { loc: "/home/kling", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/seedance", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/hailuo", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
-    // GPT (Chat)
     { loc: "/home/gpt/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // DeepSeek (Chat)
     { loc: "/home/deepseek/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Claude (Chat)
     { loc: "/home/claude/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Gemini (Chat)
     { loc: "/home/gemini/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // GPT-4o Image (Image)
     { loc: "/home/gpt-4o-image/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // GPT Image (Image，二级 tab；/generate 已重定向到 text-to-image，不收录)
     { loc: "/home/gpt-image/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/gpt-image/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Ideogram (Image，二级 tab；/generate 已重定向到 v3-text-to-image，不收录)
     { loc: "/home/ideogram/v3-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/v3-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/v3-remix", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
@@ -5283,53 +5253,43 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
     { loc: "/home/ideogram/character", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/character-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/character-remix", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Midjourney (Image)
     { loc: "/home/midjourney/imagine", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/midjourney/upscale", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/midjourney/vary", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Flux-Kontext (Image)
     { loc: "/home/flux-kontext/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/flux-kontext/flux-2-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/flux-kontext/flux-2-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/flux-kontext/flux-2-pro-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/flux-kontext/flux-2-pro-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Nano-Banana (Image)
     { loc: "/home/nano-banana/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/nano-banana/edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/nano-banana/pro-generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/nano-banana/nano-banana-2", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // ElevenLabs (Audio)
     { loc: "/home/elevenlabs/multilingual-v2", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/elevenlabs/turbo-2-5", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/elevenlabs/speech-to-text", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/elevenlabs/sound-effect-v2", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/elevenlabs/audio-isolation", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
-    // Suno (Audio)
     { loc: "/home/suno/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/suno/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/suno/upload-cover", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/suno/upload-extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/suno/add-instrumental", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/suno/add-vocals", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
-    // Veo3 (Video)
     { loc: "/home/veo3/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/veo3/first-and-last-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/veo3/reference-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/veo3/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
-    // Runway (Video)
     { loc: "/home/runway/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/runway/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
     { loc: "/home/runway/aleph", lastmod: currentDate, changefreq: "weekly", priority: "0.7" },
-    // Luma (Video)
     { loc: "/home/luma/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Sora (Video)
     { loc: "/home/sora/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/sora/image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/sora/pro-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/sora/pro-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/sora/watermark-remover", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/sora/pro-storyboard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Qwen (Image)
     { loc: "/home/qwen/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
@@ -5337,11 +5297,9 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
     { loc: "/home/imagen4/imagen4-generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-fast", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-ultra", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Wan (Video)
     { loc: "/home/wan/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/wan/image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/wan/video-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Kling (Video)
     { loc: "/home/kling/v2-5-turbo-image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v2-5-turbo-text-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v2-6-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
@@ -5351,17 +5309,14 @@ const sitemap_xml_get = defineEventHandler(async (event) => {
     { loc: "/home/kling/ai-avatar-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/ai-avatar-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v3-0-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Seedream (Image)
     { loc: "/home/seedream/5-lite-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedream/5-lite-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Seedance (Video)
     { loc: "/home/seedance/v1-lite-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-lite-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-pro-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-pro-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-pro-fast-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-5-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    // Hailuo (Video)
     { loc: "/home/hailuo/image-to-video-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/hailuo/image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" }
   ];
@@ -5378,9 +5333,9 @@ ${pages.map((page) => `  <url>
   return sitemap;
 });
 
-const sitemap_xml_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const sitemap_xml$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: sitemap_xml_get
+  default: sitemap_xml
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {

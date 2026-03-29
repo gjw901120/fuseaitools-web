@@ -313,7 +313,7 @@ declare module "nitropack/types" {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/video-to-video.post').default>>>>
     }
     '/sitemap.xml': {
-      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/sitemap.xml.get').default>>>>
+      'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/sitemap.xml').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/handlers/renderer').default>>>>

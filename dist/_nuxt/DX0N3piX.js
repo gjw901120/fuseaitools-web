@@ -1,0 +1,1 @@
+import{u as i,_ as s}from"./CJqaP3wV.js";import{x as n,g as o,o as t,B as a}from"./DVxQpBlO.js";import"./BFDSHq3O.js";import"./8Y9Y0Whg.js";import"./dx3RbkLW.js";const k={__name:"gemini",setup(m){const{isOverviewPage:_,overviewConfig:e}=i();return(p,u)=>{const r=s,c=a;return o(_)&&o(e)?(t(),n(r,{key:0,config:o(e)},null,8,["config"])):(t(),n(c,{key:1}))}}};export{k as default};
