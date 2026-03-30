@@ -66,6 +66,12 @@
                 @update:files="handleImageFile"
               />
               <span v-if="isUploadingImage" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.imageUrl" class="detail-ref-urls">
+                <span class="form-label">Input image (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.imageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <!-- image-to-image: strength -->
@@ -211,11 +217,18 @@
       </div>
 
       <div class="result-panel">
-        <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+        <div v-if="!isDetailView && route.path === '/home/qwen/text-to-image'" class="tutorial-showcase">
+          <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+          <div class="tutorial-showcase-links">
+            <a href="https://www.fuseaitools.com/news/qwen-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Generate cinematic AI covers for short videos (vertical, high CTR)</a>
+            <a href="https://www.fuseaitools.com/news/qwen-brand-story-image-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Tell your brand story with warm and emotional promotional visuals</a>
+          </div>
+        </div>
+        <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
           <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
           <p class="failure-message">Generation failed. You can try again with different parameters.</p>
         </div>
-        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+        <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
           <i class="fas fa-spinner fa-spin detail-spinner"></i>
           <p>Generating...</p>
         </div>
@@ -403,10 +416,55 @@ const canGenerate = computed(() => {
   return true
 })
 
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) formData.prompt = String(o.prompt)
+  if (o.imageUrl) formData.imageUrl = String(o.imageUrl)
+  if (o.imageSize) formData.imageSize = String(o.imageSize)
+  if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
+  if (o.strength != null && o.strength !== '') {
+    const n = Number(o.strength)
+    if (!Number.isNaN(n)) formData.strength = n
+  }
+  if (o.numInferenceSteps != null && o.numInferenceSteps !== '') {
+    const n = Number(o.numInferenceSteps)
+    if (!Number.isNaN(n)) formData.numInferenceSteps = n
+  }
+  if (o.seed != null && o.seed !== '') {
+    const n = Number(o.seed)
+    formData.seed = Number.isNaN(n) ? null : n
+  } else if ('seed' in o && (o.seed === null || o.seed === '')) {
+    formData.seed = null
+  }
+  if (o.guidanceScale != null && o.guidanceScale !== '') {
+    const n = Number(o.guidanceScale)
+    if (!Number.isNaN(n)) formData.guidanceScale = n
+  }
+  if (o.outputFormat) formData.outputFormat = String(o.outputFormat)
+  if (o.negativePrompt != null) formData.negativePrompt = String(o.negativePrompt)
+  if (o.acceleration) formData.acceleration = String(o.acceleration)
+  if ('enableSafetyChecker' in o) formData.enableSafetyChecker = !!o.enableSafetyChecker
+  if (o.numImages != null) formData.numImages = String(o.numImages)
+  if ('syncMode' in o) formData.syncMode = !!o.syncMode
+}
+
+function pickDetailImageUrl(d) {
+  if (!d || typeof d !== 'object') return ''
+  let url = d.outputUrl || d.imageUrl
+  if (url) return typeof url === 'string' ? url : url?.url || ''
+  const ou = d.outputUrls
+  if (typeof ou === 'string' && ou) return ou
+  if (Array.isArray(ou) && ou.length) {
+    const first = ou[0]
+    return typeof first === 'string' ? first : first?.url || ''
+  }
+  return ''
+}
+
 const displayResult = computed(() => {
-  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
-    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
-    return { imageUrl: url }
+  if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
+    const url = pickDetailImageUrl(detailData.value)
+    if (url) return { imageUrl: url }
   }
   return result.value
 })
@@ -418,9 +476,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) { console.error('Qwen load record detail failed:', e) }
 }
@@ -657,6 +720,26 @@ watch(mode, (m) => {
 .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #374151; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; }
 
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-ref-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-link:hover {
+  text-decoration: underline;
+}
+
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
 .price-tag { font-size: 15px; opacity: 0.8; margin-left: 4px; }
 .btn-primary {
@@ -668,6 +751,32 @@ watch(mode, (m) => {
 
 .result-panel {
   width: 65%; background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column;
+}
+.tutorial-showcase {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.tutorial-showcase-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tutorial-showcase-links .tutorial-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 13px;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
 }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; }
 .empty-state h4 { margin: 0; font-size: 18px; color: #374151; }

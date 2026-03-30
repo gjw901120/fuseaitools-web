@@ -71,6 +71,12 @@
                 @update:files="handleImageFile"
               />
               <span v-if="isUploadingImage" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.imageUrl" class="detail-ref-urls">
+                <span class="form-label">Input image (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.imageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <div class="form-group">
@@ -112,11 +118,11 @@
       </div>
 
       <div class="result-panel">
-        <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+        <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
           <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
           <p class="failure-message">Generation failed. You can try again with different parameters.</p>
         </div>
-        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+        <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
           <i class="fas fa-spinner fa-spin detail-spinner"></i>
           <p>Generating...</p>
         </div>
@@ -198,6 +204,17 @@ const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
 
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) formData.prompt = String(o.prompt)
+  if (o.imageUrl) formData.imageUrl = String(o.imageUrl)
+  if (o.duration != null) formData.duration = String(o.duration)
+  if (o.resolution) {
+    const r = String(o.resolution)
+    formData.resolution = r.toUpperCase() === '1080P' || r.toLowerCase() === '1080p' ? '1080P' : '768P'
+  }
+}
+
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
@@ -205,9 +222,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) { console.error('Hailuo load record detail failed:', e) }
 }
@@ -262,9 +284,22 @@ const canGenerate = computed(() => {
   return p.length >= 1 && p.length <= 5000 && !!formData.imageUrl
 })
 
+function pickDetailVideoUrl(d) {
+  if (!d || typeof d !== 'object') return ''
+  let url = d.outputUrl || d.videoUrl
+  if (url) return typeof url === 'string' ? url : url?.url || ''
+  const ou = d.outputUrls
+  if (typeof ou === 'string' && ou) return ou
+  if (Array.isArray(ou) && ou.length) {
+    const first = ou[0]
+    return typeof first === 'string' ? first : first?.url || ''
+  }
+  return ''
+}
+
 const displayResult = computed(() => {
   if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
-    const url = detailData.value?.outputUrl || detailData.value?.videoUrl || (detailData.value?.outputUrls && detailData.value.outputUrls[0])
+    const url = pickDetailVideoUrl(detailData.value)
     return url ? { videoUrl: url } : result.value
   }
   return result.value
@@ -468,6 +503,26 @@ watch(mode, (m) => {
   font-size: 15px;
   opacity: 0.8;
   margin-left: 4px;
+}
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-ref-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-link:hover {
+  text-decoration: underline;
 }
 
 .result-panel {

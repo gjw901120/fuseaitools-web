@@ -1,0 +1,1 @@
+import{u as s,_ as a}from"./f41PRQdS.js";import{x as n,g as o,o as t,B as p}from"./BkjyO89i.js";import"./CIL8r1IY.js";import"./DS_kSbkw.js";import"./CaQJuMOH.js";const k={__name:"gpt",setup(i){const{isOverviewPage:_,overviewConfig:e}=s();return(m,u)=>{const r=a,c=p;return o(_)&&o(e)?(t(),n(r,{key:0,config:o(e)},null,8,["config"])):(t(),n(c,{key:1}))}}};export{k as default};

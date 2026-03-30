@@ -445,17 +445,17 @@ const _routes = [
       {
         name: "home-wan-text-to-video",
         path: "text-to-video",
-        component: () => import('./text-to-video-BEi-t3r6.mjs')
+        component: () => import('./text-to-video-Bj2PVs6c.mjs')
       },
       {
         name: "home-wan-image-to-video",
         path: "image-to-video",
-        component: () => import('./image-to-video-BnH6-qxk.mjs')
+        component: () => import('./image-to-video-D-6-l0ZQ.mjs')
       },
       {
         name: "home-wan-video-to-video",
         path: "video-to-video",
-        component: () => import('./video-to-video-DwYYxBtW.mjs')
+        component: () => import('./video-to-video-H7UjrXSL.mjs')
       }
     ]
   },
@@ -479,22 +479,22 @@ const _routes = [
       {
         name: "home-qwen-z-image",
         path: "z-image",
-        component: () => import('./z-image-CYGiZuO-.mjs')
+        component: () => import('./z-image-CXFLeGW3.mjs')
       },
       {
         name: "home-qwen-image-edit",
         path: "image-edit",
-        component: () => import('./image-edit-CExWEWdk.mjs')
+        component: () => import('./image-edit-DWtp8flG.mjs')
       },
       {
         name: "home-qwen-text-to-image",
         path: "text-to-image",
-        component: () => import('./text-to-image-CsPS5RqJ.mjs')
+        component: () => import('./text-to-image-BCK75J5u.mjs')
       },
       {
         name: "home-qwen-image-to-image",
         path: "image-to-image",
-        component: () => import('./image-to-image-B4LLpfqV.mjs')
+        component: () => import('./image-to-image-BmFrO-x9.mjs')
       }
     ]
   },
@@ -602,7 +602,7 @@ const _routes = [
   {
     name: "home",
     path: "/home",
-    component: () => import('./index--qumzRQj.mjs')
+    component: () => import('./index-XjVzbQt1.mjs')
   },
   {
     name: "home-kling",
@@ -612,47 +612,47 @@ const _routes = [
       {
         name: "home-kling-v3-0-video",
         path: "v3-0-video",
-        component: () => import('./v3-0-video-Dj3EalkP.mjs')
+        component: () => import('./v3-0-video-BEL644Sl.mjs')
       },
       {
         name: "home-kling-ai-avatar-pro",
         path: "ai-avatar-pro",
-        component: () => import('./ai-avatar-pro-rzQKRFXs.mjs')
+        component: () => import('./ai-avatar-pro-DO36LJX2.mjs')
       },
       {
         name: "home-kling-ai-avatar-standard",
         path: "ai-avatar-standard",
-        component: () => import('./ai-avatar-standard-DFJZlAIh.mjs')
+        component: () => import('./ai-avatar-standard-EBKeJym_.mjs')
       },
       {
         name: "home-kling-v2-6-text-to-video",
         path: "v2-6-text-to-video",
-        component: () => import('./v2-6-text-to-video-BWIC11or.mjs')
+        component: () => import('./v2-6-text-to-video-DWRe2DPR.mjs')
       },
       {
         name: "home-kling-v2-6-image-to-video",
         path: "v2-6-image-to-video",
-        component: () => import('./v2-6-image-to-video-DMCcADK5.mjs')
+        component: () => import('./v2-6-image-to-video-DPxXED3x.mjs')
       },
       {
         name: "home-kling-v2-6-motion-control",
         path: "v2-6-motion-control",
-        component: () => import('./v2-6-motion-control-DYotdWVQ.mjs')
+        component: () => import('./v2-6-motion-control-hcfia_v6.mjs')
       },
       {
         name: "home-kling-v3-0-motion-control",
         path: "v3-0-motion-control",
-        component: () => import('./v3-0-motion-control-BvmoOudh.mjs')
+        component: () => import('./v3-0-motion-control-KwFizORM.mjs')
       },
       {
         name: "home-kling-v2-5-turbo-text-to-video-pro",
         path: "v2-5-turbo-text-to-video-pro",
-        component: () => import('./v2-5-turbo-text-to-video-pro-BVzaoFH2.mjs')
+        component: () => import('./v2-5-turbo-text-to-video-pro-Cc3dm7en.mjs')
       },
       {
         name: "home-kling-v2-5-turbo-image-to-video-pro",
         path: "v2-5-turbo-image-to-video-pro",
-        component: () => import('./v2-5-turbo-image-to-video-pro-C1og8nrx.mjs')
+        component: () => import('./v2-5-turbo-image-to-video-pro-B8Fnuv26.mjs')
       }
     ]
   },
@@ -693,12 +693,12 @@ const _routes = [
       {
         name: "home-hailuo-image-to-video-pro",
         path: "image-to-video-pro",
-        component: () => import('./image-to-video-pro-tAQlo9hA.mjs')
+        component: () => import('./image-to-video-pro-BEXblqiE.mjs')
       },
       {
         name: "home-hailuo-image-to-video-standard",
         path: "image-to-video-standard",
-        component: () => import('./image-to-video-standard-CuVGPnZN.mjs')
+        component: () => import('./image-to-video-standard-DMNR41UK.mjs')
       }
     ]
   },
@@ -743,17 +743,17 @@ const _routes = [
       {
         name: "home-imagen4-imagen4-fast",
         path: "imagen4-fast",
-        component: () => import('./imagen4-fast-D1qAatoD.mjs')
+        component: () => import('./imagen4-fast-aC1JHrUc.mjs')
       },
       {
         name: "home-imagen4-imagen4-ultra",
         path: "imagen4-ultra",
-        component: () => import('./imagen4-ultra-DLEYceHM.mjs')
+        component: () => import('./imagen4-ultra-CmnBuU4P.mjs')
       },
       {
         name: "home-imagen4-imagen4-generate",
         path: "imagen4-generate",
-        component: () => import('./imagen4-generate-C0FZqYOK.mjs')
+        component: () => import('./imagen4-generate-BTicUwNt.mjs')
       }
     ]
   },
@@ -777,7 +777,7 @@ const _routes = [
       {
         name: "home-ideogram-v3-edit",
         path: "v3-edit",
-        component: () => import('./v3-edit-CO59AGYU.mjs')
+        component: () => import('./v3-edit-BT--XOID.mjs')
       },
       {
         name: "home-ideogram-generate",
@@ -787,32 +787,32 @@ const _routes = [
       {
         name: "home-ideogram-v3-remix",
         path: "v3-remix",
-        component: () => import('./v3-remix-Cr55F_Qi.mjs')
+        component: () => import('./v3-remix-BlQUQZ3O.mjs')
       },
       {
         name: "home-ideogram-character",
         path: "character",
-        component: () => import('./character-CIug5-HD.mjs')
+        component: () => import('./character-D-XphMCE.mjs')
       },
       {
         name: "home-ideogram-v3-reframe",
         path: "v3-reframe",
-        component: () => import('./v3-reframe-ClZXnkLE.mjs')
+        component: () => import('./v3-reframe-47vQBZnx.mjs')
       },
       {
         name: "home-ideogram-character-edit",
         path: "character-edit",
-        component: () => import('./character-edit-DH9pZgc_.mjs')
+        component: () => import('./character-edit-CYW_MN3f.mjs')
       },
       {
         name: "home-ideogram-character-remix",
         path: "character-remix",
-        component: () => import('./character-remix-BaOpULAI.mjs')
+        component: () => import('./character-remix-B745J5bV.mjs')
       },
       {
         name: "home-ideogram-v3-text-to-image",
         path: "v3-text-to-image",
-        component: () => import('./v3-text-to-image-CbBypr0k.mjs')
+        component: () => import('./v3-text-to-image-B62dhslI.mjs')
       }
     ]
   },
@@ -824,32 +824,32 @@ const _routes = [
       {
         name: "home-seedance-v1-5-pro",
         path: "v1-5-pro",
-        component: () => import('./v1-5-pro-B4G3U6yh.mjs')
+        component: () => import('./v1-5-pro-DbhvN7zF.mjs')
       },
       {
         name: "home-seedance-v1-pro-text-to-video",
         path: "v1-pro-text-to-video",
-        component: () => import('./v1-pro-text-to-video-BDGd-z6-.mjs')
+        component: () => import('./v1-pro-text-to-video-DSR36qqO.mjs')
       },
       {
         name: "home-seedance-v1-lite-text-to-video",
         path: "v1-lite-text-to-video",
-        component: () => import('./v1-lite-text-to-video-BiRobaQb.mjs')
+        component: () => import('./v1-lite-text-to-video-BQSusbF3.mjs')
       },
       {
         name: "home-seedance-v1-pro-image-to-video",
         path: "v1-pro-image-to-video",
-        component: () => import('./v1-pro-image-to-video-CfbyMUxV.mjs')
+        component: () => import('./v1-pro-image-to-video-aUavLhE7.mjs')
       },
       {
         name: "home-seedance-v1-lite-image-to-video",
         path: "v1-lite-image-to-video",
-        component: () => import('./v1-lite-image-to-video-LE0Awwy0.mjs')
+        component: () => import('./v1-lite-image-to-video-Bl79wNOD.mjs')
       },
       {
         name: "home-seedance-v1-pro-fast-image-to-video",
         path: "v1-pro-fast-image-to-video",
-        component: () => import('./v1-pro-fast-image-to-video-GSw10Qs2.mjs')
+        component: () => import('./v1-pro-fast-image-to-video-DtvFq071.mjs')
       }
     ]
   },
@@ -861,12 +861,12 @@ const _routes = [
       {
         name: "home-seedream-5-lite-text-to-image",
         path: "5-lite-text-to-image",
-        component: () => import('./5-lite-text-to-image-CAu8QJBw.mjs')
+        component: () => import('./5-lite-text-to-image-Dim7IKpB.mjs')
       },
       {
         name: "home-seedream-5-lite-image-to-image",
         path: "5-lite-image-to-image",
-        component: () => import('./5-lite-image-to-image--o80FFrz.mjs')
+        component: () => import('./5-lite-image-to-image-q5SYr0d1.mjs')
       }
     ]
   },
@@ -883,12 +883,12 @@ const _routes = [
       {
         name: "home-gpt-image-text-to-image",
         path: "text-to-image",
-        component: () => import('./text-to-image-Bk48SOIp.mjs')
+        component: () => import('./text-to-image-lteVmi0P.mjs')
       },
       {
         name: "home-gpt-image-image-to-image",
         path: "image-to-image",
-        component: () => import('./image-to-image-3C230zGG.mjs')
+        component: () => import('./image-to-image-BVlVvm3b.mjs')
       }
     ]
   },

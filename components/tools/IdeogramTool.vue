@@ -50,6 +50,9 @@
                 :multiple="false"
                 @update:files="handleImageUpdate"
               />
+              <div v-if="isDetailView && form.image_url" class="detail-ref-row">
+                <a :href="form.image_url" target="_blank" rel="noopener noreferrer">Source image (this task)</a>
+              </div>
             </div>
 
             <!-- mask_url: v3-edit, character-edit -->
@@ -70,6 +73,9 @@
                 :multiple="false"
                 @update:files="handleMaskUpdate"
               />
+              <div v-if="isDetailView && form.mask_url" class="detail-ref-row">
+                <a :href="form.mask_url" target="_blank" rel="noopener noreferrer">Mask (this task)</a>
+              </div>
             </div>
 
             <!-- reference_image_urls: character, character-edit, character-remix -->
@@ -90,6 +96,15 @@
                 :multiple="false"
                 @update:files="handleRefsUpdate"
               />
+              <div v-if="isDetailView && form.reference_image_urls?.length" class="detail-ref-row">
+                <a
+                  v-for="(u, idx) in form.reference_image_urls"
+                  :key="idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Reference {{ idx + 1 }}</a>
+              </div>
             </div>
 
             <!-- rendering_speed -->
@@ -303,6 +318,34 @@ function getRouteRecordId () {
   return route.query['record-id'] || ''
 }
 
+function fillFormFromOriginalData (originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  if (o.prompt != null) form.prompt = String(o.prompt)
+  if (o.rendering_speed) form.rendering_speed = String(o.rendering_speed)
+  else if (o.renderingSpeed) form.rendering_speed = String(o.renderingSpeed)
+  if (o.style) form.style = String(o.style)
+  if ('expand_prompt' in o) form.expand_prompt = !!o.expand_prompt
+  else if ('expandPrompt' in o) form.expand_prompt = !!o.expandPrompt
+  if (o.image_size) form.image_size = String(o.image_size)
+  else if (o.imageSize) form.image_size = String(o.imageSize)
+  if (o.seed !== undefined && o.seed !== null) form.seed = o.seed
+  if (o.negative_prompt != null) form.negative_prompt = String(o.negative_prompt)
+  else if (o.negativePrompt != null) form.negative_prompt = String(o.negativePrompt)
+  if (o.image_url) form.image_url = String(o.image_url)
+  else if (o.imageUrl) form.image_url = String(o.imageUrl)
+  if (o.mask_url) form.mask_url = String(o.mask_url)
+  else if (o.maskUrl) form.mask_url = String(o.maskUrl)
+  if (Array.isArray(o.reference_image_urls)) form.reference_image_urls = [...o.reference_image_urls]
+  else if (Array.isArray(o.referenceImageUrls)) form.reference_image_urls = [...o.referenceImageUrls]
+  if (o.num_images != null) form.num_images = String(o.num_images)
+  else if (o.numImages != null) form.num_images = String(o.numImages)
+  if (o.strength != null && o.strength !== '') {
+    const n = Number(o.strength)
+    if (!Number.isNaN(n)) form.strength = n
+  }
+}
+
 async function loadDetailByRecordId (recordId) {
   if (!recordId) return
   if (getRouteRecordId() !== recordId) return
@@ -313,12 +356,15 @@ async function loadDetailByRecordId (recordId) {
     const data = await fetchRecordDetailOnce(recordId)
     if (getRouteRecordId() !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    const st = Number(data?.status)
+    if (data != null && (st === 0 || st === 1)) {
       pollRecordByStatus(recordId, {
         getIsCancelled: () => getRouteRecordId() !== recordId
       }).then((res) => {
         if (getRouteRecordId() !== recordId) return
         detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
       }).catch(() => {})
     }
   } catch (e) {
@@ -672,6 +718,21 @@ const clearResults = () => { results.value = [] }
 .char-count { text-align: right; font-size: 12px; color: #64748b; margin-top: 4px; }
 .form-help { font-size: 12px; color: #6b7280; margin-top: 4px; }
 .form-hint { font-size: 12px; color: #64748b; }
+
+.detail-ref-row {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+}
+.detail-ref-row a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-row a:hover {
+  text-decoration: underline;
+}
 
 .tab-group { display: flex; gap: 6px; flex-wrap: wrap; }
 .tab-group.tab-wrap { flex-wrap: wrap; }

@@ -81,6 +81,19 @@
                 @update:files="handleImageFiles"
               />
               <span v-if="isUploadingImages" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && mode === 'image-to-video' && formData.imageUrls?.length" class="detail-ref-urls">
+                <span class="form-label">Input images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.imageUrls"
+                    :key="idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <!-- Video to Video: video URL -->
@@ -150,11 +163,11 @@
       </div>
 
       <div class="result-panel">
-        <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+        <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
           <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
           <p class="failure-message">Generation failed. You can try again with different parameters.</p>
         </div>
-        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+        <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
           <i class="fas fa-spinner fa-spin detail-spinner"></i>
           <p>Generating...</p>
         </div>
@@ -242,6 +255,31 @@ const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
 
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) formData.prompt = String(o.prompt)
+  if (o.duration != null) formData.duration = String(o.duration)
+  if (o.resolution) formData.resolution = String(o.resolution)
+  if ('multiShots' in o) formData.multiShots = !!o.multiShots
+  if (Array.isArray(o.imageUrls)) formData.imageUrls = [...o.imageUrls]
+  else if (Array.isArray(o.image_urls)) formData.imageUrls = [...o.image_urls]
+  if (Array.isArray(o.videoUrls)) formData.videoUrls = [...o.videoUrls]
+  else if (Array.isArray(o.video_urls)) formData.videoUrls = [...o.video_urls]
+}
+
+function pickDetailVideoUrl(d) {
+  if (!d || typeof d !== 'object') return ''
+  let url = d.outputUrl || d.videoUrl
+  if (url) return typeof url === 'string' ? url : url?.url || ''
+  const ou = d.outputUrls
+  if (typeof ou === 'string' && ou) return ou
+  if (Array.isArray(ou) && ou.length) {
+    const first = ou[0]
+    return typeof first === 'string' ? first : first?.url || ''
+  }
+  return ''
+}
+
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
@@ -249,9 +287,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) { console.error('Wan load record detail failed:', e) }
 }
@@ -379,7 +422,13 @@ const canGenerate = computed(() => {
   return false
 })
 
-const displayResult = computed(() => result.value)
+const displayResult = computed(() => {
+  if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
+    const url = pickDetailVideoUrl(detailData.value)
+    if (url) return { videoUrl: url }
+  }
+  return result.value
+})
 
 async function generate() {
   const p = (formData.prompt || '').trim()
@@ -589,6 +638,26 @@ watch(mode, (m) => {
 }
 .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,130,246,0.3); }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-ref-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-link:hover {
+  text-decoration: underline;
+}
 
 .result-panel {
   width: 65%; background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column;

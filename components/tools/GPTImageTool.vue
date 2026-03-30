@@ -55,6 +55,19 @@
                 :multiple="false"
                 @update:files="handleImageUpdate"
               />
+              <div v-if="isDetailView && mode === 'image-to-image' && form.input_urls?.length" class="detail-ref-urls">
+                <label>Reference (this task)</label>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in form.input_urls"
+                    :key="idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <!-- Prompt -->
@@ -155,17 +168,17 @@
         <div class="result-container">
           <!-- 详情页：根据 record-id 轮询展示 -->
           <template v-if="isDetailView">
-            <div v-if="detailData?.status === 3" class="detail-failure-state">
+            <div v-if="Number(detailData?.status) === 3" class="detail-failure-state">
               <i class="fas fa-exclamation-circle"></i>
               <p>Generation failed.</p>
             </div>
-            <div v-else-if="!detailData || detailData.status === 1" class="detail-loading-state">
+            <div v-else-if="!detailData || [0, 1].includes(Number(detailData.status))" class="detail-loading-state">
               <i class="fas fa-spinner fa-spin"></i>
               <p>Generating...</p>
             </div>
-            <template v-else-if="detailData?.status === 2 && detailData?.outputUrls?.length">
-              <div v-for="(url, idx) in detailData.outputUrls" :key="idx" class="result-item">
-                <img :src="typeof url === 'string' ? url : url?.url" :alt="'Output ' + (idx + 1)" class="result-image" loading="lazy" />
+            <template v-else-if="Number(detailData?.status) === 2 && detailImageUrls.length">
+              <div v-for="(url, idx) in detailImageUrls" :key="idx" class="result-item">
+                <img :src="url" :alt="'Output ' + (idx + 1)" class="result-image" loading="lazy" />
               </div>
             </template>
             <div v-else class="empty-state">
@@ -215,6 +228,31 @@ const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
 
+const detailImageUrls = computed(() => {
+  const d = detailData.value
+  if (!d || Number(d.status) !== 2) return []
+  const single = d.outputUrl || d.imageUrl
+  if (single) {
+    const u = typeof single === 'string' ? single : single?.url || ''
+    return u ? [u] : []
+  }
+  const ou = d.outputUrls
+  if (!Array.isArray(ou)) return []
+  return ou
+    .map((x) => (typeof x === 'string' ? x : x?.url || x?.imageUrl || ''))
+    .filter(Boolean)
+})
+
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) form.prompt = String(o.prompt)
+  if (o.aspectRatio) form.aspect_ratio = String(o.aspectRatio)
+  if (o.aspect_ratio) form.aspect_ratio = String(o.aspect_ratio)
+  if (o.quality) form.quality = String(o.quality)
+  if (Array.isArray(o.inputUrls)) form.input_urls = [...o.inputUrls]
+  else if (Array.isArray(o.input_urls)) form.input_urls = [...o.input_urls]
+}
+
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
@@ -222,9 +260,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) {
     console.error('GPT Image load record detail failed:', e)
@@ -462,6 +505,23 @@ const clearResults = () => {
 .tab-option { flex: 1; min-width: 60px; padding: 10px 14px; border: 1px solid #e5e7eb; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
 .tab-option:hover { border-color: #3b82f6; color: #3b82f6; }
 .tab-option.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+
+.detail-ref-urls {
+  margin-top: 10px;
+}
+.detail-ref-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-ref-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-link:hover {
+  text-decoration: underline;
+}
 
 .form-actions { margin-top: 20px; }
 .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }

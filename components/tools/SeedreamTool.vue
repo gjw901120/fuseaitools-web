@@ -73,6 +73,19 @@
                 @update:files="handleImageFiles"
               />
               <span v-if="isUploadingImages" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && mode === '5-lite-image-to-image' && formData.imageUrls?.length" class="detail-ref-urls">
+                <span class="form-label">Input images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.imageUrls"
+                    :key="idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <div class="form-group">
@@ -128,11 +141,11 @@
           </div>
 
           <div class="image-container-main">
-            <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+            <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
               <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
               <p class="failure-message">Generation failed. You can try again with different parameters.</p>
             </div>
-            <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+            <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
               <i class="fas fa-spinner fa-spin detail-spinner"></i>
               <p>Generating...</p>
             </div>
@@ -299,10 +312,32 @@ const canGenerate = computed(() => {
   return true
 })
 
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) formData.prompt = String(o.prompt)
+  if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
+  if (o.quality) formData.quality = String(o.quality)
+  if (Array.isArray(o.imageUrls)) formData.imageUrls = [...o.imageUrls]
+  else if (Array.isArray(o.image_urls)) formData.imageUrls = [...o.image_urls]
+}
+
+function pickDetailImageUrl(d) {
+  if (!d || typeof d !== 'object') return ''
+  let url = d.outputUrl || d.imageUrl
+  if (url) return typeof url === 'string' ? url : url?.url || ''
+  const ou = d.outputUrls
+  if (typeof ou === 'string' && ou) return ou
+  if (Array.isArray(ou) && ou.length) {
+    const first = ou[0]
+    return typeof first === 'string' ? first : first?.url || ''
+  }
+  return ''
+}
+
 const displayResult = computed(() => {
-  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
-    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
-    return { imageUrl: url }
+  if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
+    const url = pickDetailImageUrl(detailData.value)
+    if (url) return { imageUrl: url }
   }
   return result.value
 })
@@ -314,9 +349,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
-    if (data != null && Number(data.status) === 1) {
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    const status = Number(data?.status)
+    if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) { console.error('Seedream load record detail failed:', e) }
 }
@@ -546,6 +586,25 @@ watch(mode, (m) => {
   font-size: 13px;
 }
 .tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
+}
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-ref-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-link:hover {
   text-decoration: underline;
 }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; }

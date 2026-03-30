@@ -102,6 +102,19 @@
                 @update:files="handlePro15ImageFiles"
               />
               <span v-if="isUploadingPro15Images" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.inputUrls?.length" class="detail-input-urls">
+                <span class="form-label">Input images (this task)</span>
+                <div class="detail-input-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.inputUrls"
+                    :key="idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-input-url-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <!-- Aspect ratio: text-to-video modes only -->
@@ -239,11 +252,11 @@
         </div>
 
         <div class="video-container">
-          <div v-if="isDetailView && detailData?.status === 3" class="detail-failure-state">
+          <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
             <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
             <p class="failure-message">Generation failed. You can try again with different parameters.</p>
           </div>
-          <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+          <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
             <i class="fas fa-spinner fa-spin detail-spinner"></i>
             <p>Generating...</p>
           </div>
@@ -487,13 +500,49 @@ const canGenerate = computed(() => {
   return true
 })
 
+function pickDetailVideoUrl(d) {
+  if (!d || typeof d !== 'object') return ''
+  let url = d.outputUrl || d.videoUrl
+  if (url) return typeof url === 'string' ? url : url?.url || ''
+  const ou = d.outputUrls
+  if (typeof ou === 'string' && ou) return ou
+  if (Array.isArray(ou) && ou.length) {
+    const first = ou[0]
+    return typeof first === 'string' ? first : first?.url || ''
+  }
+  return ''
+}
+
 const displayResult = computed(() => {
-  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
-    const url = typeof detailData.value.outputUrls[0] === 'string' ? detailData.value.outputUrls[0] : detailData.value.outputUrls[0]?.url
-    return { videoUrl: url }
+  if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
+    const url = pickDetailVideoUrl(detailData.value)
+    if (url) return { videoUrl: url }
   }
   return result.value
 })
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  if (o.prompt != null) formData.prompt = String(o.prompt)
+  if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
+  if (o.resolution) formData.resolution = String(o.resolution)
+  if (o.duration != null) formData.duration = String(o.duration)
+  if (mode.value === 'v1-5-pro') {
+    if (Array.isArray(o.inputUrls)) formData.inputUrls = [...o.inputUrls]
+    if ('fixedLens' in o) formData.fixedLens = !!o.fixedLens
+    if ('generateAudio' in o) formData.generateAudio = !!o.generateAudio
+    return
+  }
+  if ('cameraFixed' in o) formData.cameraFixed = !!o.cameraFixed
+  if (o.seed != null && o.seed !== '') {
+    const n = Number(o.seed)
+    if (!Number.isNaN(n)) formData.seed = n
+  }
+  if ('enableSafetyChecker' in o) formData.enableSafetyChecker = !!o.enableSafetyChecker
+  if (o.imageUrl) formData.imageUrl = String(o.imageUrl)
+  if (o.endImageUrl) formData.endImageUrl = String(o.endImageUrl)
+}
 
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
@@ -502,10 +551,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
     const status = Number(data?.status)
     if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) { console.error('Seedance load record detail failed:', e) }
 }
@@ -874,6 +927,26 @@ watch(mode, (m) => {
 .detail-spinner { font-size: 48px; color: #3b82f6; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+
+.detail-input-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-input-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-input-url-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-input-url-link:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 1200px) {
 }

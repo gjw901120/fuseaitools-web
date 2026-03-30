@@ -331,11 +331,11 @@
         </form>
       </div>
       <div class="result-panel">
-        <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+        <div v-if="isDetailView && detailData && Number(detailData.status) === 3" class="detail-failure-state">
           <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
           <p class="failure-message">Generation failed. You can try again with different parameters.</p>
         </div>
-        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+        <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
           <i class="fas fa-spinner fa-spin detail-spinner"></i>
           <p>Generating...</p>
         </div>
@@ -885,9 +885,91 @@ const canGenerate = computed(() => {
   return false
 })
 
+function pickKlingDetailVideoUrl(d) {
+  if (!d || typeof d !== 'object') return ''
+  let url = d.outputUrl || d.videoUrl
+  if (url) return typeof url === 'string' ? url : url?.url || ''
+  const ou = d.outputUrls
+  if (typeof ou === 'string' && ou) return ou
+  if (Array.isArray(ou) && ou.length) {
+    const first = ou[0]
+    return typeof first === 'string' ? first : first?.url || ''
+  }
+  return ''
+}
+
+function cloneJsonSafe(v) {
+  try {
+    return JSON.parse(JSON.stringify(v))
+  } catch {
+    return v
+  }
+}
+
+function fillFormFromOriginalData(originalData) {
+  if (!originalData || typeof originalData !== 'object') return
+  const o = originalData
+  const merged = { ...o }
+  const camelMap = [
+    ['imageUrl', 'image_url'],
+    ['tailImageUrl', 'tail_image_url'],
+    ['imageUrls', 'image_urls'],
+    ['aspectRatio', 'aspect_ratio'],
+    ['negativePrompt', 'negative_prompt'],
+    ['cfgScale', 'cfg_scale'],
+    ['inputUrls', 'input_urls'],
+    ['videoUrls', 'video_urls'],
+    ['characterOrientation', 'character_orientation'],
+    ['backgroundSource', 'background_source'],
+    ['audioUrl', 'audio_url'],
+    ['klingMode', 'kling_mode'],
+    ['klingImageUrls', 'kling_image_urls'],
+    ['klingEndFrameUrl', 'kling_end_frame_url'],
+    ['v3MultiShots', 'v3_multi_shots'],
+    ['v3MultiPrompt', 'v3_multi_prompt'],
+    ['v3AspectRatio', 'v3_aspect_ratio'],
+    ['klingElements', 'kling_elements']
+  ]
+  for (const [camel, snake] of camelMap) {
+    if (o[camel] !== undefined && merged[snake] === undefined) merged[snake] = o[camel]
+  }
+
+  const normUrlList = (v) => {
+    if (v == null) return []
+    if (Array.isArray(v)) return v.map(x => (typeof x === 'string' ? x : x?.url || '')).filter(Boolean)
+    if (typeof v === 'string') return v ? [v] : []
+    return []
+  }
+
+  const apply = (snake, val) => {
+    if (val === undefined || val === null) return
+    if (snake === 'v3_multi_prompt' || snake === 'kling_elements') {
+      const c = cloneJsonSafe(val)
+      if (Array.isArray(c)) formData[snake] = c
+      return
+    }
+    if (['image_urls', 'input_urls', 'video_urls', 'kling_image_urls'].includes(snake)) {
+      formData[snake] = normUrlList(val)
+      return
+    }
+    if (snake === 'duration') {
+      formData.duration = String(val)
+      return
+    }
+    if (Object.prototype.hasOwnProperty.call(formData, snake)) {
+      formData[snake] = val
+    }
+  }
+
+  for (const k of Object.keys(formData)) {
+    if (merged[k] !== undefined) apply(k, merged[k])
+  }
+  if (merged.prompt != null) formData.prompt = String(merged.prompt)
+}
+
 const displayResult = computed(() => {
   if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
-    const url = detailData.value?.outputUrl || detailData.value?.videoUrl || (detailData.value?.outputUrls && detailData.value.outputUrls[0])
+    const url = pickKlingDetailVideoUrl(detailData.value)
     return url ? { videoUrl: url } : result.value
   }
   return result.value
@@ -916,10 +998,14 @@ async function loadDetailByRecordId(recordId) {
     let data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
     const status = Number(data?.status)
     if (data == null || status === 0 || status === 1) {
       const res = await pollRecordByStatus(recordId, { getIsCancelled: () => routeRecordId.value !== recordId })
-      if (routeRecordId.value === recordId) detailData.value = res
+      if (routeRecordId.value === recordId) {
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }
     }
   } catch (e) { console.error('Kling load record detail failed:', e) }
 }
