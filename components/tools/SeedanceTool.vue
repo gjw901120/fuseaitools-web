@@ -119,35 +119,16 @@
 
             <!-- Aspect ratio: text-to-video modes only -->
             <div v-if="isTextToVideoMode || mode === 'v1-5-pro'" class="form-group">
-              <label for="seedance-aspect" class="form-label">Aspect Ratio</label>
-              <div class="select-with-arrow">
-                <select id="seedance-aspect" v-model="formData.aspectRatio" class="form-input">
-                  <template v-if="mode === 'v1-5-pro'">
-                    <option value="1:1">1:1</option>
-                    <option value="4:3">4:3</option>
-                    <option value="3:4">3:4</option>
-                    <option value="16:9">16:9</option>
-                    <option value="9:16">9:16</option>
-                    <option value="21:9">21:9</option>
-                  </template>
-                  <template v-else-if="mode === 'v1-lite-text-to-video'">
-                    <option value="16:9">16:9</option>
-                    <option value="4:3">4:3</option>
-                    <option value="1:1">1:1</option>
-                    <option value="3:4">3:4</option>
-                    <option value="9:16">9:16</option>
-                    <option value="9:21">9:21</option>
-                  </template>
-                  <template v-else>
-                    <option value="21:9">21:9</option>
-                    <option value="16:9">16:9</option>
-                    <option value="4:3">4:3</option>
-                    <option value="1:1">1:1</option>
-                    <option value="3:4">3:4</option>
-                    <option value="9:16">9:16</option>
-                  </template>
-                </select>
-                <i class="fas fa-chevron-down select-arrow-icon"></i>
+              <label class="form-label">Aspect Ratio</label>
+              <div class="tab-group">
+                <button
+                  v-for="ratio in aspectRatioOptions"
+                  :key="ratio"
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.aspectRatio === ratio }"
+                  @click="formData.aspectRatio = ratio"
+                >{{ ratio }}</button>
               </div>
             </div>
 
@@ -247,6 +228,18 @@
           <div class="tutorial-showcase-links">
             <a href="/news/seedance-nezha-i2v-props-race-tutorial" class="tutorial-link">
               From Images to Video: Seedance I2V — Props Race &amp; Fight (Nezha &amp; Ao Bing) — sample workflow &amp; video
+            </a>
+          </div>
+        </div>
+
+        <div v-if="!isDetailView && route.path === '/home/seedance/v1-lite-text-to-video'" class="tutorial-showcase">
+          <p class="tutorial-showcase-title">🎬 Tutorial Showcase</p>
+          <div class="tutorial-showcase-links">
+            <a href="/news/seedance-emotional-brand-story-text-to-video-tutorial" class="tutorial-link">
+              Create Cinematic AI Story Videos for Brand Emotion and Human Connection
+            </a>
+            <a href="/news/seedance-cyberpunk-city-night-text-to-video-tutorial" class="tutorial-link">
+              Create a Cyberpunk City Nightscape with AI and Build a Futuristic Cinematic Visual
             </a>
           </div>
         </div>
@@ -401,6 +394,11 @@ const isImageMode = computed(() => [
   'v1-pro-image-to-video',
   'v1-pro-fast-image-to-video'
 ].includes(mode.value))
+const aspectRatioOptions = computed(() => {
+  if (mode.value === 'v1-5-pro') return ['1:1', '4:3', '3:4', '16:9', '9:16', '21:9']
+  if (mode.value === 'v1-lite-text-to-video') return ['16:9', '4:3', '1:1', '3:4', '9:16', '9:21']
+  return ['21:9', '16:9', '4:3', '1:1', '3:4', '9:16']
+})
 const promptMaxLength = computed(() => mode.value === 'v1-5-pro' ? 2500 : 10000)
 const promptPlaceholder = computed(() => mode.value === 'v1-5-pro'
   ? 'Prompt for Seedance 1.5 Pro (3-2500 characters)'
