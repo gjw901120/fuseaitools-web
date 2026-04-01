@@ -1,0 +1,1 @@
+import{u as a,_ as s}from"./DMzQqZai.js";import{x as n,g as o,o as t,B as i}from"./BWoaHa2o.js";import"./Q9HJrPcC.js";import"./CNmn0fjI.js";import"./BVWxGyDf.js";const k={__name:"ideogram",setup(m){const{isOverviewPage:_,overviewConfig:e}=a();return(p,u)=>{const r=s,c=i;return o(_)&&o(e)?(t(),n(r,{key:0,config:o(e)},null,8,["config"])):(t(),n(c,{key:1}))}}};export{k as default};

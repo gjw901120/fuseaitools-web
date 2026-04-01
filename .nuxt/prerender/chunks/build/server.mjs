@@ -412,7 +412,7 @@ const _routes = [
   {
     name: "index",
     path: "/",
-    component: () => import('./index-D1mKv57v.mjs')
+    component: () => import('./index-a_sBPLIk.mjs')
   },
   {
     name: "credits",
@@ -479,22 +479,32 @@ const _routes = [
       {
         name: "home-qwen-z-image",
         path: "z-image",
-        component: () => import('./z-image-CXFLeGW3.mjs')
+        component: () => import('./z-image-DgrML-3R.mjs')
       },
       {
         name: "home-qwen-image-edit",
         path: "image-edit",
-        component: () => import('./image-edit-DWtp8flG.mjs')
+        component: () => import('./image-edit-BL7n9JqK.mjs')
       },
       {
         name: "home-qwen-text-to-image",
         path: "text-to-image",
-        component: () => import('./text-to-image-BCK75J5u.mjs')
+        component: () => import('./text-to-image-DpYasJCx.mjs')
       },
       {
         name: "home-qwen-image-to-image",
         path: "image-to-image",
-        component: () => import('./image-to-image-BmFrO-x9.mjs')
+        component: () => import('./image-to-image-D_a_ygFl.mjs')
+      },
+      {
+        name: "home-qwen-qwen2-image-edit",
+        path: "qwen2-image-edit",
+        component: () => import('./qwen2-image-edit-SRp90toO.mjs')
+      },
+      {
+        name: "home-qwen-qwen2-text-to-image",
+        path: "qwen2-text-to-image",
+        component: () => import('./qwen2-text-to-image-BXI1IHvg.mjs')
       }
     ]
   },
@@ -602,7 +612,7 @@ const _routes = [
   {
     name: "home",
     path: "/home",
-    component: () => import('./index-XjVzbQt1.mjs')
+    component: () => import('./index-DsCzeEMd.mjs')
   },
   {
     name: "home-kling",

@@ -1,0 +1,1 @@
+import{C as a,c as o,U as r,o as c}from"./BWoaHa2o.js";const i={__name:"generate",async setup(n){let e,t;return[e,t]=a(()=>r("/home/ideogram/v3-text-to-image",{replace:!0})),await e,t(),(s,_)=>(c(),o("div"))}};export{i as default};

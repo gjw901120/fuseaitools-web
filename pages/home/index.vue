@@ -256,6 +256,7 @@ const toolRouteMap = {
   'Seedream': '/home/seedream/5-lite-text-to-image',
   'Qwen': '/home/qwen/text-to-image',
   'Imagen4': '/home/imagen4/imagen4-generate',
+  'Grok': '/home/grok/text-to-image',
   // Chat tools
   'GPT': '/home/gpt/generate',
   'Deepseek': '/home/deepseek/generate',
@@ -696,6 +697,15 @@ const allTools = ref([
     usageCount: 0
   },
   {
+    id: 24,
+    name: 'Grok',
+    type: 'image',
+    description: 'Grok 图像：Text to Image、Image to Image',
+    icon: '/tools-logo/Grok.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
     id: 15,
     name: 'Midjourney',
     type: 'image',
@@ -1084,6 +1094,11 @@ watch(() => route.path, (newPath) => {
     '/home/qwen/image-to-image': 'Qwen',
     '/home/qwen/image-edit': 'Qwen',
     '/home/qwen/z-image': 'Qwen',
+    '/home/qwen/2-text-to-image': 'Qwen',
+    '/home/qwen/2-image-edit': 'Qwen',
+    '/home/grok': 'Grok',
+    '/home/grok/text-to-image': 'Grok',
+    '/home/grok/image-to-image': 'Grok',
     '/home/imagen4': 'Imagen4',
     '/home/imagen4/imagen4-generate': 'Imagen4',
     '/home/imagen4/imagen4-fast': 'Imagen4',
