@@ -87,6 +87,12 @@ declare module "nitropack/types" {
     '/api/image/gpt4o-image/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt4o-image/generate.post').default>>>>
     }
+    '/api/image/grok/image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/grok/image-to-image.post').default>>>>
+    }
+    '/api/image/grok/text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/grok/text-to-image.post').default>>>>
+    }
     '/api/image/ideogram/character-edit': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/ideogram/character-edit.post').default>>>>
     }
@@ -140,6 +146,12 @@ declare module "nitropack/types" {
     }
     '/api/image/qwen/text-to-image': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/text-to-image.post').default>>>>
+    }
+    '/api/image/qwen/v2-image-edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/v2-image-edit.post').default>>>>
+    }
+    '/api/image/qwen/v2-text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/v2-text-to-image.post').default>>>>
     }
     '/api/image/qwen/z-image': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/qwen/z-image.post').default>>>>
@@ -221,6 +233,18 @@ declare module "nitropack/types" {
     }
     '/api/user/send-email-code': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/send-email-code.post').default>>>>
+    }
+    '/api/video/grok/extend': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/grok/extend.post').default>>>>
+    }
+    '/api/video/grok/image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/grok/image-to-video.post').default>>>>
+    }
+    '/api/video/grok/text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/grok/text-to-video.post').default>>>>
+    }
+    '/api/video/grok/upscale': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/grok/upscale.post').default>>>>
     }
     '/api/video/hailuo/image-to-video-pro': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/hailuo/image-to-video-pro.post').default>>>>

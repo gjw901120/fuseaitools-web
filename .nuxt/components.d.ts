@@ -38,6 +38,7 @@ interface _GlobalComponents {
     'ToolsFluxKontextTool': typeof import("../components/tools/FluxKontextTool.vue")['default']
     'ToolsGPT4oImageTool': typeof import("../components/tools/GPT4oImageTool.vue")['default']
     'ToolsGPTImageTool': typeof import("../components/tools/GPTImageTool.vue")['default']
+    'ToolsGrokToolCore': typeof import("../components/tools/GrokToolCore.vue")['default']
     'ToolsHailuoTool': typeof import("../components/tools/HailuoTool.vue")['default']
     'ToolsIdeogramTool': typeof import("../components/tools/IdeogramTool.vue")['default']
     'ToolsImagen4Tool': typeof import("../components/tools/Imagen4Tool.vue")['default']
@@ -105,6 +106,7 @@ interface _GlobalComponents {
     'LazyToolsFluxKontextTool': LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
     'LazyToolsGPT4oImageTool': LazyComponent<typeof import("../components/tools/GPT4oImageTool.vue")['default']>
     'LazyToolsGPTImageTool': LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
+    'LazyToolsGrokToolCore': LazyComponent<typeof import("../components/tools/GrokToolCore.vue")['default']>
     'LazyToolsHailuoTool': LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
     'LazyToolsIdeogramTool': LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
     'LazyToolsImagen4Tool': LazyComponent<typeof import("../components/tools/Imagen4Tool.vue")['default']>
@@ -178,6 +180,7 @@ export const ToolsElevenLabsTool: typeof import("../components/tools/ElevenLabsT
 export const ToolsFluxKontextTool: typeof import("../components/tools/FluxKontextTool.vue")['default']
 export const ToolsGPT4oImageTool: typeof import("../components/tools/GPT4oImageTool.vue")['default']
 export const ToolsGPTImageTool: typeof import("../components/tools/GPTImageTool.vue")['default']
+export const ToolsGrokToolCore: typeof import("../components/tools/GrokToolCore.vue")['default']
 export const ToolsHailuoTool: typeof import("../components/tools/HailuoTool.vue")['default']
 export const ToolsIdeogramTool: typeof import("../components/tools/IdeogramTool.vue")['default']
 export const ToolsImagen4Tool: typeof import("../components/tools/Imagen4Tool.vue")['default']
@@ -245,6 +248,7 @@ export const LazyToolsElevenLabsTool: LazyComponent<typeof import("../components
 export const LazyToolsFluxKontextTool: LazyComponent<typeof import("../components/tools/FluxKontextTool.vue")['default']>
 export const LazyToolsGPT4oImageTool: LazyComponent<typeof import("../components/tools/GPT4oImageTool.vue")['default']>
 export const LazyToolsGPTImageTool: LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
+export const LazyToolsGrokToolCore: LazyComponent<typeof import("../components/tools/GrokToolCore.vue")['default']>
 export const LazyToolsHailuoTool: LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
 export const LazyToolsIdeogramTool: LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
 export const LazyToolsImagen4Tool: LazyComponent<typeof import("../components/tools/Imagen4Tool.vue")['default']>

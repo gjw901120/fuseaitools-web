@@ -1263,7 +1263,22 @@ const plugins = [
 _x97qlr_3HNtLjE9TgMFJOrXi5_dH8bELYiZ02jASNI
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"3c344-Tb0Ql5K/pCsUbQTxdnHop7lN28Y\"",
+    "mtime": "2026-04-03T08:19:34.111Z",
+    "size": 246596,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"bd890-lOkgLgcSHvysap1fPDsBTA8D19M\"",
+    "mtime": "2026-04-03T08:19:34.112Z",
+    "size": 776336,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1679,7 +1694,7 @@ const _lazy_J3BPZG = () => Promise.resolve().then(function () { return speechToT
 const _lazy_hmLe3_ = () => Promise.resolve().then(function () { return textToSpeech_post$1; });
 const _lazy_RVFVuq = () => Promise.resolve().then(function () { return addInstrumental_post$1; });
 const _lazy_oW5mok = () => Promise.resolve().then(function () { return addVocals_post$1; });
-const _lazy_cZyyQR = () => Promise.resolve().then(function () { return extend_post$5; });
+const _lazy_cZyyQR = () => Promise.resolve().then(function () { return extend_post$7; });
 const _lazy_mnZvgB = () => Promise.resolve().then(function () { return generate_post$p; });
 const _lazy_NpQTCQ = () => Promise.resolve().then(function () { return uploadCover_post$1; });
 const _lazy_wcOIaV = () => Promise.resolve().then(function () { return uploadExtend_post$1; });
@@ -1690,17 +1705,19 @@ const _lazy_xBiUVd = () => Promise.resolve().then(function () { return gemini_po
 const _lazy_XVNUbh = () => Promise.resolve().then(function () { return batchUpload_post$1; });
 const _lazy_Vz7ILQ = () => Promise.resolve().then(function () { return price_get$1; });
 const _lazy_eQ36Mn = () => Promise.resolve().then(function () { return tree_get$1; });
-const _lazy_fuA5g9 = () => Promise.resolve().then(function () { return imageToImage_post$5; });
-const _lazy_gnT47o = () => Promise.resolve().then(function () { return textToImage_post$7; });
-const _lazy_oQbhNf = () => Promise.resolve().then(function () { return textToImage_post$5; });
+const _lazy_fuA5g9 = () => Promise.resolve().then(function () { return imageToImage_post$7; });
+const _lazy_gnT47o = () => Promise.resolve().then(function () { return textToImage_post$9; });
+const _lazy_oQbhNf = () => Promise.resolve().then(function () { return textToImage_post$7; });
 const _lazy_g6tffG = () => Promise.resolve().then(function () { return flux2ImageToImage_post$1; });
 const _lazy_E7dT2j = () => Promise.resolve().then(function () { return flux2ProImageToImage_post$1; });
 const _lazy_Js2kxP = () => Promise.resolve().then(function () { return flux2ProTextToImage_post$1; });
 const _lazy_NRcFDi = () => Promise.resolve().then(function () { return flux2TextToImage_post$1; });
 const _lazy_67lOnD = () => Promise.resolve().then(function () { return generate_post$n; });
-const _lazy_KMWTf_ = () => Promise.resolve().then(function () { return imageToImage_post$3; });
-const _lazy_xdmaRS = () => Promise.resolve().then(function () { return textToImage_post$3; });
+const _lazy_KMWTf_ = () => Promise.resolve().then(function () { return imageToImage_post$5; });
+const _lazy_xdmaRS = () => Promise.resolve().then(function () { return textToImage_post$5; });
 const _lazy_eKX6sF = () => Promise.resolve().then(function () { return generate_post$l; });
+const _lazy_ddMLj_ = () => Promise.resolve().then(function () { return imageToImage_post$3; });
+const _lazy_yPrjhp = () => Promise.resolve().then(function () { return textToImage_post$3; });
 const _lazy_w7Xo6v = () => Promise.resolve().then(function () { return characterEdit_post$1; });
 const _lazy_qU7eOq = () => Promise.resolve().then(function () { return characterRemix_post$1; });
 const _lazy_pHqBcQ = () => Promise.resolve().then(function () { return character_post$1; });
@@ -1719,6 +1736,8 @@ const _lazy_guMvLE = () => Promise.resolve().then(function () { return generate_
 const _lazy_WLaKBl = () => Promise.resolve().then(function () { return imageEdit_post$1; });
 const _lazy_qIqT3J = () => Promise.resolve().then(function () { return imageToImage_post$1; });
 const _lazy_1eEZQf = () => Promise.resolve().then(function () { return textToImage_post$1; });
+const _lazy_eNJJHy = () => Promise.resolve().then(function () { return v2ImageEdit_post$1; });
+const _lazy_ROhFfj = () => Promise.resolve().then(function () { return v2TextToImage_post$1; });
 const _lazy_ihh8BE = () => Promise.resolve().then(function () { return zImage_post$1; });
 const _lazy_N5QhNS = () => Promise.resolve().then(function () { return liteImageToImage_post$1; });
 const _lazy_gIVXeQ = () => Promise.resolve().then(function () { return liteTextToImage_post$1; });
@@ -1726,7 +1745,7 @@ const _lazy_0wwS49 = () => Promise.resolve().then(function () { return blend_pos
 const _lazy_cv5vHn = () => Promise.resolve().then(function () { return describe_post$1; });
 const _lazy_3ymEXI = () => Promise.resolve().then(function () { return imagine_post$1; });
 const _lazy_U1Y3Se = () => Promise.resolve().then(function () { return swapFace_post$1; });
-const _lazy_S4BDJq = () => Promise.resolve().then(function () { return upscale_post$1; });
+const _lazy_S4BDJq = () => Promise.resolve().then(function () { return upscale_post$3; });
 const _lazy_Y1HcS7 = () => Promise.resolve().then(function () { return vary_post$1; });
 const _lazy_MTnLsG = () => Promise.resolve().then(function () { return _slug__get$1; });
 const _lazy_715mBH = () => Promise.resolve().then(function () { return detail_get$3; });
@@ -1746,6 +1765,10 @@ const _lazy_J0ejHy = () => Promise.resolve().then(function () { return refreshTi
 const _lazy_9KA_u2 = () => Promise.resolve().then(function () { return creditsDetail_get$1; });
 const _lazy_FeFrNq = () => Promise.resolve().then(function () { return loginByEmail_post$1; });
 const _lazy_qjMUPF = () => Promise.resolve().then(function () { return sendEmailCode_post$1; });
+const _lazy_a1UXyc = () => Promise.resolve().then(function () { return extend_post$5; });
+const _lazy_sGWaPW = () => Promise.resolve().then(function () { return imageToVideo_post$3; });
+const _lazy_qnM2H8 = () => Promise.resolve().then(function () { return textToVideo_post$3; });
+const _lazy__bPIFI = () => Promise.resolve().then(function () { return upscale_post$1; });
 const _lazy_qOz6pW = () => Promise.resolve().then(function () { return imageToVideoPro_post$1; });
 const _lazy_jTz2Ya = () => Promise.resolve().then(function () { return imageToVideoStandard_post$1; });
 const _lazy_wmPuCb = () => Promise.resolve().then(function () { return _26ImageToVideo_post$1; });
@@ -1809,6 +1832,8 @@ const handlers = [
   { route: '/api/image/gpt-image/image-to-image', handler: _lazy_KMWTf_, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt-image/text-to-image', handler: _lazy_xdmaRS, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt4o-image/generate', handler: _lazy_eKX6sF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/grok/image-to-image', handler: _lazy_ddMLj_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/grok/text-to-image', handler: _lazy_yPrjhp, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/ideogram/character-edit', handler: _lazy_w7Xo6v, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/ideogram/character-remix', handler: _lazy_qU7eOq, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/ideogram/character', handler: _lazy_pHqBcQ, lazy: true, middleware: false, method: "post" },
@@ -1827,6 +1852,8 @@ const handlers = [
   { route: '/api/image/qwen/image-edit', handler: _lazy_WLaKBl, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/qwen/image-to-image', handler: _lazy_qIqT3J, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/qwen/text-to-image', handler: _lazy_1eEZQf, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/v2-image-edit', handler: _lazy_eNJJHy, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/qwen/v2-text-to-image', handler: _lazy_ROhFfj, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/qwen/z-image', handler: _lazy_ihh8BE, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/seedream/lite-image-to-image', handler: _lazy_N5QhNS, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/seedream/lite-text-to-image', handler: _lazy_gIVXeQ, lazy: true, middleware: false, method: "post" },
@@ -1854,6 +1881,10 @@ const handlers = [
   { route: '/api/user/credits-detail', handler: _lazy_9KA_u2, lazy: true, middleware: false, method: "get" },
   { route: '/api/user/login-by-email', handler: _lazy_FeFrNq, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/send-email-code', handler: _lazy_qjMUPF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/grok/extend', handler: _lazy_a1UXyc, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/grok/image-to-video', handler: _lazy_sGWaPW, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/grok/text-to-video', handler: _lazy_qnM2H8, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/grok/upscale', handler: _lazy__bPIFI, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/hailuo/image-to-video-pro', handler: _lazy_qOz6pW, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/hailuo/image-to-video-standard', handler: _lazy_jTz2Ya, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/kling/2-6-image-to-video', handler: _lazy_wmPuCb, lazy: true, middleware: false, method: "post" },
@@ -2389,7 +2420,7 @@ const addVocals_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePr
   default: addVocals_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const extend_post$4 = defineEventHandler(async (event) => {
+const extend_post$6 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/audio/suno/extend`;
@@ -2409,9 +2440,9 @@ const extend_post$4 = defineEventHandler(async (event) => {
   }
 });
 
-const extend_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const extend_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: extend_post$4
+  default: extend_post$6
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const generate_post$o = defineEventHandler(async (event) => {
@@ -2814,7 +2845,7 @@ const tree_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
   default: tree_get
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const imageToImage_post$4 = defineEventHandler(async (event) => {
+const imageToImage_post$6 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/flux-2-pro/image-to-image`;
@@ -2834,12 +2865,12 @@ const imageToImage_post$4 = defineEventHandler(async (event) => {
   }
 });
 
-const imageToImage_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const imageToImage_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: imageToImage_post$4
+  default: imageToImage_post$6
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const textToImage_post$6 = defineEventHandler(async (event) => {
+const textToImage_post$8 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/flux-2-pro/text-to-image`;
@@ -2859,12 +2890,12 @@ const textToImage_post$6 = defineEventHandler(async (event) => {
   }
 });
 
-const textToImage_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const textToImage_post$9 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: textToImage_post$6
+  default: textToImage_post$8
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const textToImage_post$4 = defineEventHandler(async (event) => {
+const textToImage_post$6 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/flux-2/text-to-image`;
@@ -2884,9 +2915,9 @@ const textToImage_post$4 = defineEventHandler(async (event) => {
   }
 });
 
-const textToImage_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const textToImage_post$7 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: textToImage_post$4
+  default: textToImage_post$6
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const flux2ImageToImage_post = defineEventHandler(async (event) => {
@@ -3026,7 +3057,7 @@ const generate_post$n = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
   default: generate_post$m
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const imageToImage_post$2 = defineEventHandler(async (event) => {
+const imageToImage_post$4 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/gpt-image/image-to-image`;
@@ -3046,12 +3077,12 @@ const imageToImage_post$2 = defineEventHandler(async (event) => {
   }
 });
 
-const imageToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const imageToImage_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: imageToImage_post$2
+  default: imageToImage_post$4
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const textToImage_post$2 = defineEventHandler(async (event) => {
+const textToImage_post$4 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/image/gpt-image/text-to-image`;
@@ -3071,9 +3102,9 @@ const textToImage_post$2 = defineEventHandler(async (event) => {
   }
 });
 
-const textToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const textToImage_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: textToImage_post$2
+  default: textToImage_post$4
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const generate_post$k = defineEventHandler(async (event) => {
@@ -3109,6 +3140,86 @@ const generate_post$k = defineEventHandler(async (event) => {
 const generate_post$l = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: generate_post$k
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const imageToImage_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const prompt = (body == null ? void 0 : body.prompt) == null ? void 0 : String(body.prompt);
+  if (typeof prompt === "string" && prompt.length > 5e3) {
+    throw createError({ statusCode: 400, message: "prompt must be <= 5000 characters" });
+  }
+  const imageUrls = Array.isArray(body == null ? void 0 : body.imageUrls) ? body.imageUrls : Array.isArray(body == null ? void 0 : body.image_urls) ? body.image_urls : [];
+  if (imageUrls.length < 1 || imageUrls.length > 1) {
+    throw createError({ statusCode: 400, message: "image_urls must contain exactly 1 url" });
+  }
+  const payload = {
+    model: "grok-imagine-image-to-image",
+    prompt: prompt || void 0,
+    image_urls: imageUrls
+  };
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/grok/image-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(payload) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Grok image-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToImage_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const textToImage_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const prompt = typeof (body == null ? void 0 : body.prompt) === "string" ? body.prompt.trim() : "";
+  const aspectRatio = String((body == null ? void 0 : body.aspectRatio) || (body == null ? void 0 : body.aspect_ratio) || "1:1");
+  const allowedAspectRatios = ["2:3", "3:2", "1:1", "16:9", "9:16"];
+  if (!prompt) {
+    throw createError({ statusCode: 400, message: "prompt is required" });
+  }
+  if (prompt.length > 5e3) {
+    throw createError({ statusCode: 400, message: "prompt must be <= 5000 characters" });
+  }
+  if (!allowedAspectRatios.includes(aspectRatio)) {
+    throw createError({ statusCode: 400, message: "aspect_ratio is invalid" });
+  }
+  const payload = {
+    model: "grok-imagine-text-to-image",
+    prompt,
+    aspect_ratio: aspectRatio
+  };
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/grok/text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(payload) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Grok text-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const textToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: textToImage_post$2
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const characterEdit_post = defineEventHandler(async (event) => {
@@ -3643,6 +3754,56 @@ const textToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.define
   default: textToImage_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const v2ImageEdit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/qwen/v2-image-edit`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Qwen2 v2-image-edit proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v2ImageEdit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v2ImageEdit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v2TextToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/qwen/v2-text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Qwen2 v2-text-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v2TextToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v2TextToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const zImage_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -3818,7 +3979,7 @@ const swapFace_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
   default: swapFace_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const upscale_post = defineEventHandler(async (event) => {
+const upscale_post$2 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/upscale`;
@@ -3838,9 +3999,9 @@ const upscale_post = defineEventHandler(async (event) => {
   }
 });
 
-const upscale_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const upscale_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: upscale_post
+  default: upscale_post$2
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const vary_post = defineEventHandler(async (event) => {
@@ -4428,6 +4589,106 @@ const sendEmailCode_post = defineEventHandler(async (event) => {
 const sendEmailCode_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: sendEmailCode_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const extend_post$4 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/grok/extend`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Grok extend proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const extend_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: extend_post$4
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const imageToVideo_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/grok/image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Grok image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const imageToVideo_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: imageToVideo_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const textToVideo_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/grok/text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Grok text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const textToVideo_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: textToVideo_post$2
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const upscale_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/grok/upscale`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Grok upscale proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const upscale_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: upscale_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const imageToVideoPro_post = defineEventHandler(async (event) => {
@@ -5229,6 +5490,7 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/midjourney", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/seedream", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/qwen", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/grok", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/suno", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/elevenlabs", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/veo3", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
@@ -5294,6 +5556,14 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/qwen/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/z-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/2-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/2-image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/grok/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/grok/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/grok/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/grok/image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/grok/upscale", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/grok/extend", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-fast", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-ultra", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },

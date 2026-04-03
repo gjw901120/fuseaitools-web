@@ -17,6 +17,7 @@ const OVERVIEW_KEY_TO_LOGO = {
   midjourney: '/tools-logo/Midjourney.png',
   seedream: '/tools-logo/Seedream.png',
   qwen: '/tools-logo/QWen.png',
+  grok: '/tools-logo/Grok.png',
   suno: '/tools-logo/suno.png',
   elevenlabs: '/tools-logo/Elevenlabs.png',
   veo3: '/tools-logo/Veo.png',

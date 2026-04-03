@@ -36,14 +36,15 @@ export const useHomeLayout = () => {
     'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image',
-    'Imagen4': '/home/imagen4/imagen4-generate'
+    'Imagen4': '/home/imagen4/imagen4-generate',
+    'Grok': '/home/grok/text-to-image'
   }
 
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
     'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'video', 'Seedance': 'video', 'Hailuo': 'video',
-    'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image', 'Imagen4': 'image',
+    'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image', 'Imagen4': 'image', 'Grok': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
   }
 
@@ -73,7 +74,8 @@ export const useHomeLayout = () => {
     'Suno': '/tools-logo/suno.png',
     'Elevenlabs': '/tools-logo/Elevenlabs.png',
     'ElevenLabs': '/tools-logo/Elevenlabs.png',
-    'Imagen4': '/tools-logo/Imagen4.png'
+    'Imagen4': '/tools-logo/Imagen4.png',
+    'Grok': '/tools-logo/Grok.png'
   }
 
   // 工具名称到路由的映射（导航用）
@@ -97,6 +99,8 @@ export const useHomeLayout = () => {
     'Seedream': '/home/seedream/5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image',
     'Imagen4': '/home/imagen4/imagen4-generate',
+    'Grok': '/home/grok/text-to-image',
+    'GrokVideo': '/home/grok/text-to-video',
     // Chat tools
     'GPT': '/home/gpt/generate',
     'Deepseek': '/home/deepseek/generate',
@@ -360,6 +364,25 @@ export const useHomeLayout = () => {
       icon: '/tools-logo/Imagen4.png',
       rating: 4.6,
       usageCount: 0
+    },
+    {
+      id: 25,
+      name: 'Grok',
+      type: 'image',
+      description: 'Grok image: text-to-image, image-to-image',
+      icon: '/tools-logo/Grok.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
+      id: 26,
+      name: 'Grok',
+      routeKey: 'GrokVideo',
+      type: 'video',
+      description: 'Grok video: text-to-video, image-to-video, upscale, extend',
+      icon: '/tools-logo/Grok.png',
+      rating: 4.6,
+      usageCount: 0
     }
   ])
 
@@ -459,7 +482,13 @@ export const useHomeLayout = () => {
     elevenlabs_text_to_speech_turbo: '/home/elevenlabs/turbo-2-5',
     elevenlabs_speech_to_text: '/home/elevenlabs/speech-to-text',
     elevenlabs_sound_effect: '/home/elevenlabs/sound-effect-v2',
-    elevenlabs_audio_isolation: '/home/elevenlabs/audio-isolation'
+    elevenlabs_audio_isolation: '/home/elevenlabs/audio-isolation',
+    'grok-imagine-text-to-image': '/home/grok/text-to-image',
+    'grok-imagine-image-to-image': '/home/grok/image-to-image',
+    'grok-imagine-text-to-video': '/home/grok/text-to-video',
+    'grok-imagine-image-to-video': '/home/grok/image-to-video',
+    'grok-imagine-upscale': '/home/grok/upscale',
+    'grok-imagine-extend': '/home/grok/extend'
   }
 
   // 分类 -> 路由前缀（用于防止异常 model 导致串路由）
@@ -488,7 +517,8 @@ export const useHomeLayout = () => {
     'Kling': '/home/kling',
     'Seedream': '/home/seedream',
     'Qwen': '/home/qwen',
-    'Imagen4': '/home/imagen4'
+    'Imagen4': '/home/imagen4',
+    'Grok': '/home/grok'
   }
 
   // 根据 category/model 取路由（历史项点击跳转；无 recordId 时只跳工具页）
@@ -571,7 +601,7 @@ export const useHomeLayout = () => {
     const defaultToolName = defaultToolByCategory[selectedNav.type]
     const defaultTool = defaultToolName ? allTools.value.find(t => t.name === defaultToolName) : null
     const targetTool = defaultTool || (tools.length > 0 ? tools[0] : null)
-    const targetPath = targetTool && toolRouteMap[targetTool.name] ? toolRouteMap[targetTool.name] : null
+    const targetPath = targetTool ? (toolRouteMap[targetTool.routeKey || targetTool.name] || null) : null
 
     selectedTool.value = targetTool ? targetTool.id : (tools.length > 0 ? tools[0].id : null)
 
@@ -586,8 +616,9 @@ export const useHomeLayout = () => {
 
   const selectTool = async (toolId) => {
     const tool = allTools.value.find(t => t.id === toolId)
-    if (!tool || !toolRouteMap[tool.name]) return
-    const targetPath = toolRouteMap[tool.name]
+    const routeKey = tool.routeKey || tool.name
+    if (!tool || !toolRouteMap[routeKey]) return
+    const targetPath = toolRouteMap[routeKey]
     selectedTool.value = toolId
     try {
       await router.push(targetPath)
@@ -765,10 +796,19 @@ export const useHomeLayout = () => {
       '/home/qwen/image-to-image': 'Qwen',
       '/home/qwen/image-edit': 'Qwen',
       '/home/qwen/z-image': 'Qwen',
+      '/home/qwen/2-text-to-image': 'Qwen',
+      '/home/qwen/2-image-edit': 'Qwen',
       '/home/imagen4': 'Imagen4',
       '/home/imagen4/imagen4-generate': 'Imagen4',
       '/home/imagen4/imagen4-fast': 'Imagen4',
       '/home/imagen4/imagen4-ultra': 'Imagen4',
+      '/home/grok': 'Grok',
+      '/home/grok/text-to-image': 'Grok',
+      '/home/grok/image-to-image': 'Grok',
+      '/home/grok/text-to-video': 'GrokVideo',
+      '/home/grok/image-to-video': 'GrokVideo',
+      '/home/grok/upscale': 'GrokVideo',
+      '/home/grok/extend': 'GrokVideo',
       '/home/gpt': 'GPT',
       '/home/gpt/generate': 'GPT',
       '/home/deepseek': 'Deepseek',
@@ -781,7 +821,7 @@ export const useHomeLayout = () => {
     
     const toolName = routeToToolMap[route.path]
     if (toolName) {
-      const tool = allTools.value.find(t => t.name === toolName)
+      const tool = allTools.value.find(t => (t.routeKey && t.routeKey === toolName) || t.name === toolName)
       if (tool) {
         selectedTool.value = tool.id
         const toolType = tool.type

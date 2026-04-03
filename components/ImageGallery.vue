@@ -165,6 +165,11 @@ const imageModels = ref([
     title: 'Imagen4',
     logo: '/tools-logo/Imagen4.png',
     route: '/home/imagen4'
+  },
+  {
+    title: 'Grok',
+    logo: '/tools-logo/Grok.png',
+    route: '/home/grok'
   }
 ])
 
@@ -221,6 +226,11 @@ const videoModels = ref([
     title: 'Kling',
     logo: '/tools-logo/Kling.png',
     route: '/home/kling'
+  },
+  {
+    title: 'Grok',
+    logo: '/tools-logo/Grok.png',
+    route: '/home/grok'
   }
 ])
 </script>

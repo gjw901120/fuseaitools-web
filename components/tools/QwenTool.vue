@@ -49,7 +49,7 @@
             </div>
 
             <!-- image-to-image & image-edit: imageUrl required -->
-            <div v-if="mode === 'image-to-image' || mode === 'image-edit'" class="form-group">
+            <div v-if="mode === 'image-to-image' || mode === 'image-edit' || mode === 'qwen2-image-edit'" class="form-group">
               <label class="form-label">
                 Image URL <span class="required">*</span>
               </label>
@@ -91,15 +91,17 @@
             </div>
 
             <!-- text-to-image & image-edit: imageSize -->
-            <div v-if="mode === 'text-to-image' || mode === 'image-edit'" class="form-group">
+            <div v-if="mode === 'text-to-image' || mode === 'image-edit' || mode === 'qwen2-text-to-image' || mode === 'qwen2-image-edit'" class="form-group">
               <label class="form-label">Image Size</label>
               <div class="tab-group">
-                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'square' }" @click="formData.imageSize = 'square'">Square</button>
-                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'square_hd' }" @click="formData.imageSize = 'square_hd'">Square HD</button>
-                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'portrait_4_3' }" @click="formData.imageSize = 'portrait_4_3'">3:4</button>
-                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'portrait_16_9' }" @click="formData.imageSize = 'portrait_16_9'">9:16</button>
-                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'landscape_4_3' }" @click="formData.imageSize = 'landscape_4_3'">4:3</button>
-                <button type="button" class="tab-option" :class="{ active: formData.imageSize === 'landscape_16_9' }" @click="formData.imageSize = 'landscape_16_9'">16:9</button>
+                <button
+                  v-for="opt in currentImageSizeOptions"
+                  :key="opt"
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: formData.imageSize === opt }"
+                  @click="formData.imageSize = opt"
+                >{{ imageSizeLabelMap[opt] || opt }}</button>
               </div>
             </div>
 
@@ -116,7 +118,7 @@
             </div>
 
             <!-- numInferenceSteps: text-to-image, image-to-image, image-edit -->
-            <div v-if="mode !== 'z-image'" class="form-group">
+            <div v-if="isClassicQwenMode" class="form-group">
               <label for="qwen-steps" class="form-label">Inference Steps</label>
               <input
                 id="qwen-steps"
@@ -136,7 +138,7 @@
               <label for="qwen-seed" class="form-label">Seed</label>
               <input id="qwen-seed" v-model.number="formData.seed" type="number" class="form-input" placeholder="Optional" />
             </div>
-            <div v-if="mode !== 'z-image'" class="form-group">
+            <div v-if="isClassicQwenMode" class="form-group">
               <label for="qwen-guidance" class="form-label">Guidance Scale</label>
               <input
                 id="qwen-guidance"
@@ -176,7 +178,7 @@
                 <button type="button" class="tab-option" :class="{ active: formData.outputFormat === 'jpeg' }" @click="formData.outputFormat = 'jpeg'">JPEG</button>
               </div>
             </div>
-            <div v-if="mode !== 'z-image'" class="form-group">
+            <div v-if="isClassicQwenMode" class="form-group">
               <label class="form-label">Acceleration</label>
               <div class="tab-group">
                 <button type="button" class="tab-option" :class="{ active: formData.acceleration === 'none' }" @click="formData.acceleration = 'none'">None</button>
@@ -185,7 +187,7 @@
               </div>
               <div class="form-hint">Higher = faster. High recommended for images without text.</div>
             </div>
-            <div v-if="mode !== 'z-image'" class="form-group">
+            <div v-if="isClassicQwenMode" class="form-group">
               <label for="qwen-negative" class="form-label">Negative Prompt</label>
               <input
                 id="qwen-negative"
@@ -197,7 +199,7 @@
               />
               <div class="char-count" v-if="formData.negativePrompt">{{ formData.negativePrompt.length }}/500</div>
             </div>
-            <div v-if="mode !== 'z-image'" class="form-group">
+            <div v-if="isClassicQwenMode" class="form-group">
               <label class="checkbox-label">
                 <input v-model="formData.enableSafetyChecker" type="checkbox" />
                 <span>Enable safety checker</span>
@@ -277,14 +279,18 @@ const modeList = [
   { id: 'text-to-image', label: 'Text to Image', icon: 'fas fa-font' },
   { id: 'image-to-image', label: 'Image to Image', icon: 'fas fa-image' },
   { id: 'image-edit', label: 'Image Edit', icon: 'fas fa-edit' },
-  { id: 'z-image', label: 'Z-Image', icon: 'fas fa-square' }
+  { id: 'z-image', label: 'Z-Image', icon: 'fas fa-square' },
+  { id: 'qwen2-text-to-image', label: '2 Text to Image', icon: 'fas fa-wand-magic-sparkles' },
+  { id: 'qwen2-image-edit', label: '2 Image Edit', icon: 'fas fa-scissors' }
 ]
 
 const modeTabToPath = {
   'text-to-image': '/home/qwen/text-to-image',
   'image-to-image': '/home/qwen/image-to-image',
   'image-edit': '/home/qwen/image-edit',
-  'z-image': '/home/qwen/z-image'
+  'z-image': '/home/qwen/z-image',
+  'qwen2-text-to-image': '/home/qwen/2-text-to-image',
+  'qwen2-image-edit': '/home/qwen/2-image-edit'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -330,7 +336,9 @@ const qwenPriceModelKeyMap = {
   'text-to-image': 'qwen-text-to-image',
   'image-to-image': 'qwen-image-to-image',
   'image-edit': 'qwen-image-edit',
-  'z-image': 'qwen-z-image'
+  'z-image': 'qwen-z-image',
+  'qwen2-text-to-image': 'qwen2-text-to-image',
+  'qwen2-image-edit': 'qwen2-image-edit'
 }
 const qwenPriceText = computed(() => {
   const modelKey = qwenPriceModelKeyMap[mode.value]
@@ -354,10 +362,39 @@ const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
 
 const promptMaxLength = computed(() => {
+  if (mode.value === 'qwen2-text-to-image' || mode.value === 'qwen2-image-edit') return 800
   if (mode.value === 'image-edit') return 2000
   if (mode.value === 'z-image') return 1000
   return 5000
 })
+
+const isClassicQwenMode = computed(() => ['text-to-image', 'image-to-image', 'image-edit'].includes(mode.value))
+
+const imageSizeOptionsByMode = {
+  'text-to-image': ['square', 'square_hd', 'portrait_4_3', 'portrait_16_9', 'landscape_4_3', 'landscape_16_9'],
+  'image-edit': ['square', 'square_hd', 'portrait_4_3', 'portrait_16_9', 'landscape_4_3', 'landscape_16_9'],
+  'qwen2-text-to-image': ['1:1', '3:4', '4:3', '9:16', '16:9'],
+  'qwen2-image-edit': ['1:1', '2:3', '3:2', '3:4', '4:3', '9:16', '16:9', '21:9']
+}
+
+const imageSizeLabelMap = {
+  square: 'Square',
+  square_hd: 'Square HD',
+  portrait_4_3: '3:4',
+  portrait_16_9: '9:16',
+  landscape_4_3: '4:3',
+  landscape_16_9: '16:9',
+  '1:1': '1:1',
+  '2:3': '2:3',
+  '3:2': '3:2',
+  '3:4': '3:4',
+  '4:3': '4:3',
+  '9:16': '9:16',
+  '16:9': '16:9',
+  '21:9': '21:9'
+}
+
+const currentImageSizeOptions = computed(() => imageSizeOptionsByMode[mode.value] || [])
 
 const getAuthToken = () => {
   if (!import.meta.client) return null
@@ -412,7 +449,7 @@ async function handleImageFile(files) {
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
   if (!p || p.length > promptMaxLength.value) return false
-  if (mode.value === 'image-to-image' || mode.value === 'image-edit') return !!formData.imageUrl
+  if (mode.value === 'image-to-image' || mode.value === 'image-edit' || mode.value === 'qwen2-image-edit') return !!formData.imageUrl
   return true
 })
 
@@ -546,6 +583,25 @@ async function generate() {
         outputFormat: formData.outputFormat,
         negativePrompt: (formData.negativePrompt || '').trim() || undefined
       }
+    } else if (modeVal === 'qwen2-text-to-image') {
+      apiPath = '/api/image/qwen/v2-text-to-image'
+      body = {
+        model: 'qwen2-text-to-image',
+        prompt: p,
+        imageSize: formData.imageSize || '16:9',
+        seed: toNum(formData.seed),
+        outputFormat: formData.outputFormat || 'png'
+      }
+    } else if (modeVal === 'qwen2-image-edit') {
+      apiPath = '/api/image/qwen/v2-image-edit'
+      body = {
+        model: 'qwen2-image-edit',
+        prompt: p,
+        imageUrl: formData.imageUrl,
+        imageSize: formData.imageSize || '16:9',
+        seed: toNum(formData.seed),
+        outputFormat: formData.outputFormat || 'png'
+      }
     } else {
       apiPath = '/api/image/qwen/z-image'
       body = {
@@ -586,6 +642,10 @@ function downloadImage() {
 }
 
 watch(mode, (m) => {
+  if (m === 'qwen2-text-to-image' || m === 'qwen2-image-edit') {
+    formData.imageSize = '16:9'
+    formData.outputFormat = 'png'
+  }
   const path = modeTabToPath[m]
   if (path && route.path !== path) router.replace(path)
 })

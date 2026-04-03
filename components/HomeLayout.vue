@@ -82,8 +82,8 @@
           <div class="sub-nav" v-if="selectedCategory">
             <template v-for="subTool in getCurrentTools()" :key="subTool.id">
               <NuxtLink
-                v-if="toolRouteMap[subTool.name]"
-                :to="toolRouteMap[subTool.name]"
+                v-if="toolRouteMap[subTool.routeKey || subTool.name]"
+                :to="toolRouteMap[subTool.routeKey || subTool.name]"
                 class="sub-nav-item"
                 :class="{ active: selectedTool === subTool.id }"
               >

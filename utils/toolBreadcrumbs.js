@@ -9,6 +9,7 @@ export const TOOL_PARENT_LABEL_BY_SLUG = {
   seedream: 'Seedream',
   qwen: 'Qwen',
   imagen4: 'Imagen4',
+  grok: 'Grok',
   // audio
   suno: 'Suno',
   elevenlabs: 'Elevenlabs',
@@ -53,9 +54,17 @@ export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
   '/home/qwen/image-to-image': 'Image to Image',
   '/home/qwen/image-edit': 'Image Edit',
   '/home/qwen/z-image': 'Z-Image',
+  '/home/qwen/2-text-to-image': 'Qwen2 Text to Image',
+  '/home/qwen/2-image-edit': 'Qwen2 Image Edit',
   '/home/imagen4/imagen4-generate': 'Imagen4 Generate',
   '/home/imagen4/imagen4-fast': 'Imagen4 Fast',
   '/home/imagen4/imagen4-ultra': 'Imagen4 Ultra',
+  '/home/grok/text-to-image': 'Text to Image',
+  '/home/grok/image-to-image': 'Image to Image',
+  '/home/grok/text-to-video': 'Text to Video',
+  '/home/grok/image-to-video': 'Image to Video',
+  '/home/grok/upscale': 'Upscale',
+  '/home/grok/extend': 'Extend',
   // audio
   '/home/suno/generate': 'Generate',
   '/home/suno/extend': 'Extend',
@@ -105,6 +114,13 @@ export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
   '/home/kling/v3-0-video': 'V3.0 Video'
 }
 
+const PARENT_TO_OVERRIDES_BY_ROUTE = {
+  '/home/grok/text-to-video': '/home/grok/text-to-video',
+  '/home/grok/image-to-video': '/home/grok/text-to-video',
+  '/home/grok/upscale': '/home/grok/text-to-video',
+  '/home/grok/extend': '/home/grok/text-to-video'
+}
+
 export function getToolBreadcrumbByRoute(routePath = '', fallbackCurrent = '') {
   const path = (routePath || '').replace(/\/$/, '')
   const segments = path.split('/').filter(Boolean)
@@ -126,7 +142,9 @@ export function getToolBreadcrumbByRoute(routePath = '', fallbackCurrent = '') {
       currentLabel: parentLabel || fallbackCurrent || ''
     }
   }
-  const parentTo = isToolChildRoute && parentLabel ? `/home/${toolSlug}` : ''
+  const parentTo = isToolChildRoute && parentLabel
+    ? (PARENT_TO_OVERRIDES_BY_ROUTE[path] || `/home/${toolSlug}`)
+    : ''
   const currentLabel = isToolChildRoute
     ? (CHILD_LABEL_OVERRIDES_BY_ROUTE[path] || fallbackCurrent || parentLabel)
     : (parentLabel || fallbackCurrent || '')

@@ -133,6 +133,8 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/qwen/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/z-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/qwen2-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/qwen2-image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-fast", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-ultra", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },

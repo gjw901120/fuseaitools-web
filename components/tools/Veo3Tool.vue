@@ -412,7 +412,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, inject, watch, onMounted } from 'vue'
+import { ref, reactive, computed, inject, watch, onMounted, onBeforeUnmount } from 'vue'
 import UploadImage from './common/UploadImage.vue'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
@@ -510,20 +510,69 @@ const formData = reactive({
 const EXTEND_LIST_MODEL = 'veo3'
 const extendList = ref([])
 const loadingExtendList = ref(false)
-const fetchExtendList = async () => {
+const hasLoadedExtendList = ref(false)
+const getSharedExtendListCache = () => {
+  if (!import.meta.client) return null
+  const key = '__fuseExtendListCache__'
+  const root = globalThis
+  root[key] = root[key] || {}
+  root[key][EXTEND_LIST_MODEL] = root[key][EXTEND_LIST_MODEL] || { data: null, promise: null }
+  return root[key][EXTEND_LIST_MODEL]
+}
+const isUnmounted = ref(false)
+let extendListFetchTimer = null
+const queueFetchExtendList = () => {
+  if (extendListFetchTimer) clearTimeout(extendListFetchTimer)
+  // Delay one tick so the leaving instance can unmount before requesting.
+  extendListFetchTimer = setTimeout(() => {
+    extendListFetchTimer = null
+    if (isUnmounted.value) return
+    if (route.path !== '/home/veo3/extend') return
+    fetchExtendList()
+  }, 0)
+}
+const fetchExtendList = async (force = false) => {
+  if (!import.meta.client) return
+  if (loadingExtendList.value) return
+  if (!force && hasLoadedExtendList.value) return
+  const shared = getSharedExtendListCache()
+  if (!force && shared?.data) {
+    extendList.value = Array.isArray(shared.data) ? shared.data : []
+    hasLoadedExtendList.value = true
+    return
+  }
   loadingExtendList.value = true
   try {
-    const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
-    extendList.value = Array.isArray(data) ? data : []
+    if (shared?.promise) {
+      await shared.promise
+      extendList.value = Array.isArray(shared.data) ? shared.data : []
+    } else {
+      const request = get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
+      if (shared) shared.promise = request
+      const data = await request
+      const list = Array.isArray(data) ? data : []
+      extendList.value = list
+      if (shared) shared.data = list
+    }
+    hasLoadedExtendList.value = true
   } catch {
     extendList.value = []
   } finally {
+    if (shared) shared.promise = null
     loadingExtendList.value = false
   }
 }
 watch(() => formData.generationType, (type) => {
-  if (type === 'VIDEO_EXTEND') fetchExtendList()
+  if (type === 'VIDEO_EXTEND') queueFetchExtendList()
 }, { immediate: true })
+
+onBeforeUnmount(() => {
+  isUnmounted.value = true
+  if (extendListFetchTimer) {
+    clearTimeout(extendListFetchTimer)
+    extendListFetchTimer = null
+  }
+})
 
 // 结果数据
 const result = ref(null)
