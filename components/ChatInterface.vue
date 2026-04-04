@@ -187,6 +187,14 @@ const config = useRuntimeConfig()
 const route = useRoute()
 const { token, user } = useAuth()
 
+// 仅在这些路径下请求 chat-detail。离开聊天页时全局 route 可能先变为视频等路由，旧实例仍会收到 record-id，误打 chat-detail。
+const CHAT_DETAIL_ROUTE_PATHS = new Set([
+  '/home/gpt/generate',
+  '/home/gemini/generate',
+  '/home/deepseek/generate',
+  '/home/claude/generate'
+])
+
 // 计算用户头像
 const userAvatar = computed(() => {
   if (user.value?.avatar && user.value.avatar.trim()) {
@@ -235,6 +243,7 @@ const routeRecordId = computed(() => route.query['record-id'] || '')
 
 async function loadChatDetailByRecordId(recordId) {
   if (!recordId || !process.client) return
+  if (!CHAT_DETAIL_ROUTE_PATHS.has(route.path)) return
   chatDetailLoading.value = true
   try {
     const url = `/api/records/chat-detail?record-id=${encodeURIComponent(recordId)}`
@@ -264,6 +273,7 @@ async function loadChatDetailByRecordId(recordId) {
 watch(
   () => route.query['record-id'],
   (recordId) => {
+    if (!CHAT_DETAIL_ROUTE_PATHS.has(route.path)) return
     if (recordId) loadChatDetailByRecordId(recordId)
     else {
       chatMessages.value = []
