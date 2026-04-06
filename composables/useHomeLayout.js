@@ -488,7 +488,65 @@ export const useHomeLayout = () => {
     'grok-imagine-text-to-video': '/home/grok/text-to-video',
     'grok-imagine-image-to-video': '/home/grok/image-to-video',
     'grok-imagine-upscale': '/home/grok/upscale',
-    'grok-imagine-extend': '/home/grok/extend'
+    'grok-imagine-extend': '/home/grok/extend',
+    // Seedream（与 PRICING / 后端 model 一致）
+    'seedream-5-lite-text-to-image': '/home/seedream/5-lite-text-to-image',
+    'seedream-5-lite-image-to-image': '/home/seedream/5-lite-image-to-image',
+    // Kling：定价与 KlingTool 使用 kling- 前缀，与上表短 key 并存
+    'kling-v2-5-turbo-image-to-video-pro': '/home/kling/v2-5-turbo-image-to-video-pro',
+    'kling-v2-5-turbo-text-to-video-pro': '/home/kling/v2-5-turbo-text-to-video-pro',
+    'kling-2.6-text-to-video': '/home/kling/v2-6-text-to-video',
+    'kling-2.6-image-to-video': '/home/kling/v2-6-image-to-video',
+    'kling-2.6-motion-control': '/home/kling/v2-6-motion-control',
+    'kling-3.0-motion-control': '/home/kling/v3-0-motion-control',
+    'kling-ai-avatar-standard': '/home/kling/ai-avatar-standard',
+    'kling-ai-avatar-pro': '/home/kling/ai-avatar-pro',
+    'kling-3.0-video': '/home/kling/v3-0-video',
+    // Hailuo：接口/历史常用 hailuo- 前缀（旧 key 仍为 2-3-*）
+    'hailuo-2-3-image-to-video-pro': '/home/hailuo/image-to-video-pro',
+    'hailuo-2-3-image-to-video-standard': '/home/hailuo/image-to-video-standard',
+    // Wan
+    'wan-2-6-text-to-video': '/home/wan/text-to-video',
+    'wan-2-6-image-to-video': '/home/wan/image-to-video',
+    'wan-2-6-video-to-video': '/home/wan/video-to-video',
+    // Seedance（v1 系列）
+    'seedance-v1-lite-text-to-video': '/home/seedance/v1-lite-text-to-video',
+    'seedance-v1-lite-image-to-video': '/home/seedance/v1-lite-image-to-video',
+    'seedance-v1-pro-text-to-video': '/home/seedance/v1-pro-text-to-video',
+    'seedance-v1-pro-image-to-video': '/home/seedance/v1-pro-image-to-video',
+    'seedance-v1-pro-fast-image-to-video': '/home/seedance/v1-pro-fast-image-to-video',
+    // Qwen
+    'qwen-text-to-image': '/home/qwen/text-to-image',
+    'qwen-image-to-image': '/home/qwen/image-to-image',
+    'qwen-image-edit': '/home/qwen/image-edit',
+    'qwen-z-image': '/home/qwen/z-image',
+    'qwen2-text-to-image': '/home/qwen/qwen2-text-to-image',
+    'qwen2-image-edit': '/home/qwen/qwen2-image-edit',
+    // Ideogram
+    'ideogram-v3-text-to-image': '/home/ideogram/v3-text-to-image',
+    'ideogram-v3-edit': '/home/ideogram/v3-edit',
+    'ideogram-v3-remix': '/home/ideogram/v3-remix',
+    'ideogram-v3-reframe': '/home/ideogram/v3-reframe',
+    'ideogram-character': '/home/ideogram/character',
+    'ideogram-character-edit': '/home/ideogram/character-edit',
+    'ideogram-character-remix': '/home/ideogram/character-remix',
+    // GPT Image
+    'gpt-image-1.5-text-to-image': '/home/gpt-image/text-to-image',
+    'gpt-image-1.5-image-to-image': '/home/gpt-image/image-to-image',
+    // GPT 4o Image（历史 model 字段）
+    gpt_4o_image: '/home/gpt-4o-image/generate',
+    'gpt-4o-image': '/home/gpt-4o-image/generate',
+    // Flux Kontext Pro/Max（定价下划线 key，与 flux-2 并列）
+    flux_kontext_pro: '/home/flux-kontext/generate',
+    flux_kontext_max: '/home/flux-kontext/generate',
+    'flux-kontext-pro': '/home/flux-kontext/generate',
+    'flux-kontext-max': '/home/flux-kontext/generate',
+    // Midjourney：PRICING 有独立 modelKey，前端仅 imagine/upscale/vary 三页，其余落到 imagine
+    midjourney_blend: '/home/midjourney/imagine',
+    midjourney_describe: '/home/midjourney/imagine',
+    midjourney_swapface: '/home/midjourney/imagine',
+    // Luma（定价 key 常为大写 Luma，历史转小写）
+    luma: '/home/luma/generate'
   }
 
   // 分类 -> 路由前缀（用于防止异常 model 导致串路由）
