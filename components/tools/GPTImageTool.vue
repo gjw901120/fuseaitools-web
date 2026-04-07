@@ -166,6 +166,13 @@
           </button>
         </div>
         <div class="result-container">
+          <div v-if="!isDetailView && route.path === '/home/gpt-image/text-to-image'" class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/gpt-image-candid-street-fashion-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create natural candid fashion editorials - no more stiff poses</a>
+              <a href="https://www.fuseaitools.com/news/gpt-image-pet-emotional-portrait-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Capture the story in your pet's eyes with AI - create heartfelt emotional imagery</a>
+            </div>
+          </div>
           <!-- 详情页：根据 record-id 轮询展示 -->
           <template v-if="isDetailView">
             <div v-if="Number(detailData?.status) === 3" class="detail-failure-state">
@@ -532,6 +539,33 @@ const clearResults = () => {
 .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; margin-bottom: 16px; }
 .result-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: #1e293b; }
 .result-container { flex: 1; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 16px; align-content: flex-start; }
+.tutorial-showcase {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
+}
 .result-item { border-radius: 8px; overflow: hidden; background: #f1f5f9; }
 .result-image { max-width: 100%; max-height: 70vh; display: block; }
 .payload-json { margin: 0; padding: 12px; font-size: 12px; background: #0f172a; color: #e2e8f0; white-space: pre-wrap; }
