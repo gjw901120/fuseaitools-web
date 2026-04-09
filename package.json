@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "baseline-browser-mapping": "latest",
     "nuxt": "^3.13.0"
   },
   "dependencies": {

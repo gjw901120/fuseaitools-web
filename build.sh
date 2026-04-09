@@ -6,6 +6,16 @@ set -e
 
 echo "🔨 开始构建流程..."
 
+# 兼容 docker compose v2 和 docker-compose v1
+if docker compose version >/dev/null 2>&1; then
+    COMPOSE_CMD="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+    COMPOSE_CMD="docker-compose"
+else
+    echo "❌ 未找到 Docker Compose（docker compose / docker-compose）"
+    exit 1
+fi
+
 # 步骤 1: 先手动拉取基础镜像（避免构建时拉取失败）
 echo "📥 拉取基础镜像 node:20-alpine..."
 docker pull node:20-alpine || {
@@ -20,10 +30,10 @@ export COMPOSE_DOCKER_CLI_BUILD=0
 
 # 步骤 3: 构建镜像（使用本地已拉取的镜像）
 echo "📦 正在构建应用镜像..."
-docker-compose build --pull=false || {
+$COMPOSE_CMD build --pull=false || {
     echo "❌ 构建失败"
     exit 1
 }
 
 echo "✅ 构建完成！"
-echo "🚀 启动服务: docker-compose up -d"
+echo "🚀 启动服务: $COMPOSE_CMD up -d"

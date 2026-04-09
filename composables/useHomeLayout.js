@@ -473,7 +473,6 @@ export const useHomeLayout = () => {
     '2-6-image-to-video': '/home/kling/v2-6-image-to-video',
     '2-6-motion-control': '/home/kling/v2-6-motion-control',
     '3-0-motion-control': '/home/kling/v3-0-motion-control',
-    'kling-3.0-motion-control': '/home/kling/v3-0-motion-control',
     'ai-avatar-standard': '/home/kling/ai-avatar-standard',
     'ai-avatar-pro': '/home/kling/ai-avatar-pro',
     '3-0-video': '/home/kling/v3-0-video',
