@@ -1,9 +1,12 @@
+import { assertMidjourneyEnabled } from '../../utils/assertMidjourneyEnabled.js'
+
 /**
  * Midjourney Describe 接口（代理）
  * 后端：POST /api/midjourney/describe
  * 请求体：imageUrl (必填)
  */
 export default defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event)
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/midjourney/describe`

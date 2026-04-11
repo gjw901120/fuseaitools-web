@@ -271,6 +271,7 @@ const { token } = useAuth()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 const router = useRouter()
 const route = useRoute()
 
@@ -501,7 +502,7 @@ const handleImageUpdate = async (files) => {
   if (!files || (Array.isArray(files) && files.length === 0)) { form.image_url = ''; return }
   isUploadingImage.value = true
   try {
-    const urls = await uploadFilesToUrls(Array.isArray(files) ? files : [files])
+    const urls = await getUrlsForFiles(Array.isArray(files) ? files : [files], uploadFilesToUrls)
     form.image_url = urls[0] || ''
   } catch (e) {
     showError(e.message || 'Upload failed')
@@ -516,7 +517,7 @@ const handleMaskUpdate = async (files) => {
   if (!files || (Array.isArray(files) && files.length === 0)) { form.mask_url = ''; return }
   isUploadingMask.value = true
   try {
-    const urls = await uploadFilesToUrls(Array.isArray(files) ? files : [files])
+    const urls = await getUrlsForFiles(Array.isArray(files) ? files : [files], uploadFilesToUrls)
     form.mask_url = urls[0] || ''
   } catch (e) {
     showError(e.message || 'Upload failed')
@@ -531,7 +532,7 @@ const handleRefsUpdate = async (files) => {
   if (!files || (Array.isArray(files) && files.length === 0)) { form.reference_image_urls = []; return }
   isUploadingRefs.value = true
   try {
-    const urls = await uploadFilesToUrls(Array.isArray(files) ? files : [files])
+    const urls = await getUrlsForFiles(Array.isArray(files) ? files : [files], uploadFilesToUrls)
     form.reference_image_urls = urls || []
   } catch (e) {
     showError(e.message || 'Upload failed')

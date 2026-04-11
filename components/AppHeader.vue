@@ -5,7 +5,7 @@
     <ClientOnly>
       <div v-if="!isAuthenticated" class="top-banner">
         <div class="top-banner-content">
-          Sign up and get 100 credits — use all models on the platform for free.
+          Sign up and get 77 credits — use all models on the platform for free.
         </div>
       </div>
     </ClientOnly>

@@ -1,9 +1,12 @@
+import { assertMidjourneyEnabled } from '../../utils/assertMidjourneyEnabled.js'
+
 /**
  * Midjourney Blend 接口（代理）
  * 后端：POST /api/midjourney/blend
  * 请求体：imageUrls (2-5), dimensions? (PORTRAIT|SQUARE|LANDSCAPE)
  */
 export default defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event)
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/midjourney/blend`

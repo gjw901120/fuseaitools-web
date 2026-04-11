@@ -1,3 +1,0 @@
-import style_0 from './turbo-2-5-styles-1.mjs-DGg4HLvd.js';
-import style_1 from './turbo-2-5-styles-1.mjs-DGg4HLvd.js';
-export default [style_0, style_1]

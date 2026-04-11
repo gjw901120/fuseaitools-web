@@ -296,6 +296,7 @@ const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 const modeList = [
   { id: 'v1-lite-text-to-video', label: 'v1 Lite T2V', icon: 'fas fa-font' },
@@ -472,12 +473,14 @@ async function handlePro15ImageFiles(files) {
   isUploadingPro15Images.value = true
   try {
     const list = Array.isArray(files) ? files.slice(0, 2) : [files]
-    const urls = []
-    for (const f of list) {
-      const url = await uploadFileToUrl(f)
-      if (url) urls.push(url)
-    }
-    formData.inputUrls = urls
+    const urls = await getUrlsForFiles(list, async (need) => {
+      const out = []
+      for (const f of need) {
+        out.push(await uploadFileToUrl(f))
+      }
+      return out
+    })
+    formData.inputUrls = urls.filter(Boolean)
   } catch (e) {
     showError(e?.message || 'Upload failed')
     formData.inputUrls = []

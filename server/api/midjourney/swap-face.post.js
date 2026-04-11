@@ -1,9 +1,12 @@
+import { assertMidjourneyEnabled } from '../../utils/assertMidjourneyEnabled.js'
+
 /**
  * Midjourney Swap Face 接口（代理）
  * 后端：POST /api/midjourney/swap-face
  * 请求体：imageUrl (必填，源人脸图), targetImageUrl? (可选，被替换人脸的图)
  */
 export default defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event)
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/midjourney/swap-face`

@@ -1,9 +1,12 @@
+import { assertMidjourneyEnabled } from '../../utils/assertMidjourneyEnabled.js'
+
 /**
  * Midjourney Vary 接口（代理）
  * 后端：POST /api/midjourney/vary
  * 请求体：taskId (必填), imageIndex (必填 1-4), waterMark? (可选)
  */
 export default defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event)
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/midjourney/vary`

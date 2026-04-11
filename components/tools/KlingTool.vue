@@ -372,6 +372,7 @@ const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 const modeList = [
   { id: 'v2-5-turbo-image-to-video-pro', label: 'v2.5 Turbo I2V Pro', icon: 'fas fa-image' },
@@ -802,12 +803,14 @@ async function handleKlingElementImages(eIdx, files) {
       showError('Element requires 2-50 images')
       return
     }
-    const urls = []
-    for (const f of fileList) {
-      const url = await uploadOneFile(f)
-      if (url) urls.push(url)
-    }
-    el.element_input_urls = urls
+    const urls = await getUrlsForFiles(fileList, async (need) => {
+      const out = []
+      for (const f of need) {
+        out.push(await uploadOneFile(f))
+      }
+      return out
+    })
+    el.element_input_urls = urls.filter(Boolean)
   } catch (e) {
     showError(e?.message || 'Upload failed')
     el.element_input_urls = []
@@ -826,12 +829,14 @@ async function handleKlingShotElementImages(shotIdx, files) {
       showError('Element requires 2-50 images')
       return
     }
-    const urls = []
-    for (const f of fileList) {
-      const url = await uploadOneFile(f)
-      if (url) urls.push(url)
-    }
-    shot.element.element_input_urls = urls
+    const urls = await getUrlsForFiles(fileList, async (need) => {
+      const out = []
+      for (const f of need) {
+        out.push(await uploadOneFile(f))
+      }
+      return out
+    })
+    shot.element.element_input_urls = urls.filter(Boolean)
   } catch (e) {
     showError(e?.message || 'Upload failed')
     shot.element.element_input_urls = []

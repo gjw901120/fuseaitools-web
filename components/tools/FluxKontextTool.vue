@@ -438,6 +438,7 @@ const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 const tabList = [
   { id: 'generate', label: 'Generate', icon: 'fas fa-wand-magic-sparkles' },
@@ -702,7 +703,7 @@ const handleFlux2InputImages = async (files) => {
   isUploadingFlux2Images.value = true
   try {
     const selected = (Array.isArray(files) ? files : [files]).slice(0, 8)
-    const urls = await uploadFilesAndGetUrls(selected)
+    const urls = await getUrlsForFiles(selected, uploadFilesAndGetUrls)
     flux2Form.inputUrls = urls
   } catch (error) {
     showError(error.message || 'Failed to upload image(s)', 5000)

@@ -635,6 +635,24 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
+      "/home/midjourney-imagine": {
+        "redirect": {
+          "to": "/home",
+          "statusCode": 302
+        }
+      },
+      "/home/midjourney-upscale": {
+        "redirect": {
+          "to": "/home",
+          "statusCode": 302
+        }
+      },
+      "/home/midjourney-vary": {
+        "redirect": {
+          "to": "/home",
+          "statusCode": 302
+        }
+      },
       "/home/suno-extend": {
         "redirect": {
           "to": "/home/suno/extend",
@@ -713,24 +731,6 @@ const _inlineRuntimeConfig = {
           "statusCode": 301
         }
       },
-      "/home/midjourney-imagine": {
-        "redirect": {
-          "to": "/home/midjourney/imagine",
-          "statusCode": 301
-        }
-      },
-      "/home/midjourney-upscale": {
-        "redirect": {
-          "to": "/home/midjourney/upscale",
-          "statusCode": 301
-        }
-      },
-      "/home/midjourney-vary": {
-        "redirect": {
-          "to": "/home/midjourney/vary",
-          "statusCode": 301
-        }
-      },
       "/home/nano-banana-edit": {
         "redirect": {
           "to": "/home/nano-banana/edit",
@@ -798,7 +798,8 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "apiBase": "http://127.0.0.1:8080/api"
+    "apiBase": "http://127.0.0.1:8080/api",
+    "midjourneyEnabled": false
   }
 };
 const envOptions = {
@@ -1172,7 +1173,7 @@ const _yKfkBnlgr_QRBXTJ32FyYNKAUZra9TMuwX9rc3uOGM = (function(nitro) {
 
 const rootDir = "C:/project/fuseaitools-web";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, Suno and Midjourney. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis."},{"name":"keywords","content":"all-in-one platform, chat models, video models, image models, radio models, simply ai tools"}],"link":[{"rel":"shortcut icon","href":"/favicon.ico"},{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"32x32","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"16x16","href":"/favicon.ico"},{"rel":"apple-touch-icon","sizes":"180x180","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"}],"style":[],"script":[],"noscript":[],"title":"FuseAITools: The All-in-One AI Platform","htmlAttrs":{"lang":"en"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, and Suno. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis."},{"name":"keywords","content":"all-in-one platform, chat models, video models, image models, radio models, simply ai tools"}],"link":[{"rel":"shortcut icon","href":"/favicon.ico"},{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"32x32","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"16x16","href":"/favicon.ico"},{"rel":"apple-touch-icon","sizes":"180x180","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"}],"style":[],"script":[],"noscript":[],"title":"FuseAITools: The All-in-One AI Platform","htmlAttrs":{"lang":"en"}};
 
 const appRootTag = "div";
 
@@ -3864,7 +3865,19 @@ const liteTextToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.de
   default: liteTextToImage_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+function assertMidjourneyEnabled(event) {
+  var _a;
+  const cfg = useRuntimeConfig(event);
+  if (!((_a = cfg.public) == null ? void 0 : _a.midjourneyEnabled)) {
+    throw createError({
+      statusCode: 503,
+      statusMessage: "Midjourney is temporarily unavailable"
+    });
+  }
+}
+
 const blend_post = defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event);
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/blend`;
@@ -3890,6 +3903,7 @@ const blend_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const describe_post = defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event);
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/describe`;
@@ -3915,6 +3929,7 @@ const describe_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const imagine_post = defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event);
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/imagine`;
@@ -3940,6 +3955,7 @@ const imagine_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProp
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const swapFace_post = defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event);
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/swap-face`;
@@ -3965,6 +3981,7 @@ const swapFace_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePro
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const upscale_post$2 = defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event);
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/upscale`;
@@ -3990,6 +4007,7 @@ const upscale_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProp
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const vary_post = defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event);
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
   const targetUrl = `${apiBase}/midjourney/vary`;
@@ -5575,7 +5593,9 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/hailuo/image-to-video-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/hailuo/image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" }
   ];
-  const pages = [...staticPages, ...newsPages];
+  const midjourneyEnabled = Boolean(useRuntimeConfig(event).public.midjourneyEnabled);
+  const staticPagesForSitemap = midjourneyEnabled ? staticPages : staticPages.filter((p) => !String(p.loc).includes("midjourney"));
+  const pages = [...staticPagesForSitemap, ...newsPages];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((page) => `  <url>

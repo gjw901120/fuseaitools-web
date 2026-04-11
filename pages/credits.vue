@@ -177,6 +177,7 @@ useHead({
 })
 
 const router = useRouter()
+const midjourneyEnabled = Boolean(useRuntimeConfig().public.midjourneyEnabled)
 const loading = ref(false)
 const refundLoading = ref(false)
 const { showError, showSuccess } = useToast()
@@ -302,7 +303,7 @@ const modelToPathMap = {
     Luma: '/home/luma/generate',
     default: '/home/luma/generate'
   },
-  Midjourney: { default: '/home/midjourney/imagine' },
+  Midjourney: { default: midjourneyEnabled ? '/home/midjourney/imagine' : '/home' },
   'GPT 4o Image': { default: '/home/gpt-4o-image/generate' },
   'GPT Image': { default: '/home/gpt-image/text-to-image' },
   'Ideogram': { default: '/home/ideogram/v3-text-to-image' },

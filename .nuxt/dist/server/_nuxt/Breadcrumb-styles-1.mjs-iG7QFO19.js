@@ -1,5 +1,0 @@
-const Breadcrumb_vue_vue_type_style_index_0_scoped_945c9a8d_lang = '.breadcrumb[data-v-945c9a8d]{padding:12px 0}.breadcrumb-list[data-v-945c9a8d]{align-items:center;display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}.breadcrumb-item[data-v-945c9a8d]{align-items:center;color:#6b7280;display:flex;font-size:14px}.breadcrumb-item[data-v-945c9a8d]:not(:last-child):after{color:#d1d5db;content:"/";margin-left:8px}.breadcrumb-link[data-v-945c9a8d]{align-items:center;color:#6b7280;display:flex;gap:6px;text-decoration:none;transition:color .2s ease}.breadcrumb-link[data-v-945c9a8d]:hover{color:#3b82f6}.breadcrumb-link i[data-v-945c9a8d]{font-size:12px}.breadcrumb-current[data-v-945c9a8d]{color:#1f2937;font-weight:500}@media (max-width:768px){.breadcrumb[data-v-945c9a8d]{padding:8px 0}.breadcrumb-list[data-v-945c9a8d]{font-size:12px;gap:6px}.breadcrumb-link span[data-v-945c9a8d]{display:none}.breadcrumb-link i[data-v-945c9a8d]{display:block}}';
-export {
-  Breadcrumb_vue_vue_type_style_index_0_scoped_945c9a8d_lang as default
-};
-//# sourceMappingURL=Breadcrumb-styles-1.mjs-iG7QFO19.js.map

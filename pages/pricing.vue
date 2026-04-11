@@ -510,7 +510,7 @@ const faqs = ref([
   },
   {
     question: 'Is there a free trial/experience?',
-    answer: '<ul><li>Register now and get 100 points immediately.</li><li>These points can be used to enjoy all AI models on the platform without the need to bind a payment method or subscribe to any package.</li></ul>',
+    answer: '<ul><li>Register now and get 77 points immediately.</li><li>These points can be used to enjoy all AI models on the platform without the need to bind a payment method or subscribe to any package.</li></ul>',
     isOpen: false
   },
   {

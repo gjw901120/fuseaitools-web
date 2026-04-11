@@ -1,9 +1,34 @@
+// Midjourney 总开关：同时驱动下方 routeRules / prerender 与 runtimeConfig.public.midjourneyEnabled（勿再从 utils 文件 import，避免 Nitro dev 错误解析到 C:\\utils\\...）
+const MIDJOURNEY_ENABLED = false
+
+const midjourneyLegacyRedirects = MIDJOURNEY_ENABLED
+  ? {
+      '/home/midjourney-imagine': { redirect: { to: '/home/midjourney/imagine', statusCode: 301 } },
+      '/home/midjourney-upscale': { redirect: { to: '/home/midjourney/upscale', statusCode: 301 } },
+      '/home/midjourney-vary': { redirect: { to: '/home/midjourney/vary', statusCode: 301 } }
+    }
+  : {
+      '/home/midjourney-imagine': { redirect: { to: '/home', statusCode: 302 } },
+      '/home/midjourney-upscale': { redirect: { to: '/home', statusCode: 302 } },
+      '/home/midjourney-vary': { redirect: { to: '/home', statusCode: 302 } }
+    }
+
+const midjourneyPrerenderRoutes = MIDJOURNEY_ENABLED
+  ? [
+      '/home/midjourney',
+      '/home/midjourney/imagine',
+      '/home/midjourney/upscale',
+      '/home/midjourney/vary'
+    ]
+  : []
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
 
   // SEO：服务端 301 永久重定向（仅旧二级路径 -> 新三级路径；父路径 /home/{tool} 已改为静态详情页，不再 301）
   routeRules: {
+    ...midjourneyLegacyRedirects,
     // 旧二级路径 -> 新三级路径
     '/home/suno-extend': { redirect: { to: '/home/suno/extend', statusCode: 301 } },
     '/home/suno-generate': { redirect: { to: '/home/suno/generate', statusCode: 301 } },
@@ -18,9 +43,6 @@ export default defineNuxtConfig({
     '/home/runway-generate': { redirect: { to: '/home/runway/generate', statusCode: 301 } },
     '/home/runway-extend': { redirect: { to: '/home/runway/extend', statusCode: 301 } },
     '/home/runway-aleph': { redirect: { to: '/home/runway/aleph', statusCode: 301 } },
-    '/home/midjourney-imagine': { redirect: { to: '/home/midjourney/imagine', statusCode: 301 } },
-    '/home/midjourney-upscale': { redirect: { to: '/home/midjourney/upscale', statusCode: 301 } },
-    '/home/midjourney-vary': { redirect: { to: '/home/midjourney/vary', statusCode: 301 } },
     '/home/nano-banana-edit': { redirect: { to: '/home/nano-banana/edit', statusCode: 301 } },
     '/home/nano-banana-pro': { redirect: { to: '/home/nano-banana/pro-generate', statusCode: 301 } },
     '/home/elevenlabs-multilingual-v2': { redirect: { to: '/home/elevenlabs/multilingual-v2', statusCode: 301 } },
@@ -62,7 +84,7 @@ export default defineNuxtConfig({
         '/home/flux-kontext',
         '/home/nano-banana',
         '/home/imagen4',
-        '/home/midjourney',
+        ...midjourneyPrerenderRoutes,
         '/home/suno',
         '/home/elevenlabs',
         '/home/veo3',
@@ -91,9 +113,6 @@ export default defineNuxtConfig({
         '/home/nano-banana/edit',
         '/home/nano-banana/pro-generate',
         '/home/nano-banana/nano-banana-2',
-        '/home/midjourney/imagine',
-        '/home/midjourney/upscale',
-        '/home/midjourney/vary',
         '/home/veo3/text-to-video',
         '/home/veo3/first-and-last-to-video',
         '/home/veo3/reference-to-video',
@@ -156,7 +175,7 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: 'all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, Suno and Midjourney. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis.' },
+        { hid: 'description', name: 'description', content: 'all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, and Suno. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis.' },
         { name: 'keywords', content: 'all-in-one platform, chat models, video models, image models, radio models, simply ai tools' }
       ],
       link: [
@@ -192,7 +211,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE
-        || (process.env.NODE_ENV === 'production' ? 'https://api.fuseaitools.com/api' : 'http://127.0.0.1:8080/api')
+        || (process.env.NODE_ENV === 'production' ? 'https://api.fuseaitools.com/api' : 'http://127.0.0.1:8080/api'),
+      midjourneyEnabled: MIDJOURNEY_ENABLED
     }
   }
 })

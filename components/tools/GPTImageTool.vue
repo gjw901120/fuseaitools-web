@@ -226,6 +226,7 @@ const { showError } = useToast()
 const { post } = useApi()
 const { token } = useAuth()
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 const router = useRouter()
 const route = useRoute()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
@@ -402,7 +403,7 @@ const handleImageUpdate = async (files) => {
   const list = Array.isArray(files) ? files : [files]
   isUploadingImage.value = true
   try {
-    form.input_urls = await uploadFilesToUrls(list)
+    form.input_urls = await getUrlsForFiles(list, uploadFilesToUrls)
   } catch (e) {
     showError(e.message || 'Failed to upload image')
     form.input_urls = []

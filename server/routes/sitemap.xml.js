@@ -163,7 +163,12 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/hailuo/image-to-video-pro', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' }
   ]
 
-  const pages = [...staticPages, ...newsPages]
+  const midjourneyEnabled = Boolean(useRuntimeConfig(event).public.midjourneyEnabled)
+  const staticPagesForSitemap = midjourneyEnabled
+    ? staticPages
+    : staticPages.filter((p) => !String(p.loc).includes('midjourney'))
+
+  const pages = [...staticPagesForSitemap, ...newsPages]
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

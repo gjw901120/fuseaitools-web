@@ -1,9 +1,12 @@
+import { assertMidjourneyEnabled } from '../../utils/assertMidjourneyEnabled.js'
+
 /**
  * Midjourney Upscale 接口（代理）
  * 后端：POST /api/midjourney/upscale
  * 请求体：taskId (必填), imageIndex (必填 0-3), waterMark? (可选)
  */
 export default defineEventHandler(async (event) => {
+  assertMidjourneyEnabled(event)
   const body = await readBody(event)
   const apiBase = getEffectiveApiBase(event)
   const targetUrl = `${apiBase}/midjourney/upscale`

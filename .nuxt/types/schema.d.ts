@@ -65,6 +65,8 @@ declare module 'nuxt/schema' {
   }
   interface PublicRuntimeConfig {
    apiBase: string,
+
+   midjourneyEnabled: boolean,
   }
 }
 declare module 'vue' {

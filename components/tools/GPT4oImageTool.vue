@@ -245,6 +245,7 @@ const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 // 折扣展示文本
 const discountText = computed(() => {
@@ -294,45 +295,47 @@ const handleReferenceImages = async (files) => {
 
   isUploadingRefs.value = true
   try {
-    const formDataUpload = new FormData()
-    files.forEach(file => formDataUpload.append('file', file))
+    const urls = await getUrlsForFiles(files, async (need) => {
+      const formDataUpload = new FormData()
+      need.forEach(file => formDataUpload.append('file', file))
 
-    const headers = { Accept: 'application/json' }
-    const authToken = getAuthToken()
-    if (authToken) headers['Authorization'] = `Bearer ${authToken}`
+      const headers = { Accept: 'application/json' }
+      const authToken = getAuthToken()
+      if (authToken) headers['Authorization'] = `Bearer ${authToken}`
 
-    const response = await fetch(batchUploadUrl, {
-      method: 'POST',
-      headers,
-      body: formDataUpload,
-      credentials: 'include'
+      const response = await fetch(batchUploadUrl, {
+        method: 'POST',
+        headers,
+        body: formDataUpload,
+        credentials: 'include'
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        const msg =
+          (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
+            ? errorData.errorMessage.trim()
+            : (typeof errorData?.message === 'string' && errorData.message.trim())
+              ? errorData.message.trim()
+              : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
+        throw new Error(msg)
+      }
+
+      const data = await response.json()
+      let parsed = []
+      if (data.errorCode === '00000' && data.data?.urls && Array.isArray(data.data.urls)) {
+        parsed = data.data.urls
+      } else if (data.data?.urls && Array.isArray(data.data.urls)) {
+        parsed = data.data.urls
+      } else if (data.fileUrls && Array.isArray(data.fileUrls)) {
+        parsed = data.fileUrls
+      }
+
+      if (parsed.length === 0) {
+        throw new Error('Invalid response: file URLs not found')
+      }
+      return parsed
     })
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      // 优先使用后端 errorMessage（{ errorCode, errorMessage, type, data }）；代理抛出时在 message 里
-      const msg =
-        (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
-          ? errorData.errorMessage.trim()
-          : (typeof errorData?.message === 'string' && errorData.message.trim())
-            ? errorData.message.trim()
-            : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
-      throw new Error(msg)
-    }
-
-    const data = await response.json()
-    let urls = []
-    if (data.errorCode === '00000' && data.data?.urls && Array.isArray(data.data.urls)) {
-      urls = data.data.urls
-    } else if (data.data?.urls && Array.isArray(data.data.urls)) {
-      urls = data.data.urls
-    } else if (data.fileUrls && Array.isArray(data.fileUrls)) {
-      urls = data.fileUrls
-    }
-
-    if (urls.length === 0) {
-      throw new Error('Invalid response: file URLs not found')
-    }
 
     formData.filesUrl = urls
     uploadedFiles.value = files.map((file, i) => ({

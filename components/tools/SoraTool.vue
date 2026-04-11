@@ -402,6 +402,7 @@ const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 const { fetchRecordDetailOnce, pollRecordByStatus, pollRecordDetail } = useRecordPolling()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 // 详情页：URL 携带 record-id 时拉取并展示详情
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -638,7 +639,7 @@ const handleSoraImagesUpdate = async (files) => {
   const list = Array.isArray(files) ? files : [files]
   isUploadingImages.value = true
   try {
-    form.input.image_urls = await uploadFilesToUrls(list)
+    form.input.image_urls = await getUrlsForFiles(list, uploadFilesToUrls)
   } catch (e) {
     showError(e.message || 'Failed to upload images')
     form.input.image_urls = []

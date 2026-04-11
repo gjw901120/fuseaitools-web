@@ -843,6 +843,7 @@ watch(() => route.query['record-id'], (recordId) => {
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 const discountText = computed(() => {
   const rate = Number(discount?.value ?? 1)
@@ -965,7 +966,7 @@ const handleEditImageUpdate = async (files) => {
   }
   isUploadingEdit.value = true
   try {
-    editFormData.image_urls = await uploadFilesToUrls(fileList)
+    editFormData.image_urls = await getUrlsForFiles(fileList, uploadFilesToUrls)
   } catch (error) {
     console.error('Edit images upload error:', error)
     showError(error.message || 'Failed to upload images')
@@ -990,7 +991,7 @@ const handleProImageUpdate = async (files) => {
   }
   isUploadingPro.value = true
   try {
-    proFormData.image_input = await uploadFilesToUrls(fileList)
+    proFormData.image_input = await getUrlsForFiles(fileList, uploadFilesToUrls)
   } catch (error) {
     console.error('Pro images upload error:', error)
     showError(error.message || 'Failed to upload images')
@@ -1013,7 +1014,7 @@ const handleNano2ImageUpdate = async (files) => {
   }
   isUploadingNano2.value = true
   try {
-    nano2FormData.image_input = await uploadFilesToUrls(fileList)
+    nano2FormData.image_input = await getUrlsForFiles(fileList, uploadFilesToUrls)
   } catch (error) {
     console.error('Nano Banana 2 images upload error:', error)
     showError(error.message || 'Failed to upload images')

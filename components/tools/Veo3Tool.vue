@@ -448,6 +448,7 @@ function getVeo3RecordPath() {
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 const { token } = useAuth()
 const { showError, showSuccess } = useToast()
 const { post, get } = useApi()
@@ -766,7 +767,7 @@ const handleImageUpdate = async (files) => {
   }
   isUploadingImages.value = true
   try {
-    formData.imageUrls = await uploadFilesToUrls(list)
+    formData.imageUrls = await getUrlsForFiles(list, uploadFilesToUrls)
   } catch (e) {
     showError(e.message || 'Failed to upload images')
     formData.imageUrls = []

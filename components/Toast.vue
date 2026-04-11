@@ -75,21 +75,26 @@ onUnmounted(() => {
 <style scoped>
 .toast-container {
   position: relative;
-  min-width: 320px;
-  max-width: 500px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-sizing: border-box;
+  min-width: min(320px, 100%);
+  max-width: min(500px, calc(100vw - 48px));
+  background: linear-gradient(145deg, #fff1f2 0%, #ffe4e6 45%, #fef2f2 100%);
+  border: 1px solid #fecdd3;
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 16px 48px rgba(225, 29, 72, 0.1),
+    0 0 0 1px rgba(251, 113, 133, 0.45);
   backdrop-filter: blur(10px);
   width: 100%;
 }
 
 .toast-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 16px;
   padding: 24px 28px;
+  min-width: 0;
 }
 
 .toast-icon {
@@ -105,23 +110,25 @@ onUnmounted(() => {
 }
 
 .toast-error .toast-icon {
-  color: #ef4444;
+  color: #e11d48;
 }
 
 .toast-success .toast-icon {
-  color: #10b981;
+  color: #0d9488;
 }
 
 .toast-warning .toast-icon {
-  color: #f59e0b;
+  color: #d97706;
 }
 
 .toast-info .toast-icon {
-  color: #3b82f6;
+  color: #e11d48;
 }
 
 .toast-message-wrapper {
   flex: 1;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,15 +138,19 @@ onUnmounted(() => {
 .toast-message {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #374151;
+  color: #881337;
   text-align: center;
   width: 100%;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .toast-close {
   background: none;
   border: none;
-  color: #6b7280;
+  color: #64748b;
   font-size: 16px;
   cursor: pointer;
   padding: 4px;
@@ -151,25 +162,24 @@ onUnmounted(() => {
 }
 
 .toast-close:hover {
-  color: #1f2937;
+  color: #be123c;
 }
 
-/* 类型特定的边框颜色 */
+/* 淡红底 + 左侧细色条区分类型 */
 .toast-error {
-  border: 2px solid #fee2e2;
-  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-left: 4px solid #fb7185;
 }
 
 .toast-success {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid #2dd4bf;
 }
 
 .toast-warning {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid #fbbf24;
 }
 
 .toast-info {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #f43f5e;
 }
 
 /* 动画 */
@@ -205,7 +215,7 @@ onUnmounted(() => {
 
 @media (max-width: 640px) {
   .toast-container {
-    min-width: 280px;
+    min-width: 0;
     max-width: calc(100vw - 40px);
   }
 }

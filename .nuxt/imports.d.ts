@@ -33,6 +33,7 @@ export { useApi } from '../composables/useApi';
 export { fetchWithCache, useApiCache } from '../composables/useApiCache';
 export { useAuth } from '../composables/useAuth';
 export { useBatchUploadUrl } from '../composables/useBatchUploadUrl';
+export { useFileUploadUrlCache } from '../composables/useFileUploadUrlCache';
 export { useHomeLayout } from '../composables/useHomeLayout';
 export { useMjApi } from '../composables/useMjApi';
 export { getPriceRangeFromData, useModelPrice } from '../composables/useModelPrice';

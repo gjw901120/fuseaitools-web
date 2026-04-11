@@ -12,21 +12,21 @@ const route = useRoute()
 const router = useRouter()
 const { login } = useAuth()
 
-// SEO 配置：突出 AI tools free、注册送 100 credits
+// SEO 配置：突出 AI tools free、注册送 77 credits
 useHead({
-  title: 'AI Tools Free - FuseAI Tools | 100+ AI Models, 100 Credits on Sign Up',
+  title: 'AI Tools Free - FuseAI Tools | 100+ AI Models, 77 Credits on Sign Up',
   meta: [
     { 
       name: 'description', 
-      content: 'AI tools free: access 100+ AI models in one platform—ChatGPT, Claude, Midjourney, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more. Register now and get 100 credits free. Free AI chat, image, video, and audio tools.' 
+      content: 'AI tools free: access 100+ AI models in one platform—ChatGPT, Claude, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more. Register now and get 77 credits free. Free AI chat, image, video, and audio tools.' 
     },
     { 
       name: 'keywords', 
-      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Midjourney, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 100 credits free' 
+      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 77 credits free' 
     },
     // Open Graph tags
-    { property: 'og:title', content: 'AI Tools Free | FuseAI Tools - 100 Credits on Sign Up' },
-    { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 100 credits free. ChatGPT, Claude, Midjourney, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
+    { property: 'og:title', content: 'AI Tools Free | FuseAI Tools - 77 Credits on Sign Up' },
+    { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 77 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://fuseaitools.com' },
     { property: 'og:image', content: 'https://fuseaitools.com/og-image.jpg' },
@@ -34,8 +34,8 @@ useHead({
     { property: 'og:locale', content: 'en_US' },
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'AI Tools Free | FuseAI Tools - 100 Credits on Sign Up' },
-    { name: 'twitter:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 100 credits free.' },
+    { name: 'twitter:title', content: 'AI Tools Free | FuseAI Tools - 77 Credits on Sign Up' },
+    { name: 'twitter:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 77 credits free.' },
     { name: 'twitter:image', content: 'https://fuseaitools.com/og-image.jpg' },
     // Additional meta tags
     { name: 'author', content: 'FuseAI Tools' },
@@ -56,7 +56,7 @@ useHead({
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
         "logo": "https://fuseaitools.com/favicon.ico",
-        "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 100 credits free. ChatGPT, Claude, Midjourney, Veo3, ElevenLabs, Suno and more.",
+        "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 77 credits free. ChatGPT, Claude, Ideogram, Veo3, ElevenLabs, Suno and more.",
         "sameAs": [
           // Add social media links if available
         ],
@@ -74,7 +74,7 @@ useHead({
         "@type": "WebSite",
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
-        "description": "AI tools free: 100+ AI models in one platform. Sign up for 100 free credits.",
+        "description": "AI tools free: 100+ AI models in one platform. Sign up for 77 free credits.",
         "potentialAction": {
           "@type": "SearchAction",
           "target": {

@@ -164,6 +164,7 @@ const { token } = useAuth()
 const { showError } = useToast()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 onMounted(() => { fetchPrices() })
 
 const getAuthToken = () => {
@@ -316,19 +317,23 @@ async function handleFiles(files) {
     form.imageUrls = []
     return
   }
-  const fd = new FormData()
-  ;(Array.isArray(files) ? files : [files]).forEach((f) => fd.append('file', f))
+  const list = Array.isArray(files) ? files : [files]
   const headers = { Accept: 'application/json' }
   const authToken = getAuthToken()
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`
   try {
-    const res = await fetch(batchUploadUrl, { method: 'POST', headers, body: fd, credentials: 'include' })
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      throw new Error(err?.errorMessage || err?.message || 'Upload failed')
-    }
-    const data = await res.json()
-    form.imageUrls = data?.data?.urls || data?.fileUrls || []
+    form.imageUrls = await getUrlsForFiles(list, async (need) => {
+      const fd = new FormData()
+      need.forEach((f) => fd.append('file', f))
+      const res = await fetch(batchUploadUrl, { method: 'POST', headers, body: fd, credentials: 'include' })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err?.errorMessage || err?.message || 'Upload failed')
+      }
+      const data = await res.json()
+      const urls = data?.data?.urls || data?.fileUrls || []
+      return Array.isArray(urls) ? urls : []
+    })
   } catch (e) {
     form.imageUrls = []
     showError(e?.message || 'Upload failed')

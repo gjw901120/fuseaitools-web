@@ -11,11 +11,11 @@
             Access over 100 AI models and tools in one platform—Chat, Image, Audio, and Video. Everything you need to work smarter.
           </p>
           <p class="hero-credits">
-            <strong>Register now and get <span class="credits-highlight">100 credits free</span>.</strong> No credit card required.
+            <strong>Register now and get <span class="credits-highlight">77 credits free</span>.</strong> No credit card required.
           </p>
           <div class="hero-actions">
             <button class="btn-primary" @click="startFreeTrial">
-              Get 100 Free Credits
+              Get 77 Free Credits
             </button>
             <button class="btn-secondary" @click="exploreProducts">
               Explore AI Tools Free

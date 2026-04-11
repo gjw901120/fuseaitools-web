@@ -213,6 +213,7 @@ const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 const modeTabToPath = {
   'text-to-video': '/home/wan/text-to-video',
@@ -368,7 +369,7 @@ async function handleImageFiles(files) {
   const list = Array.isArray(files) ? files : [files]
   isUploadingImages.value = true
   try {
-    formData.imageUrls = await uploadFilesToUrls(list)
+    formData.imageUrls = await getUrlsForFiles(list, uploadFilesToUrls)
   } catch (e) {
     showError(e?.message || 'Upload failed')
     formData.imageUrls = []

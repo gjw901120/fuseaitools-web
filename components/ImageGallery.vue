@@ -83,7 +83,10 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const router = useRouter()
+const midjourneyEnabled = Boolean(useRuntimeConfig().public.midjourneyEnabled)
 
 const scrollToTop = () => {
   setTimeout(() => {
@@ -120,7 +123,7 @@ const chatModels = ref([
   }
 ])
 
-const imageModels = ref([
+const imageModelsList = [
   {
     title: 'Midjourney',
     logo: '/tools-logo/Midjourney.png',
@@ -171,7 +174,11 @@ const imageModels = ref([
     logo: '/tools-logo/Grok.png',
     route: '/home/grok'
   }
-])
+]
+
+const imageModels = computed(() =>
+  midjourneyEnabled ? imageModelsList : imageModelsList.filter((m) => m.title !== 'Midjourney')
+)
 
 const audioModels = ref([
   {

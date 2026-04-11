@@ -3,8 +3,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { useState } from 'nuxt/app'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
-
 export const useHomeLayout = () => {
+  const midjourneyEnabled = Boolean(useRuntimeConfig().public.midjourneyEnabled)
+
   const router = useRouter()
   const route = useRoute()
   const { get } = useApi()
@@ -153,7 +154,7 @@ export const useHomeLayout = () => {
   ])
 
   // 所有工具数据
-  const allTools = ref([
+  const allToolsList = [
     // Chat 工具
     {
       id: 1,
@@ -384,7 +385,11 @@ export const useHomeLayout = () => {
       rating: 4.6,
       usageCount: 0
     }
-  ])
+  ]
+
+  const allTools = computed(() =>
+    midjourneyEnabled ? allToolsList : allToolsList.filter((t) => t.name !== 'Midjourney')
+  )
 
   // 当前显示的历史记录（来自 API）；useState 保证切换 tab 后仍显示已加载列表，无需重复请求
   const usageHistory = useState('home-history-list', () => [])
@@ -609,6 +614,9 @@ export const useHomeLayout = () => {
     }
 
     if (!path) return null
+    if (!midjourneyEnabled && path.startsWith('/home/midjourney')) {
+      path = '/home'
+    }
     const recordId = record.recordId || (typeof record.id === 'string' ? record.id : null)
     if (!recordId) return path
     return `${path}?record-id=${encodeURIComponent(recordId)}`

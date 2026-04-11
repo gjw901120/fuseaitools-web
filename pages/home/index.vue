@@ -96,9 +96,6 @@
           <!-- Luma 工具组件 -->
           <LumaTool v-else-if="getSelectedToolInfo().name === 'Luma'" />
           
-          <!-- Midjourney 工具组件 -->
-          <MidjourneyTool v-else-if="getSelectedToolInfo().name === 'Midjourney'" />
-          
           <!-- GPT 4o Image 工具组件 -->
           <GPT4oImageTool v-else-if="getSelectedToolInfo().name === 'GPT 4o Image'" />
           <!-- GPT Image 工具组件 -->
@@ -212,7 +209,6 @@
 import Veo3Tool from '~/components/tools/Veo3Tool.vue'
 import RunwayTool from '~/components/tools/RunwayTool.vue'
 import LumaTool from '~/components/tools/LumaTool.vue'
-import MidjourneyTool from '~/components/tools/MidjourneyTool.vue'
 import GPT4oImageTool from '~/components/tools/GPT4oImageTool.vue'
 import GPTImageTool from '~/components/tools/GPTImageTool.vue'
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
@@ -234,13 +230,14 @@ import { watch, provide, onMounted, onUnmounted, nextTick } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
+const midjourneyEnabled = Boolean(useRuntimeConfig().public.midjourneyEnabled)
 
 // 工具名称到路由的映射
 const toolRouteMap = {
   'Veo3': '/home/veo3/text-to-video',
   'Runway': '/home/runway/generate',
   'Luma': '/home/luma/generate',
-  'Midjourney': '/home/midjourney/imagine',
+  ...(midjourneyEnabled ? { Midjourney: '/home/midjourney/imagine' } : {}),
   'GPT 4o Image': '/home/gpt-4o-image/generate',
   'GPT Image': '/home/gpt-image/text-to-image',
   'Ideogram': '/home/ideogram/v3-text-to-image',
@@ -490,7 +487,7 @@ const allHistoryData = [
 const usageHistory = ref([])
 
 // 所有工具数据
-const allTools = ref([
+const allToolsList = [
   // Chat 工具
   {
     id: 1,
@@ -714,7 +711,11 @@ const allTools = ref([
     rating: 4.8,
     usageCount: 1200
   }
-])
+]
+
+const allTools = computed(() =>
+  midjourneyEnabled ? allToolsList : allToolsList.filter((t) => t.name !== 'Midjourney')
+)
 
 // 方法
 const formatTime = (timestamp) => {

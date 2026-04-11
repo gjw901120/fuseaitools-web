@@ -315,6 +315,7 @@ const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 // 折扣文本
 const discountText = computed(() => {
@@ -572,7 +573,7 @@ const handleFileUrlsUpdate = async (files) => {
   }
   const list = Array.isArray(files) ? files : [files]
   try {
-    form.fileUrls = await uploadFilesToUrls(list)
+    form.fileUrls = await getUrlsForFiles(list, uploadFilesToUrls)
   } catch (e) {
     showError(e.message || 'Failed to upload images')
     form.fileUrls = []

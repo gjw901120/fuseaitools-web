@@ -5,7 +5,7 @@
       :key="toast.id"
       :message="toast.message"
       :type="toast.type"
-      :duration="toast.duration || 5000"
+      :duration="toast.duration ?? 3000"
       @close="removeToast(toast.id)"
     />
   </div>
@@ -13,11 +13,6 @@
 
 <script setup>
 const { toasts, removeToast } = useToast()
-
-// 调试：监听 toasts 变化
-watch(toasts, (newToasts) => {
-  console.log('Toasts updated:', newToasts.length, newToasts)
-}, { deep: true })
 </script>
 
 <style scoped>
@@ -32,13 +27,16 @@ watch(toasts, (newToasts) => {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  max-width: 500px;
-  width: auto;
+  box-sizing: border-box;
+  width: min(500px, calc(100vw - 40px));
+  max-width: min(500px, calc(100vw - 40px));
+  padding: 0 20px;
 }
 
-/* 让 Toast 本身可以接收点击事件 */
+/* 让 Toast 本身可以接收点击事件；子项可收缩避免长文案撑出视口 */
 .toast-wrapper :deep(.toast-container) {
   pointer-events: auto;
+  max-width: 100%;
 }
 
 @media (max-width: 640px) {
@@ -46,7 +44,8 @@ watch(toasts, (newToasts) => {
     left: 50%;
     right: auto;
     width: calc(100% - 40px);
-    max-width: 500px;
+    max-width: calc(100% - 40px);
+    padding: 0 20px;
   }
 }
 </style>
