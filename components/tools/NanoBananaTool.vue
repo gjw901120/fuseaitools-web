@@ -1203,9 +1203,6 @@ const generateImageV2 = async () => {
       detailData.value = null
       generatedImages.value = []
       await router.push(target)
-      if (String(getRouteRecordId()) === String(recordId)) {
-        loadDetailByRecordId(String(recordId))
-      }
       return
     }
     const url = data?.outputUrls?.[0] ?? data?.url ?? data?.imageUrl ?? data?.data?.url ?? data?.data?.imageUrl

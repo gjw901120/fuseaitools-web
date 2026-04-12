@@ -244,6 +244,15 @@
           </div>
         </div>
 
+        <div v-if="!isDetailView && route.path === '/home/seedance/v1-lite-image-to-video'" class="tutorial-showcase">
+          <p class="tutorial-showcase-title">🎬 Tutorial Showcase</p>
+          <div class="tutorial-showcase-links">
+            <a href="/news/city-then-now-ai-time-travel-video-tutorial-en" class="tutorial-link">
+              City Then &amp; Now: AI time-travel video — core scene, first/last frames, Seedance v1 Lite I2V
+            </a>
+          </div>
+        </div>
+
         <div class="video-container">
           <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
             <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
@@ -388,6 +397,8 @@ const isGenerating = ref(false)
 const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
+/** 与 Ideogram 等一致：防止同 record-id 并发重复拉详情（如 router.push 后 watch 与手动加载叠加） */
+const loadingRecordId = ref(null)
 
 const isTextToVideoMode = computed(() => mode.value === 'v1-lite-text-to-video' || mode.value === 'v1-pro-text-to-video')
 const isImageMode = computed(() => [
@@ -547,6 +558,8 @@ function fillFormFromOriginalData(originalData) {
 
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
   detailData.value = null
   try {
     let data = await fetchRecordDetailOnce(recordId)
@@ -562,10 +575,16 @@ async function loadDetailByRecordId(recordId) {
       }
     }
   } catch (e) { console.error('Seedance load record detail failed:', e) }
+  finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
 }
 watch(() => route.query['record-id'], (recordId) => {
   if (recordId) loadDetailByRecordId(recordId)
-  else detailData.value = null
+  else {
+    loadingRecordId.value = null
+    detailData.value = null
+  }
 }, { immediate: true })
 
 function clearResults() {
@@ -660,14 +679,11 @@ async function generate() {
     const data = await post(apiPath, body)
     const rid = data?.recordId ?? data?.data?.recordId ?? data?.data?.id ?? data?.id
     if (rid) {
-      // 跳详情后立即触发一次加载，避免依赖路由 watch 的时序抖动
+      // 仅 router.push，由 route.query['record-id'] 的 watch（immediate）拉详情，避免与手动 load 重复请求
       const target = (modeTabToPath[modeVal] || '/home/seedance/v1-lite-text-to-video') + '?record-id=' + encodeURIComponent(rid)
       detailData.value = null
       result.value = null
       await router.push(target)
-      if (routeRecordId.value === String(rid)) {
-        loadDetailByRecordId(String(rid))
-      }
       return
     }
     const url = data?.videoUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)

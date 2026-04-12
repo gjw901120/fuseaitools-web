@@ -174,6 +174,7 @@ const isGenerating = ref(false)
 const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
 const detailData = ref(null)
+const loadingRecordId = ref(null)
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
   if (p.length === 0 || p.length > 5000) return false
@@ -221,6 +222,8 @@ const displayResult = computed(() => {
 
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
   detailData.value = null
   try {
     let data = await fetchRecordDetailOnce(recordId)
@@ -236,10 +239,16 @@ async function loadDetailByRecordId(recordId) {
       }
     }
   } catch (e) { console.error('Imagen4 load record detail failed:', e) }
+  finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
 }
 watch(() => route.query['record-id'], (recordId) => {
   if (recordId) loadDetailByRecordId(recordId)
-  else detailData.value = null
+  else {
+    loadingRecordId.value = null
+    detailData.value = null
+  }
 }, { immediate: true })
 
 async function generate() {
@@ -270,9 +279,6 @@ async function generate() {
       detailData.value = null
       result.value = null
       await router.push(target)
-      if (routeRecordId.value === String(rid)) {
-        loadDetailByRecordId(String(rid))
-      }
       return
     }
     const url = data?.imageUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)
