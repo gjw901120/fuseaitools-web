@@ -247,7 +247,7 @@
         <div v-if="!isDetailView && route.path === '/home/seedance/v1-lite-image-to-video'" class="tutorial-showcase">
           <p class="tutorial-showcase-title">🎬 Tutorial Showcase</p>
           <div class="tutorial-showcase-links">
-            <a href="/news/city-then-now-ai-time-travel-video-tutorial-en" class="tutorial-link">
+            <a href="/news/city-then-now-ai-time-travel-video-tutorial" class="tutorial-link">
               City Then &amp; Now: AI time-travel video — core scene, first/last frames, Seedance v1 Lite I2V
             </a>
           </div>
