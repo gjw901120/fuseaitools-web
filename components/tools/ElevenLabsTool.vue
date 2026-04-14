@@ -508,17 +508,28 @@
       <div class="result-panel">
         <div class="result-header">
           <h4>Generation Result</h4>
-          <div class="result-actions" v-if="!isDetailView && displayResult">
-            <button class="action-btn" @click="downloadResult" title="Download">
+          <div class="result-actions" v-if="displayResult">
+            <button v-if="isDetailView" class="action-btn" @click="downloadResult" title="Download">
               <i class="fas fa-download"></i>
             </button>
-            <button class="action-btn" @click="shareResult" title="Share">
+            <button v-if="!isDetailView" class="action-btn" @click="shareResult" title="Share">
               <i class="fas fa-share"></i>
             </button>
           </div>
         </div>
 
         <div class="result-content">
+          <div v-if="!isDetailView && route.path === '/home/elevenlabs/turbo-2-5'" class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/ai-social-short-video-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
+                Use AI Voice to Bring Short Videos to Life: A Social-First TTS Workflow
+              </a>
+              <a href="https://www.fuseaitools.com/news/epic-trailer-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
+                Create Epic Trailer Voiceovers with AI: Make Brand Promos More Impactful
+              </a>
+            </div>
+          </div>
           <!-- 详情页：status 3 失败 -->
           <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
             <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
@@ -2103,6 +2114,37 @@ const shareResult = () => {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+
+.tutorial-showcase {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
 }
 
 .detail-loading-state, .detail-failure-state {
