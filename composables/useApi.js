@@ -1,3 +1,5 @@
+import { getFetchErrorMessage, parseStandardApiJson } from '~/utils/parseStandardApiResponse.js'
+
 /** 生产环境 API 基地址（与 server/utils/getApiBase.js 一致） */
 const PRODUCTION_API_BASE = 'https://api.fuseaitools.com/api'
 
@@ -49,10 +51,11 @@ export const useApi = () => {
   /**
    * 统一的 API 请求方法
    * @param {string} url - 请求 URL
-   * @param {object} options - fetch 选项
+   * @param {object} options - fetch 选项；可传 silent: true 跳过 showError（仍会 throw）
    * @returns {Promise} 返回 data 或抛出错误
    */
   const apiRequest = async (url, options = {}) => {
+    const { silent = false, ...restOptions } = options
     try {
       // 获取认证 token
       const token = getAuthToken()
@@ -79,11 +82,11 @@ export const useApi = () => {
 
       // 在客户端使用 fetch，服务端使用 $fetch
       const fetchOptions = {
-        ...options,
+        ...restOptions,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          ...options.headers
+          ...restOptions.headers
         }
       }
       
@@ -100,35 +103,28 @@ export const useApi = () => {
       
       const response = await $fetch(finalUrl, fetchOptions)
 
-      // 检查响应结构
-      if (response && typeof response === 'object' && 'errorCode' in response) {
-        // 成功：errorCode === "00000"
-        if (response.errorCode === '00000') {
-          return response.data
-        } else {
-          // 失败：客户端使用公共弹窗显示 errorMessage，再抛出
-          const errorMessage = response.errorMessage || response.userTip || 'Request failed'
-          if (process.client) {
-            try {
-              const { showError } = useToast()
-              showError(errorMessage)
-            } catch (_) {}
-          }
-          const err = new Error(errorMessage)
-          err.__fromApi = true
-          throw err
-        }
+      const parsed = parseStandardApiJson(response)
+      if (parsed.kind === 'nonstandard') {
+        return response
       }
-
-      // 如果响应结构不符合预期，直接返回
-      return response
+      if (parsed.kind === 'success') {
+        return parsed.data
+      }
+      const errorMessage = parsed.errorMessage
+      if (process.client && !silent) {
+        try {
+          const { showError } = useToast()
+          showError(errorMessage)
+        } catch (_) {}
+      }
+      const err = new Error(errorMessage)
+      err.__fromApi = true
+      throw err
     } catch (error) {
       console.error('API request error:', error)
-      // 业务错误（上面 throw 的）直接抛出
       if (error.__fromApi) throw error
-      // 网络/HTTP 错误：客户端用公共弹窗显示，再抛出
-      const errorMessage = error.data?.errorMessage || error.data?.userTip || error.message || 'Network error. Please try again.'
-      if (process.client) {
+      const errorMessage = getFetchErrorMessage(error)
+      if (process.client && !silent) {
         try {
           const { showError } = useToast()
           showError(errorMessage)

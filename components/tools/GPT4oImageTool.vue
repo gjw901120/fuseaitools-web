@@ -310,22 +310,9 @@ const handleReferenceImages = async (files) => {
         credentials: 'include'
       })
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        const msg =
-          (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
-            ? errorData.errorMessage.trim()
-            : (typeof errorData?.message === 'string' && errorData.message.trim())
-              ? errorData.message.trim()
-              : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
-        throw new Error(msg)
-      }
-
-      const data = await response.json()
+      const data = await parseBatchUploadFetchResponse(response)
       let parsed = []
-      if (data.errorCode === '00000' && data.data?.urls && Array.isArray(data.data.urls)) {
-        parsed = data.data.urls
-      } else if (data.data?.urls && Array.isArray(data.data.urls)) {
+      if (data.data?.urls && Array.isArray(data.data.urls)) {
         parsed = data.data.urls
       } else if (data.fileUrls && Array.isArray(data.fileUrls)) {
         parsed = data.fileUrls

@@ -162,6 +162,12 @@ declare module "nitropack/types" {
     '/api/image/seedream/lite-text-to-image': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/seedream/lite-text-to-image.post').default>>>>
     }
+    '/api/image/wan/2-7-image-pro': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/wan/2-7-image-pro.post').default>>>>
+    }
+    '/api/image/wan/2-7-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/wan/2-7-image.post').default>>>>
+    }
     '/api/midjourney/blend': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/midjourney/blend.post').default>>>>
     }
@@ -309,6 +315,12 @@ declare module "nitropack/types" {
     '/api/video/seedance/pro-text-to-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/pro-text-to-video.post').default>>>>
     }
+    '/api/video/seedance/v2-fast': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/v2-fast.post').default>>>>
+    }
+    '/api/video/seedance/v2': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/seedance/v2.post').default>>>>
+    }
     '/api/video/sora-pro/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/sora-pro/generate.post').default>>>>
     }
@@ -332,6 +344,18 @@ declare module "nitropack/types" {
     }
     '/api/video/wan/text-to-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/text-to-video.post').default>>>>
+    }
+    '/api/video/wan/v27-image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/v27-image-to-video.post').default>>>>
+    }
+    '/api/video/wan/v27-r2v': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/v27-r2v.post').default>>>>
+    }
+    '/api/video/wan/v27-text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/v27-text-to-video.post').default>>>>
+    }
+    '/api/video/wan/v27-video-edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/v27-video-edit.post').default>>>>
     }
     '/api/video/wan/video-to-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/wan/video-to-video.post').default>>>>

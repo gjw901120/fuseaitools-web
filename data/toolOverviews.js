@@ -1302,14 +1302,20 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
   },
   wan: {
     title: 'Wan',
-    category: 'Video',
+    category: 'Image & Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Wan is Alibaba\'s AI video model, offering affordable multi-shot 1080p generation with stable characters and synchronized native audio. Through the Wan—including T2V, I2V, and reference-guided modes—you can create up to 15-second cinematic videos with improved motion logic, consistent visuals, and production-ready quality.',
+    intro: 'Wan is Alibaba\'s multimodal generation suite covering both image and video workflows. Beyond classic 2.6 video modes (T2V, I2V, V2V), Wan now supports 2.7 Image / Image Pro and four advanced 2.7 video modes: v2.7 Text to Video, v2.7 Image to Video, v2.7 Video Edit, and v2.7 R2V for richer control and production-ready outputs.',
     features: [
+      { name: 'Wan 2.7 Image', path: '/home/wan/2-7-image', description: 'Generate or edit images with model wan-2-7-image. Supports optional input_urls (up to 9), optional aspect ratio when no image input, sequential batch mode, n control, 1K/2K resolution, optional thinking mode (eligible conditions), color palette, bbox list, watermark, and seed.' },
+      { name: 'Wan 2.7 Image Pro', path: '/home/wan/2-7-image-pro', description: 'Pro image generation/editing with model wan-2-7-image-pro. Includes all Wan 2.7 Image controls plus 4K resolution support when no input image and sequential mode is off.' },
       { name: 'Text to Video', path: '/home/wan/text-to-video', description: 'Generate video directly from text prompts. Supports Chinese and English, 1–5000 characters. Choose duration (5, 10, or 15 seconds), resolution (720p or 1080p), and shot composition (single continuous shot or multiple shots with transitions).' },
       { name: 'Image to Video', path: '/home/wan/image-to-video', description: 'Animate static images with text guidance. Provide image URLs (min 256×256px; JPEG, PNG, WebP; max 10MB), add a prompt describing the motion or scene, and set duration, resolution, and multi-shot style. Perfect for bringing illustrations, product shots, or concept art to life.' },
-      { name: 'Video to Video', path: '/home/wan/video-to-video', description: 'Transform existing video with new prompts. Upload a video URL (MP4, MOV, MKV; max 10MB), describe the desired changes or style transfer in text, and control duration (5 or 10 seconds), resolution, and shot composition. Ideal for restyling, content adaptation, or creative remixing.' }
+      { name: 'Video to Video', path: '/home/wan/video-to-video', description: 'Transform existing video with new prompts. Upload a video URL (MP4, MOV, MKV; max 10MB), describe the desired changes or style transfer in text, and control duration (5 or 10 seconds), resolution, and shot composition. Ideal for restyling, content adaptation, or creative remixing.' },
+      { name: 'v2.7 Text to Video', path: '/home/wan/v2-7-text-to-video', description: 'Model fixed to wan-2-7-text-to-video. Required prompt (3–5000 chars), optional negative prompt/audio URL, 720p/1080p, ratio 16:9/9:16/1:1/4:3/3:4, duration 2–15s, prompt_extend, watermark, and seed.' },
+      { name: 'v2.7 Image to Video', path: '/home/wan/v2-7-image-to-video', description: 'Model fixed to wan-2-7-image-to-video. Required prompt (3–5000); at least one of first_frame_url, last_frame_url, first_clip_url, driving_audio_url; optional negative prompt; 720p/1080p, duration 2–15s, prompt_extend, watermark, seed.' },
+      { name: 'v2.7 Video Edit', path: '/home/wan/v2-7-video-edit', description: 'Model fixed to wan-2-7-videoedit. Required videoUrl and prompt (3–5000); optional negativePrompt/referenceImage; 720p/1080p, optional aspectRatio, duration 0 or 2–10s, audioSetting (auto/origin), promptExtend, watermark, seed.' },
+      { name: 'v2.7 R2V', path: '/home/wan/v2-7-r2v', description: 'Model fixed to wan-2-7-r2v. Required prompt (3–5000); referenceImage[] and/or referenceVideo[] (total ≤ 5); optional firstFrame (with it aspectRatio omitted), referenceVoice; 720p/1080p, aspectRatio, duration 2–10s, promptExtend, watermark, seed.' }
     ],
     sections: [
       {
@@ -1320,7 +1326,37 @@ Flexible, fast, and accessible: With support for both Chinese and English, multi
       },
       {
         title: 'Core capabilities',
-        content: `Text to Video
+        content: `Wan 2.7 Image
+
+Model: Fixed to wan-2-7-image.
+
+Prompt: Chinese/English supported, up to 5000 characters.
+
+Input: Optional input_urls (up to 9 images). If input images are provided, aspect ratio is hidden and not sent.
+
+Aspect ratio (no input image): 1:1, 16:9, 4:3, 21:9, 3:4, 9:16, 8:1, 1:8.
+
+Sequential mode: enable_sequential false by default. When false, n range is 1–4 (default 4). When true, n range is 1–12 (default 12).
+
+Resolution: 1K or 2K.
+
+Thinking mode: Available only when enable_sequential=false and no input_urls.
+
+Advanced controls: optional color_palette (3–10 colors, only when non-sequential), optional bbox_list for interactive edit regions, watermark toggle, seed 0–2147483647.
+
+Use cases: poster generation, product visual variants, style-consistent batch assets, guided local edits.
+
+Wan 2.7 Image Pro
+
+Model: Fixed to wan-2-7-image-pro.
+
+Same controls as Wan 2.7 Image, with extended resolution support: 1K / 2K / 4K.
+
+4K constraint: valid only when no input image and sequential mode is disabled.
+
+Use cases: high-resolution campaign key visuals, premium product renders, print-friendly hero assets.
+
+Text to Video
 
 Prompt: Natural language in Chinese or English, 1–5000 characters.
 
@@ -1362,7 +1398,11 @@ Use cases: Restyling existing content, adapting videos for different platforms, 
       },
       {
         title: 'Use cases',
-        content: `Social media content: Generate short videos for TikTok, Instagram Reels, YouTube Shorts—in the right duration and resolution.
+        content: `Image campaign production: Build social posters, ad variants, product galleries, and style-matched visual sets with Wan 2.7 Image / Image Pro.
+
+High-res hero assets: Use Wan 2.7 Image Pro (4K in eligible conditions) for launch banners, e-commerce covers, and high-impact brand creatives.
+
+Social media content: Generate short videos for TikTok, Instagram Reels, YouTube Shorts—in the right duration and resolution.
 
 Advertising and marketing: Create product demos, brand stories, and promotional clips from text briefs or existing assets.
 
@@ -1392,7 +1432,9 @@ Output: MP4 format, delivered via secure URL or direct download.`
       },
       {
         title: 'Workflow',
-        content: `Quick create (text-to-video): Write prompt → choose duration/resolution/shot style → generate → preview → iterate with refined prompt or parameters.
+        content: `Image workflow (Wan 2.7 Image / Pro): Write prompt → (optional) upload input image(s) → set n / resolution / sequential / optional advanced controls → generate → pick best outputs.
+
+Quick create (text-to-video): Write prompt → choose duration/resolution/shot style → generate → preview → iterate with refined prompt or parameters.
 
 Animate assets (image-to-video): Upload image → describe desired motion → set parameters → generate multiple variations → select best animation.
 
@@ -1402,11 +1444,13 @@ Batch production: Plan content calendar → generate multiple videos with consis
       },
       {
         title: 'Optimization tips',
-        content: `Prompt crafting: Be specific about motion, scene changes, and style. Example: "A product rotating slowly on a white background, studio lighting, smooth 360-degree view" vs. just "product video."
+        content: `Image prompt crafting (2.7 Image / Pro): Specify subject, style, composition, and constraints; for edit tasks, clearly state what to change and what to preserve.
+
+Prompt crafting: Be specific about motion, scene changes, and style. Example: "A product rotating slowly on a white background, studio lighting, smooth 360-degree view" vs. just "product video."
 
 Duration strategy: Use 5s for loops and quick social clips; 10–15s for storytelling or demonstrations.
 
-Resolution choice: 720p for drafts, quick reviews, and web-first content; 1080p for final assets, presentations, and HD platforms.
+Resolution choice: 720p for drafts, quick reviews, and web-first content; 1080p for final assets, presentations, and HD platforms. For 2.7 image workflows, use 1K/2K by default; use 4K (Pro only) when no input image and sequential is off.
 
 Shot composition: Single shot works best for focused subjects; multi-shot adds narrative depth—use when you need scene changes or progression.
 
@@ -1418,23 +1462,25 @@ Cost efficiency: Match duration and resolution to platform requirements; batch s
       },
       {
         title: 'Platform advantages',
-        content: `Multilingual support: Generate from prompts in Chinese or English—seamless for global teams.
+        content: `Unified image + video stack: Generate high-quality visuals with Wan 2.7 Image / Pro, then extend the same idea into motion with Wan video models.
+
+Multilingual support: Generate from prompts in Chinese or English—seamless for global teams.
 
 Flexible input modes: Text, image, or video—start from wherever your creative process begins.
 
 Duration control: 5, 10, or 15 seconds—fit any platform's requirements.
 
-HD quality: Up to 1080p resolution for professional-grade output.
+HD quality: Up to 1080p for video outputs and up to 4K (Wan 2.7 Image Pro in eligible scenarios) for image outputs.
 
 Shot composition: Single or multi-shot—choose the right narrative structure.
 
 Ease of use: Intuitive parameters, no video editing expertise required.
 
-Best for: Social media managers, marketers, content creators, educators, advertisers, and anyone needing fast, high-quality video generation.`
+Best for: Social media managers, marketers, designers, content creators, educators, advertisers, and anyone needing fast, high-quality image + video generation.`
       },
       {
         title: 'Try Wan on FuseAITools',
-        content: `Wan on FuseAITools makes video creation as simple as writing a sentence. Whether you're generating from scratch, animating images, or transforming existing footage, Wan delivers professional results in seconds. With full control over duration, resolution, and shot style, it's the all-in-one video solution for modern creators. Start bringing your ideas to motion today.`
+        content: `Wan on FuseAITools makes both image and video creation as simple as writing a sentence. Start with Wan 2.7 Image / Image Pro for key visuals, then move into T2V/I2V/V2V for motion outputs. With controls for ratio, batch size, sequential mode, quality, and advanced edits, Wan is a practical all-in-one visual generation stack for modern teams.`
       }
     ]
   },
@@ -1639,7 +1685,9 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
       { name: 'v1 Pro Text to Video', path: '/home/seedance/v1-pro-text-to-video', description: 'Professional text-to-video with expanded aspect ratios (21:9 to 9:16). Choose 480p/720p/1080p, 5s/10s duration, seed control, and safety checker. Higher quality output for production-ready assets.' },
       { name: 'v1 Pro Image to Video', path: '/home/seedance/v1-pro-image-to-video', description: 'Professional image animation with enhanced quality and detail. Full resolution and duration options, camera control, seed, and safety checker. Perfect for brand content and creative projects.' },
       { name: 'v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Ultra-fast image-to-video generation without compromising quality. 720p or 1080p resolution, 5s or 10s duration, and support for prompts up to 10,000 characters. Optimized for speed when you need results now.' },
-      { name: 'v1.5 Pro', path: '/home/seedance/v1-5-pro', description: 'Text-to-video or image-to-video in one mode. Prompt 3-2500 chars, optional 0-2 image inputs, aspect ratio 1:1 to 21:9, 480p/720p/1080p, duration 4/8/12s, fixed lens, and optional audio generation.' }
+      { name: 'v1.5 Pro', path: '/home/seedance/v1-5-pro', description: 'Text-to-video or image-to-video in one mode. Prompt 3-2500 chars, optional 0-2 image inputs, aspect ratio 1:1 to 21:9, 480p/720p/1080p, duration 4/8/12s, fixed lens, and optional audio generation.' },
+      { name: 'Seedance 2 Fast', path: '/home/seedance/v2-fast', description: 'Next-gen multimodal video generation with model seedance-2-fast. Prompt 3-20000 chars, optional first/last frame, reference images/videos/audios, 480p/720p, aspect ratio 1:1 to 21:9/adaptive, duration 4-15s, and required web search switch.' },
+      { name: 'Seedance 2', path: '/home/seedance/v2', description: 'Advanced multimodal video generation with model seedance-2. Same core controls as Seedance 2 Fast, with expanded reference video count support and production-oriented flexibility for complex scenes.' }
     ],
     sections: [
       {
@@ -1662,7 +1710,11 @@ Text to Video: All Lite aspect ratios plus 21:9 ultra-wide. Same resolution and 
 
 Image to Video: Professional-grade image animation with improved motion understanding and visual fidelity. Full resolution options, camera control, seed, safety checker.
 
-Pro Fast Image to Video: Optimized pipeline for speed. 720p or 1080p resolution, 5s or 10s duration, prompt support up to 10,000 characters. Delivers quality results in a fraction of the time.`
+Pro Fast Image to Video: Optimized pipeline for speed. 720p or 1080p resolution, 5s or 10s duration, prompt support up to 10,000 characters. Delivers quality results in a fraction of the time.
+
+Seedance 2 Fast: Model fixed to seedance-2-fast. Prompt 3-20000 chars. Optional first/last frame plus multimodal references (images/videos/audios) uploaded as URLs. Resolution: 480p/720p. Aspect ratio: 1:1, 4:3, 3:4, 16:9, 9:16, 21:9, adaptive. Duration: 4-15s. Web search flag required.
+
+Seedance 2: Model fixed to seedance-2. Same multimodal controls as 2 Fast, with expanded reference-video capacity for richer conditioning in complex scene generation.`
       },
       {
         title: 'Use cases',
@@ -1676,7 +1728,9 @@ Creative projects: Animate illustrations, bring concepts to life, experiment wit
 
 Content repurposing: Transform existing images into engaging video content for multiple platforms.
 
-Professional productions: Leverage Pro tier for client work, presentations, and assets requiring high visual fidelity.`
+Professional productions: Leverage Pro tier for client work, presentations, and assets requiring high visual fidelity.
+
+Reference-driven generation: Use Seedance 2 Fast / Seedance 2 with first/last frames and multi-reference media to control narrative continuity, style consistency, and audiovisual rhythm.`
       },
       {
         title: 'Technical performance',
@@ -1694,7 +1748,9 @@ Input formats: JPEG, PNG, WebP for images; max 10MB per file.
 
 Output: MP4 format, delivered via secure URL or direct download.
 
-Aspect ratio support: From 21:9 ultra-wide cinematic to 9:21 vertical—cover all modern formats.`
+Aspect ratio support: From 21:9 ultra-wide cinematic to 9:21 vertical—cover all modern formats.
+
+Seedance 2/2 Fast: Prompt limit extended to 20,000 characters; supports mixed reference inputs (image/video/audio), duration 4-15s, and adaptive aspect ratio for flexible outputs.`
       },
       {
         title: 'Workflow',
@@ -1704,7 +1760,9 @@ Professional production (Pro): Develop concept → refine prompt for detail → 
 
 Image animation: Upload image → describe motion or scene evolution → choose tier and parameters → generate → review → adjust prompt or end image as needed.
 
-Batch campaigns: Plan content calendar → generate multiple videos with consistent aspect ratios and quality settings → unify brand style across assets.`
+Batch campaigns: Plan content calendar → generate multiple videos with consistent aspect ratios and quality settings → unify brand style across assets.
+
+Multimodal control workflow (Seedance 2 / 2 Fast): Upload first/last frames and optional reference media → set resolution/aspect ratio/duration/web-search → generate and iterate with tighter scene control.`
       },
       {
         title: 'Optimization tips',
@@ -1722,7 +1780,9 @@ Seed management: Set specific seeds to reproduce successful results; use -1 for 
 
 Prompt engineering: Be specific about motion, style, and mood. For image-to-video, describe what should move and how.
 
-Pro Fast advantage: Use when speed is critical—ideation sessions, last-minute content needs, high-volume testing.`
+Pro Fast advantage: Use when speed is critical—ideation sessions, last-minute content needs, high-volume testing.
+
+Seedance 2 references: Keep first/last frames focused on key transition moments; combine image/video/audio references only when necessary to avoid over-constraining motion.`
       },
       {
         title: 'Platform advantages',
@@ -1736,9 +1796,11 @@ Camera control: Fixed option for stability or dynamic for creativity.
 
 Seed reproducibility: Consistent results across sessions for brand continuity.
 
-Ultra-long prompts: Up to 10,000 characters for detailed direction in Pro Fast mode.
+Ultra-long prompts: Up to 20,000 characters in Seedance 2 / 2 Fast for highly detailed creative direction.
 
 Fast image-to-video: Dedicated Pro Fast pipeline when time matters most.
+
+Multimodal generation: Seedance 2 / 2 Fast supports first+last frame control and mixed references (image/video/audio) for advanced conditioning.
 
 Best for: Social media managers, marketers, content creators, advertisers, creative agencies, and anyone needing flexible, high-quality video generation.`
       },

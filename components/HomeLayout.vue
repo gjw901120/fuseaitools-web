@@ -205,12 +205,15 @@ provide('addToUsageHistory', addToUsageHistory)
   margin-top: 0;
   overflow: hidden;
   min-height: 0;
+  min-width: 0;
   flex: 1;
 }
 
 /* 左侧边栏 - 20% */
 .left-sidebar {
-  width: 20%;
+  flex: 0 0 20%;
+  min-width: 0;
+  max-width: 20%;
   background: white;
   border-right: 1px solid #e2e8f0;
   display: flex;
@@ -496,7 +499,9 @@ provide('addToUsageHistory', addToUsageHistory)
 
 /* 右侧主区域 - 80% */
 .right-main {
-  width: 80%;
+  /* 与 20% 侧栏并排：用 flex 吃剩余宽度，避免 width:80% 与 min-content 叠加把整行撑出视口 */
+  flex: 1 1 0%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -617,6 +622,7 @@ provide('addToUsageHistory', addToUsageHistory)
 .tool-interface-slot {
   flex: 1;
   min-height: 0;
+  min-width: 0;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -630,7 +636,9 @@ provide('addToUsageHistory', addToUsageHistory)
   }
   
   .left-sidebar {
+    flex: 0 0 auto;
     width: 100%;
+    max-width: none;
     height: 300px;
     border-right: none;
     border-bottom: 1px solid #e2e8f0;

@@ -5,6 +5,7 @@ declare global {
   const TOOL_PARENT_LABEL_BY_SLUG: typeof import('../../utils/toolBreadcrumbs')['TOOL_PARENT_LABEL_BY_SLUG']
   const abortNavigation: typeof import('../../node_modules/nuxt/dist/app/composables/router')['abortNavigation']
   const addRouteMiddleware: typeof import('../../node_modules/nuxt/dist/app/composables/router')['addRouteMiddleware']
+  const assertBatchUploadSuccess: typeof import('../../composables/useBatchUploadUrl')['assertBatchUploadSuccess']
   const callOnce: typeof import('../../node_modules/nuxt/dist/app/composables/once')['callOnce']
   const cancelIdleCallback: typeof import('../../node_modules/nuxt/dist/app/compat/idle-callback')['cancelIdleCallback']
   const clearError: typeof import('../../node_modules/nuxt/dist/app/composables/error')['clearError']
@@ -30,6 +31,7 @@ declare global {
   const getAppManifest: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']
   const getCurrentInstance: typeof import('../../node_modules/vue')['getCurrentInstance']
   const getCurrentScope: typeof import('../../node_modules/vue')['getCurrentScope']
+  const getFetchErrorMessage: typeof import('../../utils/parseStandardApiResponse')['getFetchErrorMessage']
   const getPriceRangeFromData: typeof import('../../composables/useModelPrice')['getPriceRangeFromData']
   const getRouteRules: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']
   const getToolBreadcrumbByRoute: typeof import('../../utils/toolBreadcrumbs')['getToolBreadcrumbByRoute']
@@ -68,6 +70,8 @@ declare global {
   const onServerPrefetch: typeof import('../../node_modules/vue')['onServerPrefetch']
   const onUnmounted: typeof import('../../node_modules/vue')['onUnmounted']
   const onUpdated: typeof import('../../node_modules/vue')['onUpdated']
+  const parseBatchUploadFetchResponse: typeof import('../../composables/useBatchUploadUrl')['parseBatchUploadFetchResponse']
+  const parseStandardApiJson: typeof import('../../utils/parseStandardApiResponse')['parseStandardApiJson']
   const prefetchComponents: typeof import('../../node_modules/nuxt/dist/app/composables/preload')['prefetchComponents']
   const preloadComponents: typeof import('../../node_modules/nuxt/dist/app/composables/preload')['preloadComponents']
   const preloadPayload: typeof import('../../node_modules/nuxt/dist/app/composables/payload')['preloadPayload']
@@ -206,6 +210,7 @@ declare module 'vue' {
     readonly TOOL_PARENT_LABEL_BY_SLUG: UnwrapRef<typeof import('../../utils/toolBreadcrumbs')['TOOL_PARENT_LABEL_BY_SLUG']>
     readonly abortNavigation: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/router')['abortNavigation']>
     readonly addRouteMiddleware: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/router')['addRouteMiddleware']>
+    readonly assertBatchUploadSuccess: UnwrapRef<typeof import('../../composables/useBatchUploadUrl')['assertBatchUploadSuccess']>
     readonly callOnce: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/once')['callOnce']>
     readonly cancelIdleCallback: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/compat/idle-callback')['cancelIdleCallback']>
     readonly clearError: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/error')['clearError']>
@@ -231,6 +236,7 @@ declare module 'vue' {
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
+    readonly getFetchErrorMessage: UnwrapRef<typeof import('../../utils/parseStandardApiResponse')['getFetchErrorMessage']>
     readonly getPriceRangeFromData: UnwrapRef<typeof import('../../composables/useModelPrice')['getPriceRangeFromData']>
     readonly getRouteRules: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']>
     readonly getToolBreadcrumbByRoute: UnwrapRef<typeof import('../../utils/toolBreadcrumbs')['getToolBreadcrumbByRoute']>
@@ -269,6 +275,8 @@ declare module 'vue' {
     readonly onServerPrefetch: UnwrapRef<typeof import('../../node_modules/vue')['onServerPrefetch']>
     readonly onUnmounted: UnwrapRef<typeof import('../../node_modules/vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('../../node_modules/vue')['onUpdated']>
+    readonly parseBatchUploadFetchResponse: UnwrapRef<typeof import('../../composables/useBatchUploadUrl')['parseBatchUploadFetchResponse']>
+    readonly parseStandardApiJson: UnwrapRef<typeof import('../../utils/parseStandardApiResponse')['parseStandardApiJson']>
     readonly prefetchComponents: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preload')['prefetchComponents']>
     readonly preloadComponents: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preload')['preloadComponents']>
     readonly preloadPayload: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/payload')['preloadPayload']>

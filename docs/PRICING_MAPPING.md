@@ -68,7 +68,7 @@
 - **组件**：`components/tools/FluxKontextTool.vue`
 - **modelKey 以本表为准**（下划线）。表单里 `formData.model` 为 `'flux-kontext-pro'` 或 `'flux-kontext-max'`（连字符），分别对应上表两个 modelKey。
 - 若定价接口返回的 key 为连字符形式（如 `flux-kontext-pro`），前端 `getPrice` / `useToolSEOAsync` 会做下划线↔连字符兼容查找。
-- **Flux 2 系列（RULE）**：`quality = resolution`（`1K` / `2K`），`scene` 固定 `generate`。
+- **Flux 2 系列（RULE）**：`quality = flux2Form.resolution`（`1K` / `2K`）；`getPrice` 另传 `scene: 'generate'` 与接口 rules 对齐（见 `FluxKontextTool.vue`）。
 
 ---
 
@@ -121,14 +121,16 @@
 
 | 前端模式（tab）   | modelKey               | 类型  | 说明 |
 |-------------------|------------------------|-------|------|
-| text-to-image     | `qwen-text-to-image`   | ONCE  | 文生图 |
-| image-to-image    | `qwen-image-to-image`  | ONCE  | 图生图 |
-| image-edit        | `qwen-image-edit`      | ONCE  | 图像编辑 |
-| z-image           | `qwen-z-image`        | ONCE  | Z-Image |
+| text-to-image     | `qwen-text-to-image`   | ONCE / RULE | 文生图 |
+| image-to-image    | `qwen-image-to-image`  | ONCE / RULE | 图生图 |
+| image-edit        | `qwen-image-edit`      | ONCE / RULE | 图像编辑 |
+| z-image           | `qwen-z-image`        | ONCE / RULE | Z-Image |
+| qwen2-text-to-image | `qwen2-text-to-image` | ONCE / RULE | Qwen2 文生图 |
+| qwen2-image-edit  | `qwen2-image-edit`    | ONCE / RULE | Qwen2 图像编辑 |
 
 - **组件**：`components/tools/QwenTool.vue`
 - **映射**：`qwenPriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields**：当前接口多为 ONCE；若某 mode 为 RULE，组件会传 `imageSize`（text-to-image / image-edit）、`numImages`（image-edit）、`aspectRatio`（z-image），以实际 rules 字段为准。
+- **formFields（RULE 时）**：`text-to-image` / `image-edit` 传 `imageSize`；`image-edit` 另传 `numImages`；`z-image` 传 `aspectRatio`。其余 mode 传空对象，以接口 rules 为准。
 
 ---
 
@@ -233,7 +235,7 @@
 | Aleph      | `runway_aleph`   | ONCE  | Aleph 生成 |
 
 - **组件**：`components/tools/RunwayTool.vue`
-- **runway_generate（RULE）**：传入 `formFields` 包含 `duration: Number(formData.duration) || 5`、`quality: formData.quality || '720p'`、`scene: 'generate'`，与 rules 匹配。
+- **runway_generate（RULE）**：传入 `formFields`：`duration`（数值秒）、`quality`（如 720p）、`scene: 'generate'`，与 rules 匹配。
 
 ---
 
@@ -249,15 +251,20 @@
 
 ### 15. Wan
 
-| 前端模式（tab）   | modelKey                   | 类型  | 说明 |
-|-------------------|----------------------------|-------|------|
-| text-to-video     | `wan-2-6-text-to-video`    | RULE  | 按 duration、quality(720p/1080p) 匹配 |
-| image-to-video    | `wan-2-6-image-to-video`   | RULE  | 同上 |
-| video-to-video    | `wan-2-6-video-to-video`   | RULE  | 同上 |
+| 前端模式（mode） | modelKey | 类型 | 说明 |
+|------------------|----------|------|------|
+| text-to-video | `wan-2-6-text-to-video` | RULE | `getPrice`：`duration`（字符串，与表单 5/10/15 一致）、`quality`（720p/1080p，来自 Resolution） |
+| image-to-video | `wan-2-6-image-to-video` | RULE | 同上 |
+| video-to-video | `wan-2-6-video-to-video` | RULE | 同上 |
+| v2-7-text-to-video | `wan-2-7-text-to-video` | RULE | 定价规则多为 **`duration: 1` = 每秒单价**：`getPrice(modelKey, { duration: 1, quality })`，再 × **输出秒数**（2–15，来自 `durationNum`） |
+| v2-7-image-to-video | `wan-2-7-image-to-video` | RULE | 同上 |
+| v2-7-video-edit | `wan-2-7-video-edit` | RULE | 同上；计费秒：输出时长为 0 时按源视频可读时长（2–10），否则按所选秒数 clamp 到 2–10；无视频时展示用 2s、仅有 URL 无元数据用 5s 估算 |
+| v2-7-r2v | `wan-2-7-r2v` | RULE | 同上；计费秒 = clamp(`durationNum`, 2, 10) |
+| 2-7-image | `wan-2-7-image` | RULE | `quality`（分辨率档位）、`batchSize`（`n`）；不传 `scene` |
+| 2-7-image-pro | `wan-2-7-image-pro` | RULE | 同上 |
 
 - **组件**：`components/tools/WanTool.vue`
 - **映射**：`wanPriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields**：`{ duration: formData.duration, quality: formData.resolution }`，与 rules 的 duration、quality（如 720p/1080p）匹配。
 
 ---
 
@@ -271,10 +278,12 @@
 | v1-pro-image-to-video        | `seedance-v1-pro-image-to-video`        | RULE  | 同上 |
 | v1-pro-fast-image-to-video   | `seedance-v1-pro-fast-image-to-video`    | RULE  | 同上 |
 | v1-5-pro                     | `seedance-1.5-pro`                      | RULE  | 按 duration(4/8/12)、quality(480p/720p/1080p)、scene(with_sound/without_sound) 匹配；图生时支持可选 inputUrls(0-2) |
+| seedance-2-fast | `seedance-2-fast` | RULE | **`duration: 1` = 每秒单价**；`getPrice(modelKey, { duration: 1, quality: 480p\|720p, scene })`，`scene` 为 `with_video`（已上传参考视频）或 `without_video`；总价 = `perSecond × (有参考视频 ? ceil(参考视频时长)+输出时长 : 仅输出时长)`，输出时长 clamp 4–15 |
+| seedance-2 | `seedance-2` | RULE | 与 `seedance-2-fast` 相同计价逻辑 |
 
 - **组件**：`components/tools/SeedanceTool.vue`
 - **映射**：`seedancePriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields**：`{ duration: formData.duration, quality: formData.resolution }`；`v1-5-pro` 额外传 `scene`（`generateAudio=true -> with_sound`，否则 `without_sound`）。
+- **formFields（v1 系列）**：`{ duration: formData.duration, quality: formData.resolution }`；`v1-5-pro` 额外传 `scene`（`generateAudio=true -> with_sound`，否则 `without_sound`）。
 - **v1.5 Pro 参数补充**：`prompt` 必填（3-2500）；`inputUrls` 可选（0-2）；`aspectRatio` 默认 `1:1`；`resolution` 默认 `720p`；`duration` 默认 `8`；支持 `fixedLens` 与 `generateAudio`。
 
 ---
@@ -316,7 +325,23 @@
 
 ---
 
-### 19. Sora
+### 19. Grok
+
+| 前端模式（tab） | modelKey | 类型 | 说明 |
+|-----------------|----------|------|------|
+| text-to-image | `grok-imagine-text-to-image` | ONCE / RULE | `getPrice(modelKey)`，无额外 formFields |
+| image-to-image | `grok-imagine-image-to-image` | ONCE / RULE | 同上 |
+| text-to-video | `grok-imagine-text-to-video` | RULE | `getPrice(modelKey, { duration: form.duration, quality: form.resolution })` |
+| image-to-video | `grok-imagine-image-to-video` | RULE | 同上 |
+| upscale | `grok-imagine-upscale` | ONCE / RULE | `getPrice(modelKey)` |
+| extend | `grok-imagine-extend` | RULE | `getPrice(modelKey, { duration: form.duration, quality: form.resolution })` |
+
+- **组件**：`components/tools/GrokToolCore.vue`
+- **映射**：`grokPriceModelKeyMap` 由 `mode` 取 modelKey。
+
+---
+
+### 20. Sora
 
 | 前端模式           | 表单 model            | modelKey                    | 类型  | 说明 |
 |--------------------|------------------------|-----------------------------|-------|------|
@@ -343,20 +368,27 @@
 | `nano-banana-pro`           | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
 | `nano-banana-2`             | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
 | `midjourney_imagine`        | speed（relaxed/fast/turbo）、duration、quality、size、batchSize、scene |
-| `flux-2-*` / `flux-2-pro-*` | quality（1K/2K，对应 Resolution）、scene |
-| `seedream-5-lite-image-to-image`（若为 RULE） | aspectRatio、quality |
+| `flux-2-*` / `flux-2-pro-*` | quality（1K/2K）、scene |
+| `seedream-5-lite-text-to-image` / `seedream-5-lite-image-to-image` | aspectRatio、quality（接口为 ONCE 时仍可传，多余字段不参与匹配） |
 | `ideogram-v3-*` / `ideogram-character*` | speed（TURBO/BALANCED/QUALITY）、scene |
 | `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | size（medium/high，对应 Quality） |
-| `wan-2-6-*`                | duration、quality（720p/1080p，对应 Resolution） |
-| `seedance-v1-*`             | duration、quality（480p/720p/1080p，对应 Resolution） |
-| `seedance-1.5-pro`          | duration、quality（480p/720p/1080p，对应 Resolution）、scene（with_sound/without_sound） |
+| `wan-2-6-text-to-video` / `wan-2-6-image-to-video` / `wan-2-6-video-to-video` | duration、quality（720p/1080p） |
+| `wan-2-7-text-to-video` / `wan-2-7-image-to-video` / `wan-2-7-video-edit` / `wan-2-7-r2v` | 展示价：`duration: 1` + quality 取**每秒单价**，再乘计费秒（见上文「### 15. Wan」） |
+| `wan-2-7-image` / `wan-2-7-image-pro` | quality、batchSize |
+| `seedance-v1-*`             | duration、quality（480p/720p/1080p） |
+| `seedance-1.5-pro`          | duration、quality、scene（with_sound/without_sound） |
+| `seedance-2-fast` / `seedance-2` | 展示价：`duration: 1` + quality（480p/720p）+ scene（with_video/without_video），再乘秒数（见上文「### 16. Seedance」） |
 | `hailuo-2-3-image-to-video-*` | duration、quality（768p/1080p）、scene |
+| `grok-imagine-text-to-video` / `grok-imagine-image-to-video` / `grok-imagine-extend` | duration、quality |
 | `kling-v2-5-turbo-*`        | duration、scene: generate |
 | `kling-2.6-text-to-video` / `kling-2.6-image-to-video` | duration、scene（with_sound/without_sound） |
 | `kling-2.6-motion-control`  | duration、quality（720p/1080p）、scene |
 | `kling-3.0-motion-control`  | duration（上传视频时长）、quality（720p/1080p，std/pro 映射）、scene |
 | `kling-3.0-video`           | duration、size（std/pro）、scene |
 | `runway_generate`           | duration、quality（如 720p）、scene |
+| `qwen-text-to-image` / `qwen-image-edit` | imageSize；`qwen-image-edit` 另 numImages |
+| `qwen-z-image`              | aspectRatio |
+| `qwen2-text-to-image` / `qwen2-image-edit` | 以接口 rules 为准；无匹配字段时传 `{}` |
 | `sora-2-pro-storyboard`     | duration（Frames）、scene |
 | `sora-2-pro-text-to-video` | duration（Frames）、size（standard/high） |
 | `sora-2-pro-image-to-video`| duration（Frames）、size（standard/high） |

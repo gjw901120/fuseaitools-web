@@ -251,11 +251,7 @@ async function uploadFileToUrl(file) {
     body: form,
     credentials: 'include'
   })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.errorMessage || err?.message || 'Upload failed')
-  }
-  const data = await res.json()
+  const data = await parseBatchUploadFetchResponse(res)
   const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
   const url = Array.isArray(urls) && urls.length ? urls[0] : (data?.data?.url || '')
   return typeof url === 'string' ? url : ''

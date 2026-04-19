@@ -623,29 +623,9 @@ const handleFileUpload = async () => {
         body: formData,
         credentials: 'include'
       })
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        // 优先使用后端 errorMessage（结构：{ errorCode, errorMessage, type, data }）；代理层可能包装为 { message } 也兼容
-        const msg =
-          (errorData && typeof errorData.errorMessage === 'string' && errorData.errorMessage.trim())
-            ? errorData.errorMessage.trim()
-            : (typeof errorData?.message === 'string' && errorData.message.trim())
-              ? errorData.message.trim()
-              : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
-        throw new Error(msg)
-      }
-      
-      const data = await response.json()
 
-      // 200 但业务失败（errorCode !== '00000'）也按失败处理，抛出后端 errorMessage
-      if (data && data.errorCode && String(data.errorCode) !== '00000') {
-        const msg = (typeof data.errorMessage === 'string' && data.errorMessage.trim())
-          ? data.errorMessage.trim()
-          : (data.userTip || data.message || 'Upload failed')
-        throw new Error(msg)
-      }
-      
+      const data = await parseBatchUploadFetchResponse(response)
+
       // 处理统一标准响应结构：data.data.urls
       let urls = []
       if (data.data && data.data.urls && Array.isArray(data.data.urls)) {

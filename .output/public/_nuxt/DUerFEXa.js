@@ -1,0 +1,1 @@
+import{u as s,_ as a}from"./Cj0fiQjL.js";import{y as n,g as e,o as t,C as p}from"./g5RSBBbf.js";import"./D4nCZLap.js";import"./C36r6git.js";import"./DKRSjWF8.js";const x={__name:"deepseek",setup(i){const{isOverviewPage:_,overviewConfig:o}=s();return(m,u)=>{const r=a,c=p;return e(_)&&e(o)?(t(),n(r,{key:0,config:e(o)},null,8,["config"])):(t(),n(c,{key:1}))}}};export{x as default};

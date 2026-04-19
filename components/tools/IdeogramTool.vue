@@ -487,12 +487,7 @@ const uploadFilesToUrls = async (files) => {
   const auth = getAuthToken()
   if (auth) headers['Authorization'] = `Bearer ${auth}`
   const res = await fetch(batchUploadUrl, { method: 'POST', headers, body: fd, credentials: 'include' })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    const msg = err?.errorMessage || err?.message || err?.userTip || err?.error || 'Upload failed'
-    throw new Error(typeof msg === 'string' ? msg : 'Upload failed')
-  }
-  const data = await res.json()
+  const data = await parseBatchUploadFetchResponse(res)
   const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
   if (!Array.isArray(urls)) throw new Error('Invalid response: no URLs')
   return urls

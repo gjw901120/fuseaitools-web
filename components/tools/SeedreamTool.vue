@@ -278,11 +278,7 @@ async function uploadFilesToUrls(files) {
     body: form,
     credentials: 'include'
   })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.errorMessage || err?.message || 'Upload failed')
-  }
-  const data = await res.json()
+  const data = await parseBatchUploadFetchResponse(res)
   const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
   return Array.isArray(urls) ? urls : []
 }

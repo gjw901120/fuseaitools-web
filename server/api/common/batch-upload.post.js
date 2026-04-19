@@ -87,12 +87,27 @@ export default defineEventHandler(async (event) => {
     }
 
     const data = await response.json()
-    
-    // 直接返回后端原始响应，不做任何转换
-    // 保持统一标准结构：{ errorCode, errorMessage, data: { urls: [...] } }
+
+    // HTTP 200 但业务失败（如 B0001 Service is busy）时仍应让前端走错误分支并提示
+    const code = data?.errorCode
+    if (code != null && String(code) !== '00000') {
+      const msg = (typeof data.errorMessage === 'string' && data.errorMessage.trim())
+        ? data.errorMessage.trim()
+        : 'Upload failed'
+      throw createError({
+        statusCode: 502,
+        message: msg,
+        data: { errorCode: code, type: data?.type }
+      })
+    }
+
+    // 直接返回后端原始响应：{ errorCode, errorMessage, data: { urls: [...] } }
     setResponseStatus(event, response.status)
     return data
   } catch (error) {
+    if (error && typeof error.statusCode === 'number') {
+      throw error
+    }
     console.error('Upload proxy error:', error)
     throw createError({
       statusCode: 500,

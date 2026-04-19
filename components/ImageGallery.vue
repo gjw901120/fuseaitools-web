@@ -160,6 +160,11 @@ const imageModelsList = [
     route: '/home/seedream'
   },
   {
+    title: 'Wan',
+    logo: '/tools-logo/Wan.png',
+    route: '/home/wan'
+  },
+  {
     title: 'Qwen',
     logo: '/tools-logo/QWen.png',
     route: '/home/qwen'

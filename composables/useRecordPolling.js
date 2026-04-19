@@ -1,4 +1,5 @@
 import { useRoute } from 'vue-router'
+import { parseStandardApiJson } from '~/utils/parseStandardApiResponse.js'
 
 /**
  * 记录详情：单次拉取与按 status 轮询
@@ -31,10 +32,10 @@ export function useRecordPolling() {
     if (token) headers['Authorization'] = `Bearer ${token}`
     const response = await fetch(url, { method: 'GET', headers, credentials: 'include' })
     const raw = await response.json().catch(() => null)
-    if (!raw || typeof raw !== 'object') return null
-    const errorCode = raw.errorCode ?? raw.error_code
-    const data = raw.data
-    if (errorCode === '00000' && data && typeof data === 'object') return data
+    const parsed = parseStandardApiJson(raw)
+    if (parsed.kind !== 'success') return null
+    const data = parsed.data
+    if (data && typeof data === 'object') return data
     return null
   }
 

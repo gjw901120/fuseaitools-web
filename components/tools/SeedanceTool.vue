@@ -46,7 +46,150 @@
                 required
               ></textarea>
               <div class="char-count" v-if="formData.prompt">{{ formData.prompt.length }}/{{ promptMaxLength }}</div>
+              <div v-if="isSeedance2Mode" class="form-hint">Prompt length: 3-20000 characters.</div>
             </div>
+
+            <template v-if="isSeedance2Mode">
+              <div class="form-group">
+                <label class="form-label">First Frame (optional)</label>
+                <UploadImage
+                  ref="seedance2FirstFrameUploadRef"
+                  input-id="seedance2-first-frame-upload"
+                  label=""
+                  upload-text="Click to upload first frame image"
+                  upload-hint="JPEG, PNG, WebP, BMP, TIFF, GIF; max 30MB"
+                  :max-files="1"
+                  :max-file-size="30 * 1024 * 1024"
+                  accept="image/jpeg,image/png,image/webp,image/bmp,image/tiff,image/gif"
+                  :multiple="false"
+                  @update:files="handleSeedance2FirstFrameFile"
+                />
+                <span v-if="isUploadingSeedance2FirstFrame" class="form-hint">Uploading...</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Frame (optional)</label>
+                <UploadImage
+                  ref="seedance2LastFrameUploadRef"
+                  input-id="seedance2-last-frame-upload"
+                  label=""
+                  upload-text="Click to upload last frame image"
+                  upload-hint="JPEG, PNG, WebP, BMP, TIFF, GIF; max 30MB"
+                  :max-files="1"
+                  :max-file-size="30 * 1024 * 1024"
+                  accept="image/jpeg,image/png,image/webp,image/bmp,image/tiff,image/gif"
+                  :multiple="false"
+                  @update:files="handleSeedance2LastFrameFile"
+                />
+                <span v-if="isUploadingSeedance2LastFrame" class="form-hint">Uploading...</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reference Images (optional)</label>
+                <UploadImage
+                  ref="seedance2ReferenceImageUploadRef"
+                  input-id="seedance2-reference-image-upload"
+                  label=""
+                  upload-text="Click to upload reference image(s)"
+                  upload-hint="JPEG, PNG, WebP, BMP, TIFF, GIF; max 30MB each"
+                  :max-files="9"
+                  :max-file-size="30 * 1024 * 1024"
+                  accept="image/jpeg,image/png,image/webp,image/bmp,image/tiff,image/gif"
+                  :multiple="true"
+                  @update:files="handleSeedance2ReferenceImageFiles"
+                />
+                <span v-if="isUploadingSeedance2ReferenceImages" class="form-hint">Uploading...</span>
+                <div class="form-hint">Max 9 items. Combined with first/last frame total should not exceed 9 images.</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reference Videos (optional)</label>
+                <input
+                  ref="seedance2ReferenceVideoInputRef"
+                  type="file"
+                  class="seedance-file-input"
+                  accept="video/mp4,video/quicktime"
+                  :multiple="true"
+                  @change="handleSeedance2ReferenceVideoFiles"
+                />
+                <div class="seedance-upload-box" @click="triggerSeedance2ReferenceVideoInput">
+                  <template v-if="formData.referenceVideoUrls.length">
+                    <div class="seedance-upload-selected">
+                      <i class="fas fa-check-circle"></i>
+                      <span>{{ formData.referenceVideoUrls.length }} video(s) uploaded</span>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="seedance-upload-placeholder">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Click to upload reference video(s)</span>
+                    </div>
+                  </template>
+                </div>
+                <span v-if="isUploadingSeedance2ReferenceVideos" class="form-hint">Uploading...</span>
+                <div class="form-hint">
+                  Duration: each video [2, 15]s; up to {{ mode === 'seedance-2' ? 5 : 3 }} reference videos; combined duration must not exceed 15s.
+                </div>
+                <div
+                  v-if="isSeedance2Mode && formData.referenceVideoUrls.length"
+                  class="seedance-ref-media-preview"
+                  aria-label="Reference video previews"
+                >
+                  <div
+                    v-for="(refVideoUrl, idx) in formData.referenceVideoUrls"
+                    :key="'ref-video-' + idx + '-' + refVideoUrl"
+                    class="seedance-ref-media-item"
+                  >
+                    <video
+                      :src="refVideoUrl"
+                      controls
+                      playsinline
+                      preload="metadata"
+                      class="seedance-ref-preview-video"
+                    ></video>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reference Audios (optional)</label>
+                <input
+                  ref="seedance2ReferenceAudioInputRef"
+                  type="file"
+                  class="seedance-file-input"
+                  accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3"
+                  :multiple="true"
+                  @change="handleSeedance2ReferenceAudioFiles"
+                />
+                <div class="seedance-upload-box" @click="triggerSeedance2ReferenceAudioInput">
+                  <template v-if="formData.referenceAudioUrls.length">
+                    <div class="seedance-upload-selected">
+                      <i class="fas fa-check-circle"></i>
+                      <span>{{ formData.referenceAudioUrls.length }} audio file(s) uploaded</span>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="seedance-upload-placeholder">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Click to upload reference audio(s)</span>
+                    </div>
+                  </template>
+                </div>
+                <span v-if="isUploadingSeedance2ReferenceAudios" class="form-hint">Uploading...</span>
+                <div class="form-hint">
+                  Duration: each audio [2, 15]s; up to 3 reference audio clips; combined duration must not exceed 15s.
+                </div>
+                <div
+                  v-if="isSeedance2Mode && formData.referenceAudioUrls.length"
+                  class="seedance-ref-media-preview seedance-ref-audio-preview"
+                  aria-label="Reference audio previews"
+                >
+                  <div
+                    v-for="(refAudioUrl, idx) in formData.referenceAudioUrls"
+                    :key="'ref-audio-' + idx + '-' + refAudioUrl"
+                    class="seedance-ref-media-item"
+                  >
+                    <audio :src="refAudioUrl" controls preload="metadata" class="seedance-ref-preview-audio"></audio>
+                  </div>
+                </div>
+              </div>
+            </template>
 
             <!-- Image modes: imageUrl (required) -->
             <div v-if="isImageMode" class="form-group">
@@ -118,7 +261,7 @@
             </div>
 
             <!-- Aspect ratio: text-to-video modes only -->
-            <div v-if="isTextToVideoMode || mode === 'v1-5-pro'" class="form-group">
+            <div v-if="isTextToVideoMode || mode === 'v1-5-pro' || isSeedance2Mode" class="form-group">
               <label class="form-label">Aspect Ratio</label>
               <div class="tab-group">
                 <button
@@ -135,16 +278,33 @@
             <div class="form-group">
               <label class="form-label">Resolution</label>
               <div class="tab-group">
-                <button v-if="mode !== 'v1-pro-fast-image-to-video'" type="button" class="tab-option" :class="{ active: formData.resolution === '480p' }" @click="formData.resolution = '480p'">480p</button>
-                <button type="button" class="tab-option" :class="{ active: formData.resolution === '720p' }" @click="formData.resolution = '720p'">720p</button>
-                <button type="button" class="tab-option" :class="{ active: formData.resolution === '1080p' }" @click="formData.resolution = '1080p'">1080p</button>
+                <template v-if="isSeedance2Mode">
+                  <button type="button" class="tab-option" :class="{ active: formData.resolution === '480p' }" @click="formData.resolution = '480p'">480p</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.resolution === '720p' }" @click="formData.resolution = '720p'">720p</button>
+                </template>
+                <template v-else>
+                  <button v-if="mode !== 'v1-pro-fast-image-to-video'" type="button" class="tab-option" :class="{ active: formData.resolution === '480p' }" @click="formData.resolution = '480p'">480p</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.resolution === '720p' }" @click="formData.resolution = '720p'">720p</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.resolution === '1080p' }" @click="formData.resolution = '1080p'">1080p</button>
+                </template>
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label">Duration</label>
               <div class="tab-group">
-                <template v-if="mode === 'v1-5-pro'">
+                <template v-if="isSeedance2Mode">
+                  <input
+                    v-model.number="formData.durationInt"
+                    type="range"
+                    class="duration-range"
+                    min="4"
+                    max="15"
+                    step="1"
+                  />
+                  <div class="form-hint">Duration: {{ formData.durationInt }}s (4-15s)</div>
+                </template>
+                <template v-else-if="mode === 'v1-5-pro'">
                   <button type="button" class="tab-option" :class="{ active: formData.duration === '4' }" @click="formData.duration = '4'">4s</button>
                   <button type="button" class="tab-option" :class="{ active: formData.duration === '8' }" @click="formData.duration = '8'">8s</button>
                   <button type="button" class="tab-option" :class="{ active: formData.duration === '12' }" @click="formData.duration = '12'">12s</button>
@@ -157,7 +317,7 @@
             </div>
 
             <!-- cameraFixed, seed, enableSafetyChecker: not in pro-fast -->
-            <template v-if="mode !== 'v1-pro-fast-image-to-video' && mode !== 'v1-5-pro'">
+            <template v-if="mode !== 'v1-pro-fast-image-to-video' && mode !== 'v1-5-pro' && !isSeedance2Mode">
               <div class="form-group">
                 <label class="checkbox-label">
                   <input v-model="formData.cameraFixed" type="checkbox" />
@@ -198,6 +358,20 @@
                   <span>Generate audio</span>
                 </label>
                 <div class="form-hint">Generate audio for the video. Enabling audio increases generation cost.</div>
+              </div>
+            </template>
+            <template v-if="isSeedance2Mode">
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input v-model="formData.generateAudioV2" type="checkbox" />
+                  <span>Generate audio</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input v-model="formData.webSearch" type="checkbox" />
+                  <span>Web search (required)</span>
+                </label>
               </div>
             </template>
 
@@ -313,7 +487,9 @@ const modeList = [
   { id: 'v1-pro-text-to-video', label: 'v1 Pro T2V', icon: 'fas fa-font' },
   { id: 'v1-pro-image-to-video', label: 'v1 Pro I2V', icon: 'fas fa-image' },
   { id: 'v1-pro-fast-image-to-video', label: 'v1 Pro Fast I2V', icon: 'fas fa-bolt' },
-  { id: 'v1-5-pro', label: 'v1.5 Pro', icon: 'fas fa-video' }
+  { id: 'v1-5-pro', label: 'v1.5 Pro', icon: 'fas fa-video' },
+  { id: 'seedance-2-fast', label: 'Seedance 2 Fast', icon: 'fas fa-forward' },
+  { id: 'seedance-2', label: 'Seedance 2', icon: 'fas fa-film' }
 ]
 
 const modeTabToPath = {
@@ -322,7 +498,9 @@ const modeTabToPath = {
   'v1-pro-text-to-video': '/home/seedance/v1-pro-text-to-video',
   'v1-pro-image-to-video': '/home/seedance/v1-pro-image-to-video',
   'v1-pro-fast-image-to-video': '/home/seedance/v1-pro-fast-image-to-video',
-  'v1-5-pro': '/home/seedance/v1-5-pro'
+  'v1-5-pro': '/home/seedance/v1-5-pro',
+  'seedance-2-fast': '/home/seedance/v2-fast',
+  'seedance-2': '/home/seedance/v2'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -349,6 +527,15 @@ const formData = reactive({
   inputUrls: [],
   fixedLens: false,
   generateAudio: false,
+  firstFrameUrl: '',
+  lastFrameUrl: '',
+  referenceImageUrls: [],
+  referenceVideoUrls: [],
+  referenceAudioUrls: [],
+  generateAudioV2: true,
+  webSearch: false,
+  /** Seedance 2 / 2 Fast：与后端 duration 默认 5s 对齐 */
+  durationInt: 5,
   seed: -1,
   enableSafetyChecker: true
 })
@@ -368,11 +555,34 @@ const seedancePriceModelKeyMap = {
   'v1-pro-text-to-video': 'seedance-v1-pro-text-to-video',
   'v1-pro-image-to-video': 'seedance-v1-pro-image-to-video',
   'v1-pro-fast-image-to-video': 'seedance-v1-pro-fast-image-to-video',
-  'v1-5-pro': 'seedance-1.5-pro'
+  'v1-5-pro': 'seedance-1.5-pro',
+  'seedance-2-fast': 'seedance-2-fast',
+  'seedance-2': 'seedance-2'
 }
 const seedancePriceText = computed(() => {
   const modelKey = seedancePriceModelKeyMap[mode.value]
   if (!modelKey) return ''
+
+  // seedance-2-fast / seedance-2：RULE 中 duration=1 为「每 1 秒」单价；scene=with_video 表示已上传 Reference Videos（与接口 rules 一致）
+  if (mode.value === 'seedance-2-fast' || mode.value === 'seedance-2') {
+    const hasRefVideos = Array.isArray(formData.referenceVideoUrls) && formData.referenceVideoUrls.length > 0
+    const scene = hasRefVideos ? 'with_video' : 'without_video'
+    const perSecond = getPrice(modelKey, {
+      duration: 1,
+      quality: formData.resolution === '480p' ? '480p' : '720p',
+      scene
+    })
+    if (perSecond == null) return ''
+    const durOut = Math.max(4, Math.min(15, Number(formData.durationInt) || 4))
+    const uploadCeil = Math.ceil(Number(referenceVideoUploadDurationSec.value) || 0)
+    const totalCredits = hasRefVideos
+      ? perSecond * (uploadCeil + durOut)
+      : perSecond * durOut
+    const str = formatCredits(totalCredits)
+    if (!str) return ''
+    return `· ${str} credits${discountText.value}`
+  }
+
   const priceFields = {
     duration: formData.duration,
     quality: formData.resolution
@@ -389,9 +599,21 @@ const seedancePriceText = computed(() => {
 const imageUploadRef = ref(null)
 const endImageUploadRef = ref(null)
 const pro15ImageUploadRef = ref(null)
+const seedance2FirstFrameUploadRef = ref(null)
+const seedance2LastFrameUploadRef = ref(null)
+const seedance2ReferenceImageUploadRef = ref(null)
+const seedance2ReferenceVideoInputRef = ref(null)
+const seedance2ReferenceAudioInputRef = ref(null)
 const isUploadingImage = ref(false)
 const isUploadingEndImage = ref(false)
 const isUploadingPro15Images = ref(false)
+const isUploadingSeedance2FirstFrame = ref(false)
+const isUploadingSeedance2LastFrame = ref(false)
+const isUploadingSeedance2ReferenceImages = ref(false)
+const isUploadingSeedance2ReferenceVideos = ref(false)
+const isUploadingSeedance2ReferenceAudios = ref(false)
+/** Reference Videos 上传文件的总时长（秒），用于 uploadDuration */
+const referenceVideoUploadDurationSec = ref(0)
 const result = ref(null)
 const isGenerating = ref(false)
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -401,20 +623,25 @@ const detailData = ref(null)
 const loadingRecordId = ref(null)
 
 const isTextToVideoMode = computed(() => mode.value === 'v1-lite-text-to-video' || mode.value === 'v1-pro-text-to-video')
+const isSeedance2Mode = computed(() => mode.value === 'seedance-2-fast' || mode.value === 'seedance-2')
 const isImageMode = computed(() => [
   'v1-lite-image-to-video',
   'v1-pro-image-to-video',
   'v1-pro-fast-image-to-video'
 ].includes(mode.value))
 const aspectRatioOptions = computed(() => {
+  if (isSeedance2Mode.value) return ['1:1', '4:3', '3:4', '16:9', '9:16', '21:9', 'adaptive']
   if (mode.value === 'v1-5-pro') return ['1:1', '4:3', '3:4', '16:9', '9:16', '21:9']
   if (mode.value === 'v1-lite-text-to-video') return ['16:9', '4:3', '1:1', '3:4', '9:16', '9:21']
   return ['21:9', '16:9', '4:3', '1:1', '3:4', '9:16']
 })
-const promptMaxLength = computed(() => mode.value === 'v1-5-pro' ? 2500 : 10000)
+const promptMaxLength = computed(() => {
+  if (isSeedance2Mode.value) return 20000
+  return mode.value === 'v1-5-pro' ? 2500 : 10000
+})
 const promptPlaceholder = computed(() => mode.value === 'v1-5-pro'
   ? 'Prompt for Seedance 1.5 Pro (3-2500 characters)'
-  : 'The text prompt used to generate the video (max 10000 characters)'
+  : (isSeedance2Mode.value ? 'Prompt for Seedance 2 / 2 Fast (3-20000 characters)' : 'The text prompt used to generate the video (max 10000 characters)')
 )
 
 async function uploadFileToUrl(file) {
@@ -430,14 +657,53 @@ async function uploadFileToUrl(file) {
     body: form,
     credentials: 'include'
   })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.errorMessage || err?.message || 'Upload failed')
-  }
-  const data = await res.json()
+  const data = await parseBatchUploadFetchResponse(res)
   const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
   const url = Array.isArray(urls) && urls.length ? urls[0] : ''
   return typeof url === 'string' ? url : (url?.url || '')
+}
+
+function getVideoDurationSecondsFromFile(file) {
+  if (!file || typeof document === 'undefined') return Promise.resolve(0)
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const video = document.createElement('video')
+    video.preload = 'metadata'
+    video.muted = true
+    const cleanup = () => {
+      try { URL.revokeObjectURL(url) } catch { /* noop */ }
+    }
+    video.onloadedmetadata = () => {
+      const d = Number(video.duration)
+      cleanup()
+      resolve(Number.isFinite(d) && d > 0 ? d : 0)
+    }
+    video.onerror = () => {
+      cleanup()
+      reject(new Error('Cannot read video duration'))
+    }
+    video.src = url
+  })
+}
+
+async function uploadFilesToUrls(files) {
+  if (!files?.length) return []
+  const form = new FormData()
+  files.forEach((f) => form.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  const res = await fetch(batchUploadUrl, {
+    method: 'POST',
+    headers,
+    body: form,
+    credentials: 'include'
+  })
+  const data = await parseBatchUploadFetchResponse(res)
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  return Array.isArray(urls)
+    ? urls.map((u) => (typeof u === 'string' ? u : (u?.url || ''))).filter(Boolean)
+    : []
 }
 
 async function handleImageFile(files) {
@@ -501,8 +767,122 @@ async function handlePro15ImageFiles(files) {
   }
 }
 
+function triggerSeedance2ReferenceVideoInput() {
+  seedance2ReferenceVideoInputRef.value?.click()
+}
+
+function triggerSeedance2ReferenceAudioInput() {
+  seedance2ReferenceAudioInputRef.value?.click()
+}
+
+async function handleSeedance2FirstFrameFile(files) {
+  if (!files?.length) {
+    formData.firstFrameUrl = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  isUploadingSeedance2FirstFrame.value = true
+  try {
+    formData.firstFrameUrl = await uploadFileToUrl(file)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.firstFrameUrl = ''
+    seedance2FirstFrameUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingSeedance2FirstFrame.value = false
+  }
+}
+
+async function handleSeedance2LastFrameFile(files) {
+  if (!files?.length) {
+    formData.lastFrameUrl = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  isUploadingSeedance2LastFrame.value = true
+  try {
+    formData.lastFrameUrl = await uploadFileToUrl(file)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.lastFrameUrl = ''
+    seedance2LastFrameUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingSeedance2LastFrame.value = false
+  }
+}
+
+async function handleSeedance2ReferenceImageFiles(files) {
+  if (!files?.length) {
+    formData.referenceImageUrls = []
+    return
+  }
+  isUploadingSeedance2ReferenceImages.value = true
+  try {
+    const list = Array.isArray(files) ? files.slice(0, 9) : [files]
+    formData.referenceImageUrls = await getUrlsForFiles(list, uploadFilesToUrls)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.referenceImageUrls = []
+    seedance2ReferenceImageUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingSeedance2ReferenceImages.value = false
+  }
+}
+
+async function handleSeedance2ReferenceVideoFiles(e) {
+  const fileList = Array.from(e.target.files || [])
+  if (!fileList.length) return
+  const maxCount = mode.value === 'seedance-2' ? 5 : 3
+  const files = fileList.slice(0, maxCount)
+  isUploadingSeedance2ReferenceVideos.value = true
+  referenceVideoUploadDurationSec.value = 0
+  try {
+    let totalSec = 0
+    for (const f of files) {
+      try {
+        totalSec += await getVideoDurationSecondsFromFile(f)
+      } catch {
+        showError('Could not read duration for a reference video; please re-upload.')
+        formData.referenceVideoUrls = []
+        referenceVideoUploadDurationSec.value = 0
+        return
+      }
+    }
+    referenceVideoUploadDurationSec.value = totalSec
+    formData.referenceVideoUrls = await uploadFilesToUrls(files)
+  } catch (err) {
+    showError(err?.message || 'Upload failed')
+    formData.referenceVideoUrls = []
+    referenceVideoUploadDurationSec.value = 0
+  } finally {
+    isUploadingSeedance2ReferenceVideos.value = false
+    e.target.value = ''
+  }
+}
+
+async function handleSeedance2ReferenceAudioFiles(e) {
+  const fileList = Array.from(e.target.files || [])
+  if (!fileList.length) return
+  const files = fileList.slice(0, 3)
+  isUploadingSeedance2ReferenceAudios.value = true
+  try {
+    formData.referenceAudioUrls = await uploadFilesToUrls(files)
+  } catch (err) {
+    showError(err?.message || 'Upload failed')
+    formData.referenceAudioUrls = []
+  } finally {
+    isUploadingSeedance2ReferenceAudios.value = false
+    e.target.value = ''
+  }
+}
+
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
+  if (isSeedance2Mode.value) {
+    if (p.length < 3 || p.length > 20000) return false
+    if (formData.durationInt < 4 || formData.durationInt > 15) return false
+    return true
+  }
   if (mode.value === 'v1-5-pro') {
     if (p.length < 3 || p.length > 2500) return false
     return formData.inputUrls.length <= 2
@@ -538,8 +918,31 @@ function fillFormFromOriginalData(originalData) {
   const o = originalData
   if (o.prompt != null) formData.prompt = String(o.prompt)
   if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
+  if (o.aspect_ratio) formData.aspectRatio = String(o.aspect_ratio)
   if (o.resolution) formData.resolution = String(o.resolution)
   if (o.duration != null) formData.duration = String(o.duration)
+  if (o.firstFrameUrl) formData.firstFrameUrl = String(o.firstFrameUrl)
+  else if (o.first_frame_url) formData.firstFrameUrl = String(o.first_frame_url)
+  if (o.lastFrameUrl) formData.lastFrameUrl = String(o.lastFrameUrl)
+  else if (o.last_frame_url) formData.lastFrameUrl = String(o.last_frame_url)
+  if (Array.isArray(o.referenceImageUrls)) formData.referenceImageUrls = [...o.referenceImageUrls]
+  else if (Array.isArray(o.reference_image_urls)) formData.referenceImageUrls = [...o.reference_image_urls]
+  if (Array.isArray(o.referenceVideoUrls)) formData.referenceVideoUrls = [...o.referenceVideoUrls]
+  else if (Array.isArray(o.reference_video_urls)) formData.referenceVideoUrls = [...o.reference_video_urls]
+  if (Array.isArray(o.referenceAudioUrls)) formData.referenceAudioUrls = [...o.referenceAudioUrls]
+  else if (Array.isArray(o.reference_audio_urls)) formData.referenceAudioUrls = [...o.reference_audio_urls]
+  if (o.uploadDuration != null && o.uploadDuration !== '') {
+    const u = Number(o.uploadDuration)
+    referenceVideoUploadDurationSec.value = Number.isFinite(u) ? u : 0
+  } else if (o.upload_duration != null && o.upload_duration !== '') {
+    const u = Number(o.upload_duration)
+    referenceVideoUploadDurationSec.value = Number.isFinite(u) ? u : 0
+  }
+  if (o.duration != null) formData.durationInt = Number(o.duration) || formData.durationInt
+  if ('generateAudio' in o) formData.generateAudioV2 = !!o.generateAudio
+  if ('generate_audio' in o) formData.generateAudioV2 = !!o.generate_audio
+  if ('webSearch' in o) formData.webSearch = !!o.webSearch
+  if ('web_search' in o) formData.webSearch = !!o.web_search
   if (mode.value === 'v1-5-pro') {
     if (Array.isArray(o.inputUrls)) formData.inputUrls = [...o.inputUrls]
     if ('fixedLens' in o) formData.fixedLens = !!o.fixedLens
@@ -662,7 +1065,7 @@ async function generate() {
         resolution: formData.resolution,
         duration: String(formData.duration)
       }
-    } else {
+    } else if (modeVal === 'v1-5-pro') {
       apiPath = '/api/video/seedance/pro-15-image-to-video'
       body = {
         model: 'seedance-1.5-pro',
@@ -673,6 +1076,40 @@ async function generate() {
         duration: String(formData.duration || '8'),
         fixedLens: !!formData.fixedLens,
         generateAudio: !!formData.generateAudio
+      }
+    } else {
+      const referenceImageUrls = Array.isArray(formData.referenceImageUrls) ? formData.referenceImageUrls.slice(0, 9) : []
+      const maxReferenceVideoCount = modeVal === 'seedance-2' ? 5 : 3
+      const referenceVideoUrls = Array.isArray(formData.referenceVideoUrls) ? formData.referenceVideoUrls.slice(0, maxReferenceVideoCount) : []
+      const referenceAudioUrls = Array.isArray(formData.referenceAudioUrls) ? formData.referenceAudioUrls.slice(0, 3) : []
+      const first = (formData.firstFrameUrl || '').trim()
+      const last = (formData.lastFrameUrl || '').trim()
+      const totalImageCount = referenceImageUrls.length + (first ? 1 : 0) + (last ? 1 : 0)
+      if (totalImageCount > 9) {
+        throw new Error('first/last frame and reference images total must be <= 9')
+      }
+      apiPath = modeVal === 'seedance-2-fast'
+        ? '/api/video/seedance/v2-fast'
+        : '/api/video/seedance/v2'
+      const durStr = String(Math.max(4, Math.min(15, Number(formData.durationInt) || 4)))
+      const uploadDur =
+        referenceVideoUrls.length > 0
+          ? String(Math.ceil(referenceVideoUploadDurationSec.value))
+          : undefined
+      body = {
+        model: modeVal === 'seedance-2-fast' ? 'seedance-2-fast' : 'seedance-2',
+        prompt: p,
+        firstFrameUrl: first || undefined,
+        lastFrameUrl: last || undefined,
+        referenceImageUrls: referenceImageUrls.length ? referenceImageUrls : undefined,
+        referenceVideoUrls: referenceVideoUrls.length ? referenceVideoUrls : undefined,
+        referenceAudioUrls: referenceAudioUrls.length ? referenceAudioUrls : undefined,
+        generateAudio: !!formData.generateAudioV2,
+        resolution: formData.resolution === '480p' ? '480p' : '720p',
+        aspectRatio: formData.aspectRatio,
+        duration: durStr,
+        webSearch: !!formData.webSearch,
+        uploadDuration: uploadDur
       }
     }
 
@@ -711,6 +1148,14 @@ watch(mode, (m) => {
     formData.duration = '8'
     formData.fixedLens = false
     formData.generateAudio = false
+  }
+  if (m === 'seedance-2-fast' || m === 'seedance-2') {
+    formData.aspectRatio = '16:9'
+    formData.resolution = '720p'
+    formData.durationInt = 5
+    formData.generateAudioV2 = true
+    formData.webSearch = false
+    referenceVideoUploadDurationSec.value = 0
   }
   const path = modeTabToPath[m]
   if (path && route.path !== path) router.replace(path)
@@ -937,6 +1382,60 @@ watch(mode, (m) => {
 .video-actions { display: flex; gap: 8px; }
 .action-btn { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .action-btn:hover { background: #e5e7eb; }
+.seedance-file-input { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
+.duration-range { width: 100%; accent-color: #3b82f6; }
+.seedance-upload-box {
+  border: 2px dashed #d1d5db;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.seedance-upload-box:hover {
+  border-color: #3b82f6;
+  background: #f8fbff;
+}
+.seedance-upload-placeholder,
+.seedance-upload-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 13px;
+}
+.seedance-upload-selected {
+  color: #2563eb;
+}
+
+/* Seedance 2 / 2 Fast：参考视频/音频上传后内联预览播放 */
+.seedance-ref-media-preview {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.seedance-ref-media-item {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  background: #0f172a;
+}
+.seedance-ref-preview-video {
+  width: 100%;
+  max-height: 220px;
+  display: block;
+}
+.seedance-ref-audio-preview .seedance-ref-media-item {
+  background: #f8fafc;
+  padding: 8px 10px;
+}
+.seedance-ref-preview-audio {
+  width: 100%;
+  min-height: 40px;
+}
 
 .detail-loading-state, .detail-failure-state {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;

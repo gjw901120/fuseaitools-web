@@ -640,16 +640,7 @@ const handleInputImage = async (files) => {
       body: formDataUpload,
       credentials: 'include'
     })
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage.trim())
-        ? errorData.errorMessage.trim()
-        : (typeof errorData?.message === 'string' && errorData.message.trim())
-          ? errorData.message.trim()
-          : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
-      throw new Error(msg)
-    }
-    const data = await response.json()
+    const data = await parseBatchUploadFetchResponse(response)
     const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
     if (Array.isArray(urls) && urls[0]) {
       formData.imageUrl = urls[0]
@@ -684,11 +675,7 @@ const uploadFilesAndGetUrls = async (files) => {
       body: formDataUpload,
       credentials: 'include'
     })
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData?.errorMessage || errorData?.message || 'Upload failed')
-    }
-    const data = await response.json()
+    const data = await parseBatchUploadFetchResponse(response)
     const uploaded = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
     if (Array.isArray(uploaded) && uploaded[0]) urls.push(uploaded[0])
   }

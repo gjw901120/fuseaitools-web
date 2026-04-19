@@ -785,6 +785,12 @@ const _inlineRuntimeConfig = {
           "statusCode": 301
         }
       },
+      "/home/wan/v2-7-videoedit": {
+        "redirect": {
+          "to": "/home/wan/v2-7-video-edit",
+          "statusCode": 301
+        }
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -1727,6 +1733,8 @@ const _lazy_ROhFfj = () => Promise.resolve().then(function () { return v2TextToI
 const _lazy_ihh8BE = () => Promise.resolve().then(function () { return zImage_post$1; });
 const _lazy_N5QhNS = () => Promise.resolve().then(function () { return liteImageToImage_post$1; });
 const _lazy_gIVXeQ = () => Promise.resolve().then(function () { return liteTextToImage_post$1; });
+const _lazy_SOdgAt = () => Promise.resolve().then(function () { return _27ImagePro_post$1; });
+const _lazy_qAdQA_ = () => Promise.resolve().then(function () { return _27Image_post$1; });
 const _lazy_0wwS49 = () => Promise.resolve().then(function () { return blend_post$1; });
 const _lazy_cv5vHn = () => Promise.resolve().then(function () { return describe_post$1; });
 const _lazy_3ymEXI = () => Promise.resolve().then(function () { return imagine_post$1; });
@@ -1776,6 +1784,8 @@ const _lazy_Dtnlru = () => Promise.resolve().then(function () { return pro15Imag
 const _lazy_gXE561 = () => Promise.resolve().then(function () { return proFastImageToVideo_post$1; });
 const _lazy_cH5mVr = () => Promise.resolve().then(function () { return proImageToVideo_post$1; });
 const _lazy_FAqGLf = () => Promise.resolve().then(function () { return proTextToVideo_post$1; });
+const _lazy_EemxrT = () => Promise.resolve().then(function () { return v2Fast_post$1; });
+const _lazy_8c0Ihz = () => Promise.resolve().then(function () { return v2_post$1; });
 const _lazy_VnAtz4 = () => Promise.resolve().then(function () { return generate_post$5; });
 const _lazy_eP3eSa = () => Promise.resolve().then(function () { return storyboard_post$1; });
 const _lazy_zvAFYZ = () => Promise.resolve().then(function () { return generate_post$3; });
@@ -1784,6 +1794,10 @@ const _lazy_5PmXRt = () => Promise.resolve().then(function () { return extend_po
 const _lazy_nwJeW1 = () => Promise.resolve().then(function () { return generate_post$1; });
 const _lazy_b90URI = () => Promise.resolve().then(function () { return imageToVideo_post$1; });
 const _lazy_47YsKd = () => Promise.resolve().then(function () { return textToVideo_post$1; });
+const _lazy_85Vrjt = () => Promise.resolve().then(function () { return v27ImageToVideo_post$1; });
+const _lazy_JGrGDF = () => Promise.resolve().then(function () { return v27R2v_post$1; });
+const _lazy_x0ByAM = () => Promise.resolve().then(function () { return v27TextToVideo_post$1; });
+const _lazy_eZ32Vh = () => Promise.resolve().then(function () { return v27VideoEdit_post$1; });
 const _lazy_jTvRhe = () => Promise.resolve().then(function () { return videoToVideo_post$1; });
 const _lazy_Asy3Hv = () => Promise.resolve().then(function () { return sitemap_xml$1; });
 const _lazy_T022gR = () => Promise.resolve().then(function () { return renderer$1; });
@@ -1843,6 +1857,8 @@ const handlers = [
   { route: '/api/image/qwen/z-image', handler: _lazy_ihh8BE, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/seedream/lite-image-to-image', handler: _lazy_N5QhNS, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/seedream/lite-text-to-image', handler: _lazy_gIVXeQ, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/wan/2-7-image-pro', handler: _lazy_SOdgAt, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/wan/2-7-image', handler: _lazy_qAdQA_, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/blend', handler: _lazy_0wwS49, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/describe', handler: _lazy_cv5vHn, lazy: true, middleware: false, method: "post" },
   { route: '/api/midjourney/imagine', handler: _lazy_3ymEXI, lazy: true, middleware: false, method: "post" },
@@ -1892,6 +1908,8 @@ const handlers = [
   { route: '/api/video/seedance/pro-fast-image-to-video', handler: _lazy_gXE561, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/seedance/pro-image-to-video', handler: _lazy_cH5mVr, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/seedance/pro-text-to-video', handler: _lazy_FAqGLf, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/v2-fast', handler: _lazy_EemxrT, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/seedance/v2', handler: _lazy_8c0Ihz, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora-pro/generate', handler: _lazy_VnAtz4, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora-pro/storyboard', handler: _lazy_eP3eSa, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/sora/generate', handler: _lazy_zvAFYZ, lazy: true, middleware: false, method: "post" },
@@ -1900,6 +1918,10 @@ const handlers = [
   { route: '/api/video/veo/generate', handler: _lazy_nwJeW1, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/wan/image-to-video', handler: _lazy_b90URI, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/wan/text-to-video', handler: _lazy_47YsKd, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/v27-image-to-video', handler: _lazy_85Vrjt, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/v27-r2v', handler: _lazy_JGrGDF, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/v27-text-to-video', handler: _lazy_x0ByAM, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/wan/v27-video-edit', handler: _lazy_eZ32Vh, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/wan/video-to-video', handler: _lazy_jTvRhe, lazy: true, middleware: false, method: "post" },
   { route: '/sitemap.xml', handler: _lazy_Asy3Hv, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_T022gR, lazy: true, middleware: false, method: undefined },
@@ -2732,9 +2754,21 @@ const batchUpload_post = defineEventHandler(async (event) => {
       });
     }
     const data = await response.json();
+    const code = data == null ? void 0 : data.errorCode;
+    if (code != null && String(code) !== "00000") {
+      const msg = typeof data.errorMessage === "string" && data.errorMessage.trim() ? data.errorMessage.trim() : "Upload failed";
+      throw createError({
+        statusCode: 502,
+        message: msg,
+        data: { errorCode: code, type: data == null ? void 0 : data.type }
+      });
+    }
     setResponseStatus(event, response.status);
     return data;
   } catch (error) {
+    if (error && typeof error.statusCode === "number") {
+      throw error;
+    }
     console.error("Upload proxy error:", error);
     throw createError({
       statusCode: 500,
@@ -3863,6 +3897,56 @@ const liteTextToImage_post = defineEventHandler(async (event) => {
 const liteTextToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: liteTextToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _27ImagePro_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/wan/2-7-image-pro`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan 2-7-image-pro proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const _27ImagePro_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _27ImagePro_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _27Image_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/wan/2-7-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan 2-7-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const _27Image_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _27Image_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function assertMidjourneyEnabled(event) {
@@ -5219,6 +5303,56 @@ const proTextToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.def
   default: proTextToVideo_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const v2Fast_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/v2-fast`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance v2-fast proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v2Fast_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v2Fast_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v2_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/seedance/v2`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Seedance v2 proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v2_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v2_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const generate_post$4 = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -5419,6 +5553,106 @@ const textToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.define
   default: textToVideo_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const v27ImageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/v27-image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers.Authorization = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers.Cookie = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan v27-image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v27ImageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v27ImageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v27R2v_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/v27-r2v`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers.Authorization = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers.Cookie = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan v27-r2v proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v27R2v_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v27R2v_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v27TextToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/v27-text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers.Authorization = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers.Cookie = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan v27-text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v27TextToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v27TextToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v27VideoEdit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/wan/v27-video-edit`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers.Authorization = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers.Cookie = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("Wan v27-video-edit proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v27VideoEdit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v27VideoEdit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const videoToVideo_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -5570,9 +5804,15 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/imagen4/imagen4-generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-fast", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/imagen4/imagen4-ultra", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/2-7-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/2-7-image-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/wan/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/wan/image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/wan/video-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/v2-7-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/v2-7-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/v2-7-video-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/wan/v2-7-r2v", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v2-5-turbo-image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v2-5-turbo-text-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/kling/v2-6-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
@@ -5590,6 +5830,8 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/seedance/v1-pro-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-pro-fast-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v1-5-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedance/v2-fast", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/seedance/v2", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/hailuo/image-to-video-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/hailuo/image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" }
   ];

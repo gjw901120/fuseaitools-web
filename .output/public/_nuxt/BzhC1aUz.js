@@ -1,0 +1,1 @@
+import{D as a,c as o,$ as r,o as c}from"./g5RSBBbf.js";const i={__name:"generate",async setup(n){let e,t;return[e,t]=a(()=>r("/home/ideogram/v3-text-to-image",{replace:!0})),await e,t(),(s,_)=>(c(),o("div"))}};export{i as default};

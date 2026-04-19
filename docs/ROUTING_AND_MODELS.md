@@ -50,6 +50,14 @@
 | **Midjourney** | `/home/midjourney/imagine` | Imagine | — | `midjourney_imagine` |
 | **Midjourney** | `/home/midjourney/upscale` | Upscale | — | `midjourney_upscale` |
 | **Midjourney** | `/home/midjourney/vary` | Vary | — | `midjourney_vary` |
+| **Nano Banana 2** | `/home/nano-banana/nano-banana-2` | Nano Banana 2 | 独立子页 | `nano-banana-2` |
+| **Ideogram** | `/home/ideogram/v3-text-to-image` 等 | 多 Tab（v3 / character 系列） | 各子路径见 `pages/home/ideogram/*` | `ideogram-v3-text-to-image` 等（与定价 key 一致） |
+| **GPT Image** | `/home/gpt-image/text-to-image`、`/home/gpt-image/image-to-image` | 文生图 / 图生图 | — | `gpt-image-1.5-text-to-image`、`gpt-image-1.5-image-to-image` |
+| **Seedream** | `/home/seedream/5-lite-text-to-image`、`/home/seedream/5-lite-image-to-image` | 5 Lite | — | `seedream-5-lite-text-to-image`、`seedream-5-lite-image-to-image` |
+| **Qwen** | `/home/qwen/text-to-image`、`image-to-image`、`image-edit`、`z-image`、`qwen2-text-to-image`、`qwen2-image-edit` | 多 Tab | — | `qwen-text-to-image` 等（与定价 key 一致） |
+| **Imagen4** | `/home/imagen4/imagen4-generate`、`imagen4-fast`、`imagen4-ultra` | 三档 | — | `imagen4-generate`、`imagen4-fast`、`imagen4-ultra` |
+| **Flux 2** | `/home/flux-kontext/flux-2-text-to-image` 等 | 独立子页 | 与 Pro 版共 4 条路径 | `flux-2-text-to-image` 等 |
+| **Grok（图）** | `/home/grok/text-to-image`、`/home/grok/image-to-image` | 文生图 / 图生图 | — | `grok-imagine-text-to-image`、`grok-imagine-image-to-image` |
 
 ---
 
@@ -89,12 +97,19 @@
 | **Sora** | `/home/sora/pro-image-to-video` | Pro Image to Video | — | `sora-2-pro-image-to-video` |
 | **Sora** | `/home/sora/watermark-remover` | Watermark Remover | — | `sora-watermark-remover` |
 | **Sora** | `/home/sora/pro-storyboard` | Pro Storyboard | — | `sora-2-pro-storyboard` |
+| **Wan** | `/home/wan/text-to-video`、`image-to-video`、`video-to-video`、`v2-7-text-to-video`、`v2-7-image-to-video`、`v2-7-video-edit`、`v2-7-r2v`、`2-7-image`、`2-7-image-pro` | 多 Tab / 多子页 | 详见 `components/tools/WanTool.vue` 的 `pathToMode` | `wan-2-6-text-to-video`、`wan-2-7-text-to-video`、`wan-2-7-video-edit`、`wan-2-7-r2v`、`wan-2-7-image` 等 |
+| **Seedance** | `/home/seedance/v1-lite-text-to-video` … `v2`、`v2-fast`、`v1-5-pro` | 多 Tab | 默认入口见 `toolRouteMap` | `seedance-v1-lite-text-to-video`、`seedance-2`、`seedance-2-fast`、`seedance-1.5-pro` 等 |
+| **Hailuo** | `/home/hailuo/image-to-video-standard`、`image-to-video-pro` | 两档 | — | `hailuo-2-3-image-to-video-standard`、`hailuo-2-3-image-to-video-pro`（兼容短 key `2-3-image-to-video-*`） |
+| **Kling** | `/home/kling/v2-5-turbo-*`、`v2-6-*`、`v3-0-*`、`ai-avatar-*` 等 | 多 Tab | — | `kling-v2-5-turbo-*`、`kling-2.6-*`、`kling-3.0-*` 等 |
+| **Grok（视频）** | `/home/grok/text-to-video`、`image-to-video`、`upscale`、`extend` | 视频/延展 | History 模型见下表 | `grok-imagine-text-to-video` 等 |
 
 ---
 
 ## 三、Model → 路由映射（History 详情跳转）
 
 History 列表项来自 `GET /api/records/list`，每条记录含 `recordId`、`model`、`category` 等。跳转规则：**优先用 `model` 查下表得到 path，无匹配时用 `category` 回退到工具默认页**。
+
+实现上会对 `record.model` **trim 并转小写**后再查 `modelToPath`（见 `composables/useHomeLayout.js` 的 `getHistoryItemRoute`），故下表 key 以小写为准；若后端返回大写或混写，需与代码中的映射项一致。
 
 | model（后端返回） | 目标路由 |
 |------------------|----------|
@@ -122,8 +137,36 @@ History 列表项来自 `GET /api/records/list`，每条记录含 `recordId`、`
 | `elevenlabs_speech_to_text` | `/home/elevenlabs/speech-to-text` |
 | `elevenlabs_sound_effect` | `/home/elevenlabs/sound-effect-v2` |
 | `elevenlabs_audio_isolation` | `/home/elevenlabs/audio-isolation` |
-| `sora-2-text-to-video` 等 Sora model | 对应 `/home/sora/{子路径}`（见上表） |
-| 其他 | 用 `category` 查 `categoryToRoute` 得到工具默认页 |
+| `sora-2-text-to-video` 等 Sora model | 对应 `/home/sora/{子路径}`（见上文「### 4. Video」） |
+| `wan-2-6-text-to-video` | `/home/wan/text-to-video` |
+| `wan-2-6-image-to-video` | `/home/wan/image-to-video` |
+| `wan-2-6-video-to-video` | `/home/wan/video-to-video` |
+| `wan-2-7-text-to-video` | `/home/wan/v2-7-text-to-video` |
+| `wan-2-7-image-to-video` | `/home/wan/v2-7-image-to-video` |
+| `wan-2-7-video-edit`、`wan-2-7-videoedit` | `/home/wan/v2-7-video-edit` |
+| `wan-2-7-r2v` | `/home/wan/v2-7-r2v` |
+| `wan-2-7-image` | `/home/wan/2-7-image` |
+| `wan-2-7-image-pro` | `/home/wan/2-7-image-pro` |
+| `seedance-v1-lite-text-to-video` 等 v1 key | 对应 `/home/seedance/v1-*` 子路径 |
+| `seedance-1.5-pro` | `/home/seedance/v1-5-pro` |
+| `seedance-2-fast` | `/home/seedance/v2-fast` |
+| `seedance-2` | `/home/seedance/v2` |
+| `hailuo-2-3-image-to-video-pro` / `2-3-image-to-video-pro` | `/home/hailuo/image-to-video-pro` |
+| `hailuo-2-3-image-to-video-standard` / `2-3-image-to-video-standard` | `/home/hailuo/image-to-video-standard` |
+| `kling-v2-5-turbo-*`、`kling-2.6-*`、`kling-3.0-*`、`kling-ai-avatar-*` | 对应 `/home/kling/...` 子路径（与 §4 表一致） |
+| `grok-imagine-text-to-image` … `grok-imagine-extend` | 对应 `/home/grok/...`（与 §2 / §4 表一致） |
+| `flux-2-text-to-image` 等 Flux 2 key | `/home/flux-kontext/flux-2-*` |
+| `imagen4-generate` / `imagen4-fast` / `imagen4-ultra` | `/home/imagen4/imagen4-*` |
+| `seedream-5-lite-text-to-image` / `seedream-5-lite-image-to-image` | `/home/seedream/5-lite-*` |
+| `qwen-text-to-image` … `qwen2-image-edit` | `/home/qwen/...` 对应子路径 |
+| `ideogram-v3-text-to-image` 等 | `/home/ideogram/...` 对应子路径 |
+| `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | `/home/gpt-image/text-to-image`、`image-to-image` |
+| `nano-banana-2` | `/home/nano-banana/nano-banana-2` |
+| `flux_kontext_pro`、`flux_kontext_max`、`flux-kontext-pro`、`flux-kontext-max` | `/home/flux-kontext/generate` |
+| `gpt_4o_image`、`gpt-4o-image` | `/home/gpt-4o-image/generate` |
+| `luma` | `/home/luma/generate` |
+| `midjourney_blend`、`midjourney_describe`、`midjourney_swapface` | `/home/midjourney/imagine`（兜底到 Imagine） |
+| 其他 | 用 `category` 查 `categoryToRoute` 得到工具默认页；或以 `model` 前缀启发式回退（见 `getHistoryItemRoute`） |
 
 带详情时统一格式：`{path}?record-id={recordId}`，例如 `/home/suno/extend?record-id=xxx`。
 
@@ -155,7 +198,8 @@ History 列表项来自 `GET /api/records/list`，每条记录含 `recordId`、`
 - **Chat**：`gpt.vue`、`gpt/generate.vue`；`deepseek.vue`、`deepseek/generate.vue`；`claude.vue`、`claude/generate.vue`；`gemini.vue`、`gemini/generate.vue`。
 - **Image**：`gpt-4o-image.vue`、`gpt-4o-image/generate.vue`；`flux-kontext.vue`、`flux-kontext/generate.vue`；`nano-banana.vue`、`nano-banana/{generate,edit,pro-generate}.vue`；`midjourney.vue`、`midjourney/{imagine,upscale,vary}.vue`。
 - **Audio**：`suno.vue`、`suno/{generate,extend,upload-cover,upload-extend,add-instrumental,add-vocals}.vue`；`elevenlabs.vue`、`elevenlabs/{multilingual-v2,turbo-2-5,speech-to-text,sound-effect-v2,audio-isolation}.vue`。
-- **Video**：`veo3.vue`、`veo3/{text-to-video,first-and-last-to-video,reference-to-video,extend}.vue`；`runway.vue`、`runway/{generate,extend,aleph}.vue`；`luma.vue`、`luma/generate.vue`；`sora.vue`、`sora/{text-to-video,image-to-video,pro-text-to-video,pro-image-to-video,watermark-remover,pro-storyboard}.vue`。
+- **Video**：`veo3.vue`、`veo3/{text-to-video,first-and-last-to-video,reference-to-video,extend}.vue`；`runway.vue`、`runway/{generate,extend,aleph}.vue`；`luma.vue`、`luma/generate.vue`；`sora.vue`、`sora/{text-to-video,image-to-video,pro-text-to-video,pro-image-to-video,watermark-remover,pro-storyboard}.vue`；`wan.vue` 与 `wan/{text-to-video,image-to-video,video-to-video,v2-7-text-to-video,v2-7-image-to-video,v2-7-video-edit,v2-7-r2v,2-7-image,2-7-image-pro}.vue`；`seedance.vue` 与 `seedance/v1-*`、`v1-5-pro`、`v2`、`v2-fast.vue`；`hailuo.vue` 与 `hailuo/image-to-video-{standard,pro}.vue`；`kling.vue` 与 `kling/` 下各子页；`grok.vue` 与 `grok/{text-to-image,image-to-image,text-to-video,image-to-video,upscale,extend}.vue`。
+- **Image（补充）**：`ideogram.vue` 与 `ideogram/*.vue`；`gpt-image.vue` 与 `gpt-image/{text-to-image,image-to-image}.vue`；`seedream.vue` 与 `seedream/5-lite-*.vue`；`qwen.vue` 与 `qwen/*.vue`；`imagen4.vue` 与 `imagen4/imagen4-*.vue`；`flux-kontext/flux-2-*.vue`。
 
 ---
 
@@ -168,6 +212,9 @@ History 列表项来自 `GET /api/records/list`，每条记录含 `recordId`、`
 - **Veo3**：四 Tab 对应 `/home/veo3/text-to-video`、`first-and-last-to-video`、`reference-to-video`、`extend`；`watch(route.path)` 同步 `formData.generationType`，提交后使用 `getVeo3RecordPath() + '?record-id=xxx'`。
 - **Runway**：三 Tab 对应 `/home/runway/generate`、`extend`、`aleph`；`watch(route.path)` 同步 `activeTab`，提交后使用 `getRunwayRecordPath() + '?record-id=xxx'`。
 - **Sora**：多模式对应 `/home/sora/text-to-video` 等；按 `route.path` 同步模式，提交后按当前 path + `?record-id=xxx`。
+- **Wan**：`watch(route.path)` 同步 `mode`（`pathToMode`）；提交后 `modeTabToPath[mode] + ?record-id=xxx`。
+- **Seedance**：子路径与 `mode` 对应；提交后当前子 path + `?record-id=xxx`。
+- **Kling / Hailuo / Grok / Qwen / Ideogram / GPT Image / Imagen4 / Seedream**：各组件内维护 path ↔ mode 映射，与 `modelToPath` 及 SEO 路由保持一致。
 
 ---
 

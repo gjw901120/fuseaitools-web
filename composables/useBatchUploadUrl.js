@@ -1,3 +1,5 @@
+import { parseStandardApiJson } from '~/utils/parseStandardApiResponse.js'
+
 const PRODUCTION_API_BASE = 'https://api.fuseaitools.com/api'
 
 function getEffectiveApiBaseForClient(configApiBase) {
@@ -21,4 +23,37 @@ export function useBatchUploadUrl() {
     return `${apiBase.replace(/\/$/, '')}/common/batch-upload`
   }
   return '/api/common/batch-upload'
+}
+
+/**
+ * 后端 batch-upload 成功时通常为 errorCode === '00000'；HTTP 200 仍可能返回业务错误（如 B0001）。
+ * 与 useApi 共用 parseStandardApiJson；无标准字段时保留旧逻辑。
+ */
+export function assertBatchUploadSuccess(data) {
+  const r = parseStandardApiJson(data)
+  if (r.kind === 'success') return
+  if (r.kind === 'business_error') throw new Error(r.errorMessage)
+  if (!data || typeof data !== 'object') throw new Error('Invalid upload response')
+  const code = data.errorCode
+  if (code != null && String(code) !== '00000') {
+    const msg = typeof data.errorMessage === 'string' && data.errorMessage.trim()
+      ? data.errorMessage.trim()
+      : 'Upload failed'
+    throw new Error(msg)
+  }
+}
+
+/**
+ * 解析 batch-upload 的 fetch Response：统一处理 HTTP 错误与业务 errorCode，便于 showError。
+ */
+export async function parseBatchUploadFetchResponse(res) {
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    const msg = (typeof data.errorMessage === 'string' && data.errorMessage.trim())
+      ? data.errorMessage.trim()
+      : (data?.message || res.statusText || 'Upload failed')
+    throw new Error(msg)
+  }
+  assertBatchUploadSuccess(data)
+  return data
 }

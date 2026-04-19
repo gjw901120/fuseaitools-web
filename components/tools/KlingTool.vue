@@ -314,8 +314,8 @@
 
             <div class="form-actions">
               <div v-if="mode === 'v2-6-motion-control' || mode === 'v3-0-motion-control'" class="form-hint motion-price-hint">
-                <span v-if="mode === 'v2-6-motion-control'">720p: 9 credits per second, 1080p: 15 credits per second (billed by uploaded video duration)</span>
-                <span v-else>std: 30 credits per second, pro: 40 credits per second (billed by uploaded video duration)</span>
+                <span v-if="mode === 'v2-6-motion-control'">RULE: per-second rate (720p / 1080p) × uploaded reference video duration in seconds (rounded up). Total appears on the button after upload.</span>
+                <span v-else>RULE: per-second rate (std → 720p, pro → 1080p) × uploaded reference video duration in seconds (rounded up). Total appears on the button after upload.</span>
               </div>
               <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView">
                 <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
@@ -475,6 +475,8 @@ const discountText = computed(() => {
 // 价格：
 // - v2.5 Turbo T2V/I2V Pro：按 Duration 匹配 RULE（scene 固定 generate）
 // - 2.6 Text/Image to Video：按 Duration + Sound 匹配 RULE（sound=false -> without_sound；true -> with_sound）
+// - 2.6 / 3.0 Motion Control：RULE duration=1 为每秒单价 × 参考视频时长（pricing：kling-2.6-motion-control / kling-3.0-motion-control）
+// - 3.0 Video：RULE duration=1 为每秒单价 × 成片总时长（单镜头时长或多镜头各 shot 之和）；size=std|pro，scene=with_sound|without_sound（kling-3.0-video）
 const klingPriceText = computed(() => {
   let modelKey = ''
   const durationNum = Number(formData.duration) || 0
@@ -508,41 +510,59 @@ const klingPriceText = computed(() => {
   }
   if (m === 'v3-0-video') {
     modelKey = 'kling-3.0-video'
-    const size = formData.kling_mode || 'std' // std / pro
+    const size = formData.kling_mode === 'pro' ? 'pro' : 'std'
     let totalDuration = 0
     if (formData.v3_multi_shots) {
-      // 多镜头：按所有 shots 的 duration 总和
       totalDuration = v3MultiShotTotalDuration.value || 0
     } else {
       const firstShot = (formData.v3_multi_prompt || [])[0]
       totalDuration = Number(firstShot?.duration) || 0
     }
+    if (!Number.isFinite(totalDuration) || totalDuration <= 0) return ''
     const scene = formData.sound ? 'with_sound' : 'without_sound'
-    const credits = getPrice(modelKey, {
-      duration: totalDuration,
+    const perSecond = getPrice(modelKey, {
+      duration: 1,
       size,
       scene
     })
-    const str = formatCredits(credits)
+    if (perSecond == null) return ''
+    const billSec = Math.ceil(totalDuration)
+    const totalCredits = perSecond * billSec
+    const str = formatCredits(totalCredits)
     return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v2-6-motion-control') {
     modelKey = 'kling-2.6-motion-control'
-    const quality = formData.mode || '720p'
-    const credits = getPrice(modelKey, {
-      duration: durationNum,
+    const quality = formData.mode === '1080p' ? '1080p' : '720p'
+    const perSecond = getPrice(modelKey, {
+      duration: 1,
       quality,
       scene: 'generate'
     })
-    const str = formatCredits(credits)
+    if (perSecond == null) return ''
+    const billSec = formData.video_urls.length > 0
+      ? Math.max(1, Math.ceil(Number(formData.duration) || 0))
+      : 0
+    if (!billSec) return ''
+    const totalCredits = perSecond * billSec
+    const str = formatCredits(totalCredits)
     return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v3-0-motion-control') {
     modelKey = 'kling-3.0-motion-control'
-    const duration = Number(formData.duration) || 0
     const quality = formData.mode === 'pro' ? '1080p' : '720p'
-    const credits = getPrice(modelKey, { duration, quality, scene: 'generate' })
-    const str = formatCredits(credits)
+    const perSecond = getPrice(modelKey, {
+      duration: 1,
+      quality,
+      scene: 'generate'
+    })
+    if (perSecond == null) return ''
+    const billSec = formData.video_urls.length > 0
+      ? Math.max(1, Math.ceil(Number(formData.duration) || 0))
+      : 0
+    if (!billSec) return ''
+    const totalCredits = perSecond * billSec
+    const str = formatCredits(totalCredits)
     return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'ai-avatar-standard') {
@@ -611,11 +631,7 @@ async function uploadOneFile(file, isVideo = false) {
   const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null
   if (token) headers['Authorization'] = `Bearer ${token}`
   const res = await fetch(batchUploadUrl, { method: 'POST', headers, body: form, credentials: 'include' })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.errorMessage || err?.message || 'Upload failed')
-  }
-  const data = await res.json()
+  const data = await parseBatchUploadFetchResponse(res)
   const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
   const url = Array.isArray(urls) && urls.length ? urls[0] : (data?.data?.url || '')
   return typeof url === 'string' ? url : ''
@@ -701,7 +717,7 @@ async function handleMotionVideo(e) {
   const file = e.target?.files?.[0]
   if (!file) {
     formData.video_urls = []
-    if (mode.value === 'v3-0-motion-control') formData.duration = ''
+    if (mode.value === 'v3-0-motion-control' || mode.value === 'v2-6-motion-control') formData.duration = ''
     return
   }
   if (file.size > 100 * 1024 * 1024) { showError('Video max 100MB'); e.target.value = ''; return }
@@ -709,13 +725,13 @@ async function handleMotionVideo(e) {
   try {
     const secs = await getVideoDurationSeconds(file)
     if (secs > 0) formData.duration = String(Math.ceil(secs))
-    else if (mode.value === 'v3-0-motion-control') formData.duration = ''
+    else if (mode.value === 'v3-0-motion-control' || mode.value === 'v2-6-motion-control') formData.duration = ''
     const url = await uploadOneFile(file, true)
     formData.video_urls = url ? [url] : []
   } catch (err) {
     showError(err?.message || 'Upload failed')
     formData.video_urls = []
-    if (mode.value === 'v3-0-motion-control') formData.duration = ''
+    if (mode.value === 'v3-0-motion-control' || mode.value === 'v2-6-motion-control') formData.duration = ''
   } finally { isUploadingMotionVideo.value = false; e.target.value = '' }
 }
 async function handleAvatarImage(files) {

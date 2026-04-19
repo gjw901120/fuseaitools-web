@@ -789,16 +789,7 @@ const uploadAudioToUrl = async (file) => {
     body: formDataUpload,
     credentials: 'include'
   })
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    const msg = (typeof errorData?.errorMessage === 'string' && errorData.errorMessage?.trim())
-      ? errorData.errorMessage.trim()
-      : (typeof errorData?.message === 'string' && errorData.message?.trim())
-        ? errorData.message.trim()
-        : (errorData?.userTip || errorData?.error || errorData?.message || 'Upload failed')
-    throw new Error(msg)
-  }
-  const data = await response.json()
+  const data = await parseBatchUploadFetchResponse(response)
   const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
   if (!Array.isArray(urls) || !urls[0]) throw new Error('Invalid response: file URL not found')
   return urls[0]

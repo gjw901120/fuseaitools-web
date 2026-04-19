@@ -66,8 +66,8 @@
           <div class="sub-nav" v-if="selectedCategory">
             <template v-for="subTool in getCurrentTools()" :key="subTool.id">
               <NuxtLink
-                v-if="toolRouteMap[subTool.name]"
-                :to="toolRouteMap[subTool.name]"
+                v-if="toolRouteMap[subTool.routeKey || subTool.name]"
+                :to="toolRouteMap[subTool.routeKey || subTool.name]"
                 class="sub-nav-item"
                 :class="{ active: selectedTool === subTool.id }"
               >
@@ -246,7 +246,8 @@ const toolRouteMap = {
   'Elevenlabs': '/home/elevenlabs/multilingual-v2',
   'Suno': '/home/suno/generate',
   'Sora': '/home/sora/text-to-video',
-  'Wan': '/home/wan/text-to-video',
+  'Wan': '/home/wan/2-7-image',
+  'WanVideo': '/home/wan/text-to-video',
   'Seedance': '/home/seedance/v1-lite-text-to-video',
   'Hailuo': '/home/hailuo/image-to-video-pro',
   'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
@@ -633,8 +634,18 @@ const allToolsList = [
   {
     id: 17,
     name: 'Wan',
+    type: 'image',
+    description: 'Wan AI：2.7 图像生成（Image / Image Pro）',
+    icon: '/tools-logo/Wan.png',
+    rating: 4.6,
+    usageCount: 0
+  },
+  {
+    id: 25,
+    name: 'Wan',
+    routeKey: 'WanVideo',
     type: 'video',
-    description: 'Wan AI 视频：文生视频、图生视频、视频生视频',
+    description: 'Wan AI：2.6 视频生成（T2V / I2V / V2V）',
     icon: '/tools-logo/Wan.png',
     rating: 4.6,
     usageCount: 0
@@ -778,8 +789,9 @@ const selectTool = (toolId) => {
   
   // 更新路由
   const tool = allTools.value.find(t => t.id === toolId)
-  if (tool && toolRouteMap[tool.name]) {
-    router.push(toolRouteMap[tool.name])
+  const routeKey = tool?.routeKey || tool?.name
+  if (tool && routeKey && toolRouteMap[routeKey]) {
+    router.push(toolRouteMap[routeKey])
   }
 }
 
@@ -1077,9 +1089,16 @@ watch(() => route.path, (newPath) => {
     '/home/sora/text-to-video': 'Sora',
     '/home/sora/image-to-video': 'Sora',
     '/home/wan': 'Wan',
-    '/home/wan/text-to-video': 'Wan',
-    '/home/wan/image-to-video': 'Wan',
-    '/home/wan/video-to-video': 'Wan',
+    '/home/wan/2-7-image': 'Wan',
+    '/home/wan/2-7-image-pro': 'Wan',
+    '/home/wan/text-to-video': 'WanVideo',
+    '/home/wan/image-to-video': 'WanVideo',
+    '/home/wan/video-to-video': 'WanVideo',
+    '/home/wan/v2-7-text-to-video': 'WanVideo',
+    '/home/wan/v2-7-image-to-video': 'WanVideo',
+    '/home/wan/v2-7-video-edit': 'WanVideo',
+    '/home/wan/v2-7-videoedit': 'WanVideo',
+    '/home/wan/v2-7-r2v': 'WanVideo',
     '/home/seedance': 'Seedance',
     '/home/seedance/v1-lite-text-to-video': 'Seedance',
     '/home/seedance/v1-lite-image-to-video': 'Seedance',
@@ -1087,6 +1106,8 @@ watch(() => route.path, (newPath) => {
     '/home/seedance/v1-pro-image-to-video': 'Seedance',
     '/home/seedance/v1-pro-fast-image-to-video': 'Seedance',
     '/home/seedance/v1-5-pro': 'Seedance',
+    '/home/seedance/v2-fast': 'Seedance',
+    '/home/seedance/v2': 'Seedance',
     '/home/seedream': 'Seedream',
     '/home/seedream/5-lite-text-to-image': 'Seedream',
     '/home/seedream/5-lite-image-to-image': 'Seedream',
@@ -1117,7 +1138,7 @@ watch(() => route.path, (newPath) => {
   
   const toolName = routeToToolMap[newPath]
   if (toolName) {
-    const tool = allTools.value.find(t => t.name === toolName)
+    const tool = allTools.value.find(t => (t.routeKey && t.routeKey === toolName) || t.name === toolName)
     if (tool) {
       selectedTool.value = tool.id
       // 设置对应的分类

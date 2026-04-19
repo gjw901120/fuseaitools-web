@@ -51,7 +51,8 @@ export default defineNuxtConfig({
     '/home/elevenlabs-sound-effect-v2': { redirect: { to: '/home/elevenlabs/sound-effect-v2', statusCode: 301 } },
     '/home/elevenlabs-audio-isolation': { redirect: { to: '/home/elevenlabs/audio-isolation', statusCode: 301 } },
     '/home/seedream/1-5-lite-text-to-image': { redirect: { to: '/home/seedream/5-lite-text-to-image', statusCode: 301 } },
-    '/home/seedream/2-5-lite-image-to-image': { redirect: { to: '/home/seedream/5-lite-image-to-image', statusCode: 301 } }
+    '/home/seedream/2-5-lite-image-to-image': { redirect: { to: '/home/seedream/5-lite-image-to-image', statusCode: 301 } },
+    '/home/wan/v2-7-videoedit': { redirect: { to: '/home/wan/v2-7-video-edit', statusCode: 301 } }
   },
 
   nitro: {
@@ -128,9 +129,15 @@ export default defineNuxtConfig({
         '/home/sora/watermark-remover',
         '/home/sora/pro-storyboard',
         '/home/wan',
+        '/home/wan/2-7-image',
+        '/home/wan/2-7-image-pro',
         '/home/wan/text-to-video',
         '/home/wan/image-to-video',
         '/home/wan/video-to-video',
+        '/home/wan/v2-7-text-to-video',
+        '/home/wan/v2-7-image-to-video',
+        '/home/wan/v2-7-video-edit',
+        '/home/wan/v2-7-r2v',
         '/home/seedance',
         '/home/seedance/v1-lite-text-to-video',
         '/home/seedance/v1-lite-image-to-video',
@@ -138,6 +145,8 @@ export default defineNuxtConfig({
         '/home/seedance/v1-pro-image-to-video',
         '/home/seedance/v1-pro-fast-image-to-video',
         '/home/seedance/v1-5-pro',
+        '/home/seedance/v2-fast',
+        '/home/seedance/v2',
         '/home/seedream',
         '/home/seedream/5-lite-text-to-image',
         '/home/seedream/5-lite-image-to-image',
