@@ -1682,10 +1682,10 @@ async function generate() {
         showError('Color palette: 3–10 colors, valid HEX, ratio percentages must total 100%.')
         return
       }
-      const color_palette =
+      const colorPalette =
         !formData.enableSequential && formData.colorPalette.length > 0
           ? formData.colorPalette.map((row) => ({
-              color: normalizeHex(row.hex),
+              hex: normalizeHex(row.hex),
               ratio: parseRatioInputStr(row.ratioInput) / 100
             }))
           : undefined
@@ -1696,16 +1696,16 @@ async function generate() {
       body = {
         model: modeVal === '2-7-image' ? 'wan-2-7-image' : 'wan-2-7-image-pro',
         prompt: p,
-        input_urls: formData.imageUrls,
-        aspect_ratio: hasImageInput.value ? undefined : formData.aspectRatio,
-        enable_sequential: !!formData.enableSequential,
-        n: Number(formData.n),
+        inputUrls: formData.imageUrls,
+        aspectRatio: hasImageInput.value ? undefined : formData.aspectRatio,
+        enableSequential: !!formData.enableSequential,
+        n: String(Math.max(1, Math.min(12, Number(formData.n) || (formData.enableSequential ? 12 : 4)))),
         resolution,
-        thinking_mode: canUseThinkingMode.value ? !!formData.thinkingMode : false,
-        color_palette,
-        bbox_list: hasImageInput.value ? bboxList : undefined,
+        thinkingMode: canUseThinkingMode.value ? !!formData.thinkingMode : false,
+        colorPalette,
+        bboxList: hasImageInput.value ? bboxList : undefined,
         watermark: !!formData.watermark,
-        seed: Math.max(0, Math.min(2147483647, Number(formData.seed) || 0))
+        seed: String(Math.max(0, Math.min(2147483647, Number(formData.seed) || 0)))
       }
     } else if (modeVal === 'text-to-video') {
       apiPath = '/api/video/wan/text-to-video'

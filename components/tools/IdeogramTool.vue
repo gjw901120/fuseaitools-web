@@ -654,18 +654,18 @@ const onSubmit = async () => {
       body = {
         model: m,
         prompt: form.prompt?.trim() || undefined,
-        rendering_speed: form.rendering_speed,
+        renderingSpeed: form.rendering_speed,
         style: form.style,
-        expand_prompt: form.expand_prompt,
-        image_size: form.image_size,
+        expandPrompt: form.expand_prompt,
+        imageSize: form.image_size,
         seed: form.seed,
-        negative_prompt: form.negative_prompt?.trim() || undefined,
-        num_images: form.num_images,
+        negativePrompt: form.negative_prompt?.trim() || undefined,
+        numImages: form.num_images,
         strength: form.strength
       }
-      if (form.image_url) body.image_url = form.image_url
-      if (form.mask_url) body.mask_url = form.mask_url
-      if (form.reference_image_urls?.length) body.reference_image_urls = form.reference_image_urls
+      if (form.image_url) body.imageUrl = form.image_url
+      if (form.mask_url) body.maskUrl = form.mask_url
+      if (form.reference_image_urls?.length) body.referenceImageUrls = form.reference_image_urls
     }
 
     const data = await post(apiPath, body)
