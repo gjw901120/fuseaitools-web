@@ -488,7 +488,13 @@
                   </div>
                   <div class="palette-field">
                     <span class="palette-field-label palette-field-label-muted">RATIO</span>
-                    <input v-model="row.ratioInput" type="text" class="form-input palette-ratio-input" placeholder="e.g. 12.5" />
+                    <input
+                      v-model="row.ratioInput"
+                      type="text"
+                      class="form-input palette-ratio-input"
+                      placeholder="e.g. 12.5%"
+                      @blur="onPaletteRatioBlur(row)"
+                    />
                   </div>
                   <button type="button" class="palette-remove-btn" title="Remove" @click="removeColor(idx)">
                     <i class="fas fa-trash-alt"></i>
@@ -1519,6 +1525,14 @@ function parseRatioInputStr(s) {
   return Number.isFinite(n) ? n : NaN
 }
 
+function parseRatioPercentValue(s) {
+  const raw = parseRatioInputStr(s)
+  if (!Number.isFinite(raw)) return NaN
+  // Accept both 12.5 (percent) and 0.125 (fraction).
+  if (raw >= 0 && raw <= 1) return raw * 100
+  return raw
+}
+
 function mapApiColorPaletteRow(c) {
   if (typeof c === 'string') {
     const hex = normalizeHex(c)
@@ -1532,9 +1546,9 @@ function mapApiColorPaletteRow(c) {
     const num = Number(rv)
     if (num >= 0 && num <= 1) {
       const pct = Math.round(num * 10000) / 100
-      ratioInput = Number.isInteger(pct) ? String(pct) : String(pct)
+      ratioInput = `${Number.isInteger(pct) ? String(pct) : String(pct)}%`
     } else {
-      ratioInput = String(num)
+      ratioInput = `${String(num)}%`
     }
   }
   return { hex, ratioInput }
@@ -1550,7 +1564,7 @@ function paletteDisplayHex(hex) {
 
 const colorPaletteSumPercent = computed(() =>
   formData.colorPalette.reduce((sum, row) => {
-    const v = parseRatioInputStr(row.ratioInput)
+    const v = parseRatioPercentValue(row.ratioInput)
     return sum + (Number.isFinite(v) ? v : 0)
   }, 0)
 )
@@ -1563,7 +1577,7 @@ const colorPaletteValidForGenerate = computed(() => {
   let sum = 0
   for (const row of rows) {
     if (!normalizeHex(row.hex)) return false
-    const r = parseRatioInputStr(row.ratioInput)
+    const r = parseRatioPercentValue(row.ratioInput)
     if (!Number.isFinite(r) || r < 0) return false
     sum += r
   }
@@ -1579,7 +1593,7 @@ const colorPaletteNeedsAttention = computed(() => {
 const colorPaletteFooterText = computed(() => {
   const n = formData.colorPalette.length
   if (n === 0) return ''
-  if (n < 3) return `color_palette requires 3 to 10 colors (add ${3 - n} more).`
+  if (n < 3) return `Color Palette requires 3 to 10 colors (add ${3 - n} more).`
   if (n > 10) return 'Maximum 10 colors.'
   const badHex = formData.colorPalette.some((row) => !normalizeHex(row.hex))
   if (badHex) return 'Each row needs a valid HEX (e.g. #aabbcc).'
@@ -1604,6 +1618,13 @@ function clearColorPalette() {
 function onPaletteHexBlur(row) {
   const n = normalizeHex(row.hex)
   if (n) row.hex = n
+}
+
+function onPaletteRatioBlur(row) {
+  const pct = parseRatioPercentValue(row.ratioInput)
+  if (!Number.isFinite(pct)) return
+  const normalized = Math.round(pct * 10000) / 10000
+  row.ratioInput = `${Number.isInteger(normalized) ? String(normalized) : String(normalized)}%`
 }
 
 const promptMaxLength = computed(() => 5000)
@@ -1686,7 +1707,7 @@ async function generate() {
         !formData.enableSequential && formData.colorPalette.length > 0
           ? formData.colorPalette.map((row) => ({
               hex: normalizeHex(row.hex),
-              ratio: parseRatioInputStr(row.ratioInput) / 100
+              ratio: `${parseRatioPercentValue(row.ratioInput)}%`
             }))
           : undefined
       const bboxList = buildBboxListForApi()

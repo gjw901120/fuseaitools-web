@@ -32,6 +32,7 @@ export const useHomeLayout = () => {
     'ElevenLabs': '/home/elevenlabs/multilingual-v2',
     'Sora': '/home/sora/text-to-video',
     'Wan': '/home/wan/2-7-image',
+    'Wan Image': '/home/wan/2-7-image',
     'WanVideo': '/home/wan/text-to-video',
     'Seedance': '/home/seedance/v1-lite-text-to-video',
     'Hailuo': '/home/hailuo/image-to-video-pro',
@@ -45,7 +46,7 @@ export const useHomeLayout = () => {
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
-    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'image', 'WanVideo': 'video', 'Seedance': 'video', 'Hailuo': 'video',
+    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'image', 'Wan Image': 'image', 'WanVideo': 'video', 'Seedance': 'video', 'Hailuo': 'video',
     'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image', 'Imagen4': 'image', 'Grok': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
   }
@@ -62,6 +63,7 @@ export const useHomeLayout = () => {
     'Luma': '/tools-logo/Luma.png',
     'Sora': '/tools-logo/sora.png',
     'Wan': '/tools-logo/Wan.png',
+    'Wan Image': '/tools-logo/Wan.png',
     'Seedance': '/tools-logo/Seedance.png',
     'Hailuo': '/tools-logo/Hailuo.png',
     'Kling': '/tools-logo/Kling.png',
@@ -595,6 +597,7 @@ export const useHomeLayout = () => {
     'ElevenLabs': '/home/elevenlabs',
     'Sora': '/home/sora',
     'Wan': '/home/wan',
+    'Wan Image': '/home/wan',
     'Seedance': '/home/seedance',
     'Hailuo': '/home/hailuo',
     'Kling': '/home/kling',
