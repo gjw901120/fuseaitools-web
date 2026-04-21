@@ -562,6 +562,13 @@
       </div>
 
       <div class="result-panel">
+        <div v-if="!isDetailView && route.path === '/home/wan/2-7-image'" class="tutorial-showcase">
+          <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+          <div class="tutorial-showcase-links">
+            <a href="https://www.fuseaitools.com/news/wan-27-sequential-animation-frames-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create animation frame sequences in one click with Wan 2.7 Image sequential mode</a>
+            <a href="https://www.fuseaitools.com/news/wan-27-color-palette-brand-geometry-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use Wan 2.7 Image Color Palette to generate brand-consistent geometric visuals</a>
+          </div>
+        </div>
         <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
           <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
           <p class="failure-message">Generation failed. You can try again with different parameters.</p>
@@ -576,15 +583,27 @@
         </div>
         <div v-else class="result-display">
           <div v-if="isWanImageMode" class="image-result">
-            <div class="image-player">
+            <template v-if="displayResult.imageUrls?.length">
+              <div class="image-grid">
+                <div v-for="(imgUrl, idx) in displayResult.imageUrls" :key="imgUrl + idx" class="image-grid-item">
+                  <img :src="imgUrl" class="image-element" :alt="`Generated image ${idx + 1}`" />
+                  <div class="video-actions image-item-actions">
+                    <button @click="downloadImageAsset(imgUrl, idx)" class="action-btn">
+                      <i class="fas fa-download"></i> Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div v-else class="image-player">
               <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" class="image-element" alt="Generated image" />
               <div v-else class="video-placeholder">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Generating...</p>
               </div>
             </div>
-            <div class="video-actions">
-              <button v-if="displayResult.imageUrl" @click="downloadResultAsset" class="action-btn">
+            <div class="video-actions" v-if="displayResult.imageUrl && !displayResult.imageUrls?.length">
+              <button @click="downloadResultAsset" class="action-btn">
                 <i class="fas fa-download"></i> Download
               </button>
             </div>
@@ -732,7 +751,7 @@ const formData = reactive({
   referenceVoice: '',
   aspectRatio: '1:1',
   enableSequential: false,
-  n: 4,
+  n: 1,
   duration: '5',
   durationNum: 5,
   resolution: initialWanResolution,
@@ -1137,6 +1156,27 @@ function pickDetailVideoUrl(d) {
   return ''
 }
 
+function pickDetailImageUrls(d) {
+  if (!d || typeof d !== 'object') return []
+  const out = []
+  const pushUrl = (v) => {
+    if (!v) return
+    if (typeof v === 'string') {
+      const t = v.trim()
+      if (t) out.push(t)
+      return
+    }
+    const u = typeof v?.url === 'string' ? v.url.trim() : ''
+    if (u) out.push(u)
+  }
+  pushUrl(d.imageUrl)
+  pushUrl(d.outputUrl)
+  const ou = d.outputUrls
+  if (typeof ou === 'string') pushUrl(ou)
+  else if (Array.isArray(ou)) ou.forEach(pushUrl)
+  return [...new Set(out)]
+}
+
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
@@ -1219,10 +1259,15 @@ const wanPriceText = computed(() => {
     return `· ${str} credits${discountText.value}`
   }
 
-  const priceFields = isWanImageMode.value
-    ? { quality: formData.resolution, batchSize: Number(formData.n) || 1 }
-    : { duration: String(isWan27VideoMode.value ? formData.durationNum : formData.duration), quality: formData.resolution }
-  const credits = getPrice(modelKey, priceFields)
+  let credits = null
+  if (isWanImageMode.value) {
+    const batchSize = Math.max(1, Math.min(12, Number(formData.n) || 1))
+    const perImage = getPrice(modelKey, { batchSize: 1, scene: 'generate' }) ?? getPrice(modelKey, { batchSize: 1 })
+    credits = perImage == null ? null : perImage * batchSize
+  } else {
+    const priceFields = { duration: String(isWan27VideoMode.value ? formData.durationNum : formData.duration), quality: formData.resolution }
+    credits = getPrice(modelKey, priceFields)
+  }
   const str = formatCredits(credits)
   if (!str) return ''
   return `· ${str} credits${discountText.value}`
@@ -1533,6 +1578,12 @@ function parseRatioPercentValue(s) {
   return raw
 }
 
+function formatRatioPercent(pct) {
+  const n = Number(pct)
+  if (!Number.isFinite(n)) return ''
+  return `${n.toFixed(2)}%`
+}
+
 function mapApiColorPaletteRow(c) {
   if (typeof c === 'string') {
     const hex = normalizeHex(c)
@@ -1546,9 +1597,9 @@ function mapApiColorPaletteRow(c) {
     const num = Number(rv)
     if (num >= 0 && num <= 1) {
       const pct = Math.round(num * 10000) / 100
-      ratioInput = `${Number.isInteger(pct) ? String(pct) : String(pct)}%`
+      ratioInput = formatRatioPercent(pct)
     } else {
-      ratioInput = `${String(num)}%`
+      ratioInput = formatRatioPercent(num)
     }
   }
   return { hex, ratioInput }
@@ -1624,7 +1675,7 @@ function onPaletteRatioBlur(row) {
   const pct = parseRatioPercentValue(row.ratioInput)
   if (!Number.isFinite(pct)) return
   const normalized = Math.round(pct * 10000) / 10000
-  row.ratioInput = `${Number.isInteger(normalized) ? String(normalized) : String(normalized)}%`
+  row.ratioInput = formatRatioPercent(normalized)
 }
 
 const promptMaxLength = computed(() => 5000)
@@ -1675,8 +1726,14 @@ const canGenerate = computed(() => {
 
 const displayResult = computed(() => {
   if (isDetailView.value && detailData.value && Number(detailData.value.status) === 2) {
-    const url = pickDetailVideoUrl(detailData.value)
-    if (url) return isWanImageMode.value ? { imageUrl: url } : { videoUrl: url }
+    if (isWanImageMode.value) {
+      const imageUrls = pickDetailImageUrls(detailData.value)
+      if (imageUrls.length > 1) return { imageUrls, imageUrl: imageUrls[0] }
+      if (imageUrls.length === 1) return { imageUrl: imageUrls[0] }
+    } else {
+      const url = pickDetailVideoUrl(detailData.value)
+      if (url) return { videoUrl: url }
+    }
   }
   return result.value
 })
@@ -1707,7 +1764,7 @@ async function generate() {
         !formData.enableSequential && formData.colorPalette.length > 0
           ? formData.colorPalette.map((row) => ({
               hex: normalizeHex(row.hex),
-              ratio: `${parseRatioPercentValue(row.ratioInput)}%`
+              ratio: formatRatioPercent(parseRatioPercentValue(row.ratioInput))
             }))
           : undefined
       const bboxList = buildBboxListForApi()
@@ -1720,7 +1777,7 @@ async function generate() {
         inputUrls: formData.imageUrls,
         aspectRatio: hasImageInput.value ? undefined : formData.aspectRatio,
         enableSequential: !!formData.enableSequential,
-        n: String(Math.max(1, Math.min(12, Number(formData.n) || (formData.enableSequential ? 12 : 4)))),
+        n: String(Math.max(1, Math.min(12, Number(formData.n) || (formData.enableSequential ? 12 : 1)))),
         resolution,
         thinkingMode: canUseThinkingMode.value ? !!formData.thinkingMode : false,
         colorPalette,
@@ -1838,9 +1895,11 @@ async function generate() {
       router.push((modeTabToPath[modeVal] || '/home/wan/text-to-video') + '?record-id=' + encodeURIComponent(rid))
       return
     }
-    const url = data?.imageUrl ?? data?.videoUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) && data.outputUrls?.length ? data.outputUrls[0] : null)
+    const outputUrls = Array.isArray(data?.outputUrls) ? data.outputUrls.filter((u) => typeof u === 'string' && u.trim()) : []
+    const url = data?.imageUrl ?? data?.videoUrl ?? data?.outputUrl ?? (outputUrls.length ? outputUrls[0] : null)
     if (isWanImageMode.value) {
-      result.value = url ? { imageUrl: url } : data
+      if (outputUrls.length > 1) result.value = { imageUrls: outputUrls, imageUrl: outputUrls[0] }
+      else result.value = url ? { imageUrl: url } : data
     } else {
       result.value = url ? { videoUrl: url } : data
     }
@@ -1861,6 +1920,14 @@ function downloadResultAsset() {
   }
 }
 
+function downloadImageAsset(url, idx) {
+  if (!url) return
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `wan-image-${idx + 1}-${Date.now()}.png`
+  a.click()
+}
+
 // 勿在此 watch 内 router.replace：会与 route→mode 竞态，且在 route.path 未就绪时把全站导航劫持到 /home/wan/text-to-video。
 // Tab 切换请走 goToTab（router.push）；mode 与 URL 对齐由上方 watch(route.path) 负责。
 watch(mode, (m) => {
@@ -1878,12 +1945,12 @@ watch(mode, (m) => {
     // 进入该 Tab 不沿用其它模式的 Resolution，默认 1K
     formData.resolution = '1K'
     formData.enableSequential = false
-    formData.n = 4
+    formData.n = 1
     formData.thinkingMode = false
   }
   if (m === '2-7-image-pro') {
     formData.resolution = '1K'
-    formData.n = 4
+    formData.n = 1
   }
 }, { immediate: true })
 
@@ -1893,7 +1960,7 @@ watch(() => formData.enableSequential, (enabled) => {
     formData.thinkingMode = false
     if (formData.resolution === '4K') formData.resolution = '2K'
   } else {
-    if (formData.n < 1 || formData.n > 4) formData.n = 4
+    if (formData.n < 1 || formData.n > 4) formData.n = 1
   }
 })
 </script>
@@ -2573,6 +2640,48 @@ watch(() => formData.enableSequential, (enabled) => {
 .wan-ref-video-tile { flex: 0 0 auto; width: 100%; max-width: 200px; margin: 0; }
 .wan-ref-videos-actions { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
 .wan-ref-videos-hint { margin: 0; text-align: center; max-width: 420px; }
+.tutorial-showcase {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
+}
+.image-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.image-grid-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px;
+  background: #fff;
+}
+.image-item-actions {
+  margin-top: 8px;
+}
 
 .detail-loading-state, .detail-failure-state {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center;
