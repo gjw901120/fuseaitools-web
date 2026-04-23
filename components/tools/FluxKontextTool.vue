@@ -341,6 +341,13 @@
         </div>
 
         <div class="result-content">
+          <div v-if="!isDetailView && route.path === '/home/flux-kontext/flux-2-pro-text-to-image'" class="tutorial-showcase">
+            <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
+            <div class="tutorial-showcase-links">
+              <a href="https://www.fuseaitools.com/news/flux-2-pro-text-to-image-cinematic-dusk-mountains-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to generate cinematic dusk mountain visuals</a>
+              <a href="https://www.fuseaitools.com/news/flux-2-pro-text-to-image-midnight-ramen-food-photography-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to create mouth-watering midnight ramen photography</a>
+            </div>
+          </div>
           <!-- 详情页：status 2 展示 outputUrls -->
           <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-grid">
             <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
@@ -1294,6 +1301,38 @@ const clearResults = () => {
 
 .clear-btn:hover {
   background: #dc2626;
+}
+
+.tutorial-showcase {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.tutorial-showcase-title {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.tutorial-showcase-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tutorial-showcase-links .tutorial-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.tutorial-showcase-links .tutorial-link:hover {
+  text-decoration: underline;
 }
 
 .detail-loading-state, .detail-failure-state {
