@@ -210,6 +210,13 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
         }
+      ],
+      script: [
+        {
+          src: 'https://analytics.ahrefs.com/analytics.js',
+          'data-key': 'AynByJ5ihweg+owtq6NJnw',
+          async: true
+        }
       ]
     }
   },
