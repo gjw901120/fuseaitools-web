@@ -222,14 +222,16 @@ Tool use: Search—real-time web, fact-check, multi-language. Maps—location, l
     ]
   },
   'gpt-image': {
-    title: 'GPT-4o Image',
+    title: 'GPT Image',
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'GPT-4o Image is OpenAI\'s latest native multimodal image generation model. By deeply integrating text and visual understanding, it enables a complete workflow from concept generation to professional-grade refinement within a single chat flow, excelling in instruction following, text rendering, and style consistency.',
+    intro: 'GPT Image is OpenAI\'s image generation and editing model family. It supports both classic 1.5 workflows and new v2 generation/editing modes, with strong instruction following, text rendering, style consistency, and flexible aspect ratio and resolution controls.',
     features: [
-      { name: 'Text to Image', path: '/home/gpt-image/text-to-image', description: 'Generate images from complex text descriptions or reference images, with precise control over aspect ratio and quality.' },
-      { name: 'Image to Image', path: '/home/gpt-image/image-to-image', description: 'Add, remove, or modify elements using natural language; supports style transfer based on reference images and parametric fine-tuning.' }
+      { name: 'Text to Image', path: '/home/gpt-image/text-to-image', description: 'Classic GPT Image 1.5 text-to-image generation with prompt-driven creation and quality controls.' },
+      { name: 'Image to Image', path: '/home/gpt-image/image-to-image', description: 'Classic GPT Image 1.5 image editing with reference images and prompt-based transformations.' },
+      { name: 'v2 Text to Image', path: '/home/gpt-image/v2-text-to-image', description: 'Generate with model gpt-image-2-text-to-image, supporting up to 20000 prompt characters plus aspect ratio and 1K/2K/4K resolution settings.' },
+      { name: 'v2 Image to Image', path: '/home/gpt-image/v2-image-to-image', description: 'Edit with model gpt-image-2-image-to-image using reference image + prompt, with v2 aspect ratio and resolution options.' }
     ],
     sections: [
       {
@@ -1481,6 +1483,43 @@ Best for: Social media managers, marketers, designers, content creators, educato
       {
         title: 'Try Wan on FuseAITools',
         content: `Wan on FuseAITools makes both image and video creation as simple as writing a sentence. Start with Wan 2.7 Image / Image Pro for key visuals, then move into T2V/I2V/V2V for motion outputs. With controls for ratio, batch size, sequential mode, quality, and advanced edits, Wan is a practical all-in-one visual generation stack for modern teams.`
+      }
+    ]
+  },
+  'happy-horse': {
+    title: 'HappyHorse',
+    category: 'Video',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'HappyHorse is an AI video creation suite with four focused modes: text-to-video, image-to-video, reference-to-video, and video-edit.',
+    features: [
+      { name: 'v1 Text to Video', path: '/home/happy-horse/v1-text-to-video', description: 'Generate videos from text prompts with resolution, aspect ratio, duration, and seed controls.' },
+      { name: 'v1 Image to Video', path: '/home/happy-horse/v1-image-to-video', description: 'Animate one input image with an optional prompt and output controls for resolution, duration, and seed.' },
+      { name: 'v1 Reference to Video', path: '/home/happy-horse/v1-reference-to-video', description: 'Use 1-9 ordered reference images and character placeholders (character1/2/3...) to drive controlled multi-subject video generation.' },
+      { name: 'v1 Video Edit', path: '/home/happy-horse/v1-video-edit', description: 'Edit an existing video with natural-language instructions and optional reference images, including audio handling options.' }
+    ],
+    sections: [
+      {
+        title: 'Core capabilities',
+        content: `Text to Video: Model happyhorse-text-to-video. Prompt required (max 5000), resolution 720p/1080p, aspect ratio 16:9/9:16/1:1/4:3/3:4, duration 3-15s, optional seed.
+
+Image to Video: Model happyhorse-image-to-video. One required input image URL, optional prompt (max 5000), resolution 720p/1080p, duration 3-15s, optional seed.
+
+Reference to Video: Model happyhorse-reference-to-video. Prompt required (max 5000) plus ordered reference images (1-9) mapped to character1/character2/... placeholders.
+
+Video Edit: Model happyhorse-video-edit. Prompt and input video required, optional reference images (0-5), resolution 720p/1080p, audio setting auto/origin, optional seed.`
+      },
+      {
+        title: 'Workflow',
+        content: `Choose mode -> provide required prompt/media -> set output controls (resolution, ratio, duration, seed) -> submit task -> monitor record status -> preview and download.
+
+For reference-to-video, keep image ordering and prompt placeholders aligned.
+
+For video-edit, describe exactly what to change and what to preserve for better consistency.`
+      },
+      {
+        title: 'Try HappyHorse on FuseAITools',
+        content: `HappyHorse on FuseAITools gives you one place for generation and editing across text, image, reference, and existing video workflows. Use it to produce social clips, motion prototypes, and controlled branded visuals faster.`
       }
     ]
   },

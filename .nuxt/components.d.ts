@@ -40,6 +40,7 @@ interface _GlobalComponents {
     'ToolsGPTImageTool': typeof import("../components/tools/GPTImageTool.vue")['default']
     'ToolsGrokToolCore': typeof import("../components/tools/GrokToolCore.vue")['default']
     'ToolsHailuoTool': typeof import("../components/tools/HailuoTool.vue")['default']
+    'ToolsHappyHorseTool': typeof import("../components/tools/HappyHorseTool.vue")['default']
     'ToolsIdeogramTool': typeof import("../components/tools/IdeogramTool.vue")['default']
     'ToolsImagen4Tool': typeof import("../components/tools/Imagen4Tool.vue")['default']
     'ToolsKlingTool': typeof import("../components/tools/KlingTool.vue")['default']
@@ -108,6 +109,7 @@ interface _GlobalComponents {
     'LazyToolsGPTImageTool': LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
     'LazyToolsGrokToolCore': LazyComponent<typeof import("../components/tools/GrokToolCore.vue")['default']>
     'LazyToolsHailuoTool': LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
+    'LazyToolsHappyHorseTool': LazyComponent<typeof import("../components/tools/HappyHorseTool.vue")['default']>
     'LazyToolsIdeogramTool': LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
     'LazyToolsImagen4Tool': LazyComponent<typeof import("../components/tools/Imagen4Tool.vue")['default']>
     'LazyToolsKlingTool': LazyComponent<typeof import("../components/tools/KlingTool.vue")['default']>
@@ -182,6 +184,7 @@ export const ToolsGPT4oImageTool: typeof import("../components/tools/GPT4oImageT
 export const ToolsGPTImageTool: typeof import("../components/tools/GPTImageTool.vue")['default']
 export const ToolsGrokToolCore: typeof import("../components/tools/GrokToolCore.vue")['default']
 export const ToolsHailuoTool: typeof import("../components/tools/HailuoTool.vue")['default']
+export const ToolsHappyHorseTool: typeof import("../components/tools/HappyHorseTool.vue")['default']
 export const ToolsIdeogramTool: typeof import("../components/tools/IdeogramTool.vue")['default']
 export const ToolsImagen4Tool: typeof import("../components/tools/Imagen4Tool.vue")['default']
 export const ToolsKlingTool: typeof import("../components/tools/KlingTool.vue")['default']
@@ -250,6 +253,7 @@ export const LazyToolsGPT4oImageTool: LazyComponent<typeof import("../components
 export const LazyToolsGPTImageTool: LazyComponent<typeof import("../components/tools/GPTImageTool.vue")['default']>
 export const LazyToolsGrokToolCore: LazyComponent<typeof import("../components/tools/GrokToolCore.vue")['default']>
 export const LazyToolsHailuoTool: LazyComponent<typeof import("../components/tools/HailuoTool.vue")['default']>
+export const LazyToolsHappyHorseTool: LazyComponent<typeof import("../components/tools/HappyHorseTool.vue")['default']>
 export const LazyToolsIdeogramTool: LazyComponent<typeof import("../components/tools/IdeogramTool.vue")['default']>
 export const LazyToolsImagen4Tool: LazyComponent<typeof import("../components/tools/Imagen4Tool.vue")['default']>
 export const LazyToolsKlingTool: LazyComponent<typeof import("../components/tools/KlingTool.vue")['default']>

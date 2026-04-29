@@ -71,6 +71,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/wan', lastmod: currentDate, changefreq: 'weekly', priority: '0.85' },
     { loc: '/home/kling', lastmod: currentDate, changefreq: 'weekly', priority: '0.85' },
     { loc: '/home/seedance', lastmod: currentDate, changefreq: 'weekly', priority: '0.85' },
+    { loc: '/home/happy-horse', lastmod: currentDate, changefreq: 'weekly', priority: '0.85' },
     { loc: '/home/hailuo', lastmod: currentDate, changefreq: 'weekly', priority: '0.85' },
 
     { loc: '/home/gpt/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -80,6 +81,8 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/gpt-4o-image/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/gpt-image/text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/gpt-image/image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/gpt-image/v2-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/gpt-image/v2-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-remix', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -167,6 +170,10 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/seedance/v1-5-pro', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/seedance/v2-fast', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/seedance/v2', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/happy-horse/v1-text-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/happy-horse/v1-image-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/happy-horse/v1-reference-to-video', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/happy-horse/v1-video-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/hailuo/image-to-video-standard', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/hailuo/image-to-video-pro', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' }
   ]

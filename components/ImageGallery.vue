@@ -240,6 +240,11 @@ const videoModels = ref([
     route: '/home/kling'
   },
   {
+    title: 'HappyHorse',
+    logo: '/tools-logo/HappyHorse.png',
+    route: '/home/happy-horse'
+  },
+  {
     title: 'Grok',
     logo: '/tools-logo/Grok.png',
     route: '/home/grok'

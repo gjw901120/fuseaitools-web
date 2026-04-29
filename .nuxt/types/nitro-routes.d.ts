@@ -84,6 +84,12 @@ declare module "nitropack/types" {
     '/api/image/gpt-image/text-to-image': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt-image/text-to-image.post').default>>>>
     }
+    '/api/image/gpt-image/v2-image-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt-image/v2-image-to-image.post').default>>>>
+    }
+    '/api/image/gpt-image/v2-text-to-image': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt-image/v2-text-to-image.post').default>>>>
+    }
     '/api/image/gpt4o-image/generate': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/image/gpt4o-image/generate.post').default>>>>
     }
@@ -257,6 +263,18 @@ declare module "nitropack/types" {
     }
     '/api/video/hailuo/image-to-video-standard': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/hailuo/image-to-video-standard.post').default>>>>
+    }
+    '/api/video/happy-horse/v1-image-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/happy-horse/v1-image-to-video.post').default>>>>
+    }
+    '/api/video/happy-horse/v1-reference-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/happy-horse/v1-reference-to-video.post').default>>>>
+    }
+    '/api/video/happy-horse/v1-text-to-video': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/happy-horse/v1-text-to-video.post').default>>>>
+    }
+    '/api/video/happy-horse/v1-video-edit': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/happy-horse/v1-video-edit.post').default>>>>
     }
     '/api/video/kling/2-6-image-to-video': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/video/kling/2-6-image-to-video.post').default>>>>

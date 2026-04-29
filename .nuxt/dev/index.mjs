@@ -1179,7 +1179,7 @@ const _yKfkBnlgr_QRBXTJ32FyYNKAUZra9TMuwX9rc3uOGM = (function(nitro) {
 
 const rootDir = "C:/project/fuseaitools-web";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, and Suno. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis."},{"name":"keywords","content":"all-in-one platform, chat models, video models, image models, radio models, simply ai tools"}],"link":[{"rel":"shortcut icon","href":"/favicon.ico"},{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"32x32","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"16x16","href":"/favicon.ico"},{"rel":"apple-touch-icon","sizes":"180x180","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"}],"style":[],"script":[],"noscript":[],"title":"FuseAITools: The All-in-One AI Platform","htmlAttrs":{"lang":"en"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, and Suno. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis."},{"name":"keywords","content":"all-in-one platform, chat models, video models, image models, radio models, simply ai tools"}],"link":[{"rel":"shortcut icon","href":"/favicon.ico"},{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"32x32","href":"/favicon.ico"},{"rel":"icon","type":"image/png","sizes":"16x16","href":"/favicon.ico"},{"rel":"apple-touch-icon","sizes":"180x180","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"}],"style":[],"script":[{"src":"https://analytics.ahrefs.com/analytics.js","data-key":"AynByJ5ihweg+owtq6NJnw","async":true}],"noscript":[],"title":"FuseAITools: The All-in-One AI Platform","htmlAttrs":{"lang":"en"}};
 
 const appRootTag = "div";
 
@@ -1707,6 +1707,8 @@ const _lazy_NRcFDi = () => Promise.resolve().then(function () { return flux2Text
 const _lazy_67lOnD = () => Promise.resolve().then(function () { return generate_post$n; });
 const _lazy_KMWTf_ = () => Promise.resolve().then(function () { return imageToImage_post$5; });
 const _lazy_xdmaRS = () => Promise.resolve().then(function () { return textToImage_post$5; });
+const _lazy_V5XZac = () => Promise.resolve().then(function () { return v2ImageToImage_post$1; });
+const _lazy__vjuye = () => Promise.resolve().then(function () { return v2TextToImage_post$3; });
 const _lazy_eKX6sF = () => Promise.resolve().then(function () { return generate_post$l; });
 const _lazy_ddMLj_ = () => Promise.resolve().then(function () { return imageToImage_post$3; });
 const _lazy_yPrjhp = () => Promise.resolve().then(function () { return textToImage_post$3; });
@@ -1765,6 +1767,10 @@ const _lazy_qnM2H8 = () => Promise.resolve().then(function () { return textToVid
 const _lazy__bPIFI = () => Promise.resolve().then(function () { return upscale_post$1; });
 const _lazy_qOz6pW = () => Promise.resolve().then(function () { return imageToVideoPro_post$1; });
 const _lazy_jTz2Ya = () => Promise.resolve().then(function () { return imageToVideoStandard_post$1; });
+const _lazy_GcEzhb = () => Promise.resolve().then(function () { return v1ImageToVideo_post$1; });
+const _lazy_hbvdWC = () => Promise.resolve().then(function () { return v1ReferenceToVideo_post$1; });
+const _lazy_0Ih9v2 = () => Promise.resolve().then(function () { return v1TextToVideo_post$1; });
+const _lazy_uLDZcx = () => Promise.resolve().then(function () { return v1VideoEdit_post$1; });
 const _lazy_wmPuCb = () => Promise.resolve().then(function () { return _26ImageToVideo_post$1; });
 const _lazy_tPVUKN = () => Promise.resolve().then(function () { return _26MotionControl_post$1; });
 const _lazy_rNnSXt = () => Promise.resolve().then(function () { return _26TextToVideo_post$1; });
@@ -1831,6 +1837,8 @@ const handlers = [
   { route: '/api/image/flux-kontext/generate', handler: _lazy_67lOnD, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt-image/image-to-image', handler: _lazy_KMWTf_, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt-image/text-to-image', handler: _lazy_xdmaRS, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/gpt-image/v2-image-to-image', handler: _lazy_V5XZac, lazy: true, middleware: false, method: "post" },
+  { route: '/api/image/gpt-image/v2-text-to-image', handler: _lazy__vjuye, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/gpt4o-image/generate', handler: _lazy_eKX6sF, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/grok/image-to-image', handler: _lazy_ddMLj_, lazy: true, middleware: false, method: "post" },
   { route: '/api/image/grok/text-to-image', handler: _lazy_yPrjhp, lazy: true, middleware: false, method: "post" },
@@ -1889,6 +1897,10 @@ const handlers = [
   { route: '/api/video/grok/upscale', handler: _lazy__bPIFI, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/hailuo/image-to-video-pro', handler: _lazy_qOz6pW, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/hailuo/image-to-video-standard', handler: _lazy_jTz2Ya, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/happy-horse/v1-image-to-video', handler: _lazy_GcEzhb, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/happy-horse/v1-reference-to-video', handler: _lazy_hbvdWC, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/happy-horse/v1-text-to-video', handler: _lazy_0Ih9v2, lazy: true, middleware: false, method: "post" },
+  { route: '/api/video/happy-horse/v1-video-edit', handler: _lazy_uLDZcx, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/kling/2-6-image-to-video', handler: _lazy_wmPuCb, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/kling/2-6-motion-control', handler: _lazy_tPVUKN, lazy: true, middleware: false, method: "post" },
   { route: '/api/video/kling/2-6-text-to-video', handler: _lazy_rNnSXt, lazy: true, middleware: false, method: "post" },
@@ -3125,6 +3137,56 @@ const textToImage_post$4 = defineEventHandler(async (event) => {
 const textToImage_post$5 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: textToImage_post$4
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v2ImageToImage_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/gpt-image/v2-image-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("GPT Image v2 image-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v2ImageToImage_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v2ImageToImage_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v2TextToImage_post$2 = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/image/gpt-image/v2-text-to-image`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("GPT Image v2 text-to-image proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v2TextToImage_post$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v2TextToImage_post$2
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const generate_post$k = defineEventHandler(async (event) => {
@@ -4828,6 +4890,106 @@ const imageToVideoStandard_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Obje
   default: imageToVideoStandard_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
+const v1ImageToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/happy-horse/v1-image-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("HappyHorse v1-image-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v1ImageToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v1ImageToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v1ReferenceToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/happy-horse/v1-reference-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("HappyHorse v1-reference-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v1ReferenceToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v1ReferenceToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v1TextToVideo_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/happy-horse/v1-text-to-video`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("HappyHorse v1-text-to-video proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v1TextToVideo_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v1TextToVideo_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const v1VideoEdit_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const apiBase = getEffectiveApiBase(event);
+  const targetUrl = `${apiBase}/video/happy-horse/v1-video-edit`;
+  try {
+    const authHeader = getHeader(event, "authorization");
+    const headers = { "Content-Type": "application/json", Accept: "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+    const cookie = getHeader(event, "cookie");
+    if (cookie) headers["Cookie"] = cookie;
+    const response = await fetch(targetUrl, { method: "POST", headers, body: JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    setResponseStatus(event, response.status);
+    return data;
+  } catch (error) {
+    console.error("HappyHorse v1-video-edit proxy error:", error);
+    throw createError({ statusCode: 500, message: "Request failed: " + (error.message || "Unknown error") });
+  }
+});
+
+const v1VideoEdit_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: v1VideoEdit_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
 const _26ImageToVideo_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const apiBase = getEffectiveApiBase(event);
@@ -5737,6 +5899,7 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/wan", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/kling", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/seedance", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
+    { loc: "/home/happy-horse", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/hailuo", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/gpt/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/deepseek/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
@@ -5745,6 +5908,8 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/gpt-4o-image/generate", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/gpt-image/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/gpt-image/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/gpt-image/v2-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/gpt-image/v2-image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/v3-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/v3-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/ideogram/v3-remix", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
@@ -5832,6 +5997,10 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/seedance/v1-5-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v2-fast", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/seedance/v2", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/happy-horse/v1-text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/happy-horse/v1-image-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/happy-horse/v1-reference-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/happy-horse/v1-video-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/hailuo/image-to-video-standard", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/hailuo/image-to-video-pro", lastmod: currentDate, changefreq: "weekly", priority: "0.8" }
   ];

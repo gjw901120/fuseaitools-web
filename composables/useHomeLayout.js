@@ -36,6 +36,8 @@ export const useHomeLayout = () => {
     'WanVideo': '/home/wan/text-to-video',
     'Seedance': '/home/seedance/v1-lite-text-to-video',
     'Hailuo': '/home/hailuo/image-to-video-pro',
+    'HappyHorse': '/home/happy-horse/v1-text-to-video',
+    'Happy Horse': '/home/happy-horse/v1-text-to-video',
     'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image',
@@ -46,7 +48,7 @@ export const useHomeLayout = () => {
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
-    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'image', 'Wan Image': 'image', 'WanVideo': 'video', 'Seedance': 'video', 'Hailuo': 'video',
+    'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'image', 'Wan Image': 'image', 'WanVideo': 'video', 'Seedance': 'video', 'Hailuo': 'video', 'HappyHorse': 'video', 'Happy Horse': 'video',
     'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image', 'Imagen4': 'image', 'Grok': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
   }
@@ -66,6 +68,8 @@ export const useHomeLayout = () => {
     'Wan Image': '/tools-logo/Wan.png',
     'Seedance': '/tools-logo/Seedance.png',
     'Hailuo': '/tools-logo/Hailuo.png',
+    'HappyHorse': '/tools-logo/HappyHorse.png',
+    'Happy Horse': '/tools-logo/HappyHorse.png',
     'Kling': '/tools-logo/Kling.png',
     'Seedream': '/tools-logo/Seedream.png',
     'Qwen': '/tools-logo/QWen.png',
@@ -100,6 +104,8 @@ export const useHomeLayout = () => {
     'WanVideo': '/home/wan/text-to-video',
     'Seedance': '/home/seedance/v1-lite-text-to-video',
     'Hailuo': '/home/hailuo/image-to-video-pro',
+    'HappyHorse': '/home/happy-horse/v1-text-to-video',
+    'Happy Horse': '/home/happy-horse/v1-text-to-video',
     'Kling': '/home/kling/v2-5-turbo-image-to-video-pro',
     'Seedream': '/home/seedream/5-lite-text-to-image',
     'Qwen': '/home/qwen/text-to-image',
@@ -345,6 +351,15 @@ export const useHomeLayout = () => {
       usageCount: 0
     },
     {
+      id: 28,
+      name: 'HappyHorse',
+      type: 'video',
+      description: 'HappyHorse video: v1 text-to-video, image-to-video, reference-to-video, and video-edit.',
+      icon: '/tools-logo/HappyHorse.png',
+      rating: 4.6,
+      usageCount: 0
+    },
+    {
       id: 22,
       name: 'Kling',
       type: 'video',
@@ -523,6 +538,11 @@ export const useHomeLayout = () => {
     // Hailuo：接口/历史常用 hailuo- 前缀（旧 key 仍为 2-3-*）
     'hailuo-2-3-image-to-video-pro': '/home/hailuo/image-to-video-pro',
     'hailuo-2-3-image-to-video-standard': '/home/hailuo/image-to-video-standard',
+    // HappyHorse
+    'happyhorse-text-to-video': '/home/happy-horse/v1-text-to-video',
+    'happyhorse-image-to-video': '/home/happy-horse/v1-image-to-video',
+    'happyhorse-reference-to-video': '/home/happy-horse/v1-reference-to-video',
+    'happyhorse-video-edit': '/home/happy-horse/v1-video-edit',
     // Wan
     'wan-2-6-text-to-video': '/home/wan/text-to-video',
     'wan-2-6-image-to-video': '/home/wan/image-to-video',
@@ -560,6 +580,8 @@ export const useHomeLayout = () => {
     // GPT Image
     'gpt-image-1.5-text-to-image': '/home/gpt-image/text-to-image',
     'gpt-image-1.5-image-to-image': '/home/gpt-image/image-to-image',
+    'gpt-image-2-text-to-image': '/home/gpt-image/v2-text-to-image',
+    'gpt-image-2-image-to-image': '/home/gpt-image/v2-image-to-image',
     // GPT 4o Image（历史 model 字段）
     gpt_4o_image: '/home/gpt-4o-image/generate',
     'gpt-4o-image': '/home/gpt-4o-image/generate',
@@ -600,6 +622,8 @@ export const useHomeLayout = () => {
     'Wan Image': '/home/wan',
     'Seedance': '/home/seedance',
     'Hailuo': '/home/hailuo',
+    'HappyHorse': '/home/happy-horse',
+    'Happy Horse': '/home/happy-horse',
     'Kling': '/home/kling',
     'Seedream': '/home/seedream',
     'Qwen': '/home/qwen',
@@ -813,6 +837,8 @@ export const useHomeLayout = () => {
       '/home/gpt-image/generate': 'GPT Image',
       '/home/gpt-image/text-to-image': 'GPT Image',
       '/home/gpt-image/image-to-image': 'GPT Image',
+      '/home/gpt-image/v2-text-to-image': 'GPT Image',
+      '/home/gpt-image/v2-image-to-image': 'GPT Image',
       '/home/ideogram': 'Ideogram',
       '/home/ideogram/generate': 'Ideogram',
       '/home/ideogram/v3-text-to-image': 'Ideogram',
@@ -876,6 +902,11 @@ export const useHomeLayout = () => {
       '/home/hailuo': 'Hailuo',
       '/home/hailuo/image-to-video-pro': 'Hailuo',
       '/home/hailuo/image-to-video-standard': 'Hailuo',
+      '/home/happy-horse': 'HappyHorse',
+      '/home/happy-horse/v1-text-to-video': 'HappyHorse',
+      '/home/happy-horse/v1-image-to-video': 'HappyHorse',
+      '/home/happy-horse/v1-reference-to-video': 'HappyHorse',
+      '/home/happy-horse/v1-video-edit': 'HappyHorse',
       '/home/kling': 'Kling',
       '/home/kling/v2-5-turbo-image-to-video-pro': 'Kling',
       '/home/kling/v2-5-turbo-text-to-video-pro': 'Kling',

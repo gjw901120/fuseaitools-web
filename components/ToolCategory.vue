@@ -10,7 +10,8 @@
           :key="index"
           class="tool-item"
       >
-        {{ tool }}
+        <img v-if="toolLogo(tool)" :src="toolLogo(tool)" :alt="toolName(tool)" class="tool-logo" />
+        <span>{{ toolName(tool) }}</span>
       </div>
     </div>
   </div>
@@ -23,6 +24,17 @@ defineProps({
     required: true
   }
 })
+
+const toolName = (tool) => {
+  if (typeof tool === 'string') return tool
+  if (tool && typeof tool === 'object') return tool.name || ''
+  return ''
+}
+
+const toolLogo = (tool) => {
+  if (tool && typeof tool === 'object') return tool.logo || ''
+  return ''
+}
 </script>
 
 <style scoped>
@@ -70,11 +82,21 @@ defineProps({
   color: #4b5563;
   transition: all 0.2s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .tool-item:hover {
   background: #667eea;
   color: white;
   transform: translateY(-1px);
+}
+
+.tool-logo {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 </style>

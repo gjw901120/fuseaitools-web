@@ -114,7 +114,8 @@ const toolCategories = [
       'AI Video Player',
       'YouTube Video Summarizer',
       'Video Summary Generator',
-      'AI Video Search'
+      'AI Video Search',
+      { name: 'HappyHorse', logo: '/tools-logo/HappyHorse.png' }
     ]
   },
   {

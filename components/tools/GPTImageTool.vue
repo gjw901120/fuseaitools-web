@@ -27,18 +27,34 @@
         <i class="fas fa-image"></i>
         <span>image-to-image</span>
       </div>
+      <div
+        class="mode-tab"
+        :class="{ active: mode === 'v2-text-to-image' }"
+        @click="goToTab('v2-text-to-image')"
+      >
+        <i class="fas fa-wand-magic-sparkles"></i>
+        <span>v2-text-to-image</span>
+      </div>
+      <div
+        class="mode-tab"
+        :class="{ active: mode === 'v2-image-to-image' }"
+        @click="goToTab('v2-image-to-image')"
+      >
+        <i class="fas fa-pen-to-square"></i>
+        <span>v2-image-to-image</span>
+      </div>
     </div>
 
     <div class="main-content">
       <div class="config-panel">
         <div class="config-header">
-          <h4>{{ mode === 'text-to-image' ? 'Text to Image' : 'Image to Image' }}</h4>
+          <h4>{{ modeTitle }}</h4>
         </div>
         <form class="config-form" @submit.prevent="onSubmit">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
 
             <!-- image-to-image only: upload input -->
-            <div v-if="mode === 'image-to-image'" class="form-group">
+            <div v-if="isImageToImageMode" class="form-group">
               <label>Reference Image *</label>
               <span v-if="isUploadingImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading...</span>
               <UploadImage
@@ -47,15 +63,15 @@
                 label=""
                 upload-icon="fas fa-cloud-upload-alt"
                 upload-text="Click to upload image"
-                upload-hint="JPG, PNG, WEBP. Max 10MB."
+                :upload-hint="isV2Mode ? 'JPG, PNG, WEBP. Max 10MB each. Up to 16 images.' : 'JPG, PNG, WEBP. Max 10MB.'"
                 theme-color="#3b82f6"
-                :max-files="1"
+                :max-files="isV2Mode ? 16 : 1"
                 :max-file-size="10 * 1024 * 1024"
                 accept="image/jpeg,image/png,image/webp"
-                :multiple="false"
+                :multiple="isV2Mode"
                 @update:files="handleImageUpdate"
               />
-              <div v-if="isDetailView && mode === 'image-to-image' && form.input_urls?.length" class="detail-ref-urls">
+              <div v-if="isDetailView && isImageToImageMode && form.input_urls?.length" class="detail-ref-urls">
                 <label>Reference (this task)</label>
                 <div class="detail-ref-urls-links">
                   <a
@@ -76,11 +92,11 @@
               <textarea
                 v-model="form.prompt"
                 rows="4"
-                maxlength="3000"
-                :placeholder="mode === 'text-to-image' ? 'Describe the image you want to generate...' : 'Describe the edit you want (e.g. change clothing, style)...'"
+                :maxlength="promptMaxLength"
+                :placeholder="promptPlaceholder"
                 required
               />
-              <div class="char-count">{{ form.prompt.length }}/3000</div>
+              <div class="char-count">{{ form.prompt.length }}/{{ promptMaxLength }}</div>
             </div>
 
             <!-- Aspect Ratio -->
@@ -88,34 +104,20 @@
               <label>Aspect Ratio *</label>
               <div class="tab-group">
                 <button
+                  v-for="ratio in aspectRatioOptions"
+                  :key="ratio"
                   type="button"
                   class="tab-option"
-                  :class="{ active: form.aspect_ratio === '1:1' }"
-                  @click="form.aspect_ratio = '1:1'"
+                  :class="{ active: form.aspect_ratio === ratio }"
+                  @click="form.aspect_ratio = ratio"
                 >
-                  1:1
-                </button>
-                <button
-                  type="button"
-                  class="tab-option"
-                  :class="{ active: form.aspect_ratio === '2:3' }"
-                  @click="form.aspect_ratio = '2:3'"
-                >
-                  2:3
-                </button>
-                <button
-                  type="button"
-                  class="tab-option"
-                  :class="{ active: form.aspect_ratio === '3:2' }"
-                  @click="form.aspect_ratio = '3:2'"
-                >
-                  3:2
+                  {{ ratio }}
                 </button>
               </div>
             </div>
 
             <!-- Quality + Credits -->
-            <div class="form-group">
+            <div v-if="!isV2Mode" class="form-group">
               <label>Quality *</label>
               <div class="tab-group">
                 <button
@@ -141,6 +143,23 @@
                   · {{ currentCredits }} credits<span v-if="discountText">{{ discountText }}</span> / job
                 </span>
               </div>
+            </div>
+
+            <div v-if="isV2Mode" class="form-group">
+              <label>Resolution</label>
+              <div class="tab-group">
+                <button
+                  v-for="res in ['1K', '2K', '4K']"
+                  :key="res"
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: form.resolution === res }"
+                  @click="form.resolution = res"
+                >
+                  {{ res }}
+                </button>
+              </div>
+              <div class="form-help">1:1 does not support 4K. With auto ratio, only 1K is allowed.</div>
             </div>
 
             <div class="form-actions">
@@ -257,6 +276,7 @@ function fillFormFromOriginalData(o) {
   if (o.aspectRatio) form.aspect_ratio = String(o.aspectRatio)
   if (o.aspect_ratio) form.aspect_ratio = String(o.aspect_ratio)
   if (o.quality) form.quality = String(o.quality)
+  if (o.resolution) form.resolution = String(o.resolution)
   if (Array.isArray(o.inputUrls)) form.input_urls = [...o.inputUrls]
   else if (Array.isArray(o.input_urls)) form.input_urls = [...o.input_urls]
 }
@@ -288,7 +308,9 @@ watch(() => route.query['record-id'], (recordId) => {
 
 const modeTabToPath = {
   'text-to-image': '/home/gpt-image/text-to-image',
-  'image-to-image': '/home/gpt-image/image-to-image'
+  'image-to-image': '/home/gpt-image/image-to-image',
+  'v2-text-to-image': '/home/gpt-image/v2-text-to-image',
+  'v2-image-to-image': '/home/gpt-image/v2-image-to-image'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -303,12 +325,49 @@ watch(() => route.path, (path) => {
   const m = pathToMode[path]
   if (m && mode.value !== m) mode.value = m
 }, { immediate: true })
+
+watch(mode, (m) => {
+  if (m === 'v2-text-to-image' || m === 'v2-image-to-image') {
+    if (!['auto', '1:1', '9:16', '16:9', '4:3', '3:4'].includes(form.aspect_ratio)) {
+      form.aspect_ratio = 'auto'
+    }
+    if (!['1K', '2K', '4K'].includes(form.resolution)) {
+      form.resolution = '1K'
+    }
+    // DTO 对齐：v2 模式默认 aspectRatio=auto
+    if (!isDetailView.value) {
+      form.aspect_ratio = 'auto'
+      if (form.resolution !== '1K') form.resolution = '1K'
+    }
+  } else if (!['1:1', '2:3', '3:2'].includes(form.aspect_ratio)) {
+    form.aspect_ratio = '1:1'
+  }
+})
 const form = reactive({
   prompt: '',
   aspect_ratio: '1:1',
   quality: 'medium',
+  resolution: '1K',
   input_urls: []
 })
+
+const isV2Mode = computed(() => mode.value === 'v2-text-to-image' || mode.value === 'v2-image-to-image')
+const isImageToImageMode = computed(() => mode.value === 'image-to-image' || mode.value === 'v2-image-to-image')
+const promptMaxLength = computed(() => (isV2Mode.value ? 20000 : 3000))
+const promptPlaceholder = computed(() => {
+  if (mode.value === 'text-to-image' || mode.value === 'v2-text-to-image') return 'Describe the image you want to generate...'
+  return 'Describe the edit you want (e.g. change clothing, style)...'
+})
+const modeTitle = computed(() => {
+  if (mode.value === 'v2-text-to-image') return 'V2 Text to Image'
+  if (mode.value === 'v2-image-to-image') return 'V2 Image to Image'
+  return mode.value === 'text-to-image' ? 'Text to Image' : 'Image to Image'
+})
+const aspectRatioOptions = computed(() => (
+  isV2Mode.value
+    ? ['auto', '1:1', '9:16', '16:9', '4:3', '3:4']
+    : ['1:1', '2:3', '3:2']
+))
 
 // 折扣文本
 const discountText = computed(() => {
@@ -333,20 +392,42 @@ const modelPricing = reactive({
       { size: 'medium', credits: 6 },
       { size: 'high', credits: 36 }
     ]
+  },
+  'gpt-image-2-text-to-image': {
+    type: 'RULE',
+    rules: [
+      { quality: '1k', credits: 6 },
+      { quality: '2K', credits: 9 },
+      { quality: '4K', credits: 12 }
+    ]
+  },
+  'gpt-image-2-image-to-image': {
+    type: 'RULE',
+    rules: [
+      { quality: '1K', credits: 6 },
+      { quality: '2K', credits: 9 },
+      { quality: '4K', credits: 12 }
+    ]
   }
 })
 
 const currentModelKey = computed(() =>
   mode.value === 'text-to-image'
     ? 'gpt-image-1.5-text-to-image'
-    : 'gpt-image-1.5-image-to-image'
+    : mode.value === 'image-to-image'
+      ? 'gpt-image-1.5-image-to-image'
+      : mode.value === 'v2-text-to-image'
+        ? 'gpt-image-2-text-to-image'
+        : 'gpt-image-2-image-to-image'
 )
 
 const currentCredits = computed(() => {
   const key = currentModelKey.value
   const cfg = modelPricing[key]
   if (!cfg || !Array.isArray(cfg.rules)) return null
-  const rule = cfg.rules.find(r => r.size === form.quality)
+  const rule = isV2Mode.value
+    ? cfg.rules.find(r => String(r.quality || '').toLowerCase() === String(form.resolution || '').toLowerCase())
+    : cfg.rules.find(r => r.size === form.quality)
   return rule ? rule.credits : null
 })
 
@@ -394,7 +475,8 @@ const handleImageUpdate = async (files) => {
   const list = Array.isArray(files) ? files : [files]
   isUploadingImage.value = true
   try {
-    form.input_urls = await getUrlsForFiles(list, uploadFilesToUrls)
+    const urls = await getUrlsForFiles(list, uploadFilesToUrls)
+    form.input_urls = isV2Mode.value ? urls.slice(0, 16) : urls.slice(0, 1)
   } catch (e) {
     showError(e.message || 'Failed to upload image')
     form.input_urls = []
@@ -406,17 +488,31 @@ const handleImageUpdate = async (files) => {
 
 const canSubmit = computed(() => {
   if (!form.prompt || !form.prompt.trim()) return false
-  if (mode.value === 'image-to-image') {
+  if (isImageToImageMode.value) {
     return Array.isArray(form.input_urls) && form.input_urls.length > 0
+  }
+  if (isV2Mode.value) {
+    if (form.aspect_ratio === 'auto' && form.resolution !== '1K') return false
+    if (form.aspect_ratio === '1:1' && form.resolution === '4K') return false
   }
   return true
 })
 
 const onSubmit = async () => {
   if (!canSubmit.value) return
-  if (form.prompt.length > 3000) {
-    showError('Prompt cannot exceed 3000 characters')
+  if (form.prompt.length > promptMaxLength.value) {
+    showError(`Prompt cannot exceed ${promptMaxLength.value} characters`)
     return
+  }
+  if (isV2Mode.value) {
+    if (form.aspect_ratio === 'auto' && form.resolution !== '1K') {
+      showError('With auto aspect ratio, resolution must be 1K')
+      return
+    }
+    if (form.aspect_ratio === '1:1' && form.resolution === '4K') {
+      showError('1:1 aspect ratio does not support 4K resolution')
+      return
+    }
   }
 
   isGenerating.value = true
@@ -424,14 +520,28 @@ const onSubmit = async () => {
     const modeVal = mode.value
     const apiPath = modeVal === 'text-to-image'
       ? '/api/image/gpt-image/text-to-image'
-      : '/api/image/gpt-image/image-to-image'
+      : modeVal === 'image-to-image'
+        ? '/api/image/gpt-image/image-to-image'
+        : modeVal === 'v2-text-to-image'
+          ? '/api/image/gpt-image/v2-text-to-image'
+          : '/api/image/gpt-image/v2-image-to-image'
     const body = {
-      model: modeVal === 'text-to-image' ? 'gpt-image-1.5-text-to-image' : 'gpt-image-1.5-image-to-image',
+      model: modeVal === 'text-to-image'
+        ? 'gpt-image-1.5-text-to-image'
+        : modeVal === 'image-to-image'
+          ? 'gpt-image-1.5-image-to-image'
+          : modeVal === 'v2-text-to-image'
+            ? 'gpt-image-2-text-to-image'
+            : 'gpt-image-2-image-to-image',
       prompt: form.prompt.trim(),
-      aspectRatio: form.aspect_ratio,
-      quality: form.quality
+      aspectRatio: form.aspect_ratio
     }
-    if (modeVal === 'image-to-image' && form.input_urls?.length) {
+    if (!isV2Mode.value) {
+      body.quality = form.quality
+    } else {
+      body.resolution = form.resolution
+    }
+    if ((modeVal === 'image-to-image' || modeVal === 'v2-image-to-image') && form.input_urls?.length) {
       body.inputUrls = form.input_urls
     }
 

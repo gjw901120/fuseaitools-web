@@ -20,6 +20,7 @@ export const TOOL_PARENT_LABEL_BY_SLUG = {
   sora: 'Sora',
   wan: 'Wan',
   seedance: 'Seedance',
+  'happy-horse': 'HappyHorse',
   hailuo: 'Hailuo',
   kling: 'Kling'
 }
@@ -29,6 +30,8 @@ export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
   '/home/gpt-4o-image/generate': 'Generate',
   '/home/gpt-image/text-to-image': 'Text to Image',
   '/home/gpt-image/image-to-image': 'Image to Image',
+  '/home/gpt-image/v2-text-to-image': 'V2 Text to Image',
+  '/home/gpt-image/v2-image-to-image': 'V2 Image to Image',
   '/home/ideogram/v3-text-to-image': 'V3 Text to Image',
   '/home/ideogram/v3-edit': 'V3 Edit',
   '/home/ideogram/v3-remix': 'V3 Remix',
@@ -110,6 +113,10 @@ export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
   '/home/seedance/v1-5-pro': 'V1.5 Pro',
   '/home/seedance/v2-fast': 'Seedance 2 Fast',
   '/home/seedance/v2': 'Seedance 2',
+  '/home/happy-horse/v1-text-to-video': 'V1 Text to Video',
+  '/home/happy-horse/v1-image-to-video': 'V1 Image to Video',
+  '/home/happy-horse/v1-reference-to-video': 'V1 Reference to Video',
+  '/home/happy-horse/v1-video-edit': 'V1 Video Edit',
   '/home/hailuo/image-to-video-standard': 'Image to Video Standard',
   '/home/hailuo/image-to-video-pro': 'Image to Video Pro',
   '/home/kling/v2-5-turbo-image-to-video-pro': 'V2.5 Turbo Image to Video Pro',

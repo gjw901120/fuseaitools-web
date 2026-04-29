@@ -26,6 +26,7 @@ const OVERVIEW_KEY_TO_LOGO = {
   sora: '/tools-logo/sora.png',
   wan: '/tools-logo/Wan.png',
   seedance: '/tools-logo/Seedance.png',
+  'happy-horse': '/tools-logo/HappyHorse.png',
   hailuo: '/tools-logo/Hailuo.png',
   kling: '/tools-logo/Kling.png'
 }
