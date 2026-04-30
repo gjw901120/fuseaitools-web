@@ -344,8 +344,8 @@
           <div v-if="!isDetailView && route.path === '/home/flux-kontext/flux-2-pro-text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://www.fuseaitools.com/news/flux-2-pro-text-to-image-cinematic-dusk-mountains-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to generate cinematic dusk mountain visuals</a>
-              <a href="https://www.fuseaitools.com/news/flux-2-pro-text-to-image-midnight-ramen-food-photography-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to create mouth-watering midnight ramen photography</a>
+              <a href="https://fuseaitools.com/news/flux-2-pro-text-to-image-cinematic-dusk-mountains-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to generate cinematic dusk mountain visuals</a>
+              <a href="https://fuseaitools.com/news/flux-2-pro-text-to-image-midnight-ramen-food-photography-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to create mouth-watering midnight ramen photography</a>
             </div>
           </div>
           <!-- 详情页：status 2 展示 outputUrls -->

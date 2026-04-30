@@ -87,6 +87,7 @@
 </template>
 
 <script setup>
+import { clampDescription } from '~/composables/seoDescription'
 // 获取路由参数
 const route = useRoute()
 const router = useRouter()
@@ -174,19 +175,26 @@ const notFoundMessage = computed(() => error.value?.message || detailData.value?
 // SEO配置 - 使用watch来动态更新
 watch(article, (newArticle) => {
   if (newArticle) {
+const normalizedDescription = clampDescription(newArticle.excerpt || '', 120, 160, {
+      fallback: `${newArticle.title || 'AI News'} on FuseAI Tools with practical insights, key model updates, and actionable examples for real AI workflows.`,
+      appendSentences: [
+        'Read concise guidance, feature highlights, and implementation notes to help you apply the update quickly in production.',
+        'Explore best practices, parameter tips, and use-case context so you can choose the right model and setup with confidence.'
+      ]
+    })
 useHead({
       title: `${newArticle.title} - FuseAI Tools News`,
       meta: [
-        { name: 'description', content: newArticle.excerpt || '' },
+        { name: 'description', content: normalizedDescription },
         { name: 'keywords', content: newArticle.keyword || `${newArticle.category}, AI news, ${newArticle.title}` },
         { property: 'og:title', content: newArticle.title || '' },
-        { property: 'og:description', content: newArticle.excerpt || '' },
+        { property: 'og:description', content: normalizedDescription },
         { property: 'og:image', content: newArticle.image || '' },
         { property: 'og:type', content: 'article' },
         { property: 'og:url', content: `https://fuseaitools.com/news/${newArticle.slug || ''}` },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: newArticle.title || '' },
-        { name: 'twitter:description', content: newArticle.excerpt || '' },
+        { name: 'twitter:description', content: normalizedDescription },
         { name: 'twitter:image', content: newArticle.image || '' }
       ],
       link: [
@@ -199,7 +207,7 @@ useHead({
             "@context": "https://schema.org",
             "@type": "Article",
             "headline": newArticle.title || '',
-            "description": newArticle.excerpt || '',
+            "description": normalizedDescription,
             "image": newArticle.image || '',
             "datePublished": newArticle.publishDate || '',
             "dateModified": newArticle.updatedAt || newArticle.publishDate || '',

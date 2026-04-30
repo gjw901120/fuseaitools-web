@@ -79,7 +79,7 @@ Qwen image model comparison, qwen text-to-image, qwen z-image, qwen image-to-ima
                     </tr>
                     <tr style="border-bottom:1px solid #f3f4f6;">
                         <td style="padding:0.5rem;">4</td>
-                        <td style="padding:0.5rem;"><a href="https://www.fuseaitools.com/home/qwen/2-text-to-image">qwen2/text-to-image</a></td>
+                        <td style="padding:0.5rem;"><a href="https://www.fuseaitools.com/home/qwen/v2-text-to-image">qwen2/text-to-image</a></td>
                         <td style="padding:0.5rem;">New text generation variant</td>
                         <td style="padding:0.5rem;">800</td>
                         <td style="padding:0.5rem;">Simplified workflow</td>
@@ -95,7 +95,7 @@ Qwen image model comparison, qwen text-to-image, qwen z-image, qwen image-to-ima
                     </tr>
                     <tr>
                         <td style="padding:0.5rem;">6</td>
-                        <td style="padding:0.5rem;"><a href="https://www.fuseaitools.com/home/qwen/2-image-edit">qwen2/image-edit</a></td>
+                        <td style="padding:0.5rem;"><a href="https://www.fuseaitools.com/home/qwen/v2-image-edit">qwen2/image-edit</a></td>
                         <td style="padding:0.5rem;">Editing variant with wider aspect support</td>
                         <td style="padding:0.5rem;">800</td>
                         <td style="padding:0.5rem;">Ultra-wide aspect options</td>

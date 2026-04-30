@@ -103,6 +103,7 @@
 
         <!-- 下方：工具界面（70%），key 随路由变化强制重新挂载对应工具页 -->
         <section class="tool-interface">
+          <h1 class="sr-only">{{ pageH1Text }}</h1>
           <Breadcrumb 
             v-if="selectedCategoryName && selectedToolName"
             :category="selectedCategoryName" 
@@ -180,6 +181,15 @@ const breadcrumbParentTo = computed(() => {
 
 const breadcrumbCurrentPage = computed(() => {
   return routeBreadcrumb.value.currentLabel
+})
+
+const pageH1Text = computed(() => {
+  const parent = (breadcrumbParentLabel.value || '').trim()
+  const current = (breadcrumbCurrentPage.value || '').trim()
+  if (parent && current && parent !== current) return `${parent} - ${current}`
+  if (current) return current
+  if (parent) return parent
+  return 'AI Tool'
 })
 
 // 提供给子组件使用
@@ -626,6 +636,18 @@ provide('addToUsageHistory', addToUsageHistory)
   overflow: auto;
   display: flex;
   flex-direction: column;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* 响应式设计 */

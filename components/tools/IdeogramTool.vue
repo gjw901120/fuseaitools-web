@@ -209,8 +209,8 @@
           <div v-if="!isDetailView && route.path === '/home/ideogram/v3-text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://www.fuseaitools.com/news/ideogram-cinematic-dusk-lakeside-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create a cinematic dusk lakeside scene for calm, magical brand visuals</a>
-              <a href="https://www.fuseaitools.com/news/ideogram-french-relaxed-illustration-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create French relaxed illustrations and add warm storytelling to your brand</a>
+              <a href="https://fuseaitools.com/news/ideogram-cinematic-dusk-lakeside-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create a cinematic dusk lakeside scene for calm, magical brand visuals</a>
+              <a href="https://fuseaitools.com/news/ideogram-french-relaxed-illustration-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create French relaxed illustrations and add warm storytelling to your brand</a>
             </div>
           </div>
           <template v-if="isDetailView && (loadingRecordId || (!detailData && routeRecordId))">

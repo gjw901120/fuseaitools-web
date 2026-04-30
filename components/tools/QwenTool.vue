@@ -222,8 +222,8 @@
         <div v-if="!isDetailView && route.path === '/home/qwen/text-to-image'" class="tutorial-showcase">
           <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
           <div class="tutorial-showcase-links">
-            <a href="https://www.fuseaitools.com/news/qwen-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Generate cinematic AI covers for short videos (vertical, high CTR)</a>
-            <a href="https://www.fuseaitools.com/news/qwen-brand-story-image-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Tell your brand story with warm and emotional promotional visuals</a>
+            <a href="https://fuseaitools.com/news/qwen-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Generate cinematic AI covers for short videos (vertical, high CTR)</a>
+            <a href="https://fuseaitools.com/news/qwen-brand-story-image-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Tell your brand story with warm and emotional promotional visuals</a>
           </div>
         </div>
         <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
@@ -280,8 +280,8 @@ const modeList = [
   { id: 'image-to-image', label: 'Image to Image', icon: 'fas fa-image' },
   { id: 'image-edit', label: 'Image Edit', icon: 'fas fa-edit' },
   { id: 'z-image', label: 'Z-Image', icon: 'fas fa-square' },
-  { id: 'qwen2-text-to-image', label: '2 Text to Image', icon: 'fas fa-wand-magic-sparkles' },
-  { id: 'qwen2-image-edit', label: '2 Image Edit', icon: 'fas fa-scissors' }
+  { id: 'qwen2-text-to-image', label: 'V2 Text to Image', icon: 'fas fa-wand-magic-sparkles' },
+  { id: 'qwen2-image-edit', label: 'V2 Image Edit', icon: 'fas fa-scissors' }
 ]
 
 const modeTabToPath = {
@@ -289,8 +289,8 @@ const modeTabToPath = {
   'image-to-image': '/home/qwen/image-to-image',
   'image-edit': '/home/qwen/image-edit',
   'z-image': '/home/qwen/z-image',
-  'qwen2-text-to-image': '/home/qwen/2-text-to-image',
-  'qwen2-image-edit': '/home/qwen/2-image-edit'
+  'qwen2-text-to-image': '/home/qwen/v2-text-to-image',
+  'qwen2-image-edit': '/home/qwen/v2-image-edit'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })

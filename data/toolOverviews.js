@@ -673,8 +673,8 @@ Best for: Designers, marketers, educators, content creators, and anyone needing 
       { name: 'Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with a text prompt. Set denoising strength (0–1) to balance between original and new content. Full parameter control: steps, guidance, seed, negative prompt, acceleration, output format.' },
       { name: 'Image Edit', path: '/home/qwen/image-edit', description: 'Edit specific elements of an image via natural language. Choose image size, steps (2–49), number of outputs (1–4), sync mode, guidance scale, negative prompt, and safety checker. Prompt limit 2000 characters.' },
       { name: 'Z-Image', path: '/home/qwen/z-image', description: 'Fast text-to-image with essential aspect ratio control. Prompt up to 1000 characters; select from 1:1, 4:3, 3:4, 16:9, 9:16. Ideal for quick ideation and format-specific assets.' },
-      { name: 'Qwen2 Text to Image', path: '/home/qwen/qwen2-text-to-image', description: 'Generate images with model `qwen2-image-edit`. Required: prompt (<=800). Optional: image_size (1:1, 3:4, 4:3, 9:16, 16:9; default 16:9), seed, output_format (png/jpeg; default png).' },
-      { name: 'Qwen2 Image Edit', path: '/home/qwen/qwen2-image-edit', description: 'Edit an uploaded image URL with model `qwen2/image-edit`. Required: prompt (<=800) + image_url. Optional: image_size (1:1, 2:3, 3:2, 3:4, 4:3, 9:16, 16:9, 21:9; default 16:9), seed, output_format (png/jpeg; default png).' }
+      { name: 'V2 Text to Image', path: '/home/qwen/v2-text-to-image', description: 'Generate images with model `qwen2-image-edit`. Required: prompt (<=800). Optional: image_size (1:1, 3:4, 4:3, 9:16, 16:9; default 16:9), seed, output_format (png/jpeg; default png).' },
+      { name: 'V2 Image Edit', path: '/home/qwen/v2-image-edit', description: 'Edit an uploaded image URL with model `qwen2/image-edit`. Required: prompt (<=800) + image_url. Optional: image_size (1:1, 2:3, 3:2, 3:4, 4:3, 9:16, 16:9, 21:9; default 16:9), seed, output_format (png/jpeg; default png).' }
     ],
     sections: [
       {

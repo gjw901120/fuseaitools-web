@@ -5851,7 +5851,7 @@ const sitemap_xml = defineEventHandler(async (event) => {
   if (method === "HEAD") {
     return "";
   }
-  const baseUrl = "https://www.fuseaitools.com";
+  const baseUrl = "https://fuseaitools.com";
   const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
   let newsPages = [];
   try {
@@ -5875,7 +5875,6 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/about", lastmod: currentDate, changefreq: "monthly", priority: "0.6" },
     { loc: "/pricing", lastmod: currentDate, changefreq: "monthly", priority: "0.7" },
     { loc: "/news", lastmod: currentDate, changefreq: "daily", priority: "0.5" },
-    { loc: "/credits", lastmod: currentDate, changefreq: "monthly", priority: "0.6" },
     { loc: "/home/gpt", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/deepseek", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
     { loc: "/home/claude", lastmod: currentDate, changefreq: "weekly", priority: "0.85" },
@@ -5958,8 +5957,8 @@ const sitemap_xml = defineEventHandler(async (event) => {
     { loc: "/home/qwen/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/qwen/z-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    { loc: "/home/qwen/2-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
-    { loc: "/home/qwen/2-image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/v2-text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
+    { loc: "/home/qwen/v2-image-edit", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/grok/text-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/grok/image-to-image", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },
     { loc: "/home/grok/text-to-video", lastmod: currentDate, changefreq: "weekly", priority: "0.8" },

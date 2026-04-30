@@ -522,10 +522,10 @@
           <div v-if="!isDetailView && route.path === '/home/elevenlabs/turbo-2-5'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://www.fuseaitools.com/news/ai-social-short-video-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
+              <a href="https://fuseaitools.com/news/ai-social-short-video-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
                 Use AI Voice to Bring Short Videos to Life: A Social-First TTS Workflow
               </a>
-              <a href="https://www.fuseaitools.com/news/epic-trailer-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
+              <a href="https://fuseaitools.com/news/epic-trailer-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
                 Create Epic Trailer Voiceovers with AI: Make Brand Promos More Impactful
               </a>
             </div>

@@ -3,6 +3,7 @@
  * 为所有工具页面提供统一的 SEO 配置
  */
 import { getToolBreadcrumbByRoute } from '~/utils/toolBreadcrumbs'
+import { clampDescription } from '~/composables/seoDescription'
 
 /**
  * 可选入参（每个工具页独立传）：
@@ -40,6 +41,13 @@ export const useToolSEO = (toolInfo) => {
     audio: 'Audio Processing',
     video: 'Video Generation'
   }
+  const normalizedDescription = clampDescription(description, 120, 160, {
+    fallback: `${name} is a ${categoryLabels[category] || 'AI'} tool on FuseAI Tools with practical controls, reliable outputs, and credit-based pricing.`,
+    appendSentences: [
+      `Use ${name} online with streamlined setup, flexible parameters, and production-ready results for real workflows.`,
+      'Start quickly in your browser with clear settings, stable quality, and transparent credit usage for every task.'
+    ]
+  })
 
   const routeBreadcrumb = getToolBreadcrumbByRoute(route, name)
   const breadcrumbItems = [
@@ -145,7 +153,7 @@ export const useToolSEO = (toolInfo) => {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": name,
-    "description": description,
+    "description": normalizedDescription,
     "applicationCategory": applicationCategory || `${categoryLabels[category]}Application`,
     "operatingSystem": operatingSystem,
     "url": fullUrl,
@@ -166,7 +174,7 @@ export const useToolSEO = (toolInfo) => {
     meta: [
       {
         name: 'description',
-        content: description
+        content: normalizedDescription
       },
       {
         name: 'keywords',
@@ -176,7 +184,7 @@ export const useToolSEO = (toolInfo) => {
       },
       // Open Graph tags
       { property: 'og:title', content: `${name} - ${categoryLabels[category]} AI Tool | FuseAI Tools` },
-      { property: 'og:description', content: description },
+      { property: 'og:description', content: normalizedDescription },
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: fullUrl },
       { property: 'og:image', content: toolImageUrl },
@@ -184,7 +192,7 @@ export const useToolSEO = (toolInfo) => {
       // Twitter Card tags
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: `${name} - ${categoryLabels[category]} AI Tool | FuseAI Tools` },
-      { name: 'twitter:description', content: description },
+      { name: 'twitter:description', content: normalizedDescription },
       { name: 'twitter:image', content: toolImageUrl },
       // Additional meta tags
       { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' }

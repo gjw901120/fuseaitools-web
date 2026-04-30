@@ -164,6 +164,8 @@ export default defineNuxtConfig({
         '/home/qwen/image-to-image',
         '/home/qwen/image-edit',
         '/home/qwen/z-image',
+        '/home/qwen/v2-text-to-image',
+        '/home/qwen/v2-image-edit',
         '/home/imagen4/imagen4-generate',
         '/home/imagen4/imagen4-fast',
         '/home/imagen4/imagen4-ultra',

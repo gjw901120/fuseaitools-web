@@ -54,7 +54,7 @@
 | **Ideogram** | `/home/ideogram/v3-text-to-image` 等 | 多 Tab（v3 / character 系列） | 各子路径见 `pages/home/ideogram/*` | `ideogram-v3-text-to-image` 等（与定价 key 一致） |
 | **GPT Image** | `/home/gpt-image/text-to-image`、`/home/gpt-image/image-to-image` | 文生图 / 图生图 | — | `gpt-image-1.5-text-to-image`、`gpt-image-1.5-image-to-image` |
 | **Seedream** | `/home/seedream/5-lite-text-to-image`、`/home/seedream/5-lite-image-to-image` | 5 Lite | — | `seedream-5-lite-text-to-image`、`seedream-5-lite-image-to-image` |
-| **Qwen** | `/home/qwen/text-to-image`、`image-to-image`、`image-edit`、`z-image`、`qwen2-text-to-image`、`qwen2-image-edit` | 多 Tab | — | `qwen-text-to-image` 等（与定价 key 一致） |
+| **Qwen** | `/home/qwen/text-to-image`、`image-to-image`、`image-edit`、`z-image`、`v2-text-to-image`、`v2-image-edit` | 多 Tab | — | `qwen-text-to-image` 等（与定价 key 一致） |
 | **Imagen4** | `/home/imagen4/imagen4-generate`、`imagen4-fast`、`imagen4-ultra` | 三档 | — | `imagen4-generate`、`imagen4-fast`、`imagen4-ultra` |
 | **Flux 2** | `/home/flux-kontext/flux-2-text-to-image` 等 | 独立子页 | 与 Pro 版共 4 条路径 | `flux-2-text-to-image` 等 |
 | **Grok（图）** | `/home/grok/text-to-image`、`/home/grok/image-to-image` | 文生图 / 图生图 | — | `grok-imagine-text-to-image`、`grok-imagine-image-to-image` |
@@ -158,7 +158,7 @@ History 列表项来自 `GET /api/records/list`，每条记录含 `recordId`、`
 | `flux-2-text-to-image` 等 Flux 2 key | `/home/flux-kontext/flux-2-*` |
 | `imagen4-generate` / `imagen4-fast` / `imagen4-ultra` | `/home/imagen4/imagen4-*` |
 | `seedream-5-lite-text-to-image` / `seedream-5-lite-image-to-image` | `/home/seedream/5-lite-*` |
-| `qwen-text-to-image` … `qwen2-image-edit` | `/home/qwen/...` 对应子路径 |
+| `qwen-text-to-image` … `qwen2-image-edit` | `/home/qwen/...` 对应子路径（V2 页面为 `v2-*`） |
 | `ideogram-v3-text-to-image` 等 | `/home/ideogram/...` 对应子路径 |
 | `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | `/home/gpt-image/text-to-image`、`image-to-image` |
 | `nano-banana-2` | `/home/nano-banana/nano-banana-2` |

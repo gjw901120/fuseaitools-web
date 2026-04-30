@@ -598,8 +598,8 @@
           <div v-if="!isDetailView && route.path === '/home/suno/generate'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://www.fuseaitools.com/news/create-lofi-study-playlist-with-suno-v5" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create a LoFi study playlist with Suno V5</a>
-              <a href="https://www.fuseaitools.com/news/suno-generate-epic-podcast-opening-30s" target="_blank" rel="noopener noreferrer" class="tutorial-link">30-second epic podcast intro with Suno V5</a>
+              <a href="https://fuseaitools.com/news/create-lofi-study-playlist-with-suno-v5" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create a LoFi study playlist with Suno V5</a>
+              <a href="https://fuseaitools.com/news/suno-generate-epic-podcast-opening-30s" target="_blank" rel="noopener noreferrer" class="tutorial-link">30-second epic podcast intro with Suno V5</a>
             </div>
           </div>
           <!-- 详情页：status 3 失败 -->

@@ -205,6 +205,7 @@
 </template>
 
 <script setup>
+import { clampDescription } from '~/composables/seoDescription'
 // 导入组件
 import Veo3Tool from '~/components/tools/Veo3Tool.vue'
 import RunwayTool from '~/components/tools/RunwayTool.vue'
@@ -263,10 +264,20 @@ const toolRouteMap = {
 }
 
 // SEO优化
+const homeMetaDescription = clampDescription(
+  'Discover and use the most advanced AI tools to enhance your work efficiency and creativity. Includes 100+ curated AI tools covering writing, design, programming, data analysis and more.',
+  120,
+  160,
+  {
+    appendSentences: [
+      'Explore practical models for chat, image, audio, and video generation with transparent credit usage and fast browser access.'
+    ]
+  }
+)
 useHead({
   title: 'AI Tools Platform - FuseAI',
   meta: [
-    { name: 'description', content: 'Discover and use the most advanced AI tools to enhance your work efficiency and creativity. Includes 100+ curated AI tools covering writing, design, programming, data analysis and more.' },
+    { name: 'description', content: homeMetaDescription },
     { name: 'keywords', content: 'AI tools, artificial intelligence, AI applications, work efficiency, tool recommendations, FuseAI' }
   ]
 })
@@ -1116,8 +1127,8 @@ watch(() => route.path, (newPath) => {
     '/home/qwen/image-to-image': 'Qwen',
     '/home/qwen/image-edit': 'Qwen',
     '/home/qwen/z-image': 'Qwen',
-    '/home/qwen/2-text-to-image': 'Qwen',
-    '/home/qwen/2-image-edit': 'Qwen',
+    '/home/qwen/v2-text-to-image': 'Qwen',
+    '/home/qwen/v2-image-edit': 'Qwen',
     '/home/grok': 'Grok',
     '/home/grok/text-to-image': 'Grok',
     '/home/grok/image-to-image': 'Grok',

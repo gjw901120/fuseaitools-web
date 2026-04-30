@@ -4,7 +4,7 @@
       <header class="overview-header">
         <span v-if="config.showCategory !== false" class="overview-category">{{ config.category }}</span>
         <div class="overview-title-row">
-          <img v-if="config.logo" :src="config.logo" alt="" class="overview-title-logo" />
+          <img v-if="config.logo" :src="config.logo" :alt="`${config.title} logo`" class="overview-title-logo" />
           <h1 class="overview-title">{{ config.title }}</h1>
         </div>
         <p class="overview-intro" :class="{ 'intro-full-width': config.introFullWidth }">{{ config.intro }}</p>
@@ -107,14 +107,7 @@ const overviewPageSchema = computed(() => ({
   "@type": "CollectionPage",
   "name": `${props.config.title} - AI Tools | FuseAITools`,
   "description": props.config.intro,
-  "url": canonicalUrl,
-  "mainEntity": {
-    "@type": "SoftwareApplication",
-    "name": props.config.title,
-    "applicationCategory": props.config.category || "AI Tools",
-    "operatingSystem": "Web",
-    "url": canonicalUrl
-  }
+  "url": canonicalUrl
 }))
 
 function sectionParagraphs(content) {

@@ -565,8 +565,8 @@
         <div v-if="!isDetailView && route.path === '/home/wan/2-7-image'" class="tutorial-showcase">
           <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
           <div class="tutorial-showcase-links">
-            <a href="https://www.fuseaitools.com/news/wan-27-sequential-animation-frames-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create animation frame sequences in one click with Wan 2.7 Image sequential mode</a>
-            <a href="https://www.fuseaitools.com/news/wan-27-color-palette-brand-geometry-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use Wan 2.7 Image Color Palette to generate brand-consistent geometric visuals</a>
+            <a href="https://fuseaitools.com/news/wan-27-sequential-animation-frames-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create animation frame sequences in one click with Wan 2.7 Image sequential mode</a>
+            <a href="https://fuseaitools.com/news/wan-27-color-palette-brand-geometry-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use Wan 2.7 Image Color Palette to generate brand-consistent geometric visuals</a>
           </div>
         </div>
         <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">

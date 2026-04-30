@@ -456,8 +456,8 @@
           <div v-if="!isDetailView && route.path === '/home/nano-banana/generate'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://www.fuseaitools.com/news/nano-banana-cozy-social-media-illustration-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create healing social media illustrations: cozy flat style (16:9)</a>
-              <a href="https://www.fuseaitools.com/news/nano-banana-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create cinematic short-video covers: vertical 9:16 thumbnails</a>
+              <a href="https://fuseaitools.com/news/nano-banana-cozy-social-media-illustration-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create healing social media illustrations: cozy flat style (16:9)</a>
+              <a href="https://fuseaitools.com/news/nano-banana-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create cinematic short-video covers: vertical 9:16 thumbnails</a>
             </div>
           </div>
           <div class="image-container-main">
