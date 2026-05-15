@@ -40,7 +40,7 @@
             }"
             @click="selectPlan(0)"
           >
-            <div class="plan-badge" v-if="selectedPlanIndex === 0" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, #6366f1 100%)` }">Selected</div>
+            <div class="plan-badge" v-if="selectedPlanIndex === 0" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
             <div class="plan-header">
               <div class="plan-title-row">
                 <div class="plan-icon basic-icon" :style="{ background: selectedPlanIndex === 0 ? getPlanColor(2) : getPlanColor(0), color: 'white' }">★</div>
@@ -89,7 +89,7 @@
             }"
             @click="selectPlan(1)"
           >
-            <div class="plan-badge" v-if="selectedPlanIndex === 1" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, #6366f1 100%)` }">Selected</div>
+            <div class="plan-badge" v-if="selectedPlanIndex === 1" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
             <div class="plan-badge" v-else :style="{ background: `linear-gradient(135deg, ${getPlanColor(1)} 0%, ${getPlanColor(2)} 100%)` }">Popular</div>
             <div class="plan-header">
               <div class="plan-title-row">
@@ -139,8 +139,8 @@
             }"
             @click="selectPlan(2)"
           >
-            <div class="plan-badge" v-if="selectedPlanIndex === 2" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, #6366f1 100%)` }">Selected</div>
-            <div class="plan-badge" v-else :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, #6366f1 100%)` }">Best Value</div>
+            <div class="plan-badge" v-if="selectedPlanIndex === 2" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
+            <div class="plan-badge" v-else :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Best Value</div>
             <div class="plan-header">
               <div class="plan-title-row">
                 <div class="plan-icon ultimate-icon" :style="{ background: selectedPlanIndex === 2 ? getPlanColor(2) : getPlanColor(0), color: 'white' }">∞</div>
@@ -216,7 +216,7 @@
             }"
             @click="selectTopup(index)"
           >
-            <div class="topup-badge" v-if="selectedTopupIndex === index" :style="{ background: `linear-gradient(135deg, ${getCardColor(3)} 0%, #6366f1 100%)` }">Selected</div>
+            <div class="topup-badge" v-if="selectedTopupIndex === index" :style="{ background: `linear-gradient(135deg, ${getCardColor(3)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
             <div class="topup-header">
               <div class="topup-amount">${{ item.amount }}</div>
               <div class="topup-bonus-rate" v-if="item.bonusRate > 0">{{ item.bonusRate }}% Bonus</div>
@@ -459,44 +459,43 @@ const rechargeTopup = (index) => {
   createStripeSession('recharge', priceId)
 }
 
-// 获取卡片边框颜色（靛蓝递进式）
+const FLUX_GRADIENT_END = 'hsl(200, 90%, 42%)'
+
+// 充值卡片边框色（FLUX 深色递进）
 const getCardColor = (index) => {
   const colors = [
-    '#c7d2fe', // 最浅靛蓝 - $10
-    '#a5b4fc', // 浅靛蓝 - $30
-    '#818cf8', // 中靛蓝 - $50
-    '#6366f1'  // 深靛蓝 - $100
+    'hsl(215, 16%, 32%)',
+    'hsl(215, 16%, 38%)',
+    'hsl(173, 60%, 35%)',
+    'hsl(173, 80%, 40%)'
   ]
   return colors[index] || colors[0]
 }
 
-// 获取卡片背景颜色（靛蓝递进式）
 const getCardBackground = (index) => {
   const backgrounds = [
-    'linear-gradient(135deg, #eef2ff 0%, #ffffff 100%)', // $10 - 最浅靛蓝
-    'linear-gradient(135deg, #e0e7ff 0%, #ffffff 100%)', // $30 - 浅靛蓝
-    'linear-gradient(135deg, #c7d2fe 0%, #ffffff 100%)', // $50 - 中靛蓝
-    'linear-gradient(135deg, #a5b4fc 0%, #ffffff 100%)'  // $100 - 深靛蓝
+    'linear-gradient(135deg, hsl(215, 25%, 14%) 0%, hsl(215, 20%, 10%) 100%)',
+    'linear-gradient(135deg, hsl(215, 22%, 16%) 0%, hsl(215, 20%, 10%) 100%)',
+    'linear-gradient(135deg, hsl(215, 22%, 18%) 0%, hsl(215, 20%, 10%) 100%)',
+    'linear-gradient(135deg, hsla(173, 80%, 40%, 0.12) 0%, hsl(215, 20%, 10%) 100%)'
   ]
   return backgrounds[index] || backgrounds[0]
 }
 
-// 获取订阅套餐边框颜色（靛蓝递进式）
 const getPlanColor = (index) => {
   const colors = [
-    '#c7d2fe', // Basic - 最浅靛蓝
-    '#818cf8', // Pro - 中靛蓝
-    '#6366f1'  // Ultimate - 深靛蓝
+    'hsl(215, 16%, 35%)',
+    'hsl(173, 60%, 38%)',
+    'hsl(173, 80%, 40%)'
   ]
   return colors[index] || colors[0]
 }
 
-// 获取订阅套餐背景颜色（靛蓝递进式）
 const getPlanBackground = (index) => {
   const backgrounds = [
-    'linear-gradient(135deg, #eef2ff 0%, #ffffff 100%)', // Basic - 最浅靛蓝
-    'linear-gradient(135deg, #e0e7ff 0%, #ffffff 100%)', // Pro - 中靛蓝
-    'linear-gradient(135deg, #c7d2fe 0%, #ffffff 100%)'  // Ultimate - 深靛蓝
+    'linear-gradient(135deg, hsl(215, 25%, 14%) 0%, hsl(215, 20%, 10%) 100%)',
+    'linear-gradient(135deg, hsl(215, 22%, 18%) 0%, hsl(215, 20%, 10%) 100%)',
+    'linear-gradient(135deg, hsla(173, 80%, 40%, 0.15) 0%, hsl(215, 20%, 10%) 100%)'
   ]
   return backgrounds[index] || backgrounds[0]
 }
@@ -624,9 +623,9 @@ const subscribePlan = (index) => {
 }
 
 .type-btn.active {
-  background: #6366f1;
+  background: hsl(173, 80%, 40%);
   color: white;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 8px hsla(173, 80%, 40%, 0.35);
 }
 
 .plans-grid {
@@ -781,7 +780,7 @@ const subscribePlan = (index) => {
 
 .points-value.total-value {
   font-size: 1.125rem;
-  color: #6366f1;
+  color: hsl(173, 80%, 40%);
   font-weight: 700;
 }
 
@@ -1004,7 +1003,7 @@ const subscribePlan = (index) => {
 .total-value {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #6366f1;
+  color: hsl(173, 80%, 40%);
   white-space: nowrap;
 }
 

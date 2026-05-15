@@ -181,7 +181,9 @@ export default defineNuxtConfig({
 
   css: [
     '@/assets/css/container.css',
-    '@/assets/css/main.css'
+    '@/assets/css/main.css',
+    '@/assets/css/flux-theme.css',
+    '@/assets/css/flux-content-pages.css'
   ],
 
   modules: [],
@@ -199,11 +201,12 @@ export default defineNuxtConfig({
         { name: 'keywords', content: 'all-in-one platform, chat models, video models, image models, radio models, simply ai tools' }
       ],
       link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'shortcut icon', href: '/favicon.ico' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon.png' },
         {
           rel: 'stylesheet',
           href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'

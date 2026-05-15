@@ -1,5 +1,5 @@
 <template>
-  <footer class="app-footer">
+  <footer class="app-footer" :class="{ 'app-footer--flux': isFluxThemeRoute }">
     <div class="simply-container">
       <div class="footer-content">
         <!-- Left Section - Company Info -->
@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+const { isFluxThemeRoute } = useFluxThemeRoute()
 </script>
 
 <style scoped>
@@ -117,6 +118,25 @@
 .trademark {
   font-size: 0.8rem !important;
   opacity: 0.7;
+}
+
+.app-footer--flux {
+  background: var(--flux-bg) !important;
+  color: var(--flux-muted) !important;
+  border-top: 1px solid var(--flux-border-subtle);
+}
+
+.app-footer--flux .logo {
+  color: var(--flux-primary) !important;
+}
+
+.app-footer--flux .company-description,
+.app-footer--flux .copyright p {
+  color: var(--flux-muted) !important;
+}
+
+.app-footer--flux .footer-bottom {
+  border-top-color: var(--flux-border) !important;
 }
 
 @media (max-width: 768px) {

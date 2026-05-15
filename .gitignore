@@ -1,1 +1,16 @@
+# Dependencies
 node_modules
+
+# Nuxt / Nitro 构建与开发缓存
+.nuxt
+.output
+dist
+
+# 环境变量（勿提交密钥）
+.env
+.env.*
+!.env.example
+
+# 日志与本地工具
+*.log
+.DS_Store

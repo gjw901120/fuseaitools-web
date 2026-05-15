@@ -61,26 +61,26 @@ const props = defineProps({
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--flux-muted);
 }
 
 .breadcrumb-item:not(:last-child)::after {
   content: '/';
   margin-left: 8px;
-  color: #d1d5db;
+  color: var(--flux-border);
 }
 
 .breadcrumb-link {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #6b7280;
+  color: var(--flux-muted);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumb-link:hover {
-  color: #3b82f6;
+  color: var(--flux-primary);
 }
 
 .breadcrumb-link i {
@@ -88,7 +88,7 @@ const props = defineProps({
 }
 
 .breadcrumb-current {
-  color: #1f2937;
+  color: var(--flux-foreground);
   font-weight: 500;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-layout">
+  <div class="app-layout" :class="{ 'flux-theme': isFluxThemeRoute }">
     <div class="layout-header">
       <AppHeader />
     </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script setup>
+const { isFluxThemeRoute } = useFluxThemeRoute()
 </script>
 
 <style>
@@ -47,6 +48,10 @@
 
 .main-content {
   flex: 1;
+}
+
+.flux-theme .main-content {
+  background: var(--flux-bg);
 }
 
 /* simply 样式的布局容器 - 只负责内边距，不限制宽度 */

@@ -255,7 +255,8 @@ const videoModels = ref([
 <style scoped>
 .image-gallery {
   padding: 80px 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: var(--flux-bg);
+  border-top: 1px solid var(--flux-border-subtle);
 }
 
 .gallery-header {
@@ -266,13 +267,13 @@ const videoModels = ref([
 .gallery-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--flux-foreground);
   margin-bottom: 1rem;
 }
 
 .gallery-description {
   font-size: 1.2rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -302,8 +303,8 @@ const videoModels = ref([
   align-items: center;
   justify-content: center;
   padding: 17.28px 28.8px;
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--flux-card);
+  color: var(--flux-muted);
   border-radius: 11.52px;
   font-size: 1.296rem;
   font-weight: 600;
@@ -313,30 +314,31 @@ const videoModels = ref([
   flex-shrink: 0;
   min-height: 100px;
   box-sizing: border-box;
+  border: 1px solid var(--flux-border);
 }
 
 .chat-label {
-  background: #dbeafe; /* 蓝色 */
-  color: #1e40af;
-  border-left: 4px solid #3b82f6;
+  background: hsla(200, 90%, 42%, 0.12);
+  color: hsl(200, 90%, 65%);
+  border-left: 4px solid hsl(200, 90%, 42%);
 }
 
 .image-label {
-  background: #fef3c7; /* 黄色 */
-  color: #92400e;
-  border-left: 4px solid #f59e0b;
+  background: hsla(38, 92%, 50%, 0.12);
+  color: hsl(38, 92%, 65%);
+  border-left: 4px solid hsl(38, 92%, 50%);
 }
 
 .audio-label {
-  background: #fce7f3; /* 粉色 */
-  color: #9f1239;
-  border-left: 4px solid #ec4899;
+  background: hsla(330, 70%, 50%, 0.12);
+  color: hsl(330, 70%, 70%);
+  border-left: 4px solid hsl(330, 70%, 50%);
 }
 
 .video-label {
-  background: #d1fae5; /* 绿色 */
-  color: #065f46;
-  border-left: 4px solid #10b981;
+  background: hsla(173, 80%, 40%, 0.12);
+  color: hsl(173, 80%, 55%);
+  border-left: 4px solid var(--flux-primary);
 }
 
 .category-items {
@@ -358,26 +360,28 @@ const videoModels = ref([
   position: relative;
   border-radius: 11.52px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 淡化阴影，增强融合度 */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 12px hsla(0, 0%, 0%, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   width: 150px;
   height: 100px;
   flex: 0 0 150px;
   text-decoration: none;
   display: block;
-  cursor: pointer; /* 确保鼠标指针显示为手型 */
-  pointer-events: auto; /* 确保可以点击 */
+  cursor: pointer;
+  pointer-events: auto;
+  border: 1px solid var(--flux-border);
 }
 
 .gallery-item:hover {
-  transform: translateY(-4px); /* 减小悬停时的移动距离 */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); /* 淡化悬停阴影 */
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--flux-primary-glow);
+  border-color: var(--flux-primary);
 }
 
 .logo-card {
-  background: rgba(255, 255, 255, 0.6); /* 淡化白色背景，增加透明度 */
-  backdrop-filter: blur(10px); /* 添加毛玻璃效果，增强融合度 */
-  padding: 8px 6px; /* 压缩内边距以适应固定尺寸 */
+  background: var(--flux-card);
+  backdrop-filter: blur(10px);
+  padding: 8px 6px;
   text-align: center;
   width: 100%;
   height: 100%;
@@ -386,7 +390,7 @@ const videoModels = ref([
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.15); /* 淡化边框 */
+  border: none;
 }
 
 .logo-wrapper {
@@ -395,10 +399,10 @@ const videoModels = ref([
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px; /* 减小 logo 和文字的间隔 */
-  background: rgba(248, 250, 252, 0.5); /* 淡化背景，增加透明度 */
+  margin-bottom: 4px;
+  background: var(--flux-bg-elevated);
   border-radius: 6px;
-  padding: 6px; /* 压缩内边距 */
+  padding: 6px;
 }
 
 .model-logo {
@@ -408,10 +412,10 @@ const videoModels = ref([
 }
 
 .model-title {
-  font-size: 0.8rem; /* 压缩字体 */
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #1a1a1a;
-  margin: 0; /* 移除底部边距 */
+  color: var(--flux-foreground);
+  margin: 0;
 }
 
 

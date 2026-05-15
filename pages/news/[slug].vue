@@ -215,7 +215,7 @@ useHead({
             "publisher": {
               "@type": "Organization",
               "name": "FuseAI Tools",
-              "logo": { "@type": "ImageObject", "url": "https://fuseaitools.com/favicon.ico" }
+              "logo": { "@type": "ImageObject", "url": "https://fuseaitools.com/favicon.png" }
             },
             "mainEntityOfPage": { "@type": "WebPage", "@id": `https://fuseaitools.com/news/${newArticle.slug || ''}` },
             "articleSection": newArticle.category || '',

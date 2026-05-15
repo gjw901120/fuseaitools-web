@@ -1,6 +1,6 @@
 <template>
   <HomeLayout>
-    <div class="tool-overview content-padding">
+    <div class="tool-overview content-padding tool-overview--flux">
       <header class="overview-header">
         <span v-if="config.showCategory !== false" class="overview-category">{{ config.category }}</span>
         <div class="overview-title-row">
@@ -64,7 +64,7 @@ const props = defineProps({
     type: Object,
     required: true,
     validator: (c) => c.title && Array.isArray(c.features)
-  }
+  },
 })
 const route = useRoute()
 const baseUrl = 'https://fuseaitools.com'
@@ -151,7 +151,7 @@ useHead({
 .overview-header {
   margin-bottom: 2.75rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--flux-border);
 }
 
 .overview-category {
@@ -160,14 +160,14 @@ useHead({
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6366f1;
+  color: var(--flux-primary);
   margin-bottom: 0.75rem;
 }
 
 .overview-title {
   font-size: 2.25rem;
   font-weight: 800;
-  color: #111827;
+  color: var(--flux-foreground);
   margin: 0 0 1.25rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -194,7 +194,7 @@ useHead({
 .overview-intro {
   font-size: 1.125rem;
   line-height: 1.75;
-  color: #4b5563;
+  color: var(--flux-muted);
   margin: 0;
   max-width: none;
 }
@@ -202,16 +202,16 @@ useHead({
 .overview-intro.intro-full-width {
   font-size: 1.1875rem;
   line-height: 1.8;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 /* Features block */
 .overview-features {
   margin-top: 2.5rem;
   padding: 2rem;
-  background: #f8fafc;
+  background: var(--flux-card);
   border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--flux-border);
 }
 
 .features-heading {
@@ -220,12 +220,12 @@ useHead({
   gap: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0 0 1.5rem;
 }
 
 .features-heading-icon {
-  color: #6366f1;
+  color: var(--flux-primary);
   font-size: 1rem;
 }
 
@@ -242,8 +242,8 @@ useHead({
 }
 
 .feature-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--flux-bg-elevated);
+  border: 1px solid var(--flux-border);
   border-radius: 14px;
   padding: 1.5rem;
   height: 100%;
@@ -251,8 +251,8 @@ useHead({
 }
 
 .feature-card-link:hover .feature-card {
-  border-color: #6366f1;
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12);
+  border-color: var(--flux-primary);
+  box-shadow: 0 8px 24px var(--flux-primary-glow);
   transform: translateY(-2px);
 }
 
@@ -260,8 +260,8 @@ useHead({
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: #fff;
+  background: var(--flux-gradient);
+  color: var(--flux-foreground);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,21 +272,21 @@ useHead({
 .feature-title {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--flux-foreground);
   margin: 0 0 0.5rem;
 }
 
 .feature-description {
   font-size: 0.9375rem;
   line-height: 1.55;
-  color: #6b7280;
+  color: var(--flux-muted);
   margin: 0 0 0.75rem;
 }
 
 .feature-cta {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #6366f1;
+  color: var(--flux-primary);
 }
 
 .feature-card-link:hover .feature-cta {
@@ -303,24 +303,24 @@ useHead({
 
 .overview-section {
   padding: 1.75rem 2rem;
-  background: #fff;
+  background: var(--flux-card);
   border-radius: 14px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--flux-border);
+  box-shadow: none;
 }
 
 .section-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0 0 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #6366f1;
+  border-bottom: 2px solid var(--flux-primary);
   display: inline-block;
 }
 
 .section-content {
-  color: #4b5563;
+  color: var(--flux-muted);
   line-height: 1.75;
 }
 

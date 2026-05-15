@@ -1,0 +1,418 @@
+/* pricing / news / about 内容页深色主题（.flux-theme 由 layout 根据路由启用） */
+
+.flux-theme .pricing-page,
+.flux-theme .news-page,
+.flux-theme .about-page,
+.flux-theme .news-detail-page {
+  background: var(--flux-bg) !important;
+  color: var(--flux-foreground);
+}
+
+/* ── Hero ── */
+.flux-theme .pricing-page .hero-section,
+.flux-theme .news-page .news-hero,
+.flux-theme .about-page .hero-section {
+  background: var(--flux-gradient) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .hero-title,
+.flux-theme .news-hero .hero-title,
+.flux-theme .about-page .hero-title {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .hero-subtitle,
+.flux-theme .news-hero .hero-subtitle,
+.flux-theme .about-page .hero-subtitle {
+  color: hsla(0, 0%, 98%, 0.9) !important;
+}
+
+/* ── Pricing ── */
+.flux-theme .pricing-plans,
+.flux-theme .topup-section {
+  background: var(--flux-bg) !important;
+}
+
+.flux-theme .subscription-type-toggle {
+  background: var(--flux-card) !important;
+  box-shadow: 0 4px 24px hsla(0, 0%, 0%, 0.25) !important;
+}
+
+.flux-theme .type-btn {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .type-btn:hover:not(.active) {
+  background: var(--flux-card-hover) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .type-btn.active {
+  background: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+  box-shadow: 0 2px 8px var(--flux-primary-glow) !important;
+}
+
+.flux-theme .plan-card,
+.flux-theme .topup-card {
+  border-color: var(--flux-border) !important;
+}
+
+.flux-theme .plan-name,
+.flux-theme .price-amount,
+.flux-theme .topup-amount,
+.flux-theme .credits-base,
+.flux-theme .points-value {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .price-period,
+.flux-theme .plan-description,
+.flux-theme .points-label,
+.flux-theme .explanation-text,
+.flux-theme .discount-explanation,
+.flux-theme .topup-section .section-subtitle,
+.flux-theme .total-label {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .points-value.total-value,
+.flux-theme .total-value {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .points-info,
+.flux-theme .topup-credits {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.flux-theme .points-row.total {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .discount-text,
+.flux-theme .topup-bonus-rate {
+  background: hsla(38, 92%, 50%, 0.15) !important;
+  color: var(--flux-warning) !important;
+}
+
+.flux-theme .points-explanation,
+.flux-theme .topup-explanation {
+  background: var(--flux-card) !important;
+  border: 1px solid var(--flux-border);
+}
+
+.flux-theme .explanation-text i,
+.flux-theme .discount-explanation i,
+.flux-theme .topup-explanation-text i {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .topup-explanation-text {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .credits-plus {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .credits-bonus {
+  color: var(--flux-success) !important;
+}
+
+.flux-theme .topup-total {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .topup-section .section-title,
+.flux-theme .section-title {
+  color: var(--flux-foreground) !important;
+}
+
+/* ── FAQ ── */
+.flux-theme .faq-section {
+  background: var(--flux-bg) !important;
+}
+
+.flux-theme .faq-item {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  box-shadow: none !important;
+}
+
+.flux-theme .faq-question {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .faq-question:hover {
+  background: var(--flux-card-hover) !important;
+}
+
+.flux-theme .faq-question i {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .faq-content,
+.flux-theme .faq-content p,
+.flux-theme .faq-content li {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .faq-content h4 {
+  color: var(--flux-foreground) !important;
+}
+
+/* ── News list ── */
+.flux-theme .news-list-section,
+.flux-theme .article-content-section {
+  background: var(--flux-bg) !important;
+}
+
+.flux-theme .filter-btn {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .filter-btn:hover,
+.flux-theme .filter-btn.active {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .news-list-item {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  box-shadow: 0 4px 16px hsla(0, 0%, 0%, 0.2) !important;
+}
+
+.flux-theme .news-list-item:hover {
+  border-color: var(--flux-primary) !important;
+}
+
+.flux-theme .news-title {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .news-excerpt,
+.flux-theme .news-date,
+.flux-theme .news-meta,
+.flux-theme .pagination-info {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .news-category {
+  background: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .news-read-time {
+  background: var(--flux-input-bg) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .news-arrow {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .pagination-btn,
+.flux-theme .page-btn {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .pagination-btn:hover:not(:disabled),
+.flux-theme .page-btn:hover {
+  background: var(--flux-card-hover) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .page-btn.active {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .retry-btn,
+.flux-theme .back-btn {
+  background: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .retry-btn:hover,
+.flux-theme .back-btn:hover {
+  background: var(--flux-primary-hover) !important;
+}
+
+.flux-theme .loading-spinner {
+  border-color: var(--flux-border) !important;
+  border-top-color: var(--flux-primary) !important;
+}
+
+.flux-theme .loading-state p,
+.flux-theme .error-state h3,
+.flux-theme .error-state p {
+  color: var(--flux-muted) !important;
+}
+
+/* ── News detail ── */
+.flux-theme .detail-hero {
+  background: var(--flux-bg-elevated) !important;
+  border-bottom: 1px solid var(--flux-border);
+}
+
+.flux-theme .breadcrumb-link {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .breadcrumb-link.home-link {
+  background: var(--flux-primary-muted) !important;
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .breadcrumb-link.home-link:hover {
+  background: hsla(173, 80%, 40%, 0.25) !important;
+}
+
+.flux-theme .article-title {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .article-meta,
+.flux-theme .article-category {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .article-category {
+  background: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .article-body,
+.flux-theme .article-body.html-content {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .article-body.html-content h1,
+.flux-theme .article-body.html-content h2,
+.flux-theme .article-body.html-content h3,
+.flux-theme .article-body.html-content h4 {
+  color: var(--flux-foreground) !important;
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.flux-theme .article-body.html-content p,
+.flux-theme .article-body.html-content li {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .article-body.html-content blockquote,
+.flux-theme .article-body.html-content .recommendation,
+.flux-theme .article-body.html-content .key-takeaways {
+  background: var(--flux-card) !important;
+  border-left-color: var(--flux-primary) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .article-body.html-content th {
+  background: var(--flux-card) !important;
+  color: var(--flux-foreground) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.flux-theme .article-body.html-content td {
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .article-body.html-content tr:hover {
+  background: var(--flux-card-hover) !important;
+}
+
+.flux-theme .article-body.html-content .image-caption,
+.flux-theme .article-body.html-content .article-footer {
+  color: var(--flux-muted) !important;
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .article-body.html-content a {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .article-nav {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .article-nav-link {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .article-nav-link:hover {
+  background: var(--flux-primary-muted) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .error-content h2 {
+  color: var(--flux-destructive) !important;
+}
+
+/* ── About ── */
+.flux-theme .about-page .content-section {
+  background: var(--flux-bg) !important;
+}
+
+.flux-theme .content-wrapper h2 {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .content-wrapper p,
+.flux-theme .content-wrapper li,
+.flux-theme .contact-intro,
+.flux-theme .contact-description,
+.flux-theme .commitment-text {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .contact-section {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .contact-card {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.flux-theme .contact-card:hover {
+  border-color: var(--flux-primary) !important;
+  box-shadow: 0 8px 24px var(--flux-primary-glow) !important;
+}
+
+.flux-theme .contact-card h3 {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .contact-icon,
+.flux-theme .commitment-icon {
+  background: var(--flux-gradient) !important;
+}
+
+.flux-theme .contact-email {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .contact-email:hover {
+  color: var(--flux-primary-hover) !important;
+}
+
+.flux-theme .contact-commitment {
+  background: var(--flux-primary-muted) !important;
+  border-left-color: var(--flux-primary) !important;
+}
