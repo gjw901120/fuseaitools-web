@@ -1001,13 +1001,42 @@
   border-color: var(--flux-border) !important;
 }
 
-/* 价格 / 积分提示 */
+/* 价格 / 积分提示（表单区等） */
 .home-layout--flux .price-tag,
 .home-layout--flux .credits-hint,
 .home-layout--flux .cost-badge {
   background: var(--flux-primary-muted) !important;
   color: var(--flux-primary) !important;
   border-color: var(--flux-border) !important;
+}
+
+/* 提交按钮上的 credits：白色文字（与渐变按钮主文案一致） */
+.home-layout--flux .btn-primary .price-tag,
+.home-layout--flux button.btn-primary .price-tag,
+.home-layout--flux .generate-btn .price-tag,
+.home-layout--flux button.generate-btn .price-tag {
+  color: #fff !important;
+  background: transparent !important;
+  border: none !important;
+  opacity: 0.92 !important;
+}
+
+.home-layout--flux .btn-primary,
+.home-layout--flux button.btn-primary,
+.home-layout--flux .generate-btn,
+.home-layout--flux button.generate-btn {
+  color: #fff !important;
+}
+
+.home-layout--flux .generate-btn,
+.home-layout--flux button.generate-btn {
+  background: var(--flux-gradient) !important;
+  border: none !important;
+}
+
+.home-layout--flux .generate-btn:hover:not(:disabled),
+.home-layout--flux button.generate-btn:hover:not(:disabled) {
+  box-shadow: 0 8px 24px var(--flux-primary-glow) !important;
 }
 
 /* 代码块（聊天） */

@@ -108,34 +108,43 @@ const toggleFAQ = (index) => {
 .faq-list {
   max-width: 1040px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .faq-item {
-  border-bottom: 1px solid var(--flux-border);
-  transition: all 0.3s ease;
+  background: var(--flux-card);
+  border: 1px solid var(--flux-border);
+  border-radius: 14px;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   display: block;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
-.faq-item:last-child {
-  border-bottom: none;
+.faq-item:hover {
+  border-color: var(--flux-border);
+  box-shadow: 0 4px 20px hsla(0, 0%, 0%, 0.2);
+}
+
+.faq-item.active {
+  border-color: hsla(173, 80%, 40%, 0.35);
 }
 
 .faq-question {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 0;
+  gap: 1rem;
+  padding: 1.35rem 1.75rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.25s ease;
 }
 
 .faq-question:hover {
-  background: var(--flux-card);
-  margin: 0 -2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  background: var(--flux-card-hover);
 }
 
 .question-text {
@@ -167,7 +176,7 @@ const toggleFAQ = (index) => {
 }
 
 .faq-answer {
-  padding: 0 0 1.5rem 0;
+  padding: 0 1.75rem 1.5rem 1.75rem;
   animation: slideDown 0.3s ease-out;
 }
 
@@ -175,6 +184,7 @@ const toggleFAQ = (index) => {
   font-size: 1rem;
   color: var(--flux-muted);
   line-height: 1.8;
+  padding-left: 0.25rem;
 }
 
 .faq-content p {
@@ -229,14 +239,16 @@ const toggleFAQ = (index) => {
     font-size: 2rem;
   }
   
-  .faq-question {
-    padding: 1.25rem 0;
+  .faq-list {
+    gap: 0.75rem;
   }
-  
-  .faq-question:hover {
-    margin: 0 -1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+
+  .faq-item {
+    border-radius: 12px;
+  }
+
+  .faq-question {
+    padding: 1.15rem 1.25rem;
   }
   
   .question-text {
@@ -244,7 +256,7 @@ const toggleFAQ = (index) => {
   }
   
   .faq-answer {
-    padding: 0 0 1.25rem 0;
+    padding: 0 1.25rem 1.25rem 1.25rem;
   }
 }
 

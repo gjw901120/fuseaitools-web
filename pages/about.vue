@@ -79,15 +79,20 @@
 <style scoped>
 .about-page {
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .hero-section {
   padding: 60px 0 40px;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, hsla(173, 80%, 40%, 0.14), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, hsla(200, 90%, 42%, 0.1), transparent),
+    linear-gradient(180deg, hsl(215, 25%, 11%) 0%, hsl(220, 14%, 5%) 100%);
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .breadcrumb {
@@ -128,16 +133,22 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .hero-subtitle {
   font-size: 1.125rem;
-  opacity: 0.9;
+  color: hsla(0, 0%, 98%, 0.85);
   line-height: 1.6;
 }
 
 .content-section {
   padding: 80px 0;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 0%, hsla(173, 80%, 40%, 0.08), transparent),
+    radial-gradient(ellipse 55% 45% at 100% 80%, hsla(200, 90%, 42%, 0.06), transparent);
+  border-top: 1px solid var(--flux-border-subtle, hsla(215, 16%, 32%, 0.5));
 }
 
 .content-wrapper {
@@ -150,12 +161,12 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin: 2rem 0 1rem;
-  color: #333;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .content-wrapper p {
   margin-bottom: 1.5rem;
-  color: #666;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .content-wrapper ul {
@@ -165,19 +176,19 @@
 
 .content-wrapper li {
   margin-bottom: 0.5rem;
-  color: #666;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 /* Contact Section */
 .contact-section {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--flux-border, hsl(215, 16%, 22%));
 }
 
 .contact-intro {
   margin-bottom: 2rem;
-  color: #666;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-size: 1rem;
   line-height: 1.7;
 }
@@ -190,8 +201,8 @@
 }
 
 .contact-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   border-radius: 12px;
   padding: 2rem;
   transition: all 0.3s ease;
@@ -199,14 +210,14 @@
 
 .contact-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
-  border-color: #667eea;
+  box-shadow: 0 8px 24px var(--flux-primary-glow, hsla(173, 80%, 40%, 0.2));
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
 }
 
 .contact-icon {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--flux-gradient, linear-gradient(135deg, hsl(173, 80%, 42%) 0%, hsl(200, 90%, 42%) 100%));
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -223,11 +234,11 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .contact-description {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   line-height: 1.6;
   margin-bottom: 1.5rem;
   font-size: 0.9375rem;
@@ -237,7 +248,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
@@ -246,7 +257,7 @@
 }
 
 .contact-email:hover {
-  color: #764ba2;
+  color: var(--flux-primary-hover, hsl(173, 80%, 48%));
   gap: 0.75rem;
 }
 
@@ -262,8 +273,8 @@
 .contact-commitment {
   margin-top: 3rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border-left: 4px solid #667eea;
+  background: var(--flux-primary-muted, hsla(173, 80%, 40%, 0.12));
+  border-left: 4px solid var(--flux-primary, hsl(173, 80%, 40%));
   border-radius: 8px;
   display: flex;
   align-items: flex-start;
@@ -274,7 +285,7 @@
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--flux-gradient, linear-gradient(135deg, hsl(173, 80%, 42%) 0%, hsl(200, 90%, 42%) 100%));
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -288,7 +299,7 @@
 
 .commitment-text {
   margin: 0;
-  color: #4b5563;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   line-height: 1.7;
   font-size: 0.9375rem;
   flex: 1;

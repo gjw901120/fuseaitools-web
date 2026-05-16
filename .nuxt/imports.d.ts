@@ -35,6 +35,7 @@ export { fetchWithCache, useApiCache } from '../composables/useApiCache';
 export { useAuth } from '../composables/useAuth';
 export { useBatchUploadUrl, assertBatchUploadSuccess, parseBatchUploadFetchResponse } from '../composables/useBatchUploadUrl';
 export { useFileUploadUrlCache } from '../composables/useFileUploadUrlCache';
+export { useFluxThemeRoute } from '../composables/useFluxThemeRoute';
 export { useHomeLayout } from '../composables/useHomeLayout';
 export { useMjApi } from '../composables/useMjApi';
 export { getPriceRangeFromData, useModelPrice } from '../composables/useModelPrice';

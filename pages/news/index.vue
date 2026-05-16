@@ -251,13 +251,18 @@ watch(selectedCategory, () => {
 <style scoped>
 .news-page {
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
-/* Hero Section - 与 pricing 一致：标题左侧靠上，副标题放大居中 */
+/* Hero Section - 与 pricing 一致：深色径向渐变 */
 .news-hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, hsla(173, 80%, 40%, 0.14), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, hsla(200, 90%, 42%, 0.1), transparent),
+    linear-gradient(180deg, hsl(215, 25%, 11%) 0%, hsl(220, 14%, 5%) 100%);
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   padding: 20px 0;
   text-align: left;
 }
@@ -272,23 +277,23 @@ watch(selectedCategory, () => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .home-link {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--flux-primary-muted, hsla(173, 80%, 40%, 0.15));
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  color: white;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   backdrop-filter: blur(10px);
 }
 
 .home-link:hover {
-  background: rgba(255, 255, 255, 0.3);
-  color: white;
+  background: hsla(173, 80%, 40%, 0.25);
+  color: var(--flux-primary-hover, hsl(173, 80%, 48%));
 }
 
 .hero-content {
@@ -301,13 +306,13 @@ watch(selectedCategory, () => {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  color: white;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   text-align: left;
 }
 
 .hero-subtitle {
   font-size: 2.25rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: hsla(0, 0%, 98%, 0.85);
   max-width: 900px;
   margin: 0 auto;
   line-height: 1.5;
@@ -317,6 +322,10 @@ watch(selectedCategory, () => {
 /* News List Section */
 .news-list-section {
   padding: 80px 0;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 0%, hsla(173, 80%, 40%, 0.08), transparent),
+    radial-gradient(ellipse 55% 45% at 100% 80%, hsla(200, 90%, 42%, 0.06), transparent);
 }
 
 /* Filters */
@@ -330,9 +339,9 @@ watch(selectedCategory, () => {
 
 .filter-btn {
   padding: 0.75rem 1.5rem;
-  border: 2px solid #e5e7eb;
-  background: white;
-  color: #6b7280;
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   border-radius: 25px;
   font-weight: 500;
   cursor: pointer;
@@ -341,9 +350,9 @@ watch(selectedCategory, () => {
 
 .filter-btn:hover,
 .filter-btn.active {
-  border-color: #667eea;
-  background: #667eea;
-  color: white;
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
+  background: var(--flux-primary, hsl(173, 80%, 40%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 /* News List */
@@ -356,11 +365,11 @@ watch(selectedCategory, () => {
 
 .news-list-item {
   display: flex;
-  background: white;
+  background: var(--flux-card, hsl(215, 25%, 14%));
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px hsla(0, 0%, 0%, 0.2);
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 120px;
@@ -368,8 +377,8 @@ watch(selectedCategory, () => {
 
 .news-list-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border-color: #667eea;
+  box-shadow: 0 8px 24px hsla(0, 0%, 0%, 0.3);
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
 }
 
 .news-image {
@@ -406,8 +415,8 @@ watch(selectedCategory, () => {
 }
 
 .news-category {
-  background: #667eea;
-  color: white;
+  background: var(--flux-primary, hsl(173, 80%, 40%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -416,14 +425,14 @@ watch(selectedCategory, () => {
 
 .news-date {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-weight: 500;
 }
 
 .news-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   margin-bottom: 0.5rem;
   line-height: 1.4;
   display: -webkit-box;
@@ -433,7 +442,7 @@ watch(selectedCategory, () => {
 }
 
 .news-excerpt {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   line-height: 1.6;
   margin-bottom: 1rem;
   display: -webkit-box;
@@ -447,18 +456,19 @@ watch(selectedCategory, () => {
   justify-content: space-between;
   align-items: center;
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .news-read-time {
-  background: #f3f4f6;
+  background: var(--flux-input-bg, hsl(215, 20%, 10%));
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-size: 0.75rem;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .news-arrow {
-  color: #667eea;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   transition: transform 0.3s ease;
 }
 
@@ -474,7 +484,7 @@ watch(selectedCategory, () => {
 
 .pagination-info {
   margin-bottom: 1.5rem;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-size: 0.875rem;
 }
 
@@ -491,9 +501,9 @@ watch(selectedCategory, () => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  border: 1px solid #e5e7eb;
-  background: white;
-  color: #6b7280;
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
@@ -501,9 +511,9 @@ watch(selectedCategory, () => {
 }
 
 .pagination-btn:hover:not(:disabled) {
-  border-color: #667eea;
-  background: #667eea;
-  color: white;
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
+  background: var(--flux-card-hover, hsl(215, 22%, 18%));
+  color: var(--flux-primary, hsl(173, 80%, 40%));
 }
 
 .pagination-btn:disabled {
@@ -519,9 +529,9 @@ watch(selectedCategory, () => {
 .page-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  color: #6b7280;
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
@@ -532,14 +542,15 @@ watch(selectedCategory, () => {
 }
 
 .page-btn:hover {
-  border-color: #667eea;
-  background: #f8fafc;
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
+  background: var(--flux-card-hover, hsl(215, 22%, 18%));
+  color: var(--flux-primary, hsl(173, 80%, 40%));
 }
 
 .page-btn.active {
-  border-color: #667eea;
-  background: #667eea;
-  color: white;
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
+  background: var(--flux-primary, hsl(173, 80%, 40%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 /* Loading and Error States */
@@ -551,8 +562,8 @@ watch(selectedCategory, () => {
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #e5e7eb;
-  border-top: 4px solid #667eea;
+  border: 4px solid var(--flux-border, hsl(215, 16%, 22%));
+  border-top: 4px solid var(--flux-primary, hsl(173, 80%, 40%));
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -569,13 +580,13 @@ watch(selectedCategory, () => {
 }
 
 .error-state p {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   margin-bottom: 1rem;
 }
 
 .retry-btn {
-  background: #667eea;
-  color: white;
+  background: var(--flux-primary, hsl(173, 80%, 40%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -585,7 +596,7 @@ watch(selectedCategory, () => {
 }
 
 .retry-btn:hover {
-  background: #5a6fd8;
+  background: var(--flux-primary-hover, hsl(173, 80%, 48%));
 }
 
 /* Responsive Design */

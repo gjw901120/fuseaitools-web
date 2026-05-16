@@ -546,16 +546,21 @@ const subscribePlan = (index) => {
 <style scoped>
 .pricing-page {
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Hero Section - 与 news 头部一致 */
+/* Hero Section - 深色径向渐变，与首页 Hero 一致 */
 .hero-section {
   padding: 20px 0;
   text-align: left;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, hsla(173, 80%, 40%, 0.14), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, hsla(200, 90%, 42%, 0.1), transparent),
+    linear-gradient(180deg, hsl(215, 25%, 11%) 0%, hsl(220, 14%, 5%) 100%);
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .hero-content {
@@ -569,13 +574,13 @@ const subscribePlan = (index) => {
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  color: white;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   text-align: left;
 }
 
 .hero-subtitle {
   font-size: 2.25rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: hsla(0, 0%, 98%, 0.85);
   max-width: 900px;
   margin: 0 auto;
   line-height: 1.5;
@@ -585,7 +590,10 @@ const subscribePlan = (index) => {
 /* Pricing Plans */
 .pricing-plans {
   padding: 60px 0;
-  background: #f8fafc;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 0%, hsla(173, 80%, 40%, 0.08), transparent),
+    radial-gradient(ellipse 55% 45% at 100% 80%, hsla(200, 90%, 42%, 0.06), transparent);
 }
 
 /* Subscription Type Toggle */
@@ -595,13 +603,14 @@ const subscribePlan = (index) => {
   justify-content: center;
   gap: 1rem;
   margin-bottom: 3rem;
-  background: white;
+  background: var(--flux-card, hsl(215, 25%, 14%));
   padding: 0.5rem;
   border-radius: 12px;
   max-width: 520px;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
+  box-shadow: 0 4px 24px hsla(0, 0%, 0%, 0.25);
 }
 
 .type-btn {
@@ -609,7 +618,7 @@ const subscribePlan = (index) => {
   padding: 0.75rem 1.5rem;
   border: none;
   background: transparent;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-size: 0.9375rem;
   font-weight: 500;
   border-radius: 8px;
@@ -618,8 +627,8 @@ const subscribePlan = (index) => {
 }
 
 .type-btn:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: var(--flux-card-hover, hsl(215, 22%, 18%));
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .type-btn.active {
@@ -698,7 +707,7 @@ const subscribePlan = (index) => {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .plan-price {
@@ -708,13 +717,13 @@ const subscribePlan = (index) => {
 .price-amount {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .price-period {
   font-size: 1.25rem;
   font-weight: 400;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .plan-discount {
@@ -739,11 +748,11 @@ const subscribePlan = (index) => {
 
 /* Points Information */
 .points-info {
-  background: #f8fafc;
+  background: var(--flux-input-bg, hsl(215, 20%, 10%));
   border-radius: 8px;
   padding: 1.5rem;
   margin: 1.5rem 0;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
 }
 
 .points-row {
@@ -760,17 +769,17 @@ const subscribePlan = (index) => {
 
 .points-row.total {
   padding-top: 0.75rem;
-  border-top: 2px solid #e5e7eb;
+  border-top: 2px solid var(--flux-border, hsl(215, 16%, 22%));
   margin-top: 0.75rem;
 }
 
 .points-label {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-weight: 500;
 }
 
 .points-value {
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   font-weight: 600;
 }
 
@@ -789,7 +798,8 @@ const subscribePlan = (index) => {
   text-align: center;
   margin-top: 2rem;
   padding: 1rem;
-  background: white;
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   border-radius: 8px;
   max-width: 780px;
   margin-left: auto;
@@ -797,7 +807,7 @@ const subscribePlan = (index) => {
 }
 
 .explanation-text {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-size: 0.875rem;
   margin: 0 0 0.75rem 0;
   display: flex;
@@ -807,7 +817,7 @@ const subscribePlan = (index) => {
 }
 
 .explanation-text i {
-  color: #667eea;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -816,7 +826,7 @@ const subscribePlan = (index) => {
 }
 
 .discount-explanation {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-size: 0.875rem;
   margin: 0;
   display: flex;
@@ -826,7 +836,7 @@ const subscribePlan = (index) => {
 }
 
 .discount-explanation i {
-  color: #667eea;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -857,7 +867,11 @@ const subscribePlan = (index) => {
 /* Top-up Section */
 .topup-section {
   padding: 60px 0;
-  background: #ffffff;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  background-image:
+    radial-gradient(ellipse 60% 45% at 0% 50%, hsla(173, 80%, 40%, 0.06), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 50%, hsla(200, 90%, 42%, 0.05), transparent);
+  border-top: 1px solid var(--flux-border-subtle, hsla(215, 16%, 32%, 0.5));
 }
 
 .topup-section .section-header {
@@ -869,12 +883,12 @@ const subscribePlan = (index) => {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .topup-section .section-subtitle {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .topup-grid {
@@ -931,7 +945,7 @@ const subscribePlan = (index) => {
 .topup-amount {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   margin-bottom: 0.5rem;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -954,9 +968,9 @@ const subscribePlan = (index) => {
   gap: 0.5rem;
   margin-bottom: 1rem;
   padding: 1rem;
-  background: #f8fafc;
+  background: var(--flux-input-bg, hsl(215, 20%, 10%));
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   width: 100%;
   box-sizing: border-box;
   flex-wrap: wrap;
@@ -965,14 +979,14 @@ const subscribePlan = (index) => {
 .credits-base {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   white-space: nowrap;
 }
 
 .credits-plus {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   white-space: nowrap;
 }
 
@@ -989,13 +1003,13 @@ const subscribePlan = (index) => {
   align-items: center;
   padding: 0.75rem 0;
   margin-bottom: 1rem;
-  border-top: 2px solid #e5e7eb;
+  border-top: 2px solid var(--flux-border, hsl(215, 16%, 22%));
   width: 100%;
   box-sizing: border-box;
 }
 
 .total-label {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-weight: 500;
   font-size: 0.9375rem;
 }
@@ -1030,7 +1044,8 @@ const subscribePlan = (index) => {
   text-align: center;
   margin-top: 2rem;
   padding: 1rem;
-  background: white;
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   border-radius: 8px;
   max-width: 780px;
   margin-left: auto;
@@ -1038,7 +1053,7 @@ const subscribePlan = (index) => {
 }
 
 .topup-explanation-text {
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   font-size: 0.875rem;
   margin: 0;
   display: flex;
@@ -1048,7 +1063,7 @@ const subscribePlan = (index) => {
 }
 
 .topup-explanation-text i {
-  color: #667eea;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1059,7 +1074,8 @@ const subscribePlan = (index) => {
 /* FAQ Section */
 .faq-section {
   padding: 60px 0;
-  background: #ffffff;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+  border-top: 1px solid var(--flux-border-subtle, hsla(215, 16%, 32%, 0.5));
 }
 
 .section-title {
@@ -1067,7 +1083,7 @@ const subscribePlan = (index) => {
   font-weight: 700;
   text-align: center;
   margin-bottom: 2rem;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
 }
 
 .faq-list {
@@ -1076,23 +1092,23 @@ const subscribePlan = (index) => {
 }
 
 .faq-item {
-  background: white;
-  border-radius: 12px;
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  border-radius: 14px;
   margin-bottom: 1rem;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: none;
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
 }
 
 .faq-question {
   width: 100%;
-  padding: 1.5rem;
+  padding: 1.35rem 1.75rem;
   text-align: left;
   background: none;
   border: none;
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -1101,12 +1117,12 @@ const subscribePlan = (index) => {
 }
 
 .faq-question:hover {
-  background: #f8fafc;
+  background: var(--flux-card-hover, hsl(215, 22%, 18%));
 }
 
 .faq-question i {
   transition: transform 0.3s ease;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .faq-question i.rotated {
@@ -1124,14 +1140,14 @@ const subscribePlan = (index) => {
 }
 
 .faq-content {
-  padding: 0 1.5rem 1.5rem;
-  color: #6b7280;
+  padding: 0 1.75rem 1.5rem;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   line-height: 1.8;
 }
 
 .faq-content p {
   margin: 0.75rem 0 0.75rem 0;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   line-height: 1.8;
 }
 
@@ -1142,7 +1158,7 @@ const subscribePlan = (index) => {
 .faq-content h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
   margin: 1.25rem 0 0.75rem 0;
 }
 
@@ -1158,7 +1174,7 @@ const subscribePlan = (index) => {
 
 .faq-content li {
   margin: 0.5rem 0;
-  color: #6b7280;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
   line-height: 1.8;
 }
 

@@ -8,12 +8,18 @@
   color: var(--flux-foreground);
 }
 
-/* ── Hero ── */
+/* ── Hero（pricing / news / about 统一深色径向渐变）── */
 .flux-theme .pricing-page .hero-section,
 .flux-theme .news-page .news-hero,
-.flux-theme .about-page .hero-section {
-  background: var(--flux-gradient) !important;
+.flux-theme .about-page .hero-section,
+.flux-theme .news-detail-page .detail-hero {
+  background: var(--flux-bg) !important;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, hsla(173, 80%, 40%, 0.14), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, hsla(200, 90%, 42%, 0.1), transparent),
+    linear-gradient(180deg, hsl(215, 25%, 11%) 0%, var(--flux-bg) 100%) !important;
   color: var(--flux-foreground) !important;
+  border-bottom: none !important;
 }
 
 .flux-theme .hero-title,
@@ -29,9 +35,19 @@
 }
 
 /* ── Pricing ── */
-.flux-theme .pricing-plans,
+.flux-theme .pricing-plans {
+  background: var(--flux-bg) !important;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 0%, hsla(173, 80%, 40%, 0.08), transparent),
+    radial-gradient(ellipse 55% 45% at 100% 80%, hsla(200, 90%, 42%, 0.06), transparent) !important;
+}
+
 .flux-theme .topup-section {
   background: var(--flux-bg) !important;
+  background-image:
+    radial-gradient(ellipse 60% 45% at 0% 50%, hsla(173, 80%, 40%, 0.06), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 50%, hsla(200, 90%, 42%, 0.05), transparent) !important;
+  border-top: 1px solid var(--flux-border-subtle) !important;
 }
 
 .flux-theme .subscription-type-toggle {
@@ -132,14 +148,21 @@
 }
 
 /* ── FAQ ── */
+.flux-theme .pricing-page .faq-section,
 .flux-theme .faq-section {
   background: var(--flux-bg) !important;
+  border-top: 1px solid var(--flux-border-subtle) !important;
 }
 
 .flux-theme .faq-item {
   background: var(--flux-card) !important;
-  border-color: var(--flux-border) !important;
+  border: 1px solid var(--flux-border) !important;
+  border-radius: 14px !important;
   box-shadow: none !important;
+}
+
+.flux-theme .faq-item.active {
+  border-color: hsla(173, 80%, 40%, 0.35) !important;
 }
 
 .flux-theme .faq-question {
@@ -168,6 +191,17 @@
 .flux-theme .news-list-section,
 .flux-theme .article-content-section {
   background: var(--flux-bg) !important;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 0%, hsla(173, 80%, 40%, 0.08), transparent),
+    radial-gradient(ellipse 55% 45% at 100% 80%, hsla(200, 90%, 42%, 0.06), transparent) !important;
+}
+
+.flux-theme .about-page .content-section {
+  background: var(--flux-bg) !important;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 0%, hsla(173, 80%, 40%, 0.08), transparent),
+    radial-gradient(ellipse 55% 45% at 100% 80%, hsla(200, 90%, 42%, 0.06), transparent) !important;
+  border-top: 1px solid var(--flux-border-subtle) !important;
 }
 
 .flux-theme .filter-btn {
@@ -261,10 +295,7 @@
 }
 
 /* ── News detail ── */
-.flux-theme .detail-hero {
-  background: var(--flux-bg-elevated) !important;
-  border-bottom: 1px solid var(--flux-border);
-}
+/* detail-hero 渐变见上方 Hero 统一规则 */
 
 .flux-theme .breadcrumb-link {
   color: var(--flux-primary) !important;
@@ -365,10 +396,6 @@
 }
 
 /* ── About ── */
-.flux-theme .about-page .content-section {
-  background: var(--flux-bg) !important;
-}
-
 .flux-theme .content-wrapper h2 {
   color: var(--flux-foreground) !important;
 }
