@@ -29,10 +29,6 @@ ElevenLabs Turbo 2.5, AI voiceover, short video TTS, social media narration, Bri
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>Use AI Voice to Bring Short Videos to Life: A Social-First TTS Workflow</h1>
-        </header>
-
         <section class="introduction">
             <p>On social media, strong narration can instantly double a video's pull. A young, energetic, natural voice style helps you connect with audiences faster. In this tutorial, we generate a social-style voiceover with <a href="https://www.fuseaitools.com/home/elevenlabs/turbo-2-5">ElevenLabs Turbo 2.5</a> and share the full setup plus optimization tips.</p>
         </section>

@@ -29,10 +29,6 @@ Seedream, Seedream 5 Lite, first frame, last frame, keyframe, AI image generatio
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>AI First &amp; Last Frame Images: Nezha vs Ao Bing’s 100m Sprint</h1>
-        </header>
-
         <section class="introduction">
             <p>In animation and short-form video, <strong>first and last frames</strong> are the anchors that let AI fill in smooth motion between two states. In this tutorial, we use <a href="https://www.fuseaitools.com/home/seedream/5-lite-text-to-image">Seedream 5 Lite (Text to Image)</a> on FuseAI Tools to create a <strong>start frame</strong> (on your marks) and a <strong>end frame</strong> (finish-line burst) for a playful 100-meter sprint between myth-inspired characters—<strong>Nezha in red</strong> and <strong>Ao Bing in blue</strong>—in a consistent, photoreal style. Below: prompts, parameters, example outputs, and how to keep both frames visually aligned.</p>
             <p><em>Note:</em> This is an <strong>original creative depiction</strong> for tutorial purposes (modern sportswear, stadium setting). It is not affiliated with any specific film or franchise.</p>

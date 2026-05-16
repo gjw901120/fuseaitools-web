@@ -29,10 +29,6 @@ Sora-2, text-to-video, portrait animation, AI video generation, micro-expression
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>Goodbye Stiff Photos: Turn Text Prompts into Lifelike Portrait Videos with Sora-2</h1>
-        </header>
-
         <section class="introduction">
             <p>Have you ever looked at a great portrait and felt it still lacked a sense of life? What if that scene could naturally smile, blink once, and move slightly like a real moment in time? In this hands-on tutorial, we use <a href="https://www.fuseaitools.com/home/sora/text-to-video">Sora-2 Text-to-Video</a> to generate a lifelike portrait video with subtle and realistic motion.</p>
         </section>

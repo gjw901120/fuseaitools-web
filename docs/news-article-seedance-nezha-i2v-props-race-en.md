@@ -29,10 +29,6 @@ Seedance, Seedance 1.5 Pro, image to video, first frame, last frame, inputUrls, 
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>From Images to Video: Seedance I2V — Props Race &amp; Fight (Nezha &amp; Ao Bing)</h1>
-        </header>
-
         <section class="introduction">
             <p>With a <strong>start image</strong> and an <strong>end image</strong>, you can ask AI to invent the motion between them. <a href="https://www.fuseaitools.com/home/seedance/v1-5-pro">Seedance 1.5 Pro</a> on FuseAI Tools accepts reference images and a rich text prompt to steer what happens in the middle—here, a 100m sprint upgraded into a <strong>prop-heavy, comedic duel</strong> (ribbon snag, ice on the track, weapon clash) before the finish.</p>
             <p>If you have not generated the two stills yet, start with the paired prompts and parameters in the companion guide: <a href="https://www.fuseaitools.com/news/seedream-nezha-first-last-frame-tutorial">AI First &amp; Last Frame Images: Nezha vs Ao Bing’s 100m Sprint — Seedream Tutorial</a> (tool: <a href="https://www.fuseaitools.com/home/seedream/5-lite-text-to-image">Seedream 5 Lite Text to Image</a>).</p>

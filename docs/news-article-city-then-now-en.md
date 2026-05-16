@@ -29,10 +29,6 @@ City Then & Now, Seedream, Seedance, image to image, image to video, first frame
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>Build an AI Time-Travel Video: Full “City Then &amp; Now” Production Guide</h1>
-        </header>
-
         <section class="introduction">
             <p><strong>Intro:</strong> Ever wanted a static street-corner photo to <em>come alive</em> and show decades of change? With AI image-to-image and image-to-video, you can. This article walks through the full <strong>City Then &amp; Now</strong> pipeline—core scene plate, first and last frames, then one smooth time-travel clip.</p>
         </section>

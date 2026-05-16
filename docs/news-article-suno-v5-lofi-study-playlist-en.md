@@ -29,10 +29,6 @@ Suno V5, Suno generate, LoFi music, chillhop, study music, AI music generation, 
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>Create an Immersive Study Vibe: Build Your Own LoFi Playlist with Suno V5</h1>
-        </header>
-
         <section class="introduction">
             <p>LoFi music—with its relaxed grooves and nostalgic texture—has become the go-to background for studying, working, and unwinding. Have you ever wanted to design your own LoFi tracks? In this article we use <a href="https://www.fuseaitools.com/home/suno/generate">Suno V5</a> to generate a custom LoFi study track and share the full parameter setup and tuning approach.</p>
         </section>

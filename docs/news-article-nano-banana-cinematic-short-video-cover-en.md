@@ -29,10 +29,6 @@ Nano Banana, AI image generation, short video cover, thumbnail, cinematic, 9:16 
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>Create Cinematic AI Covers for Short Videos—Boost CTR Up to 300%</h1>
-        </header>
-
         <section class="introduction">
             <p>On short-video platforms, your <strong>cover image is your storefront</strong>. A bold, cinematic thumbnail helps viewers notice you in a crowded feed—and choose to tap. In this tutorial, we use <a href="https://www.fuseaitools.com/home/nano-banana/generate">Nano Banana</a> on FuseAI Tools with a carefully crafted prompt to produce a <strong>travel-themed, cinematic vertical cover</strong>. Below, we share the full parameter set, analysis, and customization ideas you can reuse.</p>
             <p><em>Note:</em> “Up to 300%” refers to potential uplift reported in industry case studies; your results depend on niche, audience, and content quality.</p>

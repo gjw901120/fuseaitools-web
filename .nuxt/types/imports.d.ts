@@ -8,6 +8,7 @@ declare global {
   const assertBatchUploadSuccess: typeof import('../../composables/useBatchUploadUrl')['assertBatchUploadSuccess']
   const callOnce: typeof import('../../node_modules/nuxt/dist/app/composables/once')['callOnce']
   const cancelIdleCallback: typeof import('../../node_modules/nuxt/dist/app/compat/idle-callback')['cancelIdleCallback']
+  const clampDescription: typeof import('../../composables/seoDescription')['clampDescription']
   const clearError: typeof import('../../node_modules/nuxt/dist/app/composables/error')['clearError']
   const clearNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['clearNuxtData']
   const clearNuxtState: typeof import('../../node_modules/nuxt/dist/app/composables/state')['clearNuxtState']
@@ -213,6 +214,7 @@ declare module 'vue' {
     readonly assertBatchUploadSuccess: UnwrapRef<typeof import('../../composables/useBatchUploadUrl')['assertBatchUploadSuccess']>
     readonly callOnce: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/once')['callOnce']>
     readonly cancelIdleCallback: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/compat/idle-callback')['cancelIdleCallback']>
+    readonly clampDescription: UnwrapRef<typeof import('../../composables/seoDescription')['clampDescription']>
     readonly clearError: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/error')['clearError']>
     readonly clearNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['clearNuxtData']>
     readonly clearNuxtState: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/state')['clearNuxtState']>

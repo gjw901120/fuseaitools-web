@@ -42,10 +42,6 @@ Claude Opus 4.5, Claude Opus 4.6, AI model comparison, Anthropic Claude, large l
 </head>
 <body>
     <article class="ai-model-comparison">
-        <header>
-            <h1>Claude Opus 4.5 vs 4.6: Which Anthropic Model Should You Choose?</h1>
-        </header>
-
         <section class="introduction">
             <div class="image-container">
                 <img src="https://images.pexels.com/photos/17483868/pexels-photo-17483868.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" 
