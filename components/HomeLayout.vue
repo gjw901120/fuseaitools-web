@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="home-page home-layout--flux">
     <!-- 主布局容器 -->
     <div class="main-layout">
       <!-- 左侧：AI工具使用历史记录（20%） -->
@@ -200,7 +200,8 @@ provide('addToUsageHistory', addToUsageHistory)
 .home-page {
   min-height: 100vh;
   height: 100%;
-  background: #f8fafc;
+  background: var(--flux-bg);
+  color: var(--flux-foreground);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -208,7 +209,6 @@ provide('addToUsageHistory', addToUsageHistory)
   flex-direction: column;
 }
 
-/* 主布局容器：至少占满视口，保证右侧工具区（Runway/Luma 等）有高度可展示 */
 .main-layout {
   display: flex;
   align-items: stretch;
@@ -219,27 +219,25 @@ provide('addToUsageHistory', addToUsageHistory)
   flex: 1;
 }
 
-/* 左侧边栏 - 20% */
 .left-sidebar {
   flex: 0 0 20%;
   min-width: 0;
   max-width: 20%;
-  background: white;
-  border-right: 1px solid #e2e8f0;
+  background: var(--flux-bg-elevated);
+  border-right: 1px solid var(--flux-border-subtle);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* 高度撑满父容器 */
   height: 100%;
 }
 
 .timeline-header {
   padding: 10px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--flux-border);
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f8fafc;
+  background: var(--flux-card);
   text-align: center;
   border-radius: 8px;
   flex-shrink: 0;
@@ -261,14 +259,14 @@ provide('addToUsageHistory', addToUsageHistory)
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: #64748b;
+  color: var(--flux-muted);
   cursor: pointer;
   transition: color 0.2s, background 0.2s;
 }
 
 .history-refresh-btn:hover:not(:disabled) {
-  color: #3b82f6;
-  background: #eff6ff;
+  color: var(--flux-primary);
+  background: var(--flux-primary-muted);
 }
 
 .history-refresh-btn:disabled {
@@ -280,7 +278,7 @@ provide('addToUsageHistory', addToUsageHistory)
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--flux-foreground);
   text-align: center;
   width: 100%;
 }
@@ -292,11 +290,9 @@ provide('addToUsageHistory', addToUsageHistory)
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  /* 固定高度：1280px，保持这个高度不变 */
   height: 1280px;
-  /* 点击加载更多后，内容超过这个高度时显示滚动条 */
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f8fafc;
+  scrollbar-color: var(--flux-border) var(--flux-bg);
 }
 
 .timeline-container::-webkit-scrollbar {
@@ -304,17 +300,17 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .timeline-container::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: var(--flux-bg);
   border-radius: 3px;
 }
 
 .timeline-container::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--flux-border);
   border-radius: 3px;
 }
 
 .timeline-container::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--flux-primary);
 }
 
 .timeline-items {
@@ -337,7 +333,7 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .timeline-item-clickable:hover {
-  background: #f8fafc;
+  background: var(--flux-card);
 }
 
 .timeline-item-status-badge {
@@ -350,16 +346,16 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .timeline-item-status-badge.completed {
-  color: #22c55e;
+  color: var(--flux-success);
 }
 
 .timeline-item-status-badge.in_progress {
-  color: #f59e0b;
+  color: var(--flux-warning);
 }
 
 .timeline-model {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--flux-muted);
 }
 
 .timeline-item:not(:last-child)::after {
@@ -369,7 +365,7 @@ provide('addToUsageHistory', addToUsageHistory)
   top: 40px;
   width: 2px;
   height: calc(100% + 20px);
-  background: #e2e8f0;
+  background: var(--flux-border);
 }
 
 .timeline-marker {
@@ -382,8 +378,8 @@ provide('addToUsageHistory', addToUsageHistory)
   margin-right: 12px;
   flex-shrink: 0;
   font-size: 14px;
-  color: #6b7280;
-  border: 1px solid #60a5fa;
+  color: var(--flux-muted);
+  border: 1px solid var(--flux-primary);
   box-sizing: border-box;
 }
 
@@ -400,7 +396,6 @@ provide('addToUsageHistory', addToUsageHistory)
   outline: none;
 }
 
-/* 包含 logo 时去除 marker 外边框 */
 .timeline-marker:has(.timeline-marker-logo) {
   border: none;
 }
@@ -415,22 +410,27 @@ provide('addToUsageHistory', addToUsageHistory)
   min-width: 0;
 }
 
-.timeline-header {
+.timeline-content .timeline-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 6px;
+  padding: 0;
+  height: auto;
+  background: transparent;
+  border: none;
+  border-radius: 0;
 }
 
 .timeline-tool {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
   font-size: 14px;
 }
 
 .timeline-description {
   font-size: 12px;
-  color: #64748b;
+  color: var(--flux-muted);
   margin-bottom: 8px;
   line-height: 1.4;
 }
@@ -439,28 +439,24 @@ provide('addToUsageHistory', addToUsageHistory)
   display: flex;
   gap: 12px;
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--flux-muted);
 }
 
 .timeline-time {
   font-weight: 500;
 }
 
-.timeline-duration {
-  font-weight: 500;
-}
-
 .load-more-container {
   padding: 20px 0 0;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--flux-border);
   flex-shrink: 0;
 }
 
 .load-more-btn {
   width: 100%;
   padding: 12px 20px;
-  background: #667eea;
-  color: white;
+  background: var(--flux-gradient);
+  color: var(--flux-foreground);
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -474,31 +470,28 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .load-more-btn:hover:not(:disabled) {
-  background: #5a6fd8;
+  background: var(--flux-primary-hover);
   transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--flux-primary-glow);
 }
 
 .load-more-btn:disabled {
-  background: #cbd5e1;
+  background: var(--flux-border);
   cursor: not-allowed;
   transform: none;
-}
-
-.load-more-btn i {
-  font-size: 12px;
 }
 
 .no-more-hint {
   text-align: center;
   padding: 12px 0;
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--flux-muted);
 }
 
 .empty-timeline {
   text-align: center;
   padding: 40px 20px;
-  color: #64748b;
+  color: var(--flux-muted);
 }
 
 .empty-timeline i {
@@ -507,9 +500,7 @@ provide('addToUsageHistory', addToUsageHistory)
   opacity: 0.5;
 }
 
-/* 右侧主区域 - 80% */
 .right-main {
-  /* 与 20% 侧栏并排：用 flex 吃剩余宽度，避免 width:80% 与 min-content 叠加把整行撑出视口 */
   flex: 1 1 0%;
   min-width: 0;
   display: flex;
@@ -517,21 +508,20 @@ provide('addToUsageHistory', addToUsageHistory)
   overflow: hidden;
   padding: 20px;
   min-height: 0;
-  /* 高度与主布局一致 */
   height: 100%;
 }
 
-/* 工具导航区域 - 自适应高度 */
 .tools-navigation {
   position: relative;
   z-index: 2;
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--flux-bg-elevated);
+  border-bottom: 1px solid var(--flux-border-subtle);
   display: flex;
   flex-direction: column;
   min-height: fit-content;
   max-height: 40%;
   overflow-y: auto;
+  border-radius: 12px 12px 0 0;
 }
 
 .nav-tabs {
@@ -547,27 +537,33 @@ provide('addToUsageHistory', addToUsageHistory)
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--flux-card);
+  border: 1px solid var(--flux-border);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
-  color: #64748b;
+  color: var(--flux-muted);
   flex: 1;
   justify-content: center;
   min-width: 0;
 }
 
 .nav-tab:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: var(--flux-card-hover);
+  border-color: var(--flux-border);
+  color: var(--flux-primary);
 }
 
 .nav-tab.active {
-  background: #667eea;
-  border-color: #667eea;
-  color: white;
+  background: var(--flux-primary);
+  border-color: var(--flux-primary);
+  color: var(--flux-foreground);
+}
+
+.nav-tab.active span,
+.nav-tab.active i {
+  color: var(--flux-foreground);
 }
 
 .nav-tab i {
@@ -575,11 +571,16 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .tool-count {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   padding: 2px 6px;
   border-radius: 10px;
   font-size: 12px;
   font-weight: 500;
+}
+
+.nav-tab.active .tool-count {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--flux-foreground);
 }
 
 .sub-nav {
@@ -592,13 +593,13 @@ provide('addToUsageHistory', addToUsageHistory)
 
 .sub-nav-item {
   padding: 8px 12px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--flux-card);
+  border: 1px solid var(--flux-border);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 13px;
-  color: #64748b;
+  color: var(--flux-muted);
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -608,25 +609,28 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 .sub-nav-item:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: var(--flux-card-hover);
+  border-color: var(--flux-primary);
+  color: var(--flux-primary);
 }
 
-.sub-nav-item.active {
-  background: #667eea;
-  border-color: #667eea;
-  color: white;
+.sub-nav-item.active,
+.sub-nav-item.router-link-active,
+.sub-nav-item.router-link-exact-active {
+  background: var(--flux-primary);
+  border-color: var(--flux-primary);
+  color: var(--flux-foreground);
 }
 
-/* 工具界面 - 占据剩余空间 */
 .tool-interface {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: var(--flux-bg);
   min-height: 0;
   height: 100%;
   overflow: hidden;
+  border-radius: 0 0 12px 12px;
 }
 
 .tool-interface-slot {
@@ -650,30 +654,29 @@ provide('addToUsageHistory', addToUsageHistory)
   border: 0;
 }
 
-/* 响应式设计 */
 @media (max-width: 1024px) {
   .main-layout {
     flex-direction: column;
     height: 100vh;
   }
-  
+
   .left-sidebar {
     flex: 0 0 auto;
     width: 100%;
     max-width: none;
     height: 300px;
     border-right: none;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--flux-border-subtle);
     min-height: 300px;
   }
-  
+
   .right-main {
     width: 100%;
     min-height: 0;
     height: calc(100vh - 300px);
     flex: 1;
   }
-  
+
   .tools-navigation {
     max-height: 35%;
   }
@@ -696,16 +699,15 @@ provide('addToUsageHistory', addToUsageHistory)
     flex-direction: column;
     gap: 4px;
   }
-  
+
   .nav-tab {
     justify-content: center;
     flex: none;
   }
-  
+
   .sub-nav {
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
 }
 </style>
-

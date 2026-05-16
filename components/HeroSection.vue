@@ -103,7 +103,10 @@ const sendMessage = () => {
 <style scoped>
 .hero-section {
   padding: 100px 0 80px;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: var(--flux-bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, hsla(173, 80%, 40%, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, hsla(200, 90%, 42%, 0.08), transparent);
 }
 
 .hero-content {
@@ -118,11 +121,11 @@ const sendMessage = () => {
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 1.5rem;
-  color: #1a1a1a;
+  color: var(--flux-foreground);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--flux-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -130,20 +133,20 @@ const sendMessage = () => {
 
 .hero-description {
   font-size: 1.3rem;
-  color: #4b5563;
+  color: var(--flux-muted);
   margin-bottom: 1rem;
   line-height: 1.6;
 }
 
 .hero-credits {
   font-size: 1.15rem;
-  color: #374151;
+  color: var(--flux-muted);
   margin-bottom: 2rem;
   line-height: 1.5;
 }
 
 .credits-highlight {
-  color: #667eea;
+  color: var(--flux-primary);
   font-weight: 800;
 }
 
@@ -167,25 +170,25 @@ const sendMessage = () => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  background: var(--flux-gradient);
+  color: var(--flux-foreground);
+  box-shadow: 0 4px 20px var(--flux-primary-glow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 28px var(--flux-primary-glow);
 }
 
 .btn-secondary {
-  background: white;
-  color: #4b5563;
-  border: 2px solid #e5e7eb;
+  background: transparent;
+  color: var(--flux-muted);
+  border: 1px solid var(--flux-border);
 }
 
 .btn-secondary:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: var(--flux-primary);
+  color: var(--flux-primary);
 }
 
 .hero-features {
@@ -199,19 +202,19 @@ const sendMessage = () => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: var(--flux-primary-muted);
+  border: 1px solid hsla(173, 80%, 40%, 0.25);
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #667eea;
+  color: var(--flux-primary);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .feature-pill:hover {
-  background: rgba(102, 126, 234, 0.15);
-  border-color: rgba(102, 126, 234, 0.3);
+  background: hsla(173, 80%, 40%, 0.22);
+  border-color: hsla(173, 80%, 40%, 0.4);
   transform: translateY(-2px);
 }
 
@@ -220,8 +223,8 @@ const sendMessage = () => {
 }
 
 .feature-pill-free {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-  border-color: rgba(102, 126, 234, 0.4);
+  background: hsla(173, 80%, 40%, 0.18);
+  border-color: hsla(173, 80%, 40%, 0.35);
   font-weight: 700;
 }
 
@@ -231,18 +234,19 @@ const sendMessage = () => {
 }
 
 .ai-demo-window {
-  background: white;
+  background: var(--flux-card);
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 60px hsla(0, 0%, 0%, 0.4);
+  border: 1px solid var(--flux-border);
   overflow: hidden;
   width: 100%;
   max-width: 400px;
 }
 
 .window-header {
-  background: #f8fafc;
+  background: var(--flux-bg-elevated);
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--flux-border);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -265,7 +269,7 @@ const sendMessage = () => {
 
 .window-title {
   font-weight: 600;
-  color: #4b5563;
+  color: var(--flux-muted);
 }
 
 .chat-messages {
@@ -296,25 +300,26 @@ const sendMessage = () => {
 }
 
 .user-message .avatar {
-  background: #667eea;
-  color: white;
+  background: var(--flux-primary);
+  color: var(--flux-foreground);
 }
 
 .ai-message .avatar {
-  background: #10b981;
-  color: white;
+  background: var(--flux-success);
+  color: var(--flux-foreground);
 }
 
 .message .content {
-  background: #f8fafc;
+  background: var(--flux-bg-elevated);
   padding: 0.75rem 1rem;
   border-radius: 12px;
   max-width: 80%;
+  color: var(--flux-muted);
 }
 
 .user-message .content {
-  background: #667eea;
-  color: white;
+  background: var(--flux-primary);
+  color: var(--flux-foreground);
 }
 
 pre {
@@ -330,25 +335,27 @@ pre {
 .chat-input {
   display: flex;
   padding: 1rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--flux-border);
   gap: 0.5rem;
 }
 
 .chat-input input {
   flex: 1;
   padding: 0.75rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--flux-border);
   border-radius: 8px;
   outline: none;
+  background: var(--flux-input-bg);
+  color: var(--flux-foreground);
 }
 
 .chat-input input:focus {
-  border-color: #667eea;
+  border-color: var(--flux-primary);
 }
 
 .send-btn {
-  background: #667eea;
-  color: white;
+  background: var(--flux-primary);
+  color: var(--flux-foreground);
   border: none;
   border-radius: 8px;
   width: 44px;
@@ -357,7 +364,7 @@ pre {
 }
 
 .send-btn:hover {
-  background: #5a6fd8;
+  background: var(--flux-primary-hover);
 }
 
 @media (max-width: 768px) {

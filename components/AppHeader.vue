@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header">
+  <header class="app-header" :class="{ 'app-header--flux': isFluxThemeRoute }">
     <!-- Top banner -->
     <!-- 登录后隐藏横幅（ClientOnly 避免水合不一致） -->
     <ClientOnly>
@@ -14,7 +14,7 @@
       <div class="header-content">
         <div class="logo">
           <NuxtLink to="/" class="logo-link">
-            <img src="/favicon.ico" alt="Fuse AI" class="logo-icon" />
+            <img src="/logo-wide.png" alt="FuseAI" class="logo-icon" />
           </NuxtLink>
         </div>
 
@@ -114,6 +114,7 @@
 
 <script setup>
 // Header component with login button
+const { isFluxThemeRoute } = useFluxThemeRoute()
 const { user, isAuthenticated, logout } = useAuth()
 
 // 计算用户头像和用户名
@@ -259,9 +260,11 @@ onMounted(() => {
 }
 
 .logo-icon {
-  width: 160px;
-  height: 60px;
+  width: auto;
+  height: 44px;
+  max-width: 200px;
   object-fit: contain;
+  display: block;
 }
 
 .nav {
@@ -508,6 +511,64 @@ onMounted(() => {
 
 .mobile-logout-btn:hover {
   background: #dc2626;
+}
+
+.app-header--flux {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+.app-header--flux .nav-link {
+  color: var(--flux-muted) !important;
+}
+
+.app-header--flux .nav-link:hover,
+.app-header--flux .router-link-active {
+  color: var(--flux-primary) !important;
+}
+
+.app-header--flux .btn-signup {
+  background: var(--flux-gradient) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.app-header--flux .btn-signup:hover {
+  background: var(--flux-primary-hover) !important;
+  box-shadow: 0 4px 20px var(--flux-primary-glow);
+}
+
+.app-header--flux .user-name,
+.app-header--flux .mobile-user-name {
+  color: var(--flux-foreground) !important;
+}
+
+.app-header--flux .user-menu {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.app-header--flux .user-menu-item {
+  color: var(--flux-foreground) !important;
+}
+
+.app-header--flux .user-menu-item:hover {
+  background: var(--flux-card-hover) !important;
+}
+
+.app-header--flux .mobile-menu-btn {
+  color: var(--flux-muted) !important;
+}
+
+.app-header--flux .mobile-menu {
+  border-top-color: var(--flux-border) !important;
+}
+
+.app-header--flux .mobile-nav-link {
+  color: var(--flux-muted) !important;
+}
+
+.app-header--flux .mobile-nav-link:hover {
+  color: var(--flux-primary) !important;
 }
 
 @media (max-width: 768px) {

@@ -88,8 +88,8 @@ const toggleFAQ = (index) => {
 <style scoped>
 .faq-section {
   padding: 5rem 0;
-  background: #ffffff;
-  border-top: 1px solid #f3f4f6;
+  background: var(--flux-bg);
+  border-top: 1px solid var(--flux-border-subtle);
 }
 
 .faq-header {
@@ -100,7 +100,7 @@ const toggleFAQ = (index) => {
 .faq-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0;
   line-height: 1.2;
 }
@@ -111,7 +111,7 @@ const toggleFAQ = (index) => {
 }
 
 .faq-item {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--flux-border);
   transition: all 0.3s ease;
   display: block;
   margin: 0;
@@ -132,7 +132,7 @@ const toggleFAQ = (index) => {
 }
 
 .faq-question:hover {
-  background: #f9fafb;
+  background: var(--flux-card);
   margin: 0 -2rem;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -141,7 +141,7 @@ const toggleFAQ = (index) => {
 .question-text {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0;
   flex: 1;
   line-height: 1.5;
@@ -153,7 +153,7 @@ const toggleFAQ = (index) => {
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   transition: all 0.3s ease;
 }
 
@@ -162,7 +162,7 @@ const toggleFAQ = (index) => {
 }
 
 .faq-item.active .faq-icon {
-  color: #3b82f6;
+  color: var(--flux-primary);
   transform: rotate(180deg);
 }
 
@@ -173,13 +173,13 @@ const toggleFAQ = (index) => {
 
 .faq-content {
   font-size: 1rem;
-  color: #4b5563;
+  color: var(--flux-muted);
   line-height: 1.8;
 }
 
 .faq-content p {
   margin: 0.75rem 0;
-  color: #4b5563;
+  color: var(--flux-muted);
   line-height: 1.8;
 }
 
@@ -199,13 +199,13 @@ const toggleFAQ = (index) => {
 
 .faq-content li {
   margin: 0.5rem 0;
-  color: #4b5563;
+  color: var(--flux-muted);
   line-height: 1.8;
 }
 
 .faq-content strong {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 @keyframes slideDown {

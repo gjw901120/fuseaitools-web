@@ -55,7 +55,7 @@ useHead({
         "@type": "Organization",
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
-        "logo": "https://fuseaitools.com/favicon.ico",
+        "logo": "https://fuseaitools.com/favicon.png",
         "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 77 credits free. ChatGPT, Claude, Ideogram, Veo3, ElevenLabs, Suno and more.",
         "sameAs": [
           // Add social media links if available

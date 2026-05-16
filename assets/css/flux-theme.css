@@ -1,0 +1,1024 @@
+/* FLUX 设计变量：首页 + /home 工具区 */
+:root {
+  --flux-bg: hsl(220, 14%, 5%);
+  --flux-bg-elevated: hsl(215, 25%, 11%);
+  --flux-card: hsl(215, 25%, 14%);
+  --flux-card-hover: hsl(215, 22%, 18%);
+  --flux-border: hsl(215, 16%, 22%);
+  --flux-border-subtle: hsl(215, 16%, 16%);
+  --flux-foreground: hsl(0, 0%, 98%);
+  --flux-muted: hsl(215, 12%, 58%);
+  --flux-primary: hsl(173, 80%, 40%);
+  --flux-primary-hover: hsl(173, 80%, 46%);
+  --flux-primary-muted: hsla(173, 80%, 40%, 0.15);
+  --flux-primary-glow: hsla(173, 80%, 40%, 0.35);
+  --flux-destructive: hsl(0, 72%, 55%);
+  --flux-success: hsl(142, 70%, 45%);
+  --flux-warning: hsl(38, 92%, 50%);
+  --flux-gradient: linear-gradient(135deg, hsl(173, 80%, 42%) 0%, hsl(200, 90%, 42%) 100%);
+  --flux-glass: hsla(215, 25%, 18%, 0.55);
+  --flux-input-bg: hsl(215, 20%, 10%);
+}
+
+/* ── Site shell (homepage) ── */
+.flux-theme {
+  background: var(--flux-bg);
+  color: var(--flux-foreground);
+}
+
+.flux-theme .layout-header {
+  background: hsla(220, 14%, 5%, 0.85) !important;
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--flux-border-subtle) !important;
+}
+
+.flux-theme .app-header {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+.flux-theme .nav-link {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .layout-header .nav-link:hover,
+.flux-theme .layout-header .router-link-active {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .btn-signup {
+  background: var(--flux-gradient) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .btn-signup:hover {
+  background: var(--flux-primary-hover) !important;
+  box-shadow: 0 4px 20px var(--flux-primary-glow);
+}
+
+.flux-theme .user-name,
+.flux-theme .mobile-user-name {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .user-menu {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.flux-theme .user-menu-item {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .user-menu-item:hover {
+  background: var(--flux-card-hover) !important;
+}
+
+.flux-theme .mobile-menu-btn {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .mobile-menu {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .mobile-nav-link {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .mobile-nav-link:hover {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .layout-footer .app-footer {
+  background: var(--flux-bg) !important;
+  color: var(--flux-muted) !important;
+  border-top: 1px solid var(--flux-border-subtle);
+}
+
+.flux-theme .layout-footer .logo {
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .layout-footer .company-description,
+.flux-theme .layout-footer .copyright p {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .layout-footer .footer-bottom {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .logo-link {
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux.home-page {
+  background: var(--flux-bg);
+}
+
+.home-layout--flux .left-sidebar {
+  background: var(--flux-bg-elevated);
+  border-right-color: var(--flux-border-subtle);
+}
+
+.home-layout--flux .timeline-header {
+  background: var(--flux-card);
+  border-bottom-color: var(--flux-border);
+}
+
+.home-layout--flux .timeline-header h3 {
+  color: var(--flux-foreground);
+}
+
+.home-layout--flux .history-refresh-btn {
+  color: var(--flux-muted);
+}
+
+.home-layout--flux .history-refresh-btn:hover:not(:disabled) {
+  color: var(--flux-primary);
+  background: var(--flux-primary-muted);
+}
+
+.home-layout--flux .timeline-container {
+  scrollbar-color: var(--flux-border) var(--flux-bg);
+}
+
+.home-layout--flux .timeline-container::-webkit-scrollbar-track {
+  background: var(--flux-bg);
+}
+
+.home-layout--flux .timeline-container::-webkit-scrollbar-thumb {
+  background: var(--flux-border);
+}
+
+.home-layout--flux .timeline-container::-webkit-scrollbar-thumb:hover {
+  background: var(--flux-primary);
+}
+
+.home-layout--flux .timeline-item-clickable:hover {
+  background: var(--flux-card);
+}
+
+.home-layout--flux .timeline-item:not(:last-child)::after {
+  background: var(--flux-border);
+}
+
+.home-layout--flux .timeline-marker {
+  color: var(--flux-muted);
+  border-color: var(--flux-primary);
+}
+
+.home-layout--flux .timeline-tool {
+  color: var(--flux-foreground);
+}
+
+.home-layout--flux .timeline-description,
+.home-layout--flux .timeline-meta,
+.home-layout--flux .empty-timeline {
+  color: var(--flux-muted);
+}
+
+.home-layout--flux .load-more-container {
+  border-top-color: var(--flux-border);
+}
+
+.home-layout--flux .load-more-btn {
+  background: var(--flux-gradient);
+}
+
+.home-layout--flux .load-more-btn:hover:not(:disabled) {
+  background: var(--flux-primary-hover);
+}
+
+.home-layout--flux .load-more-btn:disabled {
+  background: var(--flux-border);
+}
+
+.home-layout--flux .no-more-hint {
+  color: var(--flux-muted);
+}
+
+.home-layout--flux .tools-navigation {
+  background: var(--flux-bg-elevated);
+  border-bottom-color: var(--flux-border-subtle);
+}
+
+.home-layout--flux .nav-tab {
+  background: var(--flux-card);
+  border-color: var(--flux-border);
+  color: var(--flux-muted);
+}
+
+.home-layout--flux .nav-tab:hover {
+  background: var(--flux-card-hover);
+  border-color: var(--flux-border);
+}
+
+.home-layout--flux .nav-tab.active {
+  background: var(--flux-primary);
+  border-color: var(--flux-primary);
+  color: var(--flux-foreground);
+}
+
+.home-layout--flux .nav-tab.active,
+.home-layout--flux .nav-tab.active span,
+.home-layout--flux .nav-tab.active i {
+  color: var(--flux-foreground);
+}
+
+.home-layout--flux .nav-tab.active .tool-count {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--flux-foreground);
+}
+
+.home-layout--flux .sub-nav-item {
+  background: var(--flux-card);
+  border-color: var(--flux-border);
+  color: var(--flux-muted);
+}
+
+.home-layout--flux .sub-nav-item:hover {
+  background: var(--flux-card-hover);
+  border-color: var(--flux-primary);
+  color: var(--flux-primary);
+}
+
+.home-layout--flux .sub-nav-item.active,
+.home-layout--flux .sub-nav-item.router-link-active,
+.home-layout--flux .sub-nav-item.router-link-exact-active {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .tool-interface {
+  background: var(--flux-bg);
+}
+
+.home-layout--flux .breadcrumb-link {
+  color: var(--flux-muted);
+}
+
+.home-layout--flux .breadcrumb-link:hover {
+  color: var(--flux-primary);
+}
+
+.home-layout--flux .breadcrumb-item:not(:last-child)::after {
+  color: var(--flux-border);
+}
+
+.home-layout--flux .breadcrumb-current {
+  color: var(--flux-foreground);
+}
+
+@media (max-width: 1024px) {
+  .home-layout--flux .left-sidebar {
+    border-bottom-color: var(--flux-border-subtle);
+  }
+}
+
+/* ── 工具概览页（ToolOverview） ── */
+.tool-overview--flux .overview-header {
+  border-bottom-color: var(--flux-border);
+}
+
+.tool-overview--flux .overview-category {
+  color: var(--flux-primary);
+}
+
+.tool-overview--flux .overview-title {
+  color: var(--flux-foreground);
+}
+
+.tool-overview--flux .overview-intro,
+.tool-overview--flux .overview-intro.intro-full-width {
+  color: var(--flux-muted);
+}
+
+.tool-overview--flux .overview-features {
+  background: var(--flux-card);
+  border-color: var(--flux-border);
+}
+
+.tool-overview--flux .features-heading {
+  color: var(--flux-foreground);
+}
+
+.tool-overview--flux .features-heading-icon {
+  color: var(--flux-primary);
+}
+
+.tool-overview--flux .feature-card {
+  background: var(--flux-bg-elevated);
+  border-color: var(--flux-border);
+}
+
+.tool-overview--flux .feature-card-link:hover .feature-card {
+  border-color: var(--flux-primary);
+  box-shadow: 0 8px 24px var(--flux-primary-glow);
+}
+
+.tool-overview--flux .feature-icon {
+  background: var(--flux-gradient);
+}
+
+.tool-overview--flux .feature-title {
+  color: var(--flux-foreground);
+}
+
+.tool-overview--flux .feature-description {
+  color: var(--flux-muted);
+}
+
+.tool-overview--flux .feature-cta {
+  color: var(--flux-primary);
+}
+
+.tool-overview--flux .overview-section {
+  background: var(--flux-card);
+  border-color: var(--flux-border);
+  box-shadow: none;
+}
+
+.tool-overview--flux .section-title {
+  color: var(--flux-foreground);
+  border-bottom-color: var(--flux-primary);
+}
+
+.tool-overview--flux .section-content,
+.tool-overview--flux .section-para {
+  color: var(--flux-muted);
+}
+
+/* ═══ 所有工具表单页：覆盖各 *Tool.vue 内 scoped 浅色（需 !important）═══ */
+.home-layout--flux .tool-interface-slot .ideogram-tool,
+.home-layout--flux .tool-interface-slot .gpt-image-tool,
+.home-layout--flux .tool-interface-slot .flux-kontext-tool,
+.home-layout--flux .tool-interface-slot .qwen-tool,
+.home-layout--flux .tool-interface-slot .sora-tool,
+.home-layout--flux .tool-interface-slot .kling-tool,
+.home-layout--flux .tool-interface-slot .suno-tool,
+.home-layout--flux .tool-interface-slot .nano-banana-tool,
+.home-layout--flux .tool-interface-slot .gpt4o-image-tool,
+.home-layout--flux .tool-interface-slot .elevenlabs-tool,
+.home-layout--flux .tool-interface-slot .seedance-tool,
+.home-layout--flux .tool-interface-slot .happyhorse-tool,
+.home-layout--flux .tool-interface-slot .luma-tool,
+.home-layout--flux .tool-interface-slot .midjourney-tool,
+.home-layout--flux .tool-interface-slot .imagen4-tool,
+.home-layout--flux .tool-interface-slot .seedream-tool,
+.home-layout--flux .tool-interface-slot .grok-tool,
+.home-layout--flux .tool-interface-slot .runway-tool,
+.home-layout--flux .tool-interface-slot .veo3-tool,
+.home-layout--flux .tool-interface-slot .wan-tool,
+.home-layout--flux .tool-interface-slot .hailuo-tool {
+  background: var(--flux-card) !important;
+  border: 1px solid var(--flux-border) !important;
+  box-shadow: 0 8px 32px hsla(0, 0%, 0%, 0.25) !important;
+}
+
+.home-layout--flux .tool-header,
+.home-layout--flux .chat-header {
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .tool-details h3,
+.home-layout--flux .chat-tool-info h3 {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .tool-details p,
+.home-layout--flux .tool-details .tool-description,
+.home-layout--flux .chat-tool-info p {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .mode-tabs-wrap {
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .config-panel,
+.home-layout--flux .result-panel,
+.home-layout--flux .results-display-panel,
+.home-layout--flux .image-display-panel {
+  background: var(--flux-bg-elevated) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .config-header {
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .config-header h4,
+.home-layout--flux .panel-title,
+.home-layout--flux .section-label {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .form-label,
+.home-layout--flux label.form-label,
+.home-layout--flux .form-group > label,
+.home-layout--flux .form-group > .form-label {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .form-label .required {
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .form-input,
+.home-layout--flux input.form-input,
+.home-layout--flux textarea.form-input,
+.home-layout--flux select.form-input,
+.home-layout--flux .model-select,
+.home-layout--flux .chat-input textarea,
+.home-layout--flux .chat-input input[type="text"],
+/* 未加 .form-input 的表单控件（如 GPT Image .form-group textarea） */
+.home-layout--flux .tool-interface-slot textarea,
+.home-layout--flux .tool-interface-slot select,
+.home-layout--flux .tool-interface-slot .form-select,
+.home-layout--flux .tool-interface-slot .form-group textarea,
+.home-layout--flux .tool-interface-slot .form-group select,
+.home-layout--flux .tool-interface-slot .config-form textarea,
+.home-layout--flux .tool-interface-slot .config-form select,
+.home-layout--flux .tool-interface-slot .form-group input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="hidden"]):not([type="image"]):not([type="range"]),
+.home-layout--flux .tool-interface-slot .config-form input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="hidden"]):not([type="image"]):not([type="range"]),
+.home-layout--flux .tool-interface-slot .select-with-arrow select,
+.home-layout--flux .tool-interface-slot .select-wrapper select {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .form-input::placeholder,
+.home-layout--flux textarea::placeholder,
+.home-layout--flux input::placeholder,
+.home-layout--flux .tool-interface-slot textarea::placeholder,
+.home-layout--flux .tool-interface-slot input::placeholder {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .form-input:focus,
+.home-layout--flux textarea:focus,
+.home-layout--flux select:focus,
+.home-layout--flux .model-select:focus,
+.home-layout--flux .tool-interface-slot textarea:focus,
+.home-layout--flux .tool-interface-slot select:focus,
+.home-layout--flux .tool-interface-slot .form-group input:focus,
+.home-layout--flux .tool-interface-slot .form-group textarea:focus,
+.home-layout--flux .tool-interface-slot .form-group select:focus,
+.home-layout--flux .tool-interface-slot .form-select:focus {
+  border-color: var(--flux-primary) !important;
+  box-shadow: 0 0 0 3px var(--flux-primary-muted) !important;
+  background: var(--flux-input-bg) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .tool-interface-slot input:disabled,
+.home-layout--flux .tool-interface-slot textarea:disabled,
+.home-layout--flux .tool-interface-slot select:disabled,
+.home-layout--flux .tool-interface-slot .form-select:disabled {
+  background: var(--flux-card) !important;
+  color: var(--flux-muted) !important;
+  opacity: 0.85;
+}
+
+.home-layout--flux .tool-interface-slot input:-webkit-autofill,
+.home-layout--flux .tool-interface-slot textarea:-webkit-autofill,
+.home-layout--flux .tool-interface-slot select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--flux-input-bg) inset !important;
+  -webkit-text-fill-color: var(--flux-foreground) !important;
+  caret-color: var(--flux-foreground);
+}
+
+.home-layout--flux .form-hint,
+.home-layout--flux .char-count,
+.home-layout--flux .hint-text,
+.home-layout--flux .help-text {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .tab-group,
+.home-layout--flux .tab-options {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.home-layout--flux .tab-option,
+.home-layout--flux .tab-group .tab-option,
+.home-layout--flux .tab-options .tab-option {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .tab-option:hover {
+  background: var(--flux-card-hover) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .tab-option.active,
+.home-layout--flux .tab-group .tab-option.active,
+.home-layout--flux .tab-options .tab-option.active {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .tab-option.active span,
+.home-layout--flux .tab-option.active i {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .mode-tab {
+  background: var(--flux-bg-elevated) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .mode-tab:hover {
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .mode-tab.active {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .mode-tab.active span,
+.home-layout--flux .mode-tab.active i {
+  color: var(--flux-foreground) !important;
+}
+
+/* Veo3 表单内 option-tab（Model / Aspect Ratio 等） */
+.home-layout--flux .option-tab {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .option-tab:hover {
+  border-color: var(--flux-primary) !important;
+  background: var(--flux-primary-muted) !important;
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .option-tab.active {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .option-tab.active span,
+.home-layout--flux .option-tab.active i {
+  color: var(--flux-foreground) !important;
+}
+
+/* Sora pro-storyboard：shots 分镜模块 */
+.home-layout--flux .shot-card {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .shot-title {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .shot-text,
+.home-layout--flux textarea.shot-text {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .duration-field {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .duration-s {
+  background: var(--flux-primary-muted) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .shot-delete {
+  background: hsla(0, 72%, 55%, 0.12) !important;
+  border-color: var(--flux-destructive) !important;
+  color: var(--flux-destructive) !important;
+}
+
+.home-layout--flux .add-shot {
+  background: var(--flux-primary-muted) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-primary) !important;
+}
+
+/* ElevenLabs：Voice 下拉 & Voice Settings */
+.home-layout--flux .voice-dropdown-trigger {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .voice-dropdown-panel {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .voice-option {
+  color: var(--flux-foreground) !important;
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .voice-option:hover {
+  background: var(--flux-card-hover) !important;
+}
+
+.home-layout--flux .voice-option.active {
+  background: var(--flux-primary-muted) !important;
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .voice-settings {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .setting-label {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .form-slider {
+  background: var(--flux-border) !important;
+}
+
+/* Flux Kontext：Mode Selection */
+.home-layout--flux .mode-switch {
+  background: var(--flux-input-bg) !important;
+  border: 1px solid var(--flux-border) !important;
+}
+
+.home-layout--flux .mode-btn {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .mode-btn.active {
+  background: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+  box-shadow: 0 1px 4px var(--flux-primary-glow) !important;
+}
+
+/* Wan 2.7：Color Palette */
+.home-layout--flux .form-group.color-palette-group {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .color-palette-row {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .color-palette-meta {
+  background: var(--flux-input-bg) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .btn-primary,
+.home-layout--flux button.btn-primary {
+  background: var(--flux-gradient) !important;
+  color: var(--flux-foreground) !important;
+  border: none !important;
+}
+
+.home-layout--flux .btn-primary:hover:not(:disabled) {
+  box-shadow: 0 8px 24px var(--flux-primary-glow) !important;
+}
+
+.home-layout--flux .btn-secondary,
+.home-layout--flux button.btn-secondary {
+  background: var(--flux-card) !important;
+  color: var(--flux-foreground) !important;
+  border: 1px solid var(--flux-border) !important;
+}
+
+.home-layout--flux .action-btn,
+.home-layout--flux .secondary-btn {
+  background: var(--flux-card) !important;
+  color: var(--flux-foreground) !important;
+  border: 1px solid var(--flux-border) !important;
+}
+
+.home-layout--flux .tutorial-showcase,
+.home-layout--flux .info-box,
+.home-layout--flux .notice-box,
+.home-layout--flux .usage-tips {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .usage-tips {
+  border-top-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .tip-item {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .tip-item strong {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .tutorial-link,
+.home-layout--flux .detail-ref-link {
+  color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .empty-state,
+.home-layout--flux .empty-state p,
+.home-layout--flux .image-placeholder {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .empty-state h4 {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .result-image {
+  border: 1px solid var(--flux-border) !important;
+}
+
+/* UploadImage / UploadAudio / 文件上传 */
+.home-layout--flux .file-upload-label,
+.home-layout--flux .file-upload-area {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .file-upload-label span,
+.home-layout--flux .file-upload-label small,
+.home-layout--flux .upload-text span,
+.home-layout--flux .upload-text small {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .file-upload-label:hover {
+  background: var(--flux-primary-muted) !important;
+  border-color: var(--flux-primary) !important;
+}
+
+/* 视频 / 音频上传区 */
+.home-layout--flux .wan-video-upload,
+.home-layout--flux .wan-video-placeholder,
+.home-layout--flux .sora-video-upload-area,
+.home-layout--flux .seedance-upload-box,
+.home-layout--flux .seedance-upload-placeholder,
+.home-layout--flux .upload-area,
+.home-layout--flux .luma-video-trigger,
+.home-layout--flux .aleph-video-trigger,
+.home-layout--flux [class*="-upload-box"],
+.home-layout--flux [class*="-video-upload"] {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .wan-video-upload:hover,
+.home-layout--flux .sora-video-upload-area:hover,
+.home-layout--flux .seedance-upload-box:hover,
+.home-layout--flux .upload-area:hover,
+.home-layout--flux .luma-video-trigger:hover,
+.home-layout--flux .aleph-video-trigger:hover {
+  background: var(--flux-primary-muted) !important;
+  border-color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .wan-video-placeholder,
+.home-layout--flux .wan-video-placeholder span,
+.home-layout--flux .seedance-upload-placeholder,
+.home-layout--flux .luma-video-trigger-inner span,
+.home-layout--flux .aleph-video-trigger-inner span {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .file-item {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .file-name {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .file-size {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .file-preview {
+  background: var(--flux-bg-elevated) !important;
+}
+
+/* ChatInterface（GPT/Claude 等） */
+.home-layout--flux .chat-interface {
+  background: var(--flux-card) !important;
+}
+
+.home-layout--flux .chat-header {
+  background: var(--flux-bg-elevated) !important;
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .new-start-btn {
+  background: var(--flux-gradient) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .new-start-btn:hover {
+  background: var(--flux-primary-hover) !important;
+}
+
+.home-layout--flux .chat-messages {
+  scrollbar-color: var(--flux-border) var(--flux-bg) !important;
+}
+
+.home-layout--flux .chat-messages::-webkit-scrollbar-track {
+  background: var(--flux-bg) !important;
+}
+
+.home-layout--flux .chat-messages::-webkit-scrollbar-thumb {
+  background: var(--flux-border) !important;
+}
+
+.home-layout--flux .message-content {
+  background: var(--flux-bg-elevated) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .message.user .message-content {
+  background: var(--flux-primary) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .message.user .message-text {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .message.assistant .message-text {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .message-time {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .chat-input {
+  background: var(--flux-bg-elevated) !important;
+  border-top-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .chat-input textarea,
+.home-layout--flux .chat-input input[type="text"] {
+  background: var(--flux-input-bg) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .send-btn {
+  background: var(--flux-primary) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux .send-btn:hover:not(:disabled) {
+  background: var(--flux-primary-hover) !important;
+}
+
+.home-layout--flux .model-select-wrapper select,
+.home-layout--flux .model-select {
+  background: var(--flux-input-bg) !important;
+  color: var(--flux-foreground) !important;
+  border-color: var(--flux-border) !important;
+}
+
+/* pages/home/index 内嵌聊天区 */
+.home-layout--flux .chat-interface .chat-header {
+  background: var(--flux-bg-elevated) !important;
+}
+
+.home-layout--flux .tool-avatar,
+.home-layout--flux .chat-tool-info .tool-avatar {
+  border: 1px solid var(--flux-border) !important;
+}
+
+/* 表格 / 列表（部分工具） */
+.home-layout--flux table,
+.home-layout--flux .data-table {
+  background: var(--flux-card) !important;
+  color: var(--flux-foreground) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux th,
+.home-layout--flux td {
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux tr:nth-child(even) {
+  background: var(--flux-bg-elevated) !important;
+}
+
+/* /home 主内容区与布局壳 */
+.flux-theme .main-content,
+.flux-theme .simply-layout {
+  background: var(--flux-bg);
+}
+
+.home-layout--flux .right-main {
+  background: transparent;
+}
+
+/* 复选框 / 下拉 / 禁用态 */
+.home-layout--flux .checkbox-label,
+.home-layout--flux .radio-label {
+  color: var(--flux-foreground) !important;
+}
+
+.home-layout--flux input[type="checkbox"],
+.home-layout--flux input[type="radio"] {
+  accent-color: var(--flux-primary) !important;
+}
+
+.home-layout--flux .select-arrow-icon,
+.home-layout--flux .form-select-icon {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .required {
+  color: var(--flux-destructive) !important;
+}
+
+.home-layout--flux .btn-primary:disabled,
+.home-layout--flux .btn-secondary:disabled,
+.home-layout--flux button:disabled {
+  opacity: 0.55 !important;
+}
+
+/* 结果区 / 媒体预览 */
+.home-layout--flux .video-player,
+.home-layout--flux .media-preview,
+.home-layout--flux .preview-container {
+  background: var(--flux-bg) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .detail-loading-state,
+.home-layout--flux .detail-failure-state,
+.home-layout--flux .loading-overlay {
+  background: var(--flux-card) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .failure-icon {
+  color: var(--flux-destructive) !important;
+}
+
+.home-layout--flux .detail-spinner,
+.home-layout--flux .fa-spinner {
+  color: var(--flux-primary) !important;
+}
+
+/* Grok 双布局 */
+.home-layout--flux .grok-tool.wan-like,
+.home-layout--flux .grok-tool.qwen-like {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+}
+
+/* 价格 / 积分提示 */
+.home-layout--flux .price-tag,
+.home-layout--flux .credits-hint,
+.home-layout--flux .cost-badge {
+  background: var(--flux-primary-muted) !important;
+  color: var(--flux-primary) !important;
+  border-color: var(--flux-border) !important;
+}
+
+/* 代码块（聊天） */
+.home-layout--flux pre,
+.home-layout--flux code {
+  background: var(--flux-input-bg) !important;
+  color: var(--flux-foreground) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .message-content pre {
+  background: var(--flux-bg) !important;
+}
+
