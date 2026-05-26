@@ -33,17 +33,13 @@
           <div 
             class="plan-card basic"
             :class="{ 'selected': selectedPlanIndex === 0 }"
-            :style="{ 
-              borderColor: selectedPlanIndex === 0 ? getPlanColor(2) : getPlanColor(0),
-              background: selectedPlanIndex === 0 ? getPlanBackground(2) : getPlanBackground(0),
-              borderWidth: selectedPlanIndex === 0 ? '2px' : '1px'
-            }"
+            :style="getPlanCardStyle(0)"
             @click="selectPlan(0)"
           >
-            <div class="plan-badge" v-if="selectedPlanIndex === 0" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
+            <div class="plan-badge" v-if="selectedPlanIndex === 0" :style="getPlanBadgeStyle(0)">Selected</div>
             <div class="plan-header">
               <div class="plan-title-row">
-                <div class="plan-icon basic-icon" :style="{ background: selectedPlanIndex === 0 ? getPlanColor(2) : getPlanColor(0), color: 'white' }">★</div>
+                <div class="plan-icon basic-icon" :style="getPlanAccentStyle(0)">★</div>
                 <h3 class="plan-name">Basic</h3>
               </div>
               <div class="plan-price">
@@ -75,25 +71,26 @@
               </div>
             </div>
 
-            <button class="plan-button basic-button" :style="{ background: selectedPlanIndex === 0 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="subscribePlan(0)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
+            <div class="comprehensive-discount">
+              <span class="comprehensive-discount-label">Comprehensive Discount</span>
+              <span class="comprehensive-discount-value">{{ getComprehensiveDiscountDisplay('basic') }}</span>
+            </div>
+
+            <button class="plan-button basic-button" :style="getPlanButtonStyle(0)" :disabled="stripeLoading" @click.stop="subscribePlan(0)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
           </div>
 
           <!-- Pro Plan -->
           <div 
             class="plan-card pro"
             :class="{ 'selected': selectedPlanIndex === 1 }"
-            :style="{ 
-              borderColor: selectedPlanIndex === 1 ? getPlanColor(2) : getPlanColor(0),
-              background: selectedPlanIndex === 1 ? getPlanBackground(2) : getPlanBackground(0),
-              borderWidth: selectedPlanIndex === 1 ? '2px' : '1px'
-            }"
+            :style="getPlanCardStyle(1)"
             @click="selectPlan(1)"
           >
-            <div class="plan-badge" v-if="selectedPlanIndex === 1" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
+            <div class="plan-badge" v-if="selectedPlanIndex === 1" :style="getPlanBadgeStyle(1)">Selected</div>
             <div class="plan-badge" v-else :style="{ background: `linear-gradient(135deg, ${getPlanColor(1)} 0%, ${getPlanColor(2)} 100%)` }">Popular</div>
             <div class="plan-header">
               <div class="plan-title-row">
-                <div class="plan-icon pro-icon" :style="{ background: selectedPlanIndex === 1 ? getPlanColor(2) : getPlanColor(0), color: 'white' }">◆</div>
+                <div class="plan-icon pro-icon" :style="getPlanAccentStyle(1)">◆</div>
                 <h3 class="plan-name">Pro</h3>
               </div>
               <div class="plan-price">
@@ -125,33 +122,34 @@
               </div>
             </div>
 
-            <button class="plan-button pro-button" :style="{ background: selectedPlanIndex === 1 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="subscribePlan(1)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
+            <div class="comprehensive-discount">
+              <span class="comprehensive-discount-label">Comprehensive Discount</span>
+              <span class="comprehensive-discount-value">{{ getComprehensiveDiscountDisplay('pro') }}</span>
+            </div>
+
+            <button class="plan-button pro-button" :style="getPlanButtonStyle(1)" :disabled="stripeLoading" @click.stop="subscribePlan(1)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
           </div>
 
-          <!-- Ultimate Plan -->
+          <!-- Ultra Plan -->
           <div 
-            class="plan-card ultimate"
+            class="plan-card ultra"
             :class="{ 'selected': selectedPlanIndex === 2 }"
-            :style="{ 
-              borderColor: selectedPlanIndex === 2 ? getPlanColor(2) : getPlanColor(0),
-              background: selectedPlanIndex === 2 ? getPlanBackground(2) : getPlanBackground(0),
-              borderWidth: selectedPlanIndex === 2 ? '2px' : '1px'
-            }"
+            :style="getPlanCardStyle(2)"
             @click="selectPlan(2)"
           >
-            <div class="plan-badge" v-if="selectedPlanIndex === 2" :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
+            <div class="plan-badge" v-if="selectedPlanIndex === 2" :style="getPlanBadgeStyle(2)">Selected</div>
             <div class="plan-badge" v-else :style="{ background: `linear-gradient(135deg, ${getPlanColor(2)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Best Value</div>
             <div class="plan-header">
               <div class="plan-title-row">
-                <div class="plan-icon ultimate-icon" :style="{ background: selectedPlanIndex === 2 ? getPlanColor(2) : getPlanColor(0), color: 'white' }">∞</div>
-                <h3 class="plan-name">Ultimate</h3>
+                <div class="plan-icon ultra-icon" :style="getPlanAccentStyle(2)">∞</div>
+                <h3 class="plan-name">Ultra</h3>
               </div>
               <div class="plan-price">
-                <span class="price-amount">${{ getCurrentPricing('ultimate').price }}</span>
+                <span class="price-amount">${{ getCurrentPricing('ultra').price }}</span>
                 <span class="price-period">/{{ getPeriodLabel }}</span>
               </div>
               <div class="plan-discount">
-                <span class="discount-text">{{ getDiscountPercent(pricingData.ultimate.discount) }}% off</span>
+                <span class="discount-text">{{ getDiscountPercent(pricingData.ultra.discount) }}% off</span>
               </div>
             </div>
             
@@ -159,23 +157,28 @@
             <div class="points-info">
               <div class="points-row">
                 <span class="points-label">Base Points:</span>
-                <span class="points-value">{{ getCurrentPricing('ultimate').points }}</span>
+                <span class="points-value">{{ getCurrentPricing('ultra').points }}</span>
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Rate:</span>
-                <span class="points-value bonus">{{ getCurrentPricing('ultimate').bonusPercent }}%</span>
+                <span class="points-value bonus">{{ getCurrentPricing('ultra').bonusPercent }}%</span>
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Points:</span>
-                <span class="points-value bonus">+{{ getCurrentPricing('ultimate').bonusPoints }}</span>
+                <span class="points-value bonus">+{{ getCurrentPricing('ultra').bonusPoints }}</span>
               </div>
               <div class="points-row total">
                 <span class="points-label">Total Points:</span>
-                <span class="points-value total-value">{{ getCurrentPricing('ultimate').totalPoints }}</span>
+                <span class="points-value total-value">{{ getCurrentPricing('ultra').totalPoints }}</span>
               </div>
             </div>
 
-            <button class="plan-button ultimate-button" :style="{ background: selectedPlanIndex === 2 ? getPlanColor(2) : getPlanColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="subscribePlan(2)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
+            <div class="comprehensive-discount">
+              <span class="comprehensive-discount-label">Comprehensive Discount</span>
+              <span class="comprehensive-discount-value">{{ getComprehensiveDiscountDisplay('ultra') }}</span>
+            </div>
+
+            <button class="plan-button ultra-button" :style="getPlanButtonStyle(2)" :disabled="stripeLoading" @click.stop="subscribePlan(2)">{{ stripeLoading ? 'Loading...' : 'Subscribe Now' }}</button>
           </div>
         </div>
 
@@ -187,7 +190,7 @@
           </p>
           <p class="discount-explanation">
             <i class="fas fa-info-circle"></i>
-            Subscription benefits: Basic plan users enjoy 98% pricing on all models, Pro plan users enjoy 95% pricing, and Ultimate plan users enjoy 88% pricing.
+            Subscription benefits: Basic plan users enjoy 98% pricing on all models, Pro plan users enjoy 95% pricing, and Ultra plan users enjoy 88% pricing.
           </p>
         </div>
       </div>
@@ -207,16 +210,13 @@
             :key="index"
             class="topup-card"
             :class="{ 
-              'selected': selectedTopupIndex === index
+              'selected': selectedTopupIndex === index,
+              [`topup-card--tier-${index}`]: selectedTopupIndex === index
             }"
-            :style="{ 
-              borderColor: selectedTopupIndex === index ? getCardColor(3) : getCardColor(0),
-              background: selectedTopupIndex === index ? getCardBackground(3) : getCardBackground(0),
-              borderWidth: selectedTopupIndex === index ? '2px' : '1px'
-            }"
+            :style="getTopupCardStyle(index)"
             @click="selectTopup(index)"
           >
-            <div class="topup-badge" v-if="selectedTopupIndex === index" :style="{ background: `linear-gradient(135deg, ${getCardColor(3)} 0%, ${FLUX_GRADIENT_END} 100%)` }">Selected</div>
+            <div class="topup-badge" v-if="selectedTopupIndex === index" :style="getTopupBadgeStyle(index)">Selected</div>
             <div class="topup-header">
               <div class="topup-amount">${{ item.amount }}</div>
               <div class="topup-bonus-rate" v-if="item.bonusRate > 0">{{ item.bonusRate }}% Bonus</div>
@@ -233,7 +233,7 @@
               <span class="total-label">Total Credits:</span>
               <span class="total-value">{{ item.totalCredits }}</span>
             </div>
-            <button class="topup-button" :style="{ background: selectedTopupIndex === index ? getCardColor(3) : getCardColor(0), color: 'white', border: 'none' }" :disabled="stripeLoading" @click.stop="rechargeTopup(index)">{{ stripeLoading ? 'Loading...' : 'Recharge Now' }}</button>
+            <button class="topup-button" :style="getTopupButtonStyle(index)" :disabled="stripeLoading" @click.stop="rechargeTopup(index)">{{ stripeLoading ? 'Loading...' : 'Recharge Now' }}</button>
           </div>
         </div>
 
@@ -296,7 +296,8 @@ const subscriptionTypes = [
 const pricingData = {
   basic: {
     name: 'Basic',
-    discount: 0.98, // 9.8% off means 0.98 discount rate (2% off)
+    discount: 0.98,
+    comprehensiveDiscounts: { weekly: 0.89, monthly: 0.82, yearly: 0.76 },
     weekly: {
       price: 3.9,
       points: 390,
@@ -321,7 +322,8 @@ const pricingData = {
   },
   pro: {
     name: 'Pro',
-    discount: 0.95, // 9.5% off means 0.95 discount rate (5% off)
+    discount: 0.95,
+    comprehensiveDiscounts: { weekly: 0.79, monthly: 0.73, yearly: 0.68 },
     weekly: {
       price: 5.9,
       points: 590,
@@ -344,9 +346,10 @@ const pricingData = {
       totalPoints: 23632 // 16880 + 6752
     }
   },
-  ultimate: {
-    name: 'Ultimate',
-    discount: 0.88, // 8.8% off means 0.88 discount rate (12% off)
+  ultra: {
+    name: 'Ultra',
+    discount: 0.88,
+    comprehensiveDiscounts: { weekly: 0.68, monthly: 0.63, yearly: 0.59 },
     weekly: {
       price: 7.9,
       points: 790,
@@ -377,6 +380,15 @@ const getCurrentPricing = (planType) => {
   return plan[selectedSubscriptionType.value]
 }
 
+const getComprehensiveDiscount = (planType) => {
+  const plan = pricingData[planType]
+  return plan.comprehensiveDiscounts[selectedSubscriptionType.value]
+}
+
+const getComprehensiveDiscountDisplay = (planType) => {
+  return `${Math.round(getComprehensiveDiscount(planType) * 100)}%`
+}
+
 // Get subscription period label
 const getPeriodLabel = computed(() => {
   const labels = {
@@ -387,7 +399,7 @@ const getPeriodLabel = computed(() => {
   return labels[selectedSubscriptionType.value] || 'month'
 })
 
-// Calculate discount percentage from discount rate
+// Calculate discount percentage from discount rate (legacy helper)
 const getDiscountPercent = (discountRate) => {
   return Math.round((1 - discountRate) * 100)
 }
@@ -461,25 +473,112 @@ const rechargeTopup = (index) => {
 
 const FLUX_GRADIENT_END = 'hsl(200, 90%, 42%)'
 
-// 充值卡片边框色（FLUX 深色递进）
-const getCardColor = (index) => {
-  const colors = [
-    'hsl(215, 16%, 32%)',
-    'hsl(215, 16%, 38%)',
-    'hsl(173, 60%, 35%)',
-    'hsl(173, 80%, 40%)'
-  ]
-  return colors[index] || colors[0]
+const planIdlePalette = {
+  border: 'hsl(215, 16%, 35%)',
+  background: 'linear-gradient(135deg, hsl(215, 25%, 14%) 0%, hsl(215, 20%, 10%) 100%)',
+  accent: 'hsl(215, 16%, 35%)',
+  badgeEnd: 'hsl(215, 16%, 42%)',
+  boxShadow: 'none'
 }
 
-const getCardBackground = (index) => {
-  const backgrounds = [
-    'linear-gradient(135deg, hsl(215, 25%, 14%) 0%, hsl(215, 20%, 10%) 100%)',
-    'linear-gradient(135deg, hsl(215, 22%, 16%) 0%, hsl(215, 20%, 10%) 100%)',
-    'linear-gradient(135deg, hsl(215, 22%, 18%) 0%, hsl(215, 20%, 10%) 100%)',
-    'linear-gradient(135deg, hsla(173, 80%, 40%, 0.12) 0%, hsl(215, 20%, 10%) 100%)'
-  ]
-  return backgrounds[index] || backgrounds[0]
+// 选中态：Basic ← 原 Pro；Pro 为 Basic 与 Ultra 中间态；Ultra 最鲜艳
+const planSelectedPalettes = [
+  {
+    border: 'hsl(173, 72%, 46%)',
+    background: 'linear-gradient(135deg, hsla(173, 72%, 44%, 0.22) 0%, hsl(215, 20%, 10%) 100%)',
+    accent: 'hsl(173, 78%, 48%)',
+    badgeEnd: FLUX_GRADIENT_END,
+    boxShadow: '0 6px 24px hsla(173, 80%, 42%, 0.28)'
+  },
+  {
+    border: 'hsl(169, 82%, 50%)',
+    background: 'linear-gradient(135deg, hsla(169, 80%, 47%, 0.27) 0%, hsla(173, 78%, 42%, 0.1) 100%)',
+    accent: 'hsl(166, 86%, 52%)',
+    badgeEnd: 'hsl(187, 92%, 50%)',
+    boxShadow: '0 7px 28px hsla(169, 85%, 45%, 0.33)'
+  },
+  {
+    border: 'hsl(165, 92%, 54%)',
+    background: 'linear-gradient(135deg, hsla(165, 90%, 50%, 0.32) 0%, hsla(173, 85%, 42%, 0.14) 100%)',
+    accent: 'hsl(158, 95%, 56%)',
+    badgeEnd: 'hsl(190, 95%, 58%)',
+    boxShadow: '0 8px 32px hsla(165, 90%, 48%, 0.38)'
+  }
+]
+
+const getPlanPalette = (tier) => {
+  return selectedPlanIndex.value === tier ? planSelectedPalettes[tier] : planIdlePalette
+}
+
+const getPlanCardStyle = (tier) => {
+  const palette = getPlanPalette(tier)
+  const selected = selectedPlanIndex.value === tier
+  return {
+    borderColor: palette.border,
+    background: palette.background,
+    borderWidth: selected ? '2px' : '1px',
+    boxShadow: selected ? palette.boxShadow : undefined
+  }
+}
+
+const getPlanAccentStyle = (tier) => {
+  const palette = getPlanPalette(tier)
+  return { background: palette.accent, color: 'white' }
+}
+
+const getPlanButtonStyle = (tier) => {
+  const palette = getPlanPalette(tier)
+  return { background: palette.accent, color: 'white', border: 'none' }
+}
+
+const getPlanBadgeStyle = (tier) => {
+  const palette = planSelectedPalettes[tier]
+  return { background: `linear-gradient(135deg, ${palette.accent} 0%, ${palette.badgeEnd} 100%)` }
+}
+
+// Top-up 选中态：左→右 Basic → 中间两档递进 → Ultra（4 档）
+const topupSelectedPalettes = [
+  planSelectedPalettes[0],
+  {
+    border: 'hsl(171, 77%, 48%)',
+    background: 'linear-gradient(135deg, hsla(171, 76%, 45%, 0.245) 0%, hsla(173, 74%, 42%, 0.06) 100%)',
+    accent: 'hsl(170, 82%, 50%)',
+    badgeEnd: 'hsl(194, 91%, 46%)',
+    boxShadow: '0 6px 26px hsla(171, 82%, 44%, 0.305)'
+  },
+  {
+    border: 'hsl(167, 87%, 52%)',
+    background: 'linear-gradient(135deg, hsla(167, 85%, 48%, 0.295) 0%, hsla(169, 82%, 42%, 0.12) 100%)',
+    accent: 'hsl(162, 90%, 54%)',
+    badgeEnd: 'hsl(188, 94%, 54%)',
+    boxShadow: '0 7px 30px hsla(167, 88%, 46%, 0.355)'
+  },
+  planSelectedPalettes[2]
+]
+
+const getTopupPalette = (tier) => {
+  return selectedTopupIndex.value === tier ? topupSelectedPalettes[tier] : planIdlePalette
+}
+
+const getTopupCardStyle = (tier) => {
+  const palette = getTopupPalette(tier)
+  const selected = selectedTopupIndex.value === tier
+  return {
+    borderColor: palette.border,
+    background: palette.background,
+    borderWidth: selected ? '2px' : '1px',
+    boxShadow: selected ? palette.boxShadow : undefined
+  }
+}
+
+const getTopupButtonStyle = (tier) => {
+  const palette = getTopupPalette(tier)
+  return { background: palette.accent, color: 'white', border: 'none' }
+}
+
+const getTopupBadgeStyle = (tier) => {
+  const palette = topupSelectedPalettes[tier]
+  return { background: `linear-gradient(135deg, ${palette.accent} 0%, ${palette.badgeEnd} 100%)` }
 }
 
 const getPlanColor = (index) => {
@@ -489,15 +588,6 @@ const getPlanColor = (index) => {
     'hsl(173, 80%, 40%)'
   ]
   return colors[index] || colors[0]
-}
-
-const getPlanBackground = (index) => {
-  const backgrounds = [
-    'linear-gradient(135deg, hsl(215, 25%, 14%) 0%, hsl(215, 20%, 10%) 100%)',
-    'linear-gradient(135deg, hsl(215, 22%, 18%) 0%, hsl(215, 20%, 10%) 100%)',
-    'linear-gradient(135deg, hsla(173, 80%, 40%, 0.15) 0%, hsl(215, 20%, 10%) 100%)'
-  ]
-  return backgrounds[index] || backgrounds[0]
 }
 
 // FAQ 数据
@@ -661,8 +751,19 @@ const subscribePlan = (index) => {
 }
 
 .plan-card.selected {
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
   transform: translateY(-2px);
+}
+
+.plan-card.basic.selected {
+  box-shadow: 0 6px 24px hsla(173, 80%, 42%, 0.28);
+}
+
+.plan-card.pro.selected {
+  box-shadow: 0 7px 28px hsla(169, 85%, 45%, 0.33);
+}
+
+.plan-card.ultra.selected {
+  box-shadow: 0 8px 32px hsla(165, 90%, 48%, 0.38);
 }
 
 
@@ -853,12 +954,48 @@ const subscribePlan = (index) => {
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
+}
+
+.comprehensive-discount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 1rem 1.125rem;
+  border-radius: 10px;
+  border: 1px solid hsla(165, 85%, 52%, 0.55);
+  background: linear-gradient(
+    180deg,
+    hsla(165, 80%, 48%, 0.22) 0%,
+    hsla(173, 75%, 42%, 0.14) 100%
+  );
+  box-shadow:
+    0 0 0 1px hsla(165, 90%, 62%, 0.12) inset,
+    0 4px 20px hsla(165, 85%, 45%, 0.18);
+}
+
+.comprehensive-discount-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(165, 55%, 82%);
+}
+
+.comprehensive-discount-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: hsl(158, 92%, 62%);
+  text-shadow: 0 0 18px hsla(158, 95%, 58%, 0.45);
 }
 
 .basic-button:hover,
 .pro-button:hover,
-.ultimate-button:hover {
+.ultra-button:hover {
   opacity: 0.9;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
@@ -920,8 +1057,23 @@ const subscribePlan = (index) => {
 }
 
 .topup-card.selected {
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
   transform: translateY(-2px);
+}
+
+.topup-card--tier-0.selected {
+  box-shadow: 0 6px 24px hsla(173, 80%, 42%, 0.28);
+}
+
+.topup-card--tier-1.selected {
+  box-shadow: 0 6px 26px hsla(171, 82%, 44%, 0.305);
+}
+
+.topup-card--tier-2.selected {
+  box-shadow: 0 7px 30px hsla(167, 88%, 46%, 0.355);
+}
+
+.topup-card--tier-3.selected {
+  box-shadow: 0 8px 32px hsla(165, 90%, 48%, 0.38);
 }
 
 .topup-badge {
