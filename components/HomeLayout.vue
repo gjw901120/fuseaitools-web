@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page home-layout--flux">
+  <div class="home-page home-layout--flux" :class="{ 'home-page--with-below': hasBelowMain }">
     <!-- 主布局容器 -->
     <div class="main-layout">
       <!-- 左侧：AI工具使用历史记录（20%） -->
@@ -117,11 +117,15 @@
         </section>
       </main>
     </div>
+
+    <div v-if="hasBelowMain" class="home-layout-below">
+      <slot name="below-main" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { provide, computed, ref, nextTick } from 'vue'
+import { provide, computed, ref, nextTick, useSlots } from 'vue'
 import Breadcrumb from '~/components/Breadcrumb.vue'
 import { useHomeLayout } from '~/composables/useHomeLayout'
 import { getToolBreadcrumbByRoute } from '~/utils/toolBreadcrumbs'
@@ -146,6 +150,9 @@ const {
   allTools,
   navigateToHistoryItem
 } = useHomeLayout()
+
+const slots = useSlots()
+const hasBelowMain = computed(() => !!slots['below-main'])
 
 const timelineContainerRef = ref(null)
 
@@ -207,6 +214,27 @@ provide('addToUsageHistory', addToUsageHistory)
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.home-page--with-below {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.home-page--with-below .main-layout {
+  flex: 0 0 auto;
+  height: calc(100vh - 64px);
+  min-height: 560px;
+  max-height: calc(100vh - 64px);
+}
+
+.home-layout-below {
+  flex-shrink: 0;
+  width: 100%;
+  border-top: 1px solid var(--flux-border-subtle);
+  background: var(--flux-bg);
 }
 
 .main-layout {
@@ -655,6 +683,12 @@ provide('addToUsageHistory', addToUsageHistory)
 }
 
 @media (max-width: 1024px) {
+  .home-page--with-below .main-layout {
+    height: auto;
+    max-height: none;
+    min-height: 70vh;
+  }
+
   .main-layout {
     flex-direction: column;
     height: 100vh;

@@ -3,11 +3,15 @@
     <div class="tool-page">
       <HappyHorseTool />
     </div>
+    <template #below-main>
+      <HappyHorseV1SeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import HappyHorseTool from '~/components/tools/HappyHorseTool.vue'
+import HappyHorseV1SeoContent from '~/components/tools/HappyHorseV1SeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
