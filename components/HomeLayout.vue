@@ -225,9 +225,39 @@ provide('addToUsageHistory', addToUsageHistory)
 
 .home-page--with-below .main-layout {
   flex: 0 0 auto;
-  height: calc(100vh - 64px);
-  min-height: 560px;
-  max-height: calc(100vh - 64px);
+  height: auto;
+  min-height: calc(100vh - 64px);
+  max-height: none;
+  overflow: visible;
+  align-items: stretch;
+}
+
+.home-page--with-below .left-sidebar {
+  height: auto;
+  align-self: stretch;
+  min-height: calc(100vh - 64px);
+}
+
+.home-page--with-below .right-main {
+  height: auto;
+  min-height: calc(100vh - 64px);
+  overflow: visible;
+}
+
+.home-page--with-below .tool-interface {
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.home-page--with-below .tool-interface-slot {
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
 }
 
 .home-layout-below {

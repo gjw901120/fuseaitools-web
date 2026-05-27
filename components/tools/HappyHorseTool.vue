@@ -559,8 +559,28 @@ function downloadVideo() {
 </script>
 
 <style scoped>
-.happyhorse-tool { width: 100%; height: 100%; padding: 20px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
-.tool-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
+.happyhorse-tool {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.tool-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
 .tool-avatar { width: 48px; height: 48px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tool-details h3 { margin: 0 0 4px 0; font-size: 20px; color: #1f2937; }
@@ -569,6 +589,7 @@ function downloadVideo() {
   padding-bottom: 20px;
   border-bottom: 1px solid #e2e8f0;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 .mode-tabs {
   display: flex;
@@ -598,9 +619,51 @@ function downloadVideo() {
   color: #fff;
   border-color: #3b82f6;
 }
-.main-content { display: flex; gap: 20px; flex: 1; min-height: 0; }
-.config-panel { width: 38%; background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; overflow-y: auto; }
-.result-panel { width: 62%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; }
+.main-content {
+  display: flex;
+  gap: 20px;
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+  align-items: stretch;
+}
+.config-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 2 1 auto;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  align-self: stretch;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  overflow: visible;
+  box-sizing: border-box;
+}
+.config-header {
+  flex-shrink: 0;
+}
+.config-form {
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+}
+.result-panel {
+  flex: 3 1 auto;
+  width: auto;
+  min-width: 0;
+  align-self: stretch;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  box-sizing: border-box;
+}
 .config-header h4 { margin: 0 0 14px 0; color: #1f2937; }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .form-group { margin-bottom: 16px; }
