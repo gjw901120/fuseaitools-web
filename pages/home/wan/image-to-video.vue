@@ -3,11 +3,15 @@
     <div class="tool-page">
       <WanTool />
     </div>
+    <template #below-main>
+      <Wan26VideoSeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import WanTool from '~/components/tools/WanTool.vue'
+import Wan26VideoSeoContent from '~/components/tools/Wan26VideoSeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
@@ -26,5 +30,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>

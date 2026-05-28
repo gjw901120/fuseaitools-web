@@ -43,6 +43,7 @@ export { useRecordPolling } from '../composables/useRecordPolling';
 export { useToast } from '../composables/useToast';
 export { useToolOverviewPage } from '../composables/useToolOverviewPage';
 export { useToolSEO, useToolSEOAsync } from '../composables/useToolSEO';
+export { useToolSeoPageScroll } from '../composables/useToolSeoPageScroll';
 export { useUserDetail } from '../composables/useUserDetail';
 export { parseStandardApiJson, getFetchErrorMessage } from '../utils/parseStandardApiResponse';
 export { TOOL_PARENT_LABEL_BY_SLUG, CHILD_LABEL_OVERRIDES_BY_ROUTE, getToolBreadcrumbByRoute } from '../utils/toolBreadcrumbs';
