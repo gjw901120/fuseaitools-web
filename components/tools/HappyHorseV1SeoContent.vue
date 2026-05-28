@@ -33,7 +33,7 @@
         <div class="feature-card">
           <div class="feature-icon" aria-hidden="true">⚡️</div>
           <div class="feature-title">Fast & Cost-Effective</div>
-          <p><strong>Generate 5 seconds of 1080P video with audio in as little as 38 seconds</strong>, with ~60% lower compute demand. Member pricing from 25 credits/sec; new users receive <strong>77 free credits</strong>.</p>
+          <p><strong>Generate 5 seconds of 1080P video with audio in as little as 38 seconds</strong>, with ~60% lower compute demand. Member pricing from 25 credits/sec; new users receive <strong>20 free credits</strong>.</p>
         </div>
       </div>
     </section>
@@ -260,7 +260,7 @@ const faqItems = [
   },
   {
     question: '4. How is HappyHorse v1 priced?',
-    answer: 'Billing is <strong>per second of video, with exclusive discounts for subscribers</strong>. <a href="/pricing" class="seo-pricing-link">Ultra</a> members get 720P from <strong>25 credits/sec</strong> and 1080P around <strong>42 credits/sec</strong>. Annual Ultra plans are up to 40% off. New users receive <strong>77 free credits</strong> on first sign-in.'
+    answer: 'Billing is <strong>per second of video, with exclusive discounts for subscribers</strong>. <a href="/pricing" class="seo-pricing-link">Ultra</a> members get 720P from <strong>25 credits/sec</strong> and 1080P around <strong>42 credits/sec</strong>. Annual Ultra plans are up to 40% off. New users receive <strong>20 free credits</strong> on first sign-in.'
   },
   {
     question: '5. Can I use generated videos commercially? Who owns the rights?',
