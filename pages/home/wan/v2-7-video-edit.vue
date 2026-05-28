@@ -16,10 +16,11 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Wan 2.7 Video Edit Generator',
-  description: 'Edit existing videos with Wan 2.7 videoedit model.',
+  description:
+    'Edit videos with natural language on Wan 2.7 Video Edit—upload footage, prompt changes, 0 or 2–10s output. FuseAITools credits.',
   category: 'video',
   route: '/home/wan/v2-7-video-edit',
-  keywords: ['Wan 2.7', 'Video Edit', 'AI video'],
+  keywords: ['Wan 2.7', 'Wan', 'video edit', 'AI video editing', 'natural language video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },

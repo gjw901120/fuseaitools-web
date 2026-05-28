@@ -185,6 +185,7 @@ declare global {
   const useToolOverviewPage: typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']
   const useToolSEO: typeof import('../../composables/useToolSEO')['useToolSEO']
   const useToolSEOAsync: typeof import('../../composables/useToolSEO')['useToolSEOAsync']
+  const useToolSeoFaqSchema: typeof import('../../composables/useToolSeoFaqSchema')['useToolSeoFaqSchema']
   const useToolSeoPageScroll: typeof import('../../composables/useToolSeoPageScroll')['useToolSeoPageScroll']
   const useTransitionState: typeof import('../../node_modules/vue')['useTransitionState']
   const useUserDetail: typeof import('../../composables/useUserDetail')['useUserDetail']
@@ -393,6 +394,7 @@ declare module 'vue' {
     readonly useToolOverviewPage: UnwrapRef<typeof import('../../composables/useToolOverviewPage')['useToolOverviewPage']>
     readonly useToolSEO: UnwrapRef<typeof import('../../composables/useToolSEO')['useToolSEO']>
     readonly useToolSEOAsync: UnwrapRef<typeof import('../../composables/useToolSEO')['useToolSEOAsync']>
+    readonly useToolSeoFaqSchema: UnwrapRef<typeof import('../../composables/useToolSeoFaqSchema')['useToolSeoFaqSchema']>
     readonly useToolSeoPageScroll: UnwrapRef<typeof import('../../composables/useToolSeoPageScroll')['useToolSeoPageScroll']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
     readonly useUserDetail: UnwrapRef<typeof import('../../composables/useUserDetail')['useUserDetail']>

@@ -16,10 +16,11 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Wan 2.7 Image to Video Generator',
-  description: 'Generate videos from frame/video/audio references with Wan 2.7 image-to-video model.',
+  description:
+    'Wan 2.7 image-to-video on FuseAITools—first/last frame, driving audio, 2–15s at 720p/1080p. Credit-based cloud generation.',
   category: 'video',
   route: '/home/wan/v2-7-image-to-video',
-  keywords: ['Wan 2.7', 'Image to Video', 'AI video'],
+  keywords: ['Wan 2.7', 'Wan', 'image to video', 'first last frame video', 'AI video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },

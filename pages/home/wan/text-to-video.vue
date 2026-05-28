@@ -15,11 +15,12 @@ import Wan26VideoSeoContent from '~/components/tools/Wan26VideoSeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
-  name: 'Wan Text to Video Generator',
-  description: 'Generate AI video from text with Wan. Pay per video with credits.',
+  name: 'Wan 2.6 Text to Video Generator',
+  description:
+    'Wan 2.6 text-to-video on FuseAITools—5/10/15s clips at 720p/1080p with multi-shot mode. Pay with credits; 20 free credits on sign-up.',
   category: 'video',
   route: '/home/wan/text-to-video',
-  keywords: ['Wan', 'Text to Video', 'AI video', 'video generation'],
+  keywords: ['Wan', 'Wan 2.6', 'text to video', 'AI video generation', 'multi-shot video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },

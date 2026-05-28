@@ -1,0 +1,80 @@
+# FuseAITools
+
+> FuseAITools is an all-in-one AI platform with 100+ models for chat, image, video, and audio. Use tools in the browser with credit-based pricing; new users receive 20 free credits on sign-up. This file lists the most useful public pages for understanding our products and workflows.
+
+FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://fuseaitools.com/robots.txt).
+
+## Core pages
+
+- [Home](https://fuseaitools.com/): Marketing homepage, product overview, and FAQ.
+- [AI Tools Hub](https://fuseaitools.com/home): Launch pad for all integrated AI tools.
+- [Pricing](https://fuseaitools.com/pricing): Subscription plans, credits, and top-up options.
+- [About](https://fuseaitools.com/about): Company and contact information.
+- [News](https://fuseaitools.com/news): Tutorials, comparisons, and product updates.
+
+## Chat
+
+- [GPT](https://fuseaitools.com/home/gpt): OpenAI GPT chat and generation overview.
+- [GPT Generate](https://fuseaitools.com/home/gpt/generate): Multi-turn chat and content generation.
+- [Claude](https://fuseaitools.com/home/claude): Anthropic Claude overview.
+- [Claude Generate](https://fuseaitools.com/home/claude/generate): Claude chat workspace.
+- [Gemini](https://fuseaitools.com/home/gemini): Google Gemini overview.
+- [Gemini Generate](https://fuseaitools.com/home/gemini/generate): Gemini chat workspace.
+- [DeepSeek](https://fuseaitools.com/home/deepseek): DeepSeek overview.
+- [DeepSeek Generate](https://fuseaitools.com/home/deepseek/generate): DeepSeek chat workspace.
+
+## Image
+
+- [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
+- [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
+- [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
+- [Nano Banana](https://fuseaitools.com/home/nano-banana): Nano Banana image tools overview.
+- [Seedream](https://fuseaitools.com/home/seedream): Seedream image models overview.
+- [Qwen Image](https://fuseaitools.com/home/qwen): Qwen image tools overview.
+- [Imagen 4](https://fuseaitools.com/home/imagen4): Google Imagen 4 overview.
+
+## Video — HappyHorse v1
+
+HappyHorse v1 focuses on native audio-video joint generation (lip-sync, ambient sound, multi-shot narrative).
+
+- [HappyHorse Overview](https://fuseaitools.com/home/happy-horse): Four workflows—text, image, reference, and video edit.
+- [HappyHorse v1 Text to Video](https://fuseaitools.com/home/happy-horse/v1-text-to-video): Generate video from text; 3–15s, 720p/1080p, multiple aspect ratios.
+- [HappyHorse v1 Image to Video](https://fuseaitools.com/home/happy-horse/v1-image-to-video): Animate one input image with optional prompt.
+- [HappyHorse v1 Reference to Video](https://fuseaitools.com/home/happy-horse/v1-reference-to-video): 1–9 reference images with character placeholders.
+- [HappyHorse v1 Video Edit](https://fuseaitools.com/home/happy-horse/v1-video-edit): Edit existing video with natural-language instructions.
+
+## Video — Wan 2.6 & 2.7
+
+Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 adds image tools, frame-controlled I2V, Video Edit, and R2V (up to 5 references).
+
+- [Wan Overview](https://fuseaitools.com/home/wan): Wan image and video tools hub.
+- [Wan 2.6 Text to Video](https://fuseaitools.com/home/wan/text-to-video): Role-play oriented text-to-video.
+- [Wan 2.6 Image to Video](https://fuseaitools.com/home/wan/image-to-video): Image-to-video with multi-shot options.
+- [Wan 2.6 Video to Video](https://fuseaitools.com/home/wan/video-to-video): Upload footage and transform with prompts (5/10s output).
+- [Wan 2.7 Text to Video](https://fuseaitools.com/home/wan/v2-7-text-to-video): Advanced text-to-video, 2–15s.
+- [Wan 2.7 Image to Video](https://fuseaitools.com/home/wan/v2-7-image-to-video): First/last frame and driving audio controls.
+- [Wan 2.7 Video Edit](https://fuseaitools.com/home/wan/v2-7-video-edit): Natural-language video editing.
+- [Wan 2.7 R2V](https://fuseaitools.com/home/wan/v2-7-r2v): Up to 5 reference images/videos for ensemble scenes.
+- [Wan 2.7 Image](https://fuseaitools.com/home/wan/2-7-image): Wan 2.7 image generation.
+- [Wan 2.7 Image Pro](https://fuseaitools.com/home/wan/2-7-image-pro): Wan 2.7 Image Pro (higher quality tier).
+
+## Video — Other models
+
+- [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
+- [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
+- [Runway](https://fuseaitools.com/home/runway): Runway video generation overview.
+- [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
+- [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
+- [Seedance](https://fuseaitools.com/home/seedance): Seedance video models overview.
+- [Hailuo](https://fuseaitools.com/home/hailuo): Hailuo image-to-video overview.
+- [Grok Video](https://fuseaitools.com/home/grok): Grok image and video tools overview.
+
+## Audio
+
+- [Suno](https://fuseaitools.com/home/suno): AI music generation (generate, extend, vocals, and more).
+- [ElevenLabs](https://fuseaitools.com/home/elevenlabs): Text-to-speech, sound effects, and audio tools.
+
+## Optional
+
+- [News index](https://fuseaitools.com/news): Article list; individual articles live under `/news/{slug}`.
+- [About FuseAITools](https://fuseaitools.com/about): Support and service contacts.

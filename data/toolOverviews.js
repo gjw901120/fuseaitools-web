@@ -1307,182 +1307,54 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
     category: 'Image & Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Wan is Alibaba\'s multimodal generation suite covering both image and video workflows. Beyond classic 2.6 video modes (T2V, I2V, V2V), Wan now supports 2.7 Image / Image Pro and four advanced 2.7 video modes: v2.7 Text to Video, v2.7 Image to Video, v2.7 Video Edit, and v2.7 R2V for richer control and production-ready outputs.',
+    intro: 'Wan on FuseAITools is Alibaba\'s multimodal suite for image and video. Use Wan 2.6 for text, image, and video-to-video clips (5–15s, multi-shot, 720p/1080p), or Wan 2.7 for director-style text-to-video, frame-controlled image-to-video, natural-language Video Edit, and R2V with up to five references—plus Wan 2.7 Image and Image Pro. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Wan 2.7 Image', path: '/home/wan/2-7-image', description: 'Generate or edit images with model wan-2-7-image. Supports optional input_urls (up to 9), optional aspect ratio when no image input, sequential batch mode, n control, 1K/2K resolution, optional thinking mode (eligible conditions), color palette, bbox list, watermark, and seed.' },
-      { name: 'Wan 2.7 Image Pro', path: '/home/wan/2-7-image-pro', description: 'Pro image generation/editing with model wan-2-7-image-pro. Includes all Wan 2.7 Image controls plus 4K resolution support when no input image and sequential mode is off.' },
-      { name: 'Text to Video', path: '/home/wan/text-to-video', description: 'Generate video directly from text prompts. Supports Chinese and English, 1–5000 characters. Choose duration (5, 10, or 15 seconds), resolution (720p or 1080p), and shot composition (single continuous shot or multiple shots with transitions).' },
-      { name: 'Image to Video', path: '/home/wan/image-to-video', description: 'Animate static images with text guidance. Provide image URLs (min 256×256px; JPEG, PNG, WebP; max 10MB), add a prompt describing the motion or scene, and set duration, resolution, and multi-shot style. Perfect for bringing illustrations, product shots, or concept art to life.' },
-      { name: 'Video to Video', path: '/home/wan/video-to-video', description: 'Transform existing video with new prompts. Upload a video URL (MP4, MOV, MKV; max 10MB), describe the desired changes or style transfer in text, and control duration (5 or 10 seconds), resolution, and shot composition. Ideal for restyling, content adaptation, or creative remixing.' },
-      { name: 'v2.7 Text to Video', path: '/home/wan/v2-7-text-to-video', description: 'Model fixed to wan-2-7-text-to-video. Required prompt (3–5000 chars), optional negative prompt/audio URL, 720p/1080p, ratio 16:9/9:16/1:1/4:3/3:4, duration 2–15s, prompt_extend, watermark, and seed.' },
-      { name: 'v2.7 Image to Video', path: '/home/wan/v2-7-image-to-video', description: 'Model fixed to wan-2-7-image-to-video. Required prompt (3–5000); at least one of first_frame_url, last_frame_url, first_clip_url, driving_audio_url; optional negative prompt; 720p/1080p, duration 2–15s, prompt_extend, watermark, seed.' },
-      { name: 'v2.7 Video Edit', path: '/home/wan/v2-7-video-edit', description: 'Model fixed to wan-2-7-videoedit. Required videoUrl and prompt (3–5000); optional negativePrompt/referenceImage; 720p/1080p, optional aspectRatio, duration 0 or 2–10s, audioSetting (auto/origin), promptExtend, watermark, seed.' },
-      { name: 'v2.7 R2V', path: '/home/wan/v2-7-r2v', description: 'Model fixed to wan-2-7-r2v. Required prompt (3–5000); referenceImage[] and/or referenceVideo[] (total ≤ 5); optional firstFrame (with it aspectRatio omitted), referenceVoice; 720p/1080p, aspectRatio, duration 2–10s, promptExtend, watermark, seed.' }
+      { name: 'Wan 2.7 Image', path: '/home/wan/2-7-image', description: 'Text-to-image and image editing—optional up to 9 reference images, aspect ratios when generating from prompt only, batch n, 1K/2K, sequential mode, and advanced controls.' },
+      { name: 'Wan 2.7 Image Pro', path: '/home/wan/2-7-image-pro', description: 'Same as Wan 2.7 Image with 4K output when no input image and sequential mode is off—built for hero assets and print-ready creatives.' },
+      { name: 'Wan 2.6 Text to Video', path: '/home/wan/text-to-video', description: 'Prompt-only clips: 5/10/15s, 720p/1080p, single or multi-shot—fast social and storyboard previews.' },
+      { name: 'Wan 2.6 Image to Video', path: '/home/wan/image-to-video', description: 'Upload stills (JPEG/PNG/WebP) plus a motion prompt—5/10/15s at 720p/1080p with multi-shot support.' },
+      { name: 'Wan 2.6 Video to Video', path: '/home/wan/video-to-video', description: 'Upload footage and transform with a prompt—5 or 10s output at 720p/1080p (15s UI maps to 10s API).' },
+      { name: 'Wan 2.7 Text to Video', path: '/home/wan/v2-7-text-to-video', description: 'Director-grade generation: 3–5000 char prompt, 2–15s, aspect ratios, optional audio and negative prompt.' },
+      { name: 'Wan 2.7 Image to Video', path: '/home/wan/v2-7-image-to-video', description: 'First/last frame, reference clip, or driving audio with 2–15s output at 720p/1080p.' },
+      { name: 'Wan 2.7 Video Edit', path: '/home/wan/v2-7-video-edit', description: 'Edit uploaded video with natural language—duration 0 (auto) or 2–10s, optional reference image.' },
+      { name: 'Wan 2.7 R2V', path: '/home/wan/v2-7-r2v', description: 'Up to 5 combined reference images/videos, 2–10s clips—ensemble scenes with optional voice lock.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Motion meets imagination: Wan bridges the gap between static concepts and dynamic storytelling. Whether you're starting from text, an image, or existing footage, Wan gives you the tools to craft video content with the same ease as generating an image.
-
-Flexible, fast, and accessible: With support for both Chinese and English, multiple duration options, and resolution choices from web-ready to HD, Wan adapts to your workflow—from quick social clips to polished creative projects.`
-      },
-      {
         title: 'Core capabilities',
-        content: `Wan 2.7 Image
+        content: `Wan 2.7 Image (wan-2-7-image): Prompt up to 5000 characters (Chinese/English). Optional input_urls (up to 9). Without input images: aspect ratios 1:1, 16:9, 4:3, 21:9, 3:4, 9:16, 8:1, 1:8; resolution 1K/2K; n 1–4 (or 1–12 in sequential mode). Optional thinking mode, color palette, bbox regions, watermark, seed.
 
-Model: Fixed to wan-2-7-image.
+Wan 2.7 Image Pro (wan-2-7-image-pro): Same as Image plus 4K when no input image and sequential mode is off.
 
-Prompt: Chinese/English supported, up to 5000 characters.
+Wan 2.6 Text to Video (wan-2-6-text-to-video): Prompt 1–5000 characters. Duration 5/10/15s. Resolution 720p/1080p. Multi-shot on/off.
 
-Input: Optional input_urls (up to 9 images). If input images are provided, aspect ratio is hidden and not sent.
+Wan 2.6 Image to Video (wan-2-6-image-to-video): Image URL(s) (min 256×256px; JPEG, PNG, WebP; max 10MB) + prompt. Duration 5/10/15s. Resolution 720p/1080p. Multi-shot on/off.
 
-Aspect ratio (no input image): 1:1, 16:9, 4:3, 21:9, 3:4, 9:16, 8:1, 1:8.
+Wan 2.6 Video to Video (wan-2-6-video-to-video): Video URL (MP4, MOV, MKV; max 10MB) + prompt. Output duration 5 or 10s (15s selection maps to 10s). Resolution 720p/1080p. Multi-shot on/off.
 
-Sequential mode: enable_sequential false by default. When false, n range is 1–4 (default 4). When true, n range is 1–12 (default 12).
+Wan 2.7 Text to Video (wan-2-7-text-to-video): Prompt 3–5000 characters. Optional negative prompt and audio URL. Duration 2–15s. Resolution 720p/1080p. Aspect ratio 16:9, 9:16, 1:1, 4:3, 3:4. Prompt extend, watermark, seed.
 
-Resolution: 1K or 2K.
+Wan 2.7 Image to Video (wan-2-7-image-to-video): Prompt 3–5000; at least one of first frame, last frame, reference clip, or driving audio. Duration 2–15s. Resolution 720p/1080p.
 
-Thinking mode: Available only when enable_sequential=false and no input_urls.
+Wan 2.7 Video Edit (wan-2-7-videoedit): Video URL + prompt 3–5000. Duration 0 or 2–10s. Resolution 720p/1080p. Optional reference image; audio setting auto or origin.
 
-Advanced controls: optional color_palette (3–10 colors, only when non-sequential), optional bbox_list for interactive edit regions, watermark toggle, seed 0–2147483647.
-
-Use cases: poster generation, product visual variants, style-consistent batch assets, guided local edits.
-
-Wan 2.7 Image Pro
-
-Model: Fixed to wan-2-7-image-pro.
-
-Same controls as Wan 2.7 Image, with extended resolution support: 1K / 2K / 4K.
-
-4K constraint: valid only when no input image and sequential mode is disabled.
-
-Use cases: high-resolution campaign key visuals, premium product renders, print-friendly hero assets.
-
-Text to Video
-
-Prompt: Natural language in Chinese or English, 1–5000 characters.
-
-Duration: 5 seconds (quick loops), 10 seconds (standard clips), or 15 seconds (extended scenes).
-
-Resolution: 720p (fast, web-optimized) or 1080p (Full HD, higher detail).
-
-Shot composition: Single continuous shot for simplicity, or multi-shot with transitions for narrative flow.
-
-Use cases: Concept visualization, ad creatives, social media content, storyboarding.
-
-Image to Video
-
-Input: Image URL(s) required; minimum 256×256px; formats JPEG, PNG, WebP; max 10MB per image.
-
-Prompt: Describe the animation, motion, or scene evolution (1–5000 characters).
-
-Duration: 5, 10, or 15 seconds.
-
-Resolution: 720p or 1080p.
-
-Shot composition: Same multi-shot controls as text-to-video.
-
-Use cases: Animating illustrations, product demos, character movement, bringing concept art to life.
-
-Video to Video
-
-Input: Video URL required; formats MP4, MOV, MKV; max 10MB.
-
-Prompt: Describe the transformation—style transfer, content change, mood shift, etc. (1–5000 characters).
-
-Duration: 5 or 10 seconds (output length may differ from input).
-
-Resolution: 720p or 1080p.
-
-Shot composition: Single or multi-shot, with ability to reinterpret original footage.
-
-Use cases: Restyling existing content, adapting videos for different platforms, creative remixing, consistent brand video generation.`
-      },
-      {
-        title: 'Use cases',
-        content: `Image campaign production: Build social posters, ad variants, product galleries, and style-matched visual sets with Wan 2.7 Image / Image Pro.
-
-High-res hero assets: Use Wan 2.7 Image Pro (4K in eligible conditions) for launch banners, e-commerce covers, and high-impact brand creatives.
-
-Social media content: Generate short videos for TikTok, Instagram Reels, YouTube Shorts—in the right duration and resolution.
-
-Advertising and marketing: Create product demos, brand stories, and promotional clips from text briefs or existing assets.
-
-Creative projects: Animate illustrations, bring storyboards to life, experiment with video styles and transitions.
-
-Educational content: Produce explainer videos, visual aids, and short tutorials without complex editing software.
-
-Concept validation: Quickly visualize video ideas before committing to full production.
-
-Content adaptation: Transform existing videos for different audiences, platforms, or brand guidelines.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Text-to-video generation: 30–90 seconds for 5s clips, 60–180 seconds for 15s clips (dependent on resolution and shot complexity).
-
-Image-to-video: 40–120 seconds; image complexity and desired motion affect speed.
-
-Video-to-video: 60–180 seconds; depends on input length, transformation complexity, and resolution.
-
-Concurrency: Supports 50+ parallel requests with intelligent queue management.
-
-Prompt length: Up to 5000 characters across all modes.
-
-Input formats: JPEG, PNG, WebP for images; MP4, MOV, MKV for videos (max 10MB each).
-
-Output: MP4 format, delivered via secure URL or direct download.`
+Wan 2.7 R2V (wan-2-7-r2v): Prompt 3–5000; up to 5 reference images/videos combined. Duration 2–10s. Optional first frame and reference voice; aspect ratio omitted when first frame is set.`
       },
       {
         title: 'Workflow',
-        content: `Image workflow (Wan 2.7 Image / Pro): Write prompt → (optional) upload input image(s) → set n / resolution / sequential / optional advanced controls → generate → pick best outputs.
+        content: `Choose a version: Wan 2.6 for quick text/image/video-to-video clips with multi-shot; Wan 2.7 when you need frame control, natural-language edit, or multi-reference R2V.
 
-Quick create (text-to-video): Write prompt → choose duration/resolution/shot style → generate → preview → iterate with refined prompt or parameters.
+Image: Open Wan 2.7 Image or Image Pro → write prompt → (optional) upload references → set resolution, batch, and advanced options → generate.
 
-Animate assets (image-to-video): Upload image → describe desired motion → set parameters → generate multiple variations → select best animation.
+Wan 2.6 video: Pick Text to Video, Image to Video, or Video to Video → provide prompt and media → set duration, resolution, multi-shot → submit → download from history.
 
-Transform footage (video-to-video): Upload video → describe transformation → choose duration/resolution → generate → review → refine prompt if needed.
+Wan 2.7 video: Pick Text to Video, Image to Video, Video Edit, or R2V → match required inputs (frames, footage, or references) → set duration and quality → submit → iterate with refined prompts.
 
-Batch production: Plan content calendar → generate multiple videos with consistent parameters → unify style across campaign assets.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Image prompt crafting (2.7 Image / Pro): Specify subject, style, composition, and constraints; for edit tasks, clearly state what to change and what to preserve.
-
-Prompt crafting: Be specific about motion, scene changes, and style. Example: "A product rotating slowly on a white background, studio lighting, smooth 360-degree view" vs. just "product video."
-
-Duration strategy: Use 5s for loops and quick social clips; 10–15s for storytelling or demonstrations.
-
-Resolution choice: 720p for drafts, quick reviews, and web-first content; 1080p for final assets, presentations, and HD platforms. For 2.7 image workflows, use 1K/2K by default; use 4K (Pro only) when no input image and sequential is off.
-
-Shot composition: Single shot works best for focused subjects; multi-shot adds narrative depth—use when you need scene changes or progression.
-
-Image quality: For image-to-video, higher resolution inputs (ideally 1024×1024 or larger) yield smoother animations.
-
-Video-to-video prompts: Be explicit about what to change—style, mood, objects, background—and what to preserve.
-
-Cost efficiency: Match duration and resolution to platform requirements; batch similar requests to reuse parameters.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Unified image + video stack: Generate high-quality visuals with Wan 2.7 Image / Pro, then extend the same idea into motion with Wan video models.
-
-Multilingual support: Generate from prompts in Chinese or English—seamless for global teams.
-
-Flexible input modes: Text, image, or video—start from wherever your creative process begins.
-
-Duration control: 5, 10, or 15 seconds—fit any platform's requirements.
-
-HD quality: Up to 1080p for video outputs and up to 4K (Wan 2.7 Image Pro in eligible scenarios) for image outputs.
-
-Shot composition: Single or multi-shot—choose the right narrative structure.
-
-Ease of use: Intuitive parameters, no video editing expertise required.
-
-Best for: Social media managers, marketers, designers, content creators, educators, advertisers, and anyone needing fast, high-quality image + video generation.`
+All workflows run in the browser on FuseAITools with credit-based pricing—no local GPU required.`
       },
       {
         title: 'Try Wan on FuseAITools',
-        content: `Wan on FuseAITools makes both image and video creation as simple as writing a sentence. Start with Wan 2.7 Image / Image Pro for key visuals, then move into T2V/I2V/V2V for motion outputs. With controls for ratio, batch size, sequential mode, quality, and advanced edits, Wan is a practical all-in-one visual generation stack for modern teams.`
+        content: `Wan on FuseAITools is your hub for Alibaba Wan image and video models. Start with Wan 2.7 Image / Image Pro for stills, use Wan 2.6 for fast multi-shot video from text, images, or footage, and step up to Wan 2.7 for editing and up-to-five-reference R2V. New users receive 20 free credits on sign-up—open any workflow card above or see pricing for credit packs.`
       }
     ]
   },

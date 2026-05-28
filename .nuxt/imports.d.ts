@@ -43,6 +43,7 @@ export { useRecordPolling } from '../composables/useRecordPolling';
 export { useToast } from '../composables/useToast';
 export { useToolOverviewPage } from '../composables/useToolOverviewPage';
 export { useToolSEO, useToolSEOAsync } from '../composables/useToolSEO';
+export { useToolSeoFaqSchema } from '../composables/useToolSeoFaqSchema';
 export { useToolSeoPageScroll } from '../composables/useToolSeoPageScroll';
 export { useUserDetail } from '../composables/useUserDetail';
 export { parseStandardApiJson, getFetchErrorMessage } from '../utils/parseStandardApiResponse';
