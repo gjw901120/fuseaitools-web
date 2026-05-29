@@ -2,8 +2,10 @@
   <section class="image-gallery">
     <div class="simply-container">
       <div class="gallery-header">
-        <h2 class="gallery-title">Product Showcase</h2>
-        <p class="gallery-description">Explore our AI tools and features</p>
+        <h2 class="gallery-title">100+ AI Models on FuseAI Tools</h2>
+        <p class="gallery-description">
+          Chat, image, video, and audio tools in one place—open a model hub below to generate with credits shown before each run.
+        </p>
       </div>
       
       <div class="gallery-categories">

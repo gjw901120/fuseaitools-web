@@ -8,8 +8,8 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 
 - [Home](https://fuseaitools.com/): Marketing homepage, product overview, and FAQ.
 - [AI Tools Hub](https://fuseaitools.com/home): Launch pad for all integrated AI tools.
-- [Pricing](https://fuseaitools.com/pricing): Subscription plans, credits, and top-up options.
-- [About](https://fuseaitools.com/about): Company and contact information.
+- [Pricing](https://fuseaitools.com/pricing): Subscription plans, credit top-ups, and 20 free credits on sign-up.
+- [About](https://fuseaitools.com/about): Platform overview, contact, and 20 free credits on sign-up.
 - [News](https://fuseaitools.com/news): Tutorials, comparisons, and product updates.
 
 ## Chat

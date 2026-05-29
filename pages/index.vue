@@ -29,14 +29,14 @@ useHead({
     { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://fuseaitools.com' },
-    { property: 'og:image', content: 'https://fuseaitools.com/og-image.jpg' },
+    { property: 'og:image', content: 'https://fuseaitools.com/logo-wide.png' },
     { property: 'og:site_name', content: 'FuseAI Tools' },
     { property: 'og:locale', content: 'en_US' },
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: 'AI Tools Free | FuseAI Tools - 20 Credits on Sign Up' },
     { name: 'twitter:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free.' },
-    { name: 'twitter:image', content: 'https://fuseaitools.com/og-image.jpg' },
+    { name: 'twitter:image', content: 'https://fuseaitools.com/logo-wide.png' },
     // Additional meta tags
     { name: 'author', content: 'FuseAI Tools' },
     { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
@@ -55,11 +55,8 @@ useHead({
         "@type": "Organization",
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
-        "logo": "https://fuseaitools.com/favicon.png",
+        "logo": "https://fuseaitools.com/logo-wide.png",
         "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, ElevenLabs, Suno and more.",
-        "sameAs": [
-          // Add social media links if available
-        ],
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "Customer Service",
@@ -74,30 +71,7 @@ useHead({
         "@type": "WebSite",
         "name": "FuseAI Tools",
         "url": "https://fuseaitools.com",
-        "description": "AI tools free: 100+ AI models in one platform. Sign up for 20 free credits.",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://fuseaitools.com/search?q={search_term_string}"
-          },
-          "query-input": "required name=search_term_string"
-        }
-      })
-    },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://fuseaitools.com"
-          }
-        ]
+        "description": "AI tools free: 100+ AI models in one platform. Sign up for 20 free credits."
       })
     }
     // FAQPage 仅由 FAQSection 组件输出，避免重复导致 Google 富媒体结果无效

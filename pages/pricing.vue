@@ -6,7 +6,7 @@
         <div class="hero-content">
           <h1 class="hero-title">Plans & Pricing</h1>
           <p class="hero-subtitle">
-            Choose the perfect plan for your needs. All plans include our core AI features.
+            Choose the plan that fits your workflow. New users get <strong>20 free credits</strong> on sign-up—no card required to start.
           </p>
         </div>
       </div>
@@ -54,7 +54,7 @@
             <!-- Points Information -->
             <div class="points-info">
               <div class="points-row">
-                <span class="points-label">Base Points:</span>
+                <span class="points-label">Base Credits:</span>
                 <span class="points-value">{{ getCurrentPricing('basic').points }}</span>
               </div>
               <div class="points-row">
@@ -62,11 +62,11 @@
                 <span class="points-value bonus">{{ getCurrentPricing('basic').bonusPercent }}%</span>
               </div>
               <div class="points-row">
-                <span class="points-label">Bonus Points:</span>
+                <span class="points-label">Bonus Credits:</span>
                 <span class="points-value bonus">+{{ getCurrentPricing('basic').bonusPoints }}</span>
               </div>
               <div class="points-row total">
-                <span class="points-label">Total Points:</span>
+                <span class="points-label">Total Credits:</span>
                 <span class="points-value total-value">{{ getCurrentPricing('basic').totalPoints }}</span>
               </div>
             </div>
@@ -105,7 +105,7 @@
             <!-- Points Information -->
             <div class="points-info">
               <div class="points-row">
-                <span class="points-label">Base Points:</span>
+                <span class="points-label">Base Credits:</span>
                 <span class="points-value">{{ getCurrentPricing('pro').points }}</span>
               </div>
               <div class="points-row">
@@ -113,11 +113,11 @@
                 <span class="points-value bonus">{{ getCurrentPricing('pro').bonusPercent }}%</span>
               </div>
               <div class="points-row">
-                <span class="points-label">Bonus Points:</span>
+                <span class="points-label">Bonus Credits:</span>
                 <span class="points-value bonus">+{{ getCurrentPricing('pro').bonusPoints }}</span>
               </div>
               <div class="points-row total">
-                <span class="points-label">Total Points:</span>
+                <span class="points-label">Total Credits:</span>
                 <span class="points-value total-value">{{ getCurrentPricing('pro').totalPoints }}</span>
               </div>
             </div>
@@ -156,7 +156,7 @@
             <!-- Points Information -->
             <div class="points-info">
               <div class="points-row">
-                <span class="points-label">Base Points:</span>
+                <span class="points-label">Base Credits:</span>
                 <span class="points-value">{{ getCurrentPricing('ultra').points }}</span>
               </div>
               <div class="points-row">
@@ -164,11 +164,11 @@
                 <span class="points-value bonus">{{ getCurrentPricing('ultra').bonusPercent }}%</span>
               </div>
               <div class="points-row">
-                <span class="points-label">Bonus Points:</span>
+                <span class="points-label">Bonus Credits:</span>
                 <span class="points-value bonus">+{{ getCurrentPricing('ultra').bonusPoints }}</span>
               </div>
               <div class="points-row total">
-                <span class="points-label">Total Points:</span>
+                <span class="points-label">Total Credits:</span>
                 <span class="points-value total-value">{{ getCurrentPricing('ultra').totalPoints }}</span>
               </div>
             </div>
@@ -182,11 +182,11 @@
           </div>
         </div>
 
-        <!-- Points Explanation -->
+        <!-- Credits Explanation -->
         <div class="points-explanation">
           <p class="explanation-text">
             <i class="fas fa-info-circle"></i>
-            Points conversion rate: $1 = 100 points (e.g., $9.9 = 990 points)
+            Credits conversion rate: $1 = 100 credits (e.g., $9.9 = 990 credits)
           </p>
           <p class="discount-explanation">
             <i class="fas fa-info-circle"></i>
@@ -269,12 +269,37 @@
 </template>
 
 <script setup>
-// 设置页面标题
+// 设置页面 SEO
+const siteUrl = 'https://fuseaitools.com'
+const pricingCanonical = `${siteUrl}/pricing`
+
 useHead({
-  title: 'Pricing - FuseAI Tools',
+  title: 'Pricing & Credits - FuseAI Tools | Plans & Top-Up',
   meta: [
-    { name: 'description', content: 'Choose the perfect plan for your AI needs. Simple, transparent pricing with no hidden fees.' }
-  ]
+    {
+      name: 'description',
+      content:
+        'FuseAI Tools pricing: Basic, Pro, and Ultra plans with credit top-ups. $1 = 100 credits. New users get 20 free credits on sign-up. Member discounts on all AI models.'
+    },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
+    { property: 'og:title', content: 'Pricing & Credits | FuseAI Tools' },
+    {
+      property: 'og:description',
+      content: 'Subscription plans and credit top-ups for 100+ AI models. 20 free credits for new users.'
+    },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: pricingCanonical },
+    { property: 'og:image', content: `${siteUrl}/logo-wide.png` },
+    { property: 'og:site_name', content: 'FuseAI Tools' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Pricing & Credits | FuseAI Tools' },
+    {
+      name: 'twitter:description',
+      content: 'Plans, top-ups, and 20 free credits on sign-up for FuseAI Tools.'
+    },
+    { name: 'twitter:image', content: `${siteUrl}/logo-wide.png` }
+  ],
+  link: [{ rel: 'canonical', href: pricingCanonical }]
 })
 
 const { post } = useApi()
@@ -598,21 +623,35 @@ const faqs = ref([
     isOpen: false
   },
   {
-    question: 'Is there a free trial/experience?',
-    answer: '<ul><li>Register now and get 20 points immediately.</li><li>These points can be used to enjoy all AI models on the platform without the need to bind a payment method or subscribe to any package.</li></ul>',
+    question: 'Is there a free trial or sign-up bonus?',
+    answer:
+      '<ul><li>Register and get <strong>20 free credits</strong> immediately.</li><li>Use credits across chat, image, video, and audio models—no payment method or subscription required to start.</li></ul>',
+    isOpen: false
+  },
+  {
+    question: 'How do credits work on FuseAI Tools?',
+    answer:
+      '<p>Each generation shows the <strong>credits required</strong> on the tool page before you submit. Video tools (e.g., Wan, HappyHorse) typically charge by duration and resolution; image and chat tools charge per run or per token rule. Member plans apply discounts (Basic 98%, Pro 95%, Ultra 88% of list price).</p>',
     isOpen: false
   },
   {
     question: 'How does billing and subscription work?',
-    answer: '<p>We offer flexible and transparent billing methods to help you manage easily:</p><h4>1. Subscription period</h4><ul><li>Annual subscription package: Paid annually, benefits are distributed monthly.</li><li>Monthly/Weekly Payment Plan: The period lasts until the subscription expires.</li></ul><h4>2. Points Rules</h4><ul><li>The points purchased individually are valid indefinitely and do not expire.</li><li>If there are both subscription benefits and purchase points in the account, the system will prioritize the deduction of subscription benefits.</li></ul><h4>3. Self-management</h4><ul><li>You can cancel or change your subscription at any time in the account settings. Once cancelled, the benefits will remain available until the end of the current period.</li></ul>',
+    answer:
+      '<p>We offer flexible and transparent billing:</p><h4>1. Subscription period</h4><ul><li>Annual plans: paid once per year; benefits are distributed monthly.</li><li>Monthly/weekly plans: active until the period ends.</li></ul><h4>2. Credit rules</h4><ul><li>Top-up credits you purchase separately do not expire.</li><li>If your account has both subscription benefits and purchased credits, subscription benefits are used first.</li></ul><h4>3. Self-management</h4><ul><li>Cancel or change your subscription anytime in account settings. Benefits remain until the current period ends.</li></ul>',
     isOpen: false
   },
   {
     question: 'What is your refund policy?',
-    answer: '<p>We offer clear and reasonable refund guarantees:</p><h4>Annual subscription refund</h4><p>All fees from the next billing cycle will be refunded. The current cycle will deduct the corresponding value of the consumed points.</p><h4>Refund for monthly/weekly payment plans</h4><p>After deducting the value of the consumed points, the remaining fee will be refunded.</p><h4>Points recharge and refund</h4><p>The remaining balance will be refunded after deducting the value of consumed points; if the points include a gift portion, the gift amount will be deducted first.</p><h4>Uniform rule</h4><p>If any refund involves the distribution of benefits, the corresponding amount will be deducted proportionally.</p>',
+    answer:
+      '<p>We offer clear refund guarantees:</p><h4>Annual subscription refund</h4><p>Fees from the next billing cycle are refunded. The current cycle deducts the value of consumed credits.</p><h4>Monthly/weekly refund</h4><p>After deducting consumed credits, the remaining fee is refunded.</p><h4>Credit top-up refund</h4><p>The remaining balance is refunded after deducting consumed credits; bonus credits are deducted first if included.</p><h4>Uniform rule</h4><p>If a refund involves distributed benefits, the corresponding amount is deducted proportionally.</p>',
     isOpen: false
   }
 ])
+
+const faqsForSchema = computed(() =>
+  faqs.value.map((faq) => ({ question: faq.question, answer: faq.answer }))
+)
+useToolSeoFaqSchema(faqsForSchema)
 
 const toggleFaq = (index) => {
   faqs.value[index].isOpen = !faqs.value[index].isOpen

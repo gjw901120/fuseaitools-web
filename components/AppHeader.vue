@@ -5,7 +5,7 @@
     <ClientOnly>
       <div v-if="!isAuthenticated" class="top-banner">
         <div class="top-banner-content">
-          Sign up and get 20 credits — use all models on the platform for free.
+          Sign up and get 20 free credits — try 100+ AI models in your browser.
         </div>
       </div>
     </ClientOnly>

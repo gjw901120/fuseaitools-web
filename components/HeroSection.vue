@@ -8,7 +8,7 @@
             <span class="gradient-text">100+ AI Models & Tools Free</span>
           </h1>
           <p class="hero-description">
-            Access over 100 AI models and tools in one platform—Chat, Image, Audio, and Video. Everything you need to work smarter.
+            Access 100+ AI models in one browser workspace—Chat, Image, Audio, and Video. Start with free signup credits; pay per generation with flexible plans.
           </p>
           <p class="hero-credits">
             <strong>Register now and get <span class="credits-highlight">20 credits free</span>.</strong> No credit card required.

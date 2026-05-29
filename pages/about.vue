@@ -4,9 +4,9 @@
     <section class="hero-section">
       <div class="simply-container">
         <div class="hero-content">
-          <h1 class="hero-title">About Fuse AI Tools</h1>
+          <h1 class="hero-title">About FuseAI Tools</h1>
           <p class="hero-subtitle">
-            A platform that collects various practical AI tools, committed to providing users with the best AI tool experience.
+            FuseAI Tools integrates 100+ AI models for chat, image, video, and audio in one browser workspace—with credit-based pricing and 20 free credits on sign-up.
           </p>
         </div>
       </div>
@@ -17,14 +17,24 @@
       <div class="simply-container">
         <div class="content-wrapper">
           <h2>Our Mission</h2>
-          <p>Fuse AI Tools is committed to providing users with the most comprehensive and practical AI tool collection, enabling everyone to easily use artificial intelligence technology to improve work efficiency and creativity.</p>
-          
+          <p>
+            FuseAI Tools helps creators, teams, and businesses use leading AI models without juggling multiple subscriptions or local GPU setups. We curate chat, image, video, and audio workflows—from GPT and Claude to Wan, HappyHorse, Veo3, Suno, and ElevenLabs—and show the credits required before each generation.
+          </p>
+
+          <h2>What We Offer</h2>
+          <ul>
+            <li><strong>100+ integrated models</strong> across chat, image, video, and audio</li>
+            <li><strong>Credit-based billing</strong> with plans, top-ups, and member discounts—see <NuxtLink to="/pricing" class="about-inline-link">pricing</NuxtLink></li>
+            <li><strong>20 free credits</strong> for new users to try models without a payment method</li>
+            <li><strong>Tutorials and updates</strong> on our <NuxtLink to="/news" class="about-inline-link">News</NuxtLink> hub</li>
+          </ul>
+
           <h2>Why Choose Us</h2>
           <ul>
-            <li>Curated high-quality AI tools, rigorously screened</li>
-            <li>Continuous updates, keeping up with AI technology developments</li>
-            <li>Detailed usage guides and tutorials</li>
-            <li>User-friendly interface design</li>
+            <li>One workspace for production-ready tools—not a loose link directory</li>
+            <li>Transparent credits shown on each tool page before you generate</li>
+            <li>Continuous model updates; explore everything from the <NuxtLink to="/home" class="about-inline-link">AI tools hub</NuxtLink></li>
+            <li>English-first support with a 12-hour response commitment</li>
           </ul>
           
           <h2>Contact Us</h2>
@@ -53,7 +63,7 @@
                 </div>
                 <h3>Feedback & Suggestions</h3>
                 <p class="contact-description">
-                  Share your ideas, feature requests, or suggestions to help us improve and enhance your experience on Fuse AI Tools.
+                  Share your ideas, feature requests, or suggestions to help us improve FuseAI Tools.
                 </p>
                 <a href="mailto:support@fuseaitools.com" class="contact-email">
                   support@fuseaitools.com
@@ -75,6 +85,65 @@
     </section>
   </div>
 </template>
+
+<script setup>
+const siteUrl = 'https://fuseaitools.com'
+const aboutCanonical = `${siteUrl}/about`
+
+useHead({
+  title: 'About FuseAI Tools | AI Platform for Chat, Image, Video & Audio',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'FuseAI Tools integrates 100+ AI models for chat, image, video, and audio. Credit-based pricing with 20 free credits on sign-up. Contact service@fuseaitools.com.'
+    },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
+    { property: 'og:title', content: 'About FuseAI Tools' },
+    {
+      property: 'og:description',
+      content: '100+ AI models, credit-based pricing, and 20 free credits for new users.'
+    },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: aboutCanonical },
+    { property: 'og:image', content: `${siteUrl}/logo-wide.png` },
+    { property: 'og:site_name', content: 'FuseAI Tools' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'About FuseAI Tools' },
+    {
+      name: 'twitter:description',
+      content: 'Learn about FuseAI Tools—integrated AI chat, image, video, and audio.'
+    },
+    { name: 'twitter:image', content: `${siteUrl}/logo-wide.png` }
+  ],
+  link: [{ rel: 'canonical', href: aboutCanonical }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        name: 'About FuseAI Tools',
+        url: aboutCanonical,
+        description:
+          'FuseAI Tools is an all-in-one AI platform with 100+ models and credit-based pricing.',
+        mainEntity: {
+          '@type': 'Organization',
+          name: 'FuseAI Tools',
+          url: siteUrl,
+          logo: `${siteUrl}/logo-wide.png`,
+          contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'Customer Service',
+            email: 'service@fuseaitools.com',
+            availableLanguage: 'English'
+          }
+        }
+      })
+    }
+  ]
+})
+</script>
 
 <style scoped>
 .about-page {
@@ -177,6 +246,17 @@
 .content-wrapper li {
   margin-bottom: 0.5rem;
   color: var(--flux-muted, hsl(215, 12%, 62%));
+}
+
+.about-inline-link {
+  color: var(--flux-primary, hsl(173, 80%, 40%));
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.about-inline-link:hover {
+  color: var(--flux-primary-hover, hsl(173, 80%, 48%));
+  text-decoration: underline;
 }
 
 /* Contact Section */

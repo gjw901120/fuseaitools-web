@@ -34,23 +34,28 @@ import { ref, computed } from 'vue'
 // FAQ数据
 const faqItems = ref([
   {
-    question: "What is FuseAI?",
-    answer: "<p>FuseAI is an integrated artificial intelligence platform that brings together various cutting-edge AI tools, including chat, image generation, audio processing, and video creation. The platform's objective is to enable users to easily access and utilize the most comprehensive AI capabilities from a single location.</p>",
+    question: "What is FuseAI Tools?",
+    answer: "<p>FuseAI Tools is an integrated AI platform with 100+ models for chat, image, video, and audio. Use everything in the browser with credit-based pricing—new users receive <strong>20 free credits</strong> on sign-up.</p>",
     isOpen: true
   },
   {
-    question: "How to use FuseAI?",
-    answer: "<p>Users can access the platform simply by completing registration. Upon registration, users can enjoy over 100 professional AI models and tools. FuseAI is designed to meet various needs, whether it's getting inspiration through intelligent dialogue, creating visual works with text-to-image tools, processing and optimizing audio, or generating high-quality video content.</p>",
+    question: "How do I use FuseAI Tools?",
+    answer: "<p>Register for free, then open any tool from the <a href=\"/home\">AI tools hub</a>. Each workflow shows the credits required before you generate. No local GPU or separate installs are needed.</p>",
     isOpen: false
   },
   {
-    question: "Is FuseAI free?",
-    answer: "<p>Yes, FuseAI offers flexible experience plans:</p><ul><li><strong>Free Experience:</strong> Users who register receive 20 points, which allows them to experience all models on the site without barriers.</li><li><strong>Paid Plans:</strong> There are multiple subscription plans designed to provide more substantial point quotas and exclusive discounts, catering to high-frequency and professional users.</li><li><strong>Additional Option:</strong> The platform also supports direct top-up of points for on-demand usage.</li></ul>",
+    question: "Is FuseAI Tools free?",
+    answer: "<p>Yes—you can start for free:</p><ul><li><strong>Free sign-up:</strong> New users receive <strong>20 free credits</strong> to try models across chat, image, video, and audio—no payment method required.</li><li><strong>Subscriptions:</strong> Basic, Pro, and Ultra plans include monthly credits and member discounts on generations.</li><li><strong>Top-up:</strong> Buy additional credits anytime on our <a href=\"/pricing\">pricing page</a>.</li></ul>",
     isOpen: false
   },
   {
-    question: "How does FuseAI work?",
-    answer: "<p>The core of FuseAI lies in its powerful model integration. It seamlessly integrates industry-leading AI technologies, providing examples for different functionalities:</p><ul><li><strong>Dialogue and Reasoning:</strong> ChatGPT, Claude, Gemini, etc.</li><li><strong>Image Generation:</strong> Flux Kontext, Ideogram, GPT Image, and more.</li><li><strong>Audio Processing:</strong> Suno, ElevenLabs, etc.</li><li><strong>Video Generation:</strong> Veo3, Runway, Luma, Sora, etc.</li></ul><p>Through a unified, user-friendly interface, we integrate these scattered cutting-edge capabilities into a coherent workflow, providing you with a one-stop AI solution.</p>",
+    question: "How does pricing work?",
+    answer: "<p>Generations consume <strong>credits</strong> from your balance. Subscription plans include credits plus lower per-generation rates; you can also top up credits separately. See <a href=\"/pricing\">pricing</a> for plans, conversion ($1 = 100 credits), and member discounts.</p>",
+    isOpen: false
+  },
+  {
+    question: "Which AI models are available?",
+    answer: "<p>FuseAI Tools integrates leading models across categories, for example:</p><ul><li><strong>Chat:</strong> ChatGPT, Claude, Gemini, DeepSeek</li><li><strong>Image:</strong> Flux Kontext, Ideogram, GPT Image, Wan 2.7, Seedream, and more</li><li><strong>Audio:</strong> Suno, ElevenLabs</li><li><strong>Video:</strong> Veo3, Wan, HappyHorse, Runway, Luma, Sora, Seedance, Kling, and more</li></ul><p>Browse the full list from the <a href=\"/home\">tools hub</a> or read tutorials on <a href=\"/news\">News</a>.</p>",
     isOpen: false
   }
 ])
@@ -216,6 +221,16 @@ const toggleFAQ = (index) => {
 .faq-content strong {
   font-weight: 600;
   color: var(--flux-foreground);
+}
+
+.faq-content a {
+  color: var(--flux-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.faq-content a:hover {
+  text-decoration: underline;
 }
 
 @keyframes slideDown {
