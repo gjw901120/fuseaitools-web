@@ -7,26 +7,21 @@
 </template>
 
 <script setup>
-// 首页整合所有主要组件
-const route = useRoute()
-const router = useRouter()
-const { login } = useAuth()
-
 // SEO 配置：突出 AI tools free、注册送 20 credits
 useHead({
   title: 'AI Tools Free - FuseAI Tools | 100+ AI Models, 20 Credits on Sign Up',
   meta: [
     { 
       name: 'description', 
-      content: 'AI tools free: access 100+ AI models in one platform—ChatGPT, Claude, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more. Register now and get 20 credits free. Free AI chat, image, video, and audio tools.' 
+      content: 'AI tools free: access 100+ AI models in one platform—ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more. Register now and get 20 credits free. Free AI chat, image, video, and audio tools.' 
     },
     { 
       name: 'keywords', 
-      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 20 credits free' 
+      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 20 credits free' 
     },
     // Open Graph tags
     { property: 'og:title', content: 'AI Tools Free | FuseAI Tools - 20 Credits on Sign Up' },
-    { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
+    { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://fuseaitools.com' },
     { property: 'og:image', content: 'https://fuseaitools.com/logo-wide.png' },

@@ -190,7 +190,7 @@
           </p>
           <p class="discount-explanation">
             <i class="fas fa-info-circle"></i>
-            Subscription benefits: Basic plan users enjoy 98% pricing on all models, Pro plan users enjoy 95% pricing, and Ultra plan users enjoy 88% pricing.
+            Subscription benefits: Basic members pay 98% of list price, Pro members pay 95%, and Ultra members pay 88% on all models.
           </p>
         </div>
       </div>
@@ -708,12 +708,17 @@ const subscribePlan = (index) => {
 }
 
 .hero-subtitle {
-  font-size: 2.25rem;
+  font-size: 1.125rem;
   color: hsla(0, 0%, 98%, 0.85);
-  max-width: 900px;
-  margin: 0 auto;
-  line-height: 1.5;
-  text-align: center;
+  max-width: 720px;
+  margin: 0;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.hero-subtitle strong {
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
+  font-weight: 600;
 }
 
 /* Pricing Plans */
