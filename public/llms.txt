@@ -2,7 +2,7 @@
 
 > FuseAITools is an all-in-one AI platform with 100+ models for chat, image, video, and audio. Use tools in the browser with credit-based pricing; new users receive 20 free credits on sign-up. This file lists the most useful public pages for understanding our products and workflows.
 
-FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://fuseaitools.com/robots.txt).
+FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Seedance, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://fuseaitools.com/robots.txt).
 
 ## Core pages
 
@@ -65,7 +65,21 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 - [Runway](https://fuseaitools.com/home/runway): Runway video generation overview.
 - [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
 - [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
-- [Seedance](https://fuseaitools.com/home/seedance): Seedance video models overview.
+
+## Video — Seedance
+
+Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro (4/8/12s with optional audio), and Seedance 2 multimodal (4–15s, first/last frame, reference media).
+
+- [Seedance Overview](https://fuseaitools.com/home/seedance): Eight workflows from v1 Lite/Pro through Seedance 2; 20 free credits on sign-up.
+- [Seedance v1 Lite Text to Video](https://fuseaitools.com/home/seedance/v1-lite-text-to-video): Text-to-video with 16:9–9:21 ratios, 480p–1080p, 5s/10s.
+- [Seedance v1 Lite Image to Video](https://fuseaitools.com/home/seedance/v1-lite-image-to-video): Animate one image with optional end frame.
+- [Seedance v1 Pro Text to Video](https://fuseaitools.com/home/seedance/v1-pro-text-to-video): Pro T2V with 21:9 ultra-wide support.
+- [Seedance v1 Pro Image to Video](https://fuseaitools.com/home/seedance/v1-pro-image-to-video): Pro image animation with full controls.
+- [Seedance v1 Pro Fast Image to Video](https://fuseaitools.com/home/seedance/v1-pro-fast-image-to-video): Speed-optimized I2V at 720p/1080p.
+- [Seedance 1.5 Pro](https://fuseaitools.com/home/seedance/v1-5-pro): Unified T2V/I2V with optional audio, 4/8/12s.
+- [Seedance 2 Fast](https://fuseaitools.com/home/seedance/v2-fast): Multimodal video with up to 3 reference videos.
+- [Seedance 2](https://fuseaitools.com/home/seedance/v2): Full multimodal with up to 5 reference videos.
+
 - [Hailuo](https://fuseaitools.com/home/hailuo): Hailuo image-to-video overview.
 - [Grok Video](https://fuseaitools.com/home/grok): Grok image and video tools overview.
 

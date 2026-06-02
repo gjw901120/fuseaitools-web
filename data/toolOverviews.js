@@ -1593,135 +1593,49 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedance is a multimodal AI video model by ByteDance that generates consistent, cinematic videos with strong multi-shot consistency and native audio using text, image, video, and audio references.',
+    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro and Seedance 2—eight workflows for text, image, and multimodal generation. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4/8/12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s. Credits are shown before each run. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Fast, efficient text-to-video generation. Choose aspect ratios from 16:9 to 9:21, resolution up to 1080p, duration 5 or 10 seconds. Fixed camera option, seed control, and safety checker included.' },
-      { name: 'v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate images quickly with optional end image for controlled transitions. Same resolution, duration, and camera controls as Lite Text to Video. Ideal for rapid prototyping and social content.' },
-      { name: 'v1 Pro Text to Video', path: '/home/seedance/v1-pro-text-to-video', description: 'Professional text-to-video with expanded aspect ratios (21:9 to 9:16). Choose 480p/720p/1080p, 5s/10s duration, seed control, and safety checker. Higher quality output for production-ready assets.' },
-      { name: 'v1 Pro Image to Video', path: '/home/seedance/v1-pro-image-to-video', description: 'Professional image animation with enhanced quality and detail. Full resolution and duration options, camera control, seed, and safety checker. Perfect for brand content and creative projects.' },
-      { name: 'v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Ultra-fast image-to-video generation without compromising quality. 720p or 1080p resolution, 5s or 10s duration, and support for prompts up to 10,000 characters. Optimized for speed when you need results now.' },
-      { name: 'v1.5 Pro', path: '/home/seedance/v1-5-pro', description: 'Text-to-video or image-to-video in one mode. Prompt 3-2500 chars, optional 0-2 image inputs, aspect ratio 1:1 to 21:9, 480p/720p/1080p, duration 4/8/12s, fixed lens, and optional audio generation.' },
-      { name: 'Seedance 2 Fast', path: '/home/seedance/v2-fast', description: 'Next-gen multimodal video generation with model seedance-2-fast. Prompt 3-20000 chars, optional first/last frame, reference images/videos/audios, 480p/720p, aspect ratio 1:1 to 21:9/adaptive, duration 4-15s, and required web search switch.' },
-      { name: 'Seedance 2', path: '/home/seedance/v2', description: 'Advanced multimodal video generation with model seedance-2. Same core controls as Seedance 2 Fast, with expanded reference video count support and production-oriented flexibility for complex scenes.' }
+      { name: 'Seedance v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Prompt-only clips—16:9 through 9:21, 480p/720p/1080p, 5s or 10s. Camera fixed, seed, and safety checker.' },
+      { name: 'Seedance v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate one image with optional end frame—5/10s at up to 1080p with camera and seed controls.' },
+      { name: 'Seedance v1 Pro Text to Video', path: '/home/seedance/v1-pro-text-to-video', description: '21:9 ultra-wide plus standard ratios—enhanced Pro quality at 480p–1080p, 5s/10s.' },
+      { name: 'Seedance v1 Pro Image to Video', path: '/home/seedance/v1-pro-image-to-video', description: 'Pro image animation with camera fixed, seed, and safety checker—5/10s at 480p–1080p.' },
+      { name: 'Seedance v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Speed-optimized I2V—720p/1080p only, 5s/10s, streamlined form without extra toggles.' },
+      { name: 'Seedance 1.5 Pro', path: '/home/seedance/v1-5-pro', description: 'Unified T2V/I2V—0–2 reference images, 4/8/12s, optional audio and fixed lens at 480p–1080p.' },
+      { name: 'Seedance 2 Fast', path: '/home/seedance/v2-fast', description: 'Multimodal generation—first/last frame, up to 3 reference videos, 4–15s at 480p/720p, prompts up to 20k chars.' },
+      { name: 'Seedance 2', path: '/home/seedance/v2', description: 'Full multimodal control—up to 5 reference videos plus image/audio refs, 4–15s at 480p/720p.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Choice without compromise: Seedance recognizes that different projects have different needs. Lite tier delivers speed and efficiency for rapid iteration; Pro tier offers enhanced quality for final assets. Both tiers share intuitive controls, so you can move seamlessly between them.
-
-Precision meets creativity: With aspect ratio support from ultra-wide 21:9 to vertical 9:21, camera control options, and seed-based reproducibility, Seedance puts professional video creation tools in your hands—without the complexity of traditional video editing.`
-      },
-      {
         title: 'Core capabilities',
-        content: `v1 Lite
+        content: `v1 Lite Text to Video (seedance-v1-lite-text-to-video): Prompt max 10,000 chars. Duration 5s/10s. Resolution 480p/720p/1080p. Aspect ratio 16:9, 4:3, 1:1, 3:4, 9:16, 9:21. Camera fixed, seed, safety checker.
 
-Text to Video: Aspect ratios: 16:9, 4:3, 1:1, 3:4, 9:16, 9:21. Resolution: 480p (fastest), 720p (balanced), or 1080p (HD). Duration: 5s or 10s. Camera: Fixed option for stable shots. Seed: Set for reproducibility (-1 for random). Safety checker: Optional content filtering.
+v1 Lite Image to Video (seedance-v1-lite-image-to-video): One image URL + prompt. Optional end image. Duration 5s/10s. Resolution 480p–1080p. Camera fixed, seed.
 
-Image to Video: Input image URL (JPEG, PNG, WebP; max 10MB; min 256×256px). Optional end image URL for controlled transitions. Same resolution, duration, camera, and seed controls as text-to-video.
+v1 Pro Text to Video (seedance-v1-pro-text-to-video): Same as Lite T2V plus 21:9. Duration 5s/10s. Camera fixed, seed, safety checker.
 
-v1 Pro
+v1 Pro Image to Video (seedance-v1-pro-image-to-video): One image + prompt. Duration 5s/10s. Resolution 480p–1080p. Camera fixed, seed, safety checker.
 
-Text to Video: All Lite aspect ratios plus 21:9 ultra-wide. Same resolution and duration options. Enhanced quality model for superior detail, lighting, and motion coherence.
+v1 Pro Fast Image to Video (seedance-v1-pro-fast-image-to-video): One image + prompt. Duration 5s/10s. Resolution 720p/1080p only (no 480p). No camera/seed/safety toggles.
 
-Image to Video: Professional-grade image animation with improved motion understanding and visual fidelity. Full resolution options, camera control, seed, safety checker.
+Seedance 1.5 Pro (seedance-1.5-pro): Prompt 3–2500 chars. Optional 0–2 input image URLs. Duration 4s/8s/12s. Resolution 480p–1080p. Aspect ratio 1:1 through 21:9. Fixed lens, generate audio (with_sound/without_sound pricing).
 
-Pro Fast Image to Video: Optimized pipeline for speed. 720p or 1080p resolution, 5s or 10s duration, prompt support up to 10,000 characters. Delivers quality results in a fraction of the time.
+Seedance 2 Fast (seedance-2-fast): Prompt 3–20,000 chars. First/last frame; ≤9 images total; ≤3 reference videos; ≤3 reference audios. Duration 4–15s. Resolution 480p/720p. Aspect ratio adaptive option. Web search flag required. Per-second credits.
 
-Seedance 2 Fast: Model fixed to seedance-2-fast. Prompt 3-20000 chars. Optional first/last frame plus multimodal references (images/videos/audios) uploaded as URLs. Resolution: 480p/720p. Aspect ratio: 1:1, 4:3, 3:4, 16:9, 9:16, 21:9, adaptive. Duration: 4-15s. Web search flag required.
-
-Seedance 2: Model fixed to seedance-2. Same multimodal controls as 2 Fast, with expanded reference-video capacity for richer conditioning in complex scene generation.`
-      },
-      {
-        title: 'Use cases',
-        content: `Social media content: Create videos for TikTok, Instagram Reels, YouTube Shorts with platform-optimized aspect ratios (9:16 for vertical, 16:9 for horizontal).
-
-Advertising campaigns: Generate product demos, brand stories, and promotional clips with consistent quality across formats.
-
-Rapid prototyping: Use Lite tier to explore video concepts quickly before committing to final production.
-
-Creative projects: Animate illustrations, bring concepts to life, experiment with camera movements and transitions.
-
-Content repurposing: Transform existing images into engaging video content for multiple platforms.
-
-Professional productions: Leverage Pro tier for client work, presentations, and assets requiring high visual fidelity.
-
-Reference-driven generation: Use Seedance 2 Fast / Seedance 2 with first/last frames and multi-reference media to control narrative continuity, style consistency, and audiovisual rhythm.`
-      },
-      {
-        title: 'Technical performance',
-        content: `v1 Lite Text/Image to Video: 20–60 seconds for 5s clips, 40–90 seconds for 10s clips (dependent on resolution and complexity).
-
-v1 Pro Text/Image to Video: 40–120 seconds for 5s clips, 80–180 seconds for 10s clips—higher quality requires additional processing.
-
-v1 Pro Fast Image to Video: 15–40 seconds for 5s clips, 30–70 seconds for 10s clips—optimized for speed.
-
-Concurrency: Supports 50+ parallel requests with intelligent queue management.
-
-Prompt length: Up to 10,000 characters for Pro Fast Image to Video; standard limits apply for other modes.
-
-Input formats: JPEG, PNG, WebP for images; max 10MB per file.
-
-Output: MP4 format, delivered via secure URL or direct download.
-
-Aspect ratio support: From 21:9 ultra-wide cinematic to 9:21 vertical—cover all modern formats.
-
-Seedance 2/2 Fast: Prompt limit extended to 20,000 characters; supports mixed reference inputs (image/video/audio), duration 4-15s, and adaptive aspect ratio for flexible outputs.`
+Seedance 2 (seedance-2): Same as 2 Fast with up to 5 reference videos. Per-second credits when reference videos are uploaded.`
       },
       {
         title: 'Workflow',
-        content: `Quick create (Lite): Write prompt → choose aspect ratio/resolution/duration → set camera/seed → generate → preview → iterate.
+        content: `Pick a tier: Lite for fast drafts and vertical 9:21 tests; Pro for 21:9 cinematic and production I2V; Pro Fast when you only need 720p/1080p I2V quickly.
 
-Professional production (Pro): Develop concept → refine prompt for detail → select Pro tier and parameters → generate multiple variations → select best → optional refinement with seed control.
+1.5 Pro: one page for text-only or 0–2 reference images—set 4/8/12s, toggle audio and fixed lens as needed.
 
-Image animation: Upload image → describe motion or scene evolution → choose tier and parameters → generate → review → adjust prompt or end image as needed.
+Seedance 2 / 2 Fast: upload first/last frames and optional reference media → set 4–15s duration, 480p/720p, aspect ratio (adaptive optional) → enable web search → generate.
 
-Batch campaigns: Plan content calendar → generate multiple videos with consistent aspect ratios and quality settings → unify brand style across assets.
-
-Multimodal control workflow (Seedance 2 / 2 Fast): Upload first/last frames and optional reference media → set resolution/aspect ratio/duration/web-search → generate and iterate with tighter scene control.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Tier selection: Use Lite for drafts, internal reviews, and rapid iteration; use Pro for client deliverables, public campaigns, and high-visibility content.
-
-Aspect ratio strategy: Match to platform—9:16 for TikTok/Reels/Shorts, 16:9 for YouTube/websites, 21:9 for cinematic presentations.
-
-Resolution choice: 480p for quick tests and low-bandwidth sharing; 720p for web and social; 1080p for HD platforms and archiving.
-
-Duration planning: 5s works best for loops, transitions, and attention-grabbing moments; 10s allows for storytelling and demonstration.
-
-Camera control: Use fixed camera for product focus and stable scenes; omit for dynamic, cinematic movement.
-
-Seed management: Set specific seeds to reproduce successful results; use -1 for random exploration across generations.
-
-Prompt engineering: Be specific about motion, style, and mood. For image-to-video, describe what should move and how.
-
-Pro Fast advantage: Use when speed is critical—ideation sessions, last-minute content needs, high-volume testing.
-
-Seedance 2 references: Keep first/last frames focused on key transition moments; combine image/video/audio references only when necessary to avoid over-constraining motion.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Dual-tier flexibility: Lite for speed, Pro for quality—one platform, both options.
-
-Wide aspect ratio support: From 21:9 cinematic to 9:21 vertical—every format covered.
-
-Resolution options: 480p to 1080p—choose based on need and bandwidth.
-
-Camera control: Fixed option for stability or dynamic for creativity.
-
-Seed reproducibility: Consistent results across sessions for brand continuity.
-
-Ultra-long prompts: Up to 20,000 characters in Seedance 2 / 2 Fast for highly detailed creative direction.
-
-Fast image-to-video: Dedicated Pro Fast pipeline when time matters most.
-
-Multimodal generation: Seedance 2 / 2 Fast supports first+last frame control and mixed references (image/video/audio) for advanced conditioning.
-
-Best for: Social media managers, marketers, content creators, advertisers, creative agencies, and anyone needing flexible, high-quality video generation.`
+All workflows run in the browser on FuseAITools with credit-based pricing—no local GPU required.`
       },
       {
         title: 'Try Seedance on FuseAITools',
-        content: `Seedance on FuseAITools puts professional video creation at your fingertips—whether you need lightning-fast drafts or production-ready assets. With Lite and Pro tiers, comprehensive aspect ratio support, and full control over resolution, duration, camera, and seed, Seedance adapts to your creative process. Start transforming text and images into compelling video today.`
+        content: `Seedance on FuseAITools spans eight workflows—from v1 Lite/Pro text and image modes through 1.5 Pro with optional audio to Seedance 2 multimodal generation. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },
