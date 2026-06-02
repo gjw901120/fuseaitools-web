@@ -1,102 +1,98 @@
 <template>
   <div
+    id="happyhorse-v1-section"
     class="happyhorse-seo seo-content"
     itemscope
     itemtype="https://schema.org/SoftwareApplication"
   >
-    <meta itemprop="name" content="HappyHorse v1" />
+    <meta itemprop="name" content="HappyHorse v1 Video on FuseAITools" />
     <meta itemprop="applicationCategory" content="MultimediaApplication" />
+    <meta itemprop="operatingSystem" content="Web" />
+    <meta
+      itemprop="description"
+      content="HappyHorse v1 text, image, reference, and video-edit workflows on FuseAITools—native audio-video generation at 720p/1080p, 3–15s clips."
+    />
+
+    <div class="version-badge">🐴 HappyHorse v1 · Native Audio-Video · Four Workflows</div>
+
+    <section v-if="workflowIntro" class="info-section workflow-intro" aria-labelledby="workflow-intro-heading">
+      <h2 id="workflow-intro-heading" class="section-title">{{ workflowIntro.title }}</h2>
+      <p class="tool-sub" v-html="workflowIntro.lead" />
+    </section>
+
+    <section v-if="workflowDefinition" class="info-section" aria-labelledby="definition-heading">
+      <h2 id="definition-heading" class="section-title">{{ workflowDefinition.title }}</h2>
+      <p class="tool-sub" v-html="workflowDefinition.body" />
+    </section>
+
+    <section class="info-section" aria-labelledby="positioning-heading">
+      <h2 id="positioning-heading" class="section-title">🐴 HappyHorse v1 on FuseAITools</h2>
+      <p class="tool-sub">
+        HappyHorse v1 on <a href="/" class="seo-inline-link">FuseAITools</a> targets
+        <strong>native audio-video joint generation</strong>—dialogue, lip sync, and ambient sound in one pass.
+        Pick text-to-video, image-to-video, reference-to-video, or video edit; each workflow shows
+        <strong>credits required</strong> before you generate. New users receive
+        <strong>20 free credits</strong> on sign-up.
+      </p>
+    </section>
 
     <section class="info-section" aria-labelledby="features-heading">
-      <h2 id="features-heading" class="section-title">⚡ HappyHorse v1 Core Features</h2>
+      <h2 id="features-heading" class="section-title">✨ HappyHorse v1 Core Features</h2>
       <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🎬</div>
-          <div class="feature-title" itemprop="featureList">Native Audio-Video Sync</div>
-          <p>The first large-scale commercial native audio-video joint generation model with a <strong>15B-parameter single-stream architecture</strong>. It solves lip-sync drift and A/V misalignment at the source—dialogue, lip movement, and ambient sound (wind, rain, engines) are generated in one pass with no manual alignment.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">😲</div>
-          <div class="feature-title">Lifelike Detail</div>
-          <p>Understands complex emotional prompts and faithfully renders <strong>hair texture, eye reflections, and subtle skin movement</strong>. Close-ups look remarkably natural, with industry-leading lip-sync accuracy.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🎥</div>
-          <div class="feature-title">Cinematic Camera Motion</div>
-          <p>Supports push, pull, pan, tilt, track, and follow shots with <strong>multi-shot continuous storytelling</strong> and smooth scene transitions—plus composition and lighting tuned for East Asian aesthetics.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">🇨🇳</div>
-          <div class="feature-title">Chinese Language Optimization</div>
-          <p>Optimized for Chinese idioms, classical poetry, and modern speech—it understands poetic imagery such as “sunset glow and lone duck flying together,” with <strong>character consistency above 95%</strong>, ahead of many overseas models.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">⚡️</div>
-          <div class="feature-title">Fast & Cost-Effective</div>
-          <p><strong>Generate 5 seconds of 1080P video with audio in as little as 38 seconds</strong>, with ~60% lower compute demand. Member pricing from 25 credits/sec; new users receive <strong>20 free credits</strong>.</p>
+        <div v-for="(f, i) in coreFeatures" :key="i" class="feature-card">
+          <div class="feature-icon" aria-hidden="true">{{ f.icon }}</div>
+          <div class="feature-title">{{ f.title }}</div>
+          <p v-html="f.description" />
         </div>
       </div>
     </section>
 
     <section class="info-section" aria-labelledby="scenarios-heading">
-      <h2 id="scenarios-heading" class="section-title">🎯 Built for These Use Cases</h2>
-      <p class="tool-sub">HappyHorse v1’s strong audio-video sync and realism make it ideal for professional workflows such as:</p>
+      <h2 id="scenarios-heading" class="section-title">🎯 Built for These Scenarios</h2>
       <div class="scenario-list">
         <span v-for="tag in scenarioTags" :key="tag" class="scenario-badge">{{ tag }}</span>
       </div>
-      <p class="section-lead">Whether you are a solo creator, marketing team, or production studio, HappyHorse v1 helps you turn ideas into high-quality video quickly.</p>
     </section>
 
     <section class="info-section" aria-labelledby="compare-heading">
-      <h2 id="compare-heading" class="section-title">📊 HappyHorse v1 vs. Traditional Two-Stage Models</h2>
+      <h2 id="compare-heading" class="section-title">📊 HappyHorse v1 vs Traditional Two-Stage Video</h2>
       <div class="compare-table-wrap">
-        <table class="compare-table" aria-label="HappyHorse v1 vs traditional text-to-video models">
+        <table class="compare-table" aria-label="HappyHorse v1 vs traditional text-to-video">
           <thead>
             <tr>
               <th>Dimension</th>
-              <th>HappyHorse v1 (native joint generation)</th>
-              <th>Traditional text-to-video</th>
+              <th>HappyHorse v1</th>
+              <th>Traditional two-stage</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Generation</td>
-              <td><strong>Native audio-video joint generation</strong>—video and synced audio in one inference pass</td>
-              <td>Silent video first, then separate dubbing and manual alignment</td>
-            </tr>
-            <tr>
-              <td>Audio-video sync</td>
-              <td><strong>Frame-accurate sync</strong>, no drift</td>
-              <td>Depends on post-production; lip-sync and ambient lag are common</td>
+              <td>Audio</td>
+              <td><strong>Native audio-video</strong> in one generation pass</td>
+              <td>Silent video, then separate dubbing and alignment</td>
             </tr>
             <tr>
               <td>Lip sync</td>
-              <td>Natural and precise; multi-language support (CN/EN/JP/KR, etc.) with &gt;95% accuracy</td>
-              <td>Often inaccurate; may need face swap or dubbing tools</td>
+              <td>Built into the model output</td>
+              <td>Often requires post-production fixes</td>
             </tr>
             <tr>
-              <td>Speed</td>
-              <td><strong>38 seconds</strong> for 5s 1080P output</td>
-              <td>Often 2–5 minutes or longer</td>
+              <td>Workflows on FuseAITools</td>
+              <td><strong>Four modes</strong>—T2V, I2V, reference, edit</td>
+              <td>Separate tools per step</td>
             </tr>
             <tr>
-              <td>Compute cost</td>
-              <td><strong>~60% lower</strong> compute; up to 3× faster inference</td>
-              <td>High hardware requirements; long clips strain consumer GPUs</td>
-            </tr>
-            <tr>
-              <td>Multi-shot narrative</td>
-              <td>Native support with smooth transitions</td>
-              <td>Usually single-shot with obvious stitching</td>
+              <td>Output (form)</td>
+              <td><strong>3–15s</strong> (generate modes); <strong>720p / 1080p</strong></td>
+              <td>Varies by provider</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p class="meta-note">*Based on official benchmark reports and third-party media evaluations.</p>
     </section>
 
     <section class="info-section" aria-labelledby="faq-heading">
-      <h2 id="faq-heading" class="section-title">❓ Frequently Asked Questions</h2>
+      <h2 id="faq-heading" class="section-title">❓ FAQ (HappyHorse v1)</h2>
       <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
         <div
           v-for="(faq, index) in faqItems"
@@ -130,147 +126,296 @@
     </section>
 
     <section class="info-section" aria-labelledby="tech-heading">
-      <h2 id="tech-heading" class="section-title">🔧 Technical Specs & Tips</h2>
-      <div class="tech-panel">
-        <ul class="tech-list">
-          <li><strong>Model scale</strong>: 15B parameters, 40-layer unified self-attention Transformer single-stream architecture; trained on 20M+ hours of multilingual video.</li>
-          <li><strong>Inputs</strong>: Text-to-video, image-to-video, reference-driven generation, and video editing (localized repaint).</li>
-          <li><strong>Output</strong>: MP4 (H.264), stereo AAC audio, 24/30 fps.</li>
-          <li><strong>Best practices</strong>: Add camera motion (e.g. “slow dolly in”) and mood cues (e.g. “warm golden hour”) to improve quality.</li>
-          <li><strong>Safety</strong>: Built-in content filters block violence, adult content, and sensitive political material in line with generative AI service guidelines.</li>
-        </ul>
+      <h2 id="tech-heading" class="section-title">⚙️ HappyHorse v1 Technical Specs</h2>
+      <p class="section-lead">
+        Parameters below match the FuseAITools HappyHorse form and API (<code>happyhorse-*</code> models).
+      </p>
+      <div class="compare-table-wrap">
+        <table class="compare-table" aria-label="HappyHorse v1 workflow capabilities">
+          <thead>
+            <tr>
+              <th>Workflow</th>
+              <th>Required input</th>
+              <th>Duration</th>
+              <th>Resolution / ratio</th>
+              <th>Key controls</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Text to Video</strong></td>
+              <td>Prompt (1–5000 chars)</td>
+              <td>3–15s</td>
+              <td>720p / 1080p; 16:9, 9:16, 1:1, 4:3, 3:4</td>
+              <td>Optional seed</td>
+            </tr>
+            <tr>
+              <td><strong>Image to Video</strong></td>
+              <td>1 image URL + optional prompt</td>
+              <td>3–15s</td>
+              <td>720p / 1080p</td>
+              <td>Prompt optional (max 5000); seed</td>
+            </tr>
+            <tr>
+              <td><strong>Reference to Video</strong></td>
+              <td>Prompt + 1–9 reference images</td>
+              <td>3–15s</td>
+              <td>720p / 1080p; aspect ratios as T2V</td>
+              <td>Use character1/2/3… placeholders in prompt</td>
+            </tr>
+            <tr>
+              <td><strong>Video Edit</strong></td>
+              <td>Video URL (MP4/MOV) + prompt</td>
+              <td>Billed by source length (ceil sec, API 3–60s)</td>
+              <td>720p / 1080p</td>
+              <td>0–5 reference images; audio auto/origin; seed</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <p class="meta-note">
+        Image inputs: JPEG, JPG, PNG, WebP (max 10MB). Video edit accepts MP4 or MOV. Credits are shown on the Generate button before submission.
+      </p>
     </section>
 
-    <section class="info-section" aria-labelledby="model-modes-heading">
-      <h2 id="model-modes-heading" class="section-title">HappyHorse 1.0 — Four Workflows</h2>
-      <p class="section-lead">FuseAITools integrates the full HappyHorse 1.0 suite. Choose the workflow that matches your task:</p>
+    <section class="info-section" aria-labelledby="workflows-heading">
+      <h2 id="workflows-heading" class="section-title">HappyHorse v1 — Four Video Workflows</h2>
+      <p class="section-lead">Choose the mode that matches your source material:</p>
       <div class="model-modes-grid">
         <NuxtLink
-          v-for="item in modelCategories"
+          v-for="item in videoWorkflows"
           :key="item.path"
           :to="item.path"
           class="model-mode-card"
           :class="{ 'model-mode-card--current': isCurrentMode(item.path) }"
-          @click="handleModeClick"
+          @click.prevent="handleModeClick(item.path)"
         >
-          <div class="model-mode-icon" aria-hidden="true">
-            <i :class="item.icon" />
-          </div>
+          <div class="model-mode-icon" aria-hidden="true"><i :class="item.icon" /></div>
           <h3 class="model-mode-title">{{ item.title }}</h3>
           <p class="model-mode-name">{{ item.name }}</p>
           <p class="model-mode-desc">{{ item.description }}</p>
           <span class="model-mode-cta">{{ isCurrentMode(item.path) ? 'Current workflow' : 'Open this workflow →' }}</span>
         </NuxtLink>
       </div>
-      <p class="review-score">⭐ Overall rating: 4.8/5 (from 1200+ verified user reviews), exceeding comparable products by 20%+ on audio-video sync.</p>
     </section>
+
+    <div class="upgrade-tip pricing-tip">
+      💳 New users get <strong>20 free credits</strong> on sign-up.
+      <a href="/pricing" class="seo-pricing-link">View pricing</a>
+      for subscription discounts and credit top-ups.
+    </div>
+
+    <div class="upgrade-tip">
+      🎬 Need multi-reference or director-style editing?
+      <a
+        href="/home/wan/v2-7-text-to-video"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v2-7-text-to-video')"
+      >Explore Wan 2.7 →</a>
+      for frame control, natural-language edit, and R2V with up to five references.
+    </div>
   </div>
 </template>
 
 <script setup>
 const route = useRoute()
+const { navigateToToolTop, handleModeClick, watchRouteScroll } = useToolSeoPageScroll()
 
-const modelCategories = [
+const videoWorkflows = [
   {
-    name: 'v1 Text to Video',
+    name: 'HappyHorse v1 Text to Video',
     title: 'Text to Video',
-    description: 'Generate video from text prompts with controls for resolution, aspect ratio, duration, and seed.',
+    description: 'Prompt-only clips with aspect ratio, 3–15s, and 720p/1080p—native audio included.',
     path: '/home/happy-horse/v1-text-to-video',
-    icon: 'fas fa-keyboard'
+    icon: 'fas fa-font'
   },
   {
-    name: 'v1 Image to Video',
+    name: 'HappyHorse v1 Image to Video',
     title: 'Image to Video',
-    description: 'Upload a single image with an optional prompt to animate a still frame into video.',
+    description: 'Animate one still image with an optional motion prompt—3–15s at 720p/1080p.',
     path: '/home/happy-horse/v1-image-to-video',
     icon: 'fas fa-image'
   },
   {
-    name: 'v1 Reference to Video',
+    name: 'HappyHorse v1 Reference to Video',
     title: 'Reference to Video',
-    description: 'Use 1–9 reference images and character placeholders for consistent, controllable multi-subject generation.',
+    description: '1–9 reference images with character placeholders for consistent multi-subject scenes.',
     path: '/home/happy-horse/v1-reference-to-video',
     icon: 'fas fa-images'
   },
   {
-    name: 'v1 Video Edit',
+    name: 'HappyHorse v1 Video Edit',
     title: 'Video Edit',
-    description: 'Edit existing video with natural-language instructions, optional references, and audio retention.',
+    description: 'Upload MP4/MOV and edit with natural language—optional references and audio setting.',
     path: '/home/happy-horse/v1-video-edit',
-    icon: 'fas fa-film'
+    icon: 'fas fa-edit'
   }
+]
+
+const workflowIntroMap = {
+  '/home/happy-horse/v1-text-to-video': {
+    title: '📝 HappyHorse v1 Text to Video',
+    lead: 'Describe scenes in text—HappyHorse v1 generates <strong>video with synced audio</strong> in one pass. Set <strong>3–15 seconds</strong>, <strong>720p or 1080p</strong>, and aspect ratio from 16:9 to 3:4.'
+  },
+  '/home/happy-horse/v1-image-to-video': {
+    title: '🖼️ HappyHorse v1 Image to Video',
+    lead: 'Upload <strong>one image</strong> and optionally guide motion with a prompt. Output is <strong>3–15 seconds</strong> at <strong>720p/1080p</strong> with native audio-video generation.'
+  },
+  '/home/happy-horse/v1-reference-to-video': {
+    title: '👥 HappyHorse v1 Reference to Video',
+    lead: 'Provide <strong>1–9 ordered reference images</strong> plus a prompt with <strong>character1, character2…</strong> placeholders. Control aspect ratio and duration like text-to-video.'
+  },
+  '/home/happy-horse/v1-video-edit': {
+    title: '✂️ HappyHorse v1 Video Edit',
+    lead: 'Upload <strong>MP4 or MOV</strong> footage and describe edits in plain language. Optional <strong>0–5 reference images</strong>; choose whether to keep original audio or let the model regenerate it.'
+  }
+}
+
+const workflowDefinitionMap = {
+  '/home/happy-horse/v1-text-to-video': {
+    title: 'What is HappyHorse v1 Text to Video?',
+    body:
+      '<strong>HappyHorse v1 Text to Video</strong> on FuseAITools turns a prompt (1–5000 characters) into a short MP4 with <strong>native audio-video sync</strong>. Choose <strong>3–15s</strong> duration, <strong>720p or 1080p</strong>, and aspect ratios <strong>16:9, 9:16, 1:1, 4:3, or 3:4</strong>—ideal for social clips and dialogue-driven scenes.'
+  },
+  '/home/happy-horse/v1-image-to-video': {
+    title: 'What is HappyHorse v1 Image to Video?',
+    body:
+      '<strong>HappyHorse v1 Image to Video</strong> on FuseAITools animates a <strong>single uploaded image</strong> with optional prompt guidance. Duration is <strong>3–15 seconds</strong> at <strong>720p/1080p</strong>; the prompt is optional (max 5000 characters).'
+  },
+  '/home/happy-horse/v1-reference-to-video': {
+    title: 'What is HappyHorse v1 Reference to Video?',
+    body:
+      '<strong>HappyHorse v1 Reference to Video</strong> on FuseAITools generates from <strong>1–9 reference images</strong> plus a required prompt. Map subjects with <strong>character1, character2…</strong> placeholders in the prompt for consistent multi-character output at 720p/1080p.'
+  },
+  '/home/happy-horse/v1-video-edit': {
+    title: 'What is HappyHorse v1 Video Edit?',
+    body:
+      '<strong>HappyHorse v1 Video Edit</strong> on FuseAITools edits uploaded video with natural-language instructions. Required: <strong>video URL + prompt</strong>. Credits bill by <strong>source duration (rounded up)</strong>; optional reference images and audio setting <strong>auto</strong> or <strong>origin</strong>.'
+  }
+}
+
+const workflowFaqMap = {
+  '/home/happy-horse/v1-text-to-video': [
+    {
+      question: 'What aspect ratios does HappyHorse v1 text-to-video support?',
+      answer:
+        'Yes—choose <strong>16:9, 9:16, 1:1, 4:3, or 3:4</strong> in the form, plus <strong>720p or 1080p</strong> and <strong>3–15 second</strong> duration.'
+    },
+    {
+      question: 'Does HappyHorse v1 text-to-video include audio?',
+      answer:
+        'Yes—HappyHorse v1 generates <strong>video and synced audio together</strong> in one pass, including dialogue and ambient sound when described in your prompt.'
+    }
+  ],
+  '/home/happy-horse/v1-image-to-video': [
+    {
+      question: 'Is a prompt required for HappyHorse v1 image-to-video?',
+      answer:
+        'No—the prompt is <strong>optional</strong> (max 5000 characters). You must upload <strong>exactly one image</strong> (JPEG/PNG/WebP, max 10MB). Duration is <strong>3–15s</strong> at 720p/1080p.'
+    },
+    {
+      question: 'Can I set aspect ratio on HappyHorse v1 image-to-video?',
+      answer:
+        'No—aspect ratio controls apply to <strong>text-to-video</strong> and <strong>reference-to-video</strong> only. Image-to-video follows your input frame composition.'
+    }
+  ],
+  '/home/happy-horse/v1-reference-to-video': [
+    {
+      question: 'How many reference images can HappyHorse v1 use?',
+      answer:
+        'Between <strong>1 and 9</strong> reference images. Align prompt placeholders (<strong>character1, character2…</strong>) with upload order for consistent subjects.'
+    },
+    {
+      question: 'What prompt format works best for reference-to-video?',
+      answer:
+        'Use explicit character tags in the prompt—e.g. “<strong>character1</strong> walks beside <strong>character2</strong>”—matching the order of uploaded reference images.'
+    }
+  ],
+  '/home/happy-horse/v1-video-edit': [
+    {
+      question: 'How is HappyHorse v1 video edit billed?',
+      answer:
+        'Credits are based on <strong>source video length rounded up</strong> (shown in the form after upload). The API accepts durations between <strong>3 and 60 seconds</strong> derived from your clip.'
+    },
+    {
+      question: 'What does the audio setting do on video edit?',
+      answer:
+        'Choose <strong>auto</strong> to let the model regenerate audio, or <strong>origin</strong> to preserve the uploaded clip’s audio track when supported.'
+    }
+  ]
+}
+
+const commonFaq = [
+  {
+    question: 'Do I need a local GPU for HappyHorse v1?',
+    answer:
+      'No—HappyHorse v1 runs in the cloud on FuseAITools. Use any modern browser; credits are charged per successful generation.'
+  },
+  {
+    question: 'How is HappyHorse v1 priced on FuseAITools?',
+    answer:
+      'Generate modes bill <strong>per second</strong> at the resolution you select—the exact credits appear on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+  }
+]
+
+const workflowIntro = computed(() => {
+  const path = route.path.replace(/\/$/, '')
+  return workflowIntroMap[path] || null
+})
+
+const workflowDefinition = computed(() => {
+  const path = route.path.replace(/\/$/, '')
+  return workflowDefinitionMap[path] || null
+})
+
+const faqItems = computed(() => {
+  const path = route.path.replace(/\/$/, '')
+  const workflowFaqs = workflowFaqMap[path] || []
+  return [...workflowFaqs, ...commonFaq]
+})
+
+useToolSeoFaqSchema(faqItems)
+
+const coreFeatures = [
+  {
+    icon: '🔊',
+    title: 'Native Audio-Video Sync',
+    description:
+      'Generate <strong>video and audio together</strong>—dialogue, lip movement, and ambient sound in one workflow instead of separate dubbing.'
+  },
+  {
+    icon: '👥',
+    title: 'Reference-Driven Casting',
+    description:
+      'Reference-to-video accepts <strong>1–9 images</strong> with character placeholders for consistent multi-subject scenes.'
+  },
+  {
+    icon: '✂️',
+    title: 'Natural-Language Video Edit',
+    description:
+      'Upload MP4/MOV and instruct changes in text—optional <strong>0–5 reference images</strong> and audio auto/origin controls.'
+  },
+  {
+    icon: '☁️',
+    title: 'Cloud on FuseAITools',
+    description:
+      'Four v1 workflows in the browser—<strong>credits shown before generate</strong>; no local GPU install required.'
+  }
+]
+
+const scenarioTags = [
+  'Short drama & dialogue clips',
+  'Brand ads with voiceover',
+  'Social & vertical video',
+  'Character-consistent promos',
+  'Quick video edits in the cloud'
 ]
 
 function isCurrentMode(path) {
   return route.path === path || route.path === `${path}/`
 }
 
-function scrollPageToTop() {
-  if (typeof window === 'undefined') return
-  const scroll = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
-    document.querySelectorAll('.home-page--with-below, .main-content').forEach((el) => {
-      el.scrollTop = 0
-    })
-  }
-  scroll()
-  setTimeout(scroll, 100)
-}
-
-function handleModeClick() {
-  scrollPageToTop()
-}
-
-watch(
-  () => route.path,
-  (newPath, oldPath) => {
-    if (!oldPath || newPath === oldPath) return
-    if (!newPath.startsWith('/home/happy-horse/')) return
-    nextTick(() => {
-      setTimeout(scrollPageToTop, 50)
-    })
-  }
-)
-
-const scenarioTags = [
-  'Short drama & character storytelling',
-  'Brand ads & commercial video',
-  'Social media & short-form',
-  'E-commerce product showcases',
-  'Education & explainer animation',
-  'Music videos & lyric visuals',
-  'Game cinematics & cutscenes'
-]
-
-const faqItems = [
-  {
-    question: '1. Is HappyHorse v1 available now?',
-    answer: 'Yes. FuseAITools has integrated all four HappyHorse 1.0 models. Every user can access them on the platform.'
-  },
-  {
-    question: '2. How long can generated videos be?',
-    answer: 'HappyHorse v1 supports <strong>3 to 15 seconds</strong> per clip, with multi-shot storytelling and camera transitions. Longer clips (e.g. 30 seconds) are planned.'
-  },
-  {
-    question: '3. What resolutions and aspect ratios are supported?',
-    answer: 'Output resolutions include <strong>480P, 720P, and 1080P</strong>. Aspect ratios: 21:9, 16:9, 4:3, 1:1, 3:4, and 9:16—for landscape and vertical platforms (TikTok, Bilibili, YouTube, etc.).'
-  },
-  {
-    question: '4. How is HappyHorse v1 priced?',
-    answer: 'Billing is <strong>per second of video, with exclusive discounts for subscribers</strong>. <a href="/pricing" class="seo-pricing-link">Ultra</a> members get 720P from <strong>25 credits/sec</strong> and 1080P around <strong>42 credits/sec</strong>. Annual Ultra plans are up to 40% off. New users receive <strong>20 free credits</strong> on first sign-in.'
-  },
-  {
-    question: '5. Can I use generated videos commercially? Who owns the rights?',
-    answer: 'Videos created on the platform are yours—<strong>copyright belongs to the creator</strong>. Commercial use is supported (ads, film, e-commerce, and more).'
-  },
-  {
-    question: '6. Do I need special hardware or a desktop app?',
-    answer: 'Everything runs in the cloud—<strong>no local GPU or software install required</strong>. Use any browser on the official site or <a href="/" class="seo-inline-link">FuseAITools</a>. Results are saved to the cloud and available for download.'
-  }
-]
+watchRouteScroll((path) => path.startsWith('/home/happy-horse/'))
 
 const openFaqIndex = ref(0)
 

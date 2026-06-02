@@ -16,10 +16,11 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'HappyHorse v1 Image to Video Generator',
-  description: 'Generate AI videos from a single image with HappyHorse v1 image-to-video.',
+  description:
+    'Animate one image with HappyHorse v1 image-to-video on FuseAITools—optional prompt, 3–15s at 720p/1080p with native audio. Credit-based pricing.',
   category: 'video',
   route: '/home/happy-horse/v1-image-to-video',
-  keywords: ['HappyHorse', 'Image to Video', 'AI video generation'],
+  keywords: ['HappyHorse', 'HappyHorse v1', 'image to video', 'animate image', 'AI video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },

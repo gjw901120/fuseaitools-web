@@ -37,7 +37,7 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 
 HappyHorse v1 focuses on native audio-video joint generation (lip-sync, ambient sound, multi-shot narrative).
 
-- [HappyHorse Overview](https://fuseaitools.com/home/happy-horse): Four workflows—text, image, reference, and video edit.
+- [HappyHorse Overview](https://fuseaitools.com/home/happy-horse): Four v1 workflows with native audio-video sync; 20 free credits on sign-up.
 - [HappyHorse v1 Text to Video](https://fuseaitools.com/home/happy-horse/v1-text-to-video): Generate video from text; 3–15s, 720p/1080p, multiple aspect ratios.
 - [HappyHorse v1 Image to Video](https://fuseaitools.com/home/happy-horse/v1-image-to-video): Animate one input image with optional prompt.
 - [HappyHorse v1 Reference to Video](https://fuseaitools.com/home/happy-horse/v1-reference-to-video): 1–9 reference images with character placeholders.

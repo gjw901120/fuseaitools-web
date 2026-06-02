@@ -15,11 +15,12 @@ import HappyHorseV1SeoContent from '~/components/tools/HappyHorseV1SeoContent.vu
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
-  name: 'HappyHorse v1 Video Edit',
-  description: 'Edit existing videos with HappyHorse v1 video-edit model.',
+  name: 'HappyHorse v1 Video Edit Generator',
+  description:
+    'Edit videos with natural language on HappyHorse v1 Video Edit—upload MP4/MOV, optional references, audio auto/origin. FuseAITools credits.',
   category: 'video',
   route: '/home/happy-horse/v1-video-edit',
-  keywords: ['HappyHorse', 'Video Edit', 'AI video editing'],
+  keywords: ['HappyHorse', 'HappyHorse v1', 'video edit', 'AI video editing', 'natural language video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },

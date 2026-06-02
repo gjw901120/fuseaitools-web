@@ -1363,35 +1363,39 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'HappyHorse is an AI video creation suite with four focused modes: text-to-video, image-to-video, reference-to-video, and video-edit.',
+    intro: 'HappyHorse v1 on FuseAITools delivers native audio-video generation across four workflows: text-to-video, image-to-video, reference-to-video (1–9 images), and video edit. Clips run 3–15s at 720p/1080p with credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'v1 Text to Video', path: '/home/happy-horse/v1-text-to-video', description: 'Generate videos from text prompts with resolution, aspect ratio, duration, and seed controls.' },
-      { name: 'v1 Image to Video', path: '/home/happy-horse/v1-image-to-video', description: 'Animate one input image with an optional prompt and output controls for resolution, duration, and seed.' },
-      { name: 'v1 Reference to Video', path: '/home/happy-horse/v1-reference-to-video', description: 'Use 1-9 ordered reference images and character placeholders (character1/2/3...) to drive controlled multi-subject video generation.' },
-      { name: 'v1 Video Edit', path: '/home/happy-horse/v1-video-edit', description: 'Edit an existing video with natural-language instructions and optional reference images, including audio handling options.' }
+      { name: 'HappyHorse v1 Text to Video', path: '/home/happy-horse/v1-text-to-video', description: 'Prompt-only generation with native audio-video sync—3–15s, 720p/1080p, aspect ratios 16:9 through 3:4.' },
+      { name: 'HappyHorse v1 Image to Video', path: '/home/happy-horse/v1-image-to-video', description: 'Animate one still image with optional prompt—3–15s at 720p/1080p.' },
+      { name: 'HappyHorse v1 Reference to Video', path: '/home/happy-horse/v1-reference-to-video', description: '1–9 reference images with character1/2/3 placeholders in the prompt for consistent casts.' },
+      { name: 'HappyHorse v1 Video Edit', path: '/home/happy-horse/v1-video-edit', description: 'Upload MP4/MOV and edit with natural language—0–5 optional references, audio auto or origin.' }
     ],
     sections: [
       {
         title: 'Core capabilities',
-        content: `Text to Video: Model happyhorse-text-to-video. Prompt required (max 5000), resolution 720p/1080p, aspect ratio 16:9/9:16/1:1/4:3/3:4, duration 3-15s, optional seed.
+        content: `Text to Video (happyhorse-text-to-video): Required prompt (1–5000 chars). Duration 3–15s. Resolution 720p/1080p. Aspect ratio 16:9, 9:16, 1:1, 4:3, 3:4. Optional seed.
 
-Image to Video: Model happyhorse-image-to-video. One required input image URL, optional prompt (max 5000), resolution 720p/1080p, duration 3-15s, optional seed.
+Image to Video (happyhorse-image-to-video): Exactly one image URL required. Optional prompt (max 5000). Duration 3–15s. Resolution 720p/1080p. Optional seed.
 
-Reference to Video: Model happyhorse-reference-to-video. Prompt required (max 5000) plus ordered reference images (1-9) mapped to character1/character2/... placeholders.
+Reference to Video (happyhorse-reference-to-video): Required prompt plus 1–9 ordered reference images. Use character1, character2… in the prompt. Duration 3–15s. Resolution 720p/1080p. Aspect ratios same as text-to-video.
 
-Video Edit: Model happyhorse-video-edit. Prompt and input video required, optional reference images (0-5), resolution 720p/1080p, audio setting auto/origin, optional seed.`
+Video Edit (happyhorse-video-edit): Required video URL (MP4/MOV) and prompt. Optional 0–5 reference images. Resolution 720p/1080p. Audio setting auto or origin. Billing duration from source video (ceil seconds, API clamp 3–60s). Optional seed.`
       },
       {
         title: 'Workflow',
-        content: `Choose mode -> provide required prompt/media -> set output controls (resolution, ratio, duration, seed) -> submit task -> monitor record status -> preview and download.
+        content: `Choose a mode: text for scripted clips with aspect control, image for single-frame animation, reference for multi-subject consistency, or edit to transform existing footage.
 
-For reference-to-video, keep image ordering and prompt placeholders aligned.
+Generate modes: write prompt → set duration/resolution (and aspect ratio if available) → submit → download from history.
 
-For video-edit, describe exactly what to change and what to preserve for better consistency.`
+Reference mode: upload images in order → reference them as character1, character2… in the prompt.
+
+Video edit: upload source clip → describe changes → pick audio auto/origin → submit. Credits scale with source length.
+
+All workflows run in the browser on FuseAITools with credit-based pricing—no local GPU required.`
       },
       {
         title: 'Try HappyHorse on FuseAITools',
-        content: `HappyHorse on FuseAITools gives you one place for generation and editing across text, image, reference, and existing video workflows. Use it to produce social clips, motion prototypes, and controlled branded visuals faster.`
+        content: `HappyHorse v1 on FuseAITools is built for dialogue-driven and audio-synced video—social clips, ads, and quick edits in one hub. Start with text or image workflows, use reference mode for cast consistency, or open Video Edit for natural-language changes. New users receive 20 free credits on sign-up—open any workflow card above or see pricing for plans.`
       }
     ]
   },

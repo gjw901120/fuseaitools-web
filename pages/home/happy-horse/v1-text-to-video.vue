@@ -16,10 +16,11 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'HappyHorse v1 Text to Video Generator',
-  description: 'Generate AI videos from text with HappyHorse v1 text-to-video.',
+  description:
+    'HappyHorse v1 text-to-video on FuseAITools—native audio-video sync, 3–15s at 720p/1080p, five aspect ratios. Credits per second; 20 free on sign-up.',
   category: 'video',
   route: '/home/happy-horse/v1-text-to-video',
-  keywords: ['HappyHorse', 'Text to Video', 'AI video generation'],
+  keywords: ['HappyHorse', 'HappyHorse v1', 'text to video', 'audio video sync', 'AI video generation', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },

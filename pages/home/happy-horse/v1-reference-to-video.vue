@@ -16,10 +16,11 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'HappyHorse v1 Reference to Video Generator',
-  description: 'Generate AI videos from multiple reference images with HappyHorse v1 reference-to-video.',
+  description:
+    'HappyHorse v1 reference-to-video on FuseAITools—1–9 reference images, character placeholders, 3–15s at 720p/1080p. Cloud credits.',
   category: 'video',
   route: '/home/happy-horse/v1-reference-to-video',
-  keywords: ['HappyHorse', 'Reference to Video', 'AI video generation'],
+  keywords: ['HappyHorse', 'HappyHorse v1', 'reference to video', 'multi character video', 'AI video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },
