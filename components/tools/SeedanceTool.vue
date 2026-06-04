@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Seedance</h3>
-        <p class="tool-description">Seedance is a multimodal AI video model by ByteDance that generates consistent, cinematic videos with strong multi-shot consistency and native audio using text, image, video, and audio references.</p>
+        <p class="tool-description">Seedance is ByteDance's AI video suite on FuseAITools—from v1 Lite/Pro through Seedance 2 multimodal clips. Pair with <strong>Seedream</strong> for 2K/3K stills and image edits before video generation.</p>
       </div>
     </div>
 

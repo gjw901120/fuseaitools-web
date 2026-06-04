@@ -198,6 +198,23 @@
     </div>
 
     <div class="upgrade-tip">
+      🖼️ <strong>ByteDance image companion — Seedream</strong>
+      Generate hero stills with
+      <a
+        href="/home/seedream/5-lite-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-lite-text-to-image')"
+      >Seedream 5 Lite</a>
+      or edit reference frames in
+      <a
+        href="/home/seedream/5-lite-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-lite-image-to-image')"
+      >Seedream I2I</a>
+      before Seedance 1.5 Pro or Seedance 2 video runs.
+    </div>
+
+    <div class="upgrade-tip">
       ⚡ Need separate Lite/Pro tiers or 21:9 vertical 9:21?
       <a
         href="/home/seedance/v1-lite-text-to-video"

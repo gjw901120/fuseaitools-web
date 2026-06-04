@@ -205,6 +205,23 @@
     </div>
 
     <div class="upgrade-tip">
+      🖼️ <strong>ByteDance image companion — Seedream</strong>
+      Seedance 2 accepts first/last frames—create or refine them in
+      <a
+        href="/home/seedream/5-lite-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-lite-image-to-image')"
+      >Seedream 5 Lite Image to Image</a>
+      or generate concepts from text in
+      <a
+        href="/home/seedream/5-lite-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-lite-text-to-image')"
+      >Seedream Text to Image</a>
+      first.
+    </div>
+
+    <div class="upgrade-tip">
       ⚡ Need simpler 5s/10s tiers without multimodal refs?
       <a
         href="/home/seedance/v1-lite-text-to-video"

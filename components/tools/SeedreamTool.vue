@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Seedream</h3>
-        <p class="tool-description">Seedream is a unified multimodal image generation model by ByteDance, designed for multimodal reasoning, deep understanding, and controllable visual creation. It supports text-to-image and image editing workflows with improved consistency and real-time knowledge integration.</p>
+        <p class="tool-description">Seedream 5 Lite is ByteDance's multimodal image model on FuseAITools—text-to-image and image-to-image at 2K/3K. Pair with <strong>Seedance</strong> to turn stills into video clips.</p>
       </div>
     </div>
 

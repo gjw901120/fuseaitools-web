@@ -2,7 +2,7 @@
 
 > FuseAITools is an all-in-one AI platform with 100+ models for chat, image, video, and audio. Use tools in the browser with credit-based pricing; new users receive 20 free credits on sign-up. This file lists the most useful public pages for understanding our products and workflows.
 
-FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Seedance, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://fuseaitools.com/robots.txt).
+FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Seedream, Seedance, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://fuseaitools.com/robots.txt).
 
 ## Core pages
 
@@ -29,7 +29,9 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 - [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
 - [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
 - [Nano Banana](https://fuseaitools.com/home/nano-banana): Nano Banana image tools overview.
-- [Seedream](https://fuseaitools.com/home/seedream): Seedream image models overview.
+- [Seedream Overview](https://fuseaitools.com/home/seedream): ByteDance Seedream 5 Lite image tools; pairs with Seedance video; 20 free credits on sign-up.
+- [Seedream 5 Lite Text to Image](https://fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
+- [Seedream 5 Lite Image to Image](https://fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.
 - [Qwen Image](https://fuseaitools.com/home/qwen): Qwen image tools overview.
 - [Imagen 4](https://fuseaitools.com/home/imagen4): Google Imagen 4 overview.
 
@@ -68,7 +70,7 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 
 ## Video — Seedance
 
-Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro (4/8/12s with optional audio), and Seedance 2 multimodal (4–15s, first/last frame, reference media).
+Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro (4/8/12s with optional audio), and Seedance 2 multimodal (4–15s, first/last frame, reference media). Pairs with Seedream for ByteDance image-to-video pipelines.
 
 - [Seedance Overview](https://fuseaitools.com/home/seedance): Eight workflows from v1 Lite/Pro through Seedance 2; 20 free credits on sign-up.
 - [Seedance v1 Lite Text to Video](https://fuseaitools.com/home/seedance/v1-lite-text-to-video): Text-to-video with 16:9–9:21 ratios, 480p–1080p, 5s/10s.

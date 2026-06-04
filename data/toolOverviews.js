@@ -562,103 +562,33 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedream is a unified multimodal image generation model by ByteDance, designed for multimodal reasoning, deep understanding, and controllable visual creation. It supports text-to-image and image editing workflows with improved consistency and real-time knowledge integration.',
+    intro: 'Seedream 5 Lite on FuseAITools is ByteDance\'s multimodal image line—text-to-image and image-to-image at Basic (2K) or High (3K), with nine aspect ratios from 1:1 to 21:9. Pair with Seedance for ByteDance video workflows. Credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
-      { name: '5 Lite Text to Image', path: '/home/seedream/5-lite-text-to-image', description: 'Generate images from text descriptions with aspect ratio options from 1:1 to 21:9. Choose Basic (2K) or High (3K) quality. Prompt length up to 2995 characters.' },
-      { name: '5 Lite Image to Image', path: '/home/seedream/5-lite-image-to-image', description: 'Transform existing images via text instructions—adjust lighting, apply style transfer, or refine details. Upload one or more images (JPEG, PNG, WebP; max 10MB each), set aspect ratio and quality, and guide the result with natural language prompts up to 2996 characters.' }
+      { name: 'Seedream 5 Lite Text to Image', path: '/home/seedream/5-lite-text-to-image', description: 'Generate from text—prompt up to 2995 chars, Basic 2K or High 3K, aspect ratios 1:1 through 21:9.' },
+      { name: 'Seedream 5 Lite Image to Image', path: '/home/seedream/5-lite-image-to-image', description: 'Edit 1–5 images with natural-language prompts—lighting, style transfer, or frame prep for Seedance video.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Precision and flexibility: Seedream puts control in your hands—choose exactly the aspect ratio and resolution you need, from social squares to ultra-wide cinematics. High-quality output at 2K or 3K ensures your visuals stand out, whether for web, print, or digital campaigns.
-
-Simplicity without compromise: With straightforward parameters and generous prompt limits, Seedream balances ease of use with professional-grade results. It's built for creators who demand both creative freedom and technical reliability.`
-      },
-      {
         title: 'Core capabilities',
-        content: `5 Lite Text to Image
+        content: `Text to Image (seedream-5-lite-text-to-image): Required prompt (max 2995 chars). Aspect ratio 1:1, 4:3, 3:4, 16:9, 9:16, 2:3, 3:2, 21:9. Quality Basic (2K) or High (3K).
 
-Describe your vision in detail—up to 2995 characters.
+Image to Image (seedream-5-lite-image-to-image): Required 1–5 image URLs (JPEG/PNG/WebP, max 10MB each) + prompt (max 2996 chars). Same aspect ratios and quality tiers as text-to-image.
 
-Select aspect ratio: 1:1, 4:3, 3:4, 16:9, 9:16, 2:3, 3:2, 21:9.
-
-Choose quality: Basic 2K (fast, efficient) or High 3K (enhanced detail and clarity).
-
-Ideal for concept art, stickers, social posts, and rapid visual exploration.
-
-5 Lite Image to Image
-
-Upload one or more images (JPEG, PNG, WebP; max 10MB each).
-
-Add a text instruction (e.g., "change lighting to golden hour," "convert to sticker style," "transfer this style to the subject").
-
-Apply the same aspect ratio and quality controls as text-to-image.
-
-Perfect for style unification, lighting adjustments, detail polishing, and creative remixing.`
-      },
-      {
-        title: 'Use cases',
-        content: `Sticker creation: Generate custom stickers with precise control over style and format.
-
-Lighting edits: Transform the mood of an image by changing lighting conditions via text prompts.
-
-Style transfer: Apply artistic or brand styles consistently across multiple assets.
-
-Marketing assets: Produce social media graphics, banners, and ads with tailored aspect ratios.
-
-Concept iteration: Rapidly explore variations of a design by tweaking prompts and parameters.
-
-Educational content: Create visuals for presentations, blogs, and student projects with high-quality output.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Text-to-image generation: Typically completes in 10–25 seconds for Basic 2K, 20–40 seconds for High 3K (dependent on complexity).
-
-Image-to-image generation: 15–30 seconds for most edits; supports batch processing for multiple images.
-
-Concurrency: Handles 50+ parallel requests smoothly.
-
-Input formats: JPEG, PNG, WebP (max 10MB per image).
-
-Prompt length: Up to 2995–2996 characters, enabling rich, detailed descriptions.`
+Both workflows run on FuseAITools with credit-based pricing keyed to aspect ratio and quality.`
       },
       {
         title: 'Workflow',
-        content: `Quick create: Write a detailed prompt → select aspect ratio and quality → generate → review and refine.
+        content: `Text to image: write a detailed prompt → pick aspect ratio and Basic/High quality → generate → download from history.
 
-Batch editing: Upload a set of images → apply the same style or lighting instruction → unify output with consistent settings.
+Image to image: upload 1–5 images → describe the edit (lighting, style, details) → set ratio and quality → generate.
 
-Team collaboration: Share generated assets in real time, collect feedback, and iterate quickly using version tracking on FuseAITools.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Prompt crafting: Be specific: [Subject] + [Action/Scene] + [Style/Lighting] + [Key details]. For image-to-image, clearly state what to change (e.g., "make it sunset lighting" rather than just "change lighting").
+ByteDance creative pipeline: create or refine stills in Seedream, then animate in Seedance (v1 Lite I2V, 1.5 Pro, or Seedance 2 first/last frame modes).
 
-Resolution strategy: Use Basic 2K for drafts and internal reviews; switch to High 3K for final assets.
-
-Batch efficiency: Group similar tasks (e.g., same aspect ratio/style) to minimize reconfiguration.
-
-Cost management: Optimize by reusing successful prompts and caching frequently used instructions.
-
-Quality control: Experiment with different prompts and aspect ratios to find the best combination; iterate from Basic to High for polish.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Flexible aspect ratios: From 1:1 to 21:9, covering all modern formats.
-
-High-quality output: 2K and 3K options ensure professional-grade visuals.
-
-Long prompt support: Up to 2996 characters for precise creative direction.
-
-Ease of use: Intuitive controls and minimal setup—start generating in seconds.
-
-Versatility: Ideal for stickers, lighting edits, style transfer, and more.
-
-Best for: Designers, marketers, educators, content creators, and anyone needing fast, flexible image generation.`
+All workflows run in the browser—no local GPU required.`
       },
       {
         title: 'Try Seedream on FuseAITools',
-        content: `Seedream on FuseAITools combines precise control with high-quality output—whether you're crafting stickers, fine-tuning lighting, or exploring new styles. With flexible aspect ratios, 2K/3K resolution, and generous prompt limits, Seedream empowers you to create exactly what you envision. Start turning ideas into stunning visuals today.`
+        content: `Seedream 5 Lite on FuseAITools delivers flexible 2K/3K image generation and editing—whether you need social covers, sticker art, or frames for Seedance video. Open either workflow above and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },
@@ -1593,7 +1523,7 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro and Seedance 2—eight workflows for text, image, and multimodal generation. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4/8/12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s. Credits are shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro and Seedance 2—eight workflows for text, image, and multimodal generation. Pair with Seedream for 2K/3K stills and image edits. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4/8/12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s. Credits are shown before each run. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Seedance v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Prompt-only clips—16:9 through 9:21, 480p/720p/1080p, 5s or 10s. Camera fixed, seed, and safety checker.' },
       { name: 'Seedance v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate one image with optional end frame—5/10s at up to 1080p with camera and seed controls.' },

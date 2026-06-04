@@ -218,6 +218,23 @@
     </div>
 
     <div class="upgrade-tip">
+      🖼️ <strong>ByteDance image companion — Seedream</strong>
+      Create 2K/3K stills with
+      <a
+        href="/home/seedream/5-lite-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-lite-text-to-image')"
+      >Seedream 5 Lite Text to Image</a>
+      or prep first/last frames via
+      <a
+        href="/home/seedream/5-lite-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-lite-image-to-image')"
+      >Seedream 5 Lite Image to Image</a>
+      before animating here in Seedance.
+    </div>
+
+    <div class="upgrade-tip">
       🎵 Need unified T2V/I2V with optional audio?
       <a
         href="/home/seedance/v1-5-pro"
