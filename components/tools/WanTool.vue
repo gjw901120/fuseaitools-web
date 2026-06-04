@@ -807,9 +807,9 @@ const isWanImageProMode = computed(() => mode.value === '2-7-image-pro')
 const hasImageInput = computed(() => Array.isArray(formData.imageUrls) && formData.imageUrls.length > 0)
 const toolDescription = computed(() => {
   if (isWanImageMode.value) {
-    return 'Wan is Alibaba\'s multimodal AI generation suite. In image mode, it provides Wan 2.7 Image / Image Pro for high-quality generation and editing with strong prompt adherence, controllable quality, and production-ready outputs.'
+    return 'Wan 2.7 Image / Image Pro on FuseAITools—text-to-image and editing at 1K/2K/4K with up to 9 reference images. Pair with Wan video workflows to animate stills, first/last frames, or R2V references.'
   }
-  return 'Wan is Alibaba\'s multimodal AI generation suite. In video mode, it provides complete T2V, I2V, and V2V workflows with strong prompt adherence, controllable quality, and production-ready outputs.'
+  return 'Wan video on FuseAITools—Wan 2.6 multi-shot clips and Wan 2.7 director controls (I2V, edit, R2V). Pair with Wan 2.7 Image for stills and keyframes before video generation.'
 })
 const canUseThinkingMode = computed(() => isWanImageMode.value && !formData.enableSequential && !hasImageInput.value)
 const canUse4k = computed(() => isWanImageProMode.value && !formData.enableSequential && !hasImageInput.value)

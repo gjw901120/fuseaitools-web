@@ -30,7 +30,7 @@
 |------|------------------|------|
 | 页面壳 | `pages/home/wan/text-to-video.vue` 等 7 个视频页 | `HomeLayout` + `WanTool` + `#below-main` SEO 插槽 |
 | 表单 | `components/tools/WanTool.vue` | 真实能力边界（改 SEO 前必须对齐） |
-| 底部 SEO | `Wan26VideoSeoContent.vue`（2.6 三路）/ `Wan27VideoSeoContent.vue`（2.7 四路） | 长文、FAQ、对比、工作流卡片 |
+| 底部 SEO | `Wan26VideoSeoContent.vue`（2.6 三路）/ `Wan27VideoSeoContent.vue`（2.7 四路）/ `Wan27ImageSeoContent.vue`（2.7 图像两页） | 长文、FAQ、对比、工作流卡片 |
 | Head SEO | `useToolSEOAsync({ ... })` in 页面 `<script setup>` | title、description、OG、JSON-LD |
 | FAQ JSON-LD | `composables/useToolSeoFaqSchema.js` | 与 `faqItems` 同步的 `FAQPage` schema |
 | 样式 | `assets/css/tool-seo-content.css` | 共用 `.seo-content`（flux 青绿主题） |
@@ -305,15 +305,18 @@ Definition → Capability table → FAQ → vs table → Workflow grid（Wan 均
 | `/home/wan/v2-7-image-to-video` | `v2-7-image-to-video.vue` | `Wan27VideoSeoContent` | `wan-2-7-image-to-video` |
 | `/home/wan/v2-7-video-edit` | `v2-7-video-edit.vue` | `Wan27VideoSeoContent` | `wan-2-7-video-edit` |
 | `/home/wan/v2-7-r2v` | `v2-7-r2v.vue` | `Wan27VideoSeoContent` | `wan-2-7-r2v` |
+| `/home/wan/2-7-image` | `2-7-image.vue` | `Wan27ImageSeoContent` | `wan-2-7-image` |
+| `/home/wan/2-7-image-pro` | `2-7-image-pro.vue` | `Wan27ImageSeoContent` | `wan-2-7-image-pro` |
 
 **相关文件**：
 
 - `components/tools/WanTool.vue` — 事实源  
+- `components/tools/Wan27ImageSeoContent.vue` — 2.7 图像两页  
 - `composables/useToolSeoFaqSchema.js` — FAQ JSON-LD  
 - `composables/useToolSeoPageScroll.js` — 回顶与路由滚动  
 - `public/llms.txt` — `## Video — Wan 2.6 & 2.7`
 
-**范围外（可选扩展）**：`/home/wan/2-7-image`、`2-7-image-pro` 仅有 `useToolSEOAsync`，无底部 `*SeoContent`；若需与视频 7 页同级，另建 `Wan27ImageSeoContent` 或合并进图像专用组件。
+**Wan image ↔ video 互链**：`Wan27ImageSeoContent` 链到 2.7/2.6 视频；`Wan26/27VideoSeoContent` 链到 2.7 Image / Image Pro；`WanTool.vue` 按 image/video 模式切换简介。
 
 ### 9.2 与 API 对齐的参数（写作核对表）
 
@@ -333,6 +336,13 @@ Definition → Capability table → FAQ → vs table → Workflow grid（Wan 均
 | Image to Video | `wan-2-7-image-to-video` | prompt 3–5000；≥1：first/last frame、clip、driving audio；2–15s |
 | Video Edit | `wan-2-7-videoedit` | `videoUrl` + prompt；duration 0 或 2–10s；audioSetting auto/origin |
 | R2V | `wan-2-7-r2v` | prompt；reference 图+视频合计 ≤5；duration 2–10s；有 firstFrame 时不传 aspectRatio |
+
+**Wan 2.7 图像**
+
+| 工作流 | API model | 关键约束 |
+|--------|-----------|----------|
+| Image | `wan-2-7-image` | prompt 1–5000；inputUrls 0–9；无 input 时 aspectRatio 八档；1K/2K；n 1–4（sequential 时 1–12） |
+| Image Pro | `wan-2-7-image-pro` | 同 Image；**4K** 仅无 input 且 sequential off |
 
 ### 9.3 聚合页 `toolOverviews.wan` 结构（示例）
 
@@ -375,7 +385,7 @@ wan: {
 **待全站处理（非 Wan 独有）**
 
 - [ ] `useToolSEO.js` 中 `aggregateRating` 移除或改为真实数据  
-- [ ] 图像 2 页是否补 `*SeoContent`（产品排期）  
+- [x] 图像 2 页已补 `Wan27ImageSeoContent` + 与视频页互链  
 
 ---
 

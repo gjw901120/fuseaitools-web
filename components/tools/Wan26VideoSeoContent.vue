@@ -199,6 +199,23 @@
     </div>
 
     <div class="upgrade-tip">
+      🖼️ <strong>Wan image companion</strong>
+      Create stills and keyframes with
+      <a
+        href="/home/wan/2-7-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/2-7-image')"
+      >Wan 2.7 Image</a>
+      or
+      <a
+        href="/home/wan/2-7-image-pro"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/2-7-image-pro')"
+      >Image Pro (4K)</a>
+      before animating in Wan 2.6 Image to Video.
+    </div>
+
+    <div class="upgrade-tip">
       💡 Want director-level control? Try
       <a
         href="/home/wan/v2-7-text-to-video"
