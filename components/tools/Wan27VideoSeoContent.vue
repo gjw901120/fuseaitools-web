@@ -210,6 +210,23 @@
     </div>
 
     <div class="upgrade-tip">
+      🖼️ <strong>Wan image companion</strong>
+      Generate first/last frames in
+      <a
+        href="/home/wan/2-7-image-pro"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/2-7-image-pro')"
+      >Wan 2.7 Image Pro (4K)</a>
+      or edit references in
+      <a
+        href="/home/wan/2-7-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/2-7-image')"
+      >Wan 2.7 Image</a>
+      —then animate in this page's I2V or R2V workflows.
+    </div>
+
+    <div class="upgrade-tip">
       🎭 Prefer fast multi-shot clips from text or stills?
       <a
         href="/home/wan/text-to-video"

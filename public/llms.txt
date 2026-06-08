@@ -47,7 +47,7 @@ HappyHorse v1 focuses on native audio-video joint generation (lip-sync, ambient 
 
 ## Video — Wan 2.6 & 2.7
 
-Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 adds image tools, frame-controlled I2V, Video Edit, and R2V (up to 5 references).
+Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 adds image tools (1K/2K/4K stills), frame-controlled I2V, Video Edit, and R2V (up to 5 references). Image and video workflows cross-link on each tool page.
 
 - [Wan Overview](https://fuseaitools.com/home/wan): Wan image and video tools hub.
 - [Wan 2.6 Text to Video](https://fuseaitools.com/home/wan/text-to-video): Role-play oriented text-to-video.
