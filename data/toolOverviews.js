@@ -453,51 +453,43 @@ Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techni
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Meet Nano Banana, Google\'s Gemini Flash Image model, now available via Fuse AI. Built for developers, it combines lightning-fast speed with Pro-level quality, accurate text rendering, strong character consistency, and scalable image generation and editing workflows.',
+    intro: 'Nano Banana on FuseAITools is Google\'s Gemini Flash Image suite in two generations: v1 (Text to Image, Image to Image, Pro Generate) and v2 (Nano Banana 2 with 20k prompts and optional 0–14 images). Credits shown before each run. Pair with Seedream for ByteDance image workflows. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Text to Image', path: '/home/nano-banana/generate', description: 'Sub-20s generation; social sizes (1080×1080, 1080×1920), web and 16:9; style and mood presets.' },
-      { name: 'Image to Image', path: '/home/nano-banana/edit', description: 'Style and theme transfer, detail polish, natural-language edit; batch style unification.' },
-      { name: 'Pro Generate', path: '/home/nano-banana/pro-generate', description: 'Up to 4K, fine detail and color; composition, style, and lighting control for final assets.' },
-      { name: 'Nano Banana 2', path: '/home/nano-banana/nano-banana-2', description: 'Prompt up to 20000 chars, optional 0-14 image inputs, aspect ratio presets including auto, JPG/PNG output, and 1K/2K/4K resolution.' }
+      { name: 'Nano Banana v1 · Text to Image', path: '/home/nano-banana/generate', description: 'Generate from text—prompt up to 5000 chars, eleven aspect ratios including auto, PNG or JPEG output.' },
+      { name: 'Nano Banana v1 · Image to Image', path: '/home/nano-banana/edit', description: 'Edit 1–10 images with natural-language prompts—style transfer, detail polish, or batch look unification.' },
+      { name: 'Nano Banana v1 · Pro Generate', path: '/home/nano-banana/pro-generate', description: '1–10 reference images plus prompt—1K, 2K, or 4K resolution for production-ready assets.' },
+      { name: 'Nano Banana 2 (v2)', path: '/home/nano-banana/nano-banana-2', description: 'Prompts up to 20,000 chars, optional 0–14 image inputs, fifteen aspect ratios, 1K/2K/4K, JPG or PNG output.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Efficiency first: Lightweight architecture and compute; second-level response; high cost-effectiveness; minimal steps for maximum output.
-
-Quality–efficiency balance: Smart quality retention at speed; adaptive quality by need; smooth path from quick draft to refined version; batch-optimized throughput.`
-      },
-      {
         title: 'Core capabilities',
-        content: `Text to Image: Fast ideation and concept visualization. Sub-20s average; live preview; high-frequency iteration; parallel requests. Sizes: social (1080×1080, 1080×1920), web (1200×630, 1200×800), 16:9 (1920×1080), 4:3 (1200×900), mobile. Style presets: minimal, colorful, retro, modern; themes (business, tech, nature, food); mood (joy, serious, warm, mysterious). Use for brainstorm, A/B tests, fast feedback, batch exploration.
+        content: `v1 — Text to Image (nano-banana): Required prompt (max 5000 chars). Image size 1:1, 9:16, 16:9, 3:4, 4:3, 3:2, 2:3, 5:4, 4:5, 21:9, auto. Output PNG or JPEG.
 
-Image to Image: Style transfer, theme change, detail polish, creative remix. Natural-language edit; smart selection; strength/style/blend control; batch style unification. For brand consistency, quick social polish, concept expansion, format optimization.
+v1 — Image to Image (nano-banana-edit): Required 1–10 image URLs (JPEG/PNG/WebP, max 10MB each) + prompt (max 5000 chars). Same aspect ratios and output formats as text-to-image.
 
-Pro Generate: Production-ready assets. Up to 4K; micro detail and color accuracy; pro formats and color spaces. Control: composition (rule of thirds, golden ratio, symmetry, viewpoint, focus, balance); style (strength, blend, per-detail, culture); lighting and color (studio, natural, dramatic, cinematic; color theory; mood; brand).`
-      },
-      {
-        title: 'Use cases',
-        content: `Rapid prototyping: Concept validation, UI prototypes, pitch decks, internal visuals. Social marketing: Daily content, trend response, campaign assets, user engagement. Startups and SMBs: Budget-friendly visuals, fast branding, flexible iteration, scaling from small to medium. Education and content: Slides and blog art, student projects, knowledge visualization.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Standard: Text-to-image 5–20s, image-to-image 10–25s; 100+ concurrent. Pro: 15–30s generate, 10–25s edit; smart batch. Cost: ~20–30% of traditional compute; smart compression and storage; minimal bandwidth; low energy.`
+v1 — Pro Generate (nano-banana-pro): Required 1–10 image URLs + prompt (max 5000 chars). Resolution 1K, 2K, or 4K; eleven aspect ratios. Credit cost follows resolution tier.
+
+v2 — Nano Banana 2 (nano-banana-2): Required prompt (max 20,000 chars); optional 0–14 image inputs. Resolution 1K/2K/4K; fifteen aspect ratios; JPG or PNG output.`
       },
       {
         title: 'Workflow',
-        content: `Quick creative: Describe concept; generate multiple directions in seconds; pick best; quick refine; output; light post. Batch: Plan content; batch generate; unify style and brand; schedule. Team: Fast share, real-time feedback, version compare, visual decision support.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Prompt: [Subject] + [Key traits] + [Simple style] + [Basic params]. Iterate: Small tweaks from last result; multiple variants per run; learn which params matter; save and reuse successful prompts. Cost: Right resolution per use; batch similar tasks; cache similar requests; off-peak when possible. Quality: Key params, minimum quality bar, quick-then-refine, pick best from batch.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Speed: Industry-leading generation time. Cost: High value and efficiency. Ease: Intuitive, low learning curve. Scale: Small to medium projects without friction. Best for: Startups, social managers, educators, solo creators, agile teams.`
+        content: `v1 text to image: write a prompt → pick aspect ratio and output format → generate → download from history.
+
+v1 image to image: upload 1–10 images → describe the edit → set ratio and format → generate.
+
+v1 Pro: upload 1–10 reference images → write prompt → choose 1K/2K/4K and aspect ratio → generate.
+
+v2 Nano Banana 2: write a long prompt (up to 20k chars) → optionally add 0–14 images → set resolution, ratio, and format → generate.
+
+When to pick v1 vs v2: use v1 for fast prompt-only drafts, dedicated I2I edits, or mandatory-reference Pro 4K; use v2 for 20k-character briefs or optional multi-reference in one workflow.
+
+ByteDance creative pipeline: create or refine stills in Seedream, then animate in Seedance (v1 Lite I2V, 1.5 Pro, or Seedance 2).
+
+All workflows run in the browser—no local GPU required.`
       },
       {
         title: 'Try Nano Banana on FuseAITools',
-        content: `Nano Banana on FuseAITools redefines fast image creation—speed, cost, and quality in one place. Whether you’re on a tight deadline or want maximum efficiency in exploration, Nano Banana delivers. Turn ideas into visuals at lightning speed.`
+        content: `Nano Banana on FuseAITools delivers fast Gemini Flash Image generation and editing—whether you need social covers, style transfers, or 4K production assets. Open any workflow above and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },

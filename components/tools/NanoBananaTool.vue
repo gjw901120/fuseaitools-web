@@ -8,7 +8,7 @@
         </div>
         <div class="tool-info">
           <h3>Nano Banana</h3>
-          <p class="tool-description">Meet Nano Banana, Google's Gemini Flash Image model, now available via Fuse AI. Built for developers, it combines lightning-fast speed with Pro-level quality, accurate text rendering, strong character consistency, and scalable image generation and editing workflows.</p>
+          <p class="tool-description">Nano Banana on FuseAITools is Google's Gemini Flash Image suite—v1 (Text to Image, Image to Image, Pro Generate) and v2 (Nano Banana 2 with 20k prompts and optional 0–14 images). Pair with Seedream for ByteDance image workflows.</p>
         </div>
       </div>
     </div>

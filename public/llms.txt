@@ -28,7 +28,11 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 - [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
 - [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
 - [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
-- [Nano Banana](https://fuseaitools.com/home/nano-banana): Nano Banana image tools overview.
+- [Nano Banana Overview](https://fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
+- [Nano Banana Text to Image](https://fuseaitools.com/home/nano-banana/generate): Prompt-only, eleven aspect ratios, PNG/JPEG, up to 5000 chars.
+- [Nano Banana Image to Image](https://fuseaitools.com/home/nano-banana/edit): Edit 1–10 images with natural-language prompts.
+- [Nano Banana Pro Generate](https://fuseaitools.com/home/nano-banana/pro-generate): 1–10 reference images, 1K/2K/4K resolution.
+- [Nano Banana 2](https://fuseaitools.com/home/nano-banana/nano-banana-2): Up to 20k prompt, optional 0–14 images, fifteen aspect ratios.
 - [Seedream Overview](https://fuseaitools.com/home/seedream): ByteDance Seedream 5 Lite image tools; pairs with Seedance video; 20 free credits on sign-up.
 - [Seedream 5 Lite Text to Image](https://fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
 - [Seedream 5 Lite Image to Image](https://fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.

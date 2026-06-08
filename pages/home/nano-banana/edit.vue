@@ -3,19 +3,24 @@
     <div class="tool-page">
       <NanoBananaTool />
     </div>
+    <template #below-main>
+      <NanoBananaSeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import NanoBananaTool from '~/components/tools/NanoBananaTool.vue'
+import NanoBananaSeoContent from '~/components/tools/NanoBananaSeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
-  name: 'Nano Banana Edit - Image to Image',
-  description: 'Edit and generate images from uploaded photos with Nano Banana. Pay per image with credits.',
+  name: 'Nano Banana Image to Image',
+  description:
+    'Nano Banana image-to-image on FuseAITools—edit 1–10 photos with natural-language prompts via Gemini Flash Image. Style transfer and detail polish. 20 free credits on sign-up.',
   category: 'image',
   route: '/home/nano-banana/edit',
-  keywords: ['Nano Banana Edit', 'Image to Image', 'AI image edit', 'image editing', 'AI art'],
+  keywords: ['Nano Banana Edit', 'image to image', 'Gemini Flash Image', 'AI image edit', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Image Generation',
   offers: { price: '0', priceCurrency: 'USD' },
@@ -26,5 +31,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>
