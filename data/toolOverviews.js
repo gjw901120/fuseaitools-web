@@ -995,61 +995,45 @@ AI Audio Isolation: Clean vocal and instrument separation (drums, bass, guitar, 
     ]
   },
   veo3: {
-    title: 'Veo 3',
+    title: 'Veo 3.1',
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Google Veo 3 is Google\'s next-generation high-quality video generation model, built for cinematic-quality output. It combines advanced AI with fine motion control to deliver professional video for ads, social content, and film pre-visualization. Use Veo 3 on FuseAITools for text-to-video, first-and-last frame animation, reference-image-to-video, and video extension—all with 1080p output and flexible creative control.',
+    intro: 'Veo 3.1 on FuseAITools is Google DeepMind video—stable routes at /home/veo3 with text-to-video, first-and-last frames, reference-to-video, and extend. Standard (veo3) or Fast (veo3_fast) on generate modes; extend uses veo3_extend. 16:9 supports 1080P. Pair with Seedance for ByteDance video. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Text to Video', path: '/home/veo3/text-to-video', description: 'Generate high-quality video from text with full creative control: style, motion, duration, and 1080p output.' },
-      { name: 'First & Last to Video', path: '/home/veo3/first-and-last-to-video', description: 'Provide start and end frames; Veo 3 intelligently generates the in-between motion with smooth transitions.' },
-      { name: 'Reference to Video', path: '/home/veo3/reference-to-video', description: 'Animate a single reference image into video while preserving style, characters, and environment.' },
-      { name: 'Extend', path: '/home/veo3/extend', description: 'Extend existing clips with coherent extra seconds while keeping style and content consistency.' }
+      { name: 'Veo 3.1 Text to Video', path: '/home/veo3/text-to-video', description: 'Prompt-only video—Standard or Fast, aspect 16:9/9:16/Auto, prompts up to 1000 chars.' },
+      { name: 'Veo 3.1 First and Last Frames', path: '/home/veo3/first-and-last-to-video', description: 'Upload 1–2 keyframe images—model generates motion between first and last frames.' },
+      { name: 'Veo 3.1 Reference to Video', path: '/home/veo3/reference-to-video', description: 'Animate 1–3 reference images while preserving look—Standard or Fast.' },
+      { name: 'Veo 3.1 Video Extend', path: '/home/veo3/extend', description: 'Extend completed Veo3 clips—select original task plus extension prompt.' }
     ],
     sections: [
       {
         title: 'Core capabilities',
-        content: `Text to Video: Create video from written descriptions with precise style control (cinematic, animation, documentary), dynamic motion (camera moves, object speed, rhythm), custom duration, and 1080p resolution. Ideal for ads, social shorts, product demos, and concept visualization.
+        content: `Text to Video (TEXT_2_VIDEO): Required prompt (1–1000 chars). Model veo3 (Standard) or veo3_fast (Fast). Aspect ratio 16:9 (1080P-capable), 9:16, or Auto. Optional seed 10000–99999 and translation to English.
 
-First & Last to Video: Supply start and end frames; the model generates the motion in between. It predicts motion paths, keeps visual style consistent, and produces smooth transitions—even with multiple moving objects. Use it for product demos, dynamic charts, process flows, and educational videos.
+First and Last Frames (FIRST_AND_LAST_FRAMES_2_VIDEO): Required 1–2 image URLs (JPG/PNG) + prompt. Same Standard/Fast and aspect-ratio options as text-to-video.
 
-Reference to Video: Turn a single reference image into coherent video while preserving style, character and object consistency, and atmosphere. Great for character animation, bringing scenes to life, illustration animation, and brand storytelling.
+Reference to Video (REFERENCE_2_VIDEO): Required 1–3 image URLs + prompt. Standard or Fast; no aspect-ratio control in the form.
 
-Extend: Add seamless extra content to existing clips. The model maintains coherence, style, and smooth transitions, with multiple duration options. Use for lengthening shorts, expanding scenes, continuing stories, or completing content.`
+Video Extend (VIDEO_EXTEND): Required original Veo3 task ID + extension prompt (1–1000 chars). Priced via veo3_extend. Clips after 1080P upscale cannot be extended.`
       },
       {
-        title: 'Technical highlights',
-        content: `Cinematic quality: 1080p output, realistic lighting and shadows, natural motion and physics, and detailed texture rendering.
+        title: 'Workflow',
+        content: `Text to video: write prompt → pick Standard or Fast → set aspect ratio → generate → download from history.
 
-Fine control: Camera control (push, pull, pan, tilt, aerial, dolly), motion parameters (speed curves, acceleration, trajectories), style presets (cinematic, animated, photorealistic, artistic), and timing (keyframes, rhythm).
+First and last frames: upload 1–2 keyframe images → describe motion → set model and ratio → generate.
 
-Smart understanding: Deep scene understanding, physics-aware motion, emotional tone, and narrative coherence.`
+Reference to video: upload 1–3 references → write motion prompt → pick Standard or Fast → generate.
+
+Extend: complete a Veo3 generation first → open extend → select original task → describe continuation → generate.
+
+ByteDance pipeline: pair Veo 3.1 with Seedance (v1 Lite I2V, 1.5 Pro, or Seedance 2) for image-to-video and multimodal clips.
+
+All workflows run in the browser—no local GPU required.`
       },
       {
-        title: 'Who it’s for',
-        content: `Creative professionals: Ad agencies for concept ads, film studios for pre-vis and storyboards, animation studios for concept validation, and social creators for high-quality content.
-
-Businesses and brands: Marketing teams for product videos, training for how-to and educational content, PR for brand stories, and e‑commerce for product showcases.
-
-Individual creators: YouTubers and TikTokers, digital artists, educators for teaching materials, and founders for product demos.`
-      },
-      {
-        title: 'Typical workflow',
-        content: `Define your concept (topic, style, duration), prepare inputs (text prompt, reference image, or video), set parameters (motion, style, resolution), generate a preview, refine as needed, then export the final 1080p video. Batch generation, saved presets, and versioning are supported for efficient production.`
-      },
-      {
-        title: 'Technical specs',
-        content: `Input: Text in multiple languages; images in JPG/PNG (e.g. 1920×1080 or higher); video in MP4 within duration limits.
-
-Output: Up to 1080p (1920×1080), 24fps or 30fps, MP4 (H.264). Clip length typically from a few seconds up to 60 seconds. Optional watermark handling.`
-      },
-      {
-        title: 'Use cases',
-        content: `Advertising: Product launches, seasonal campaigns, A/B tests with different styles. Film and TV: Pre-vis, concept tests, VFX previews. Education: Explainer animations, training and how-to videos, dynamic course materials. Social media: Brand content, trend-based clips, and personalized video.`
-      },
-      {
-        title: 'Quality and support',
-        content: `Content is subject to safety and quality checks. Try Veo 3 on FuseAITools to turn ideas into professional video—whether for ads, social content, or film pre-visualization—with high quality and flexible control.`
+        title: 'Try Veo 3.1 on FuseAITools',
+        content: `Veo 3.1 on FuseAITools delivers Google DeepMind video at /home/veo3—whether you need cinematic text-to-video, keyframe transitions, reference animation, or clip extension. Open any workflow above and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },

@@ -6,8 +6,8 @@
         <img src="/tools-logo/Veo.png" alt="Veo3" />
       </div>
       <div class="tool-details">
-        <h3>Veo 3</h3>
-        <p>Google Veo 3 is a next-generation AI video generation model developed by Google DeepMind. It supports both text-to-video and image-to-video creation, producing high-fidelity, cinematic visuals with advanced scene understanding and natural motion simulation. users can access Veo 3 Fast for rapid, cost-efficient workflows or Veo 3 Quality for premium output, all with transparent pricing and stable infrastructure.</p>
+        <h3>Veo 3.1</h3>
+        <p>Veo 3.1 on FuseAITools is Google DeepMind video—routes at /home/veo3 with text-to-video, first-and-last frames, reference-to-video, and extend. Choose Standard (veo3) or Fast (veo3_fast) for generate modes; pair with Seedance for ByteDance video workflows.</p>
       </div>
     </div>
 

@@ -3,19 +3,24 @@
     <div class="tool-page">
       <Veo3Tool />
     </div>
+    <template #below-main>
+      <Veo31SeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import Veo3Tool from '~/components/tools/Veo3Tool.vue'
+import Veo31SeoContent from '~/components/tools/Veo31SeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
-  name: 'Veo 3 First and Last Frames to Video Generator',
-  description: 'Generate transition videos from two keyframe images using Google Veo 3. Pay per video with credits.',
+  name: 'Veo 3.1 First and Last Frames to Video',
+  description:
+    'Veo 3.1 first-and-last frames on FuseAITools—animate 1–2 keyframe images with Standard or Fast models. Routes at /home/veo3. 20 free credits on sign-up.',
   category: 'video',
   route: '/home/veo3/first-and-last-to-video',
-  keywords: ['Veo3', 'First And Last Frames', 'image to video', 'AI video'],
+  keywords: ['Veo3', 'Veo 3.1', 'first and last frames', 'keyframe video', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },
@@ -26,5 +31,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>

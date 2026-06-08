@@ -66,7 +66,11 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 
 ## Video — Other models
 
-- [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
+- [Veo 3.1 Overview](https://fuseaitools.com/home/veo3): Google DeepMind video at /home/veo3—Standard/Fast + extend; pairs with Seedance; 20 free credits on sign-up.
+- [Veo 3.1 Text to Video](https://fuseaitools.com/home/veo3/text-to-video): Prompt-only, veo3 or veo3_fast, 16:9/9:16/Auto, up to 1000 chars.
+- [Veo 3.1 First and Last Frames](https://fuseaitools.com/home/veo3/first-and-last-to-video): 1–2 keyframe images plus prompt for transition video.
+- [Veo 3.1 Reference to Video](https://fuseaitools.com/home/veo3/reference-to-video): Animate 1–3 reference images with motion prompt.
+- [Veo 3.1 Video Extend](https://fuseaitools.com/home/veo3/extend): Extend prior Veo3 clips via veo3_extend.
 - [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
 - [Runway](https://fuseaitools.com/home/runway): Runway video generation overview.
 - [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
