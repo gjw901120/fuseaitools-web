@@ -34,6 +34,7 @@ export { useApi } from '../composables/useApi';
 export { fetchWithCache, useApiCache } from '../composables/useApiCache';
 export { useAuth } from '../composables/useAuth';
 export { useBatchUploadUrl, assertBatchUploadSuccess, parseBatchUploadFetchResponse } from '../composables/useBatchUploadUrl';
+export { useExtendListAuth } from '../composables/useExtendListAuth';
 export { useFileUploadUrlCache } from '../composables/useFileUploadUrlCache';
 export { useFluxThemeRoute } from '../composables/useFluxThemeRoute';
 export { useHomeLayout } from '../composables/useHomeLayout';

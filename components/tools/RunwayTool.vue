@@ -645,7 +645,8 @@ import { useModelPrice } from '~/composables/useModelPrice'
 import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const isClient = typeof window !== 'undefined'
-const { token } = useAuth()
+const { token, isAuthenticated } = useAuth()
+const { guardExtendListFetch } = useExtendListAuth()
 const { showError } = useToast()
 const { get, post } = useApi()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
@@ -800,6 +801,7 @@ const queueFetchExtendList = () => {
 }
 const fetchExtendList = async (force = false) => {
   if (!import.meta.client) return
+  if (!guardExtendListFetch(extendList, { loadingRef: loadingExtendList, hasLoadedRef: hasLoadedExtendList })) return
   if (loadingExtendList.value) return
   if (!force && hasLoadedExtendList.value) return
   const shared = getSharedExtendListCache()
@@ -836,6 +838,23 @@ watch(() => route.path, (path) => {
   if (tab && activeTab.value !== tab) activeTab.value = tab
   if (tab === 'extend') queueFetchExtendList()
 }, { immediate: true })
+
+watch(isAuthenticated, (authed) => {
+  const shared = getSharedExtendListCache()
+  if (!authed) {
+    guardExtendListFetch(extendList, { loadingRef: loadingExtendList, hasLoadedRef: hasLoadedExtendList })
+    if (shared) {
+      shared.data = null
+      shared.promise = null
+    }
+    return
+  }
+  if (route.path === '/home/runway/extend') {
+    hasLoadedExtendList.value = false
+    if (shared) shared.data = null
+    queueFetchExtendList()
+  }
+})
 
 onBeforeUnmount(() => {
   isUnmounted.value = true

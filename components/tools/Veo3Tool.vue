@@ -449,7 +449,8 @@ const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 const { getUrlsForFiles } = useFileUploadUrlCache()
-const { token } = useAuth()
+const { token, isAuthenticated } = useAuth()
+const { guardExtendListFetch } = useExtendListAuth()
 const { showError, showSuccess } = useToast()
 const { post, get } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
@@ -525,6 +526,7 @@ const queueFetchExtendList = () => {
 }
 const fetchExtendList = async (force = false) => {
   if (!import.meta.client) return
+  if (!guardExtendListFetch(extendList, { loadingRef: loadingExtendList, hasLoadedRef: hasLoadedExtendList })) return
   if (loadingExtendList.value) return
   if (!force && hasLoadedExtendList.value) return
   const shared = getSharedExtendListCache()
@@ -557,6 +559,23 @@ const fetchExtendList = async (force = false) => {
 watch(() => formData.generationType, (type) => {
   if (type === 'VIDEO_EXTEND') queueFetchExtendList()
 }, { immediate: true })
+
+watch(isAuthenticated, (authed) => {
+  const shared = getSharedExtendListCache()
+  if (!authed) {
+    guardExtendListFetch(extendList, { loadingRef: loadingExtendList, hasLoadedRef: hasLoadedExtendList })
+    if (shared) {
+      shared.data = null
+      shared.promise = null
+    }
+    return
+  }
+  if (formData.generationType === 'VIDEO_EXTEND') {
+    hasLoadedExtendList.value = false
+    if (shared) shared.data = null
+    queueFetchExtendList()
+  }
+})
 
 onBeforeUnmount(() => {
   isUnmounted.value = true

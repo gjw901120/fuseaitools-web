@@ -160,7 +160,8 @@ import { useModelPrice } from '~/composables/useModelPrice'
 const route = useRoute()
 const router = useRouter()
 const { post, get } = useApi()
-const { token } = useAuth()
+const { token, isAuthenticated } = useAuth()
+const { guardExtendListFetch } = useExtendListAuth()
 const { showError } = useToast()
 const { fetchPrices, getPrice, formatCredits } = useModelPrice()
 const batchUploadUrl = useBatchUploadUrl()
@@ -193,6 +194,7 @@ const getSharedExtendListCache = () => {
 }
 const fetchExtendList = async (force = false) => {
   if (!import.meta.client) return
+  if (!guardExtendListFetch(extendList, { loadingRef: loadingExtendList, hasLoadedRef: hasLoadedExtendList })) return
   if (loadingExtendList.value) return
   if (!force && hasLoadedExtendList.value) return
   const shared = getSharedExtendListCache()
@@ -256,6 +258,23 @@ watch(() => route.path, (p) => {
 watch(mode, (m) => {
   if (m === 'upscale' || m === 'extend') fetchExtendList(true)
 }, { immediate: true })
+
+watch(isAuthenticated, (authed) => {
+  const shared = getSharedExtendListCache()
+  if (!authed) {
+    guardExtendListFetch(extendList, { loadingRef: loadingExtendList, hasLoadedRef: hasLoadedExtendList })
+    if (shared) {
+      shared.data = null
+      shared.promise = null
+    }
+    return
+  }
+  if (mode.value === 'upscale' || mode.value === 'extend') {
+    hasLoadedExtendList.value = false
+    if (shared) shared.data = null
+    fetchExtendList(true)
+  }
+})
 
 const isVideoContext = computed(() => videoModes.includes(mode.value))
 const tabs = computed(() => tabsByCtx[isVideoContext.value ? 'video' : 'image'])

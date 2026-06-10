@@ -307,7 +307,8 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
 const route = useRoute()
-const { token } = useAuth()
+const { token, isAuthenticated } = useAuth()
+const { guardExtendListFetch } = useExtendListAuth()
 const { showError } = useToast()
 const { post } = useApi()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
@@ -470,6 +471,7 @@ const extendList = ref([])
 const loadingExtendList = ref(false)
 const fetchExtendList = async () => {
   if (!process.client) return
+  if (!guardExtendListFetch(extendList, { loadingRef: loadingExtendList })) return
   loadingExtendList.value = true
   try {
     const url = `/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`
@@ -500,6 +502,16 @@ watch(activeCategory, (cat) => {
   else if (cat === 'upscale') Object.assign(upscaleForm, INIT_UPSCALE_FORM)
   else if (cat === 'vary') Object.assign(varyForm, INIT_VARY_FORM)
 }, { immediate: true })
+
+watch(isAuthenticated, (authed) => {
+  if (!authed) {
+    guardExtendListFetch(extendList, { loadingRef: loadingExtendList })
+    return
+  }
+  if (activeCategory.value === 'upscale' || activeCategory.value === 'vary') {
+    fetchExtendList()
+  }
+})
 
 watch(() => upscaleForm.taskId, () => { upscaleForm.imageIndex = 0 })
 watch(() => varyForm.taskId, () => { varyForm.imageIndex = 1 })

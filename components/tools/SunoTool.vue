@@ -725,7 +725,8 @@ import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const router = useRouter()
 const route = useRoute()
-const { token } = useAuth()
+const { token, isAuthenticated } = useAuth()
+const { guardExtendListFetch } = useExtendListAuth()
 const { showError, showSuccess } = useToast()
 const { post, get } = useApi()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
@@ -828,6 +829,7 @@ const EXTEND_LIST_MODEL = 'suno_generate'
 const extendList = ref([])
 const loadingExtendList = ref(false)
 const fetchExtendList = async () => {
+  if (!guardExtendListFetch(extendList, { loadingRef: loadingExtendList })) return
   loadingExtendList.value = true
   try {
     const data = await get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
@@ -855,6 +857,16 @@ watch(() => route.path, (newPath) => {
     if (functionId === 'extend') fetchExtendList()
   }
 }, { immediate: true })
+
+watch(isAuthenticated, (authed) => {
+  if (!authed) {
+    guardExtendListFetch(extendList, { loadingRef: loadingExtendList })
+    return
+  }
+  if (formData.function === 'extend' || route.path === '/home/suno/extend') {
+    fetchExtendList()
+  }
+})
 
 // 详情页：仅从 URL 读取 record-id
 const routeRecordId = computed(() => route.query['record-id'] || '')

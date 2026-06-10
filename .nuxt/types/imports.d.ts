@@ -115,6 +115,7 @@ declare global {
   const useCssModule: typeof import('../../node_modules/vue')['useCssModule']
   const useCssVars: typeof import('../../node_modules/vue')['useCssVars']
   const useError: typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']
+  const useExtendListAuth: typeof import('../../composables/useExtendListAuth')['useExtendListAuth']
   const useFetch: typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']
   const useFileUploadUrlCache: typeof import('../../composables/useFileUploadUrlCache')['useFileUploadUrlCache']
   const useFluxThemeRoute: typeof import('../../composables/useFluxThemeRoute')['useFluxThemeRoute']
@@ -324,6 +325,7 @@ declare module 'vue' {
     readonly useCssModule: UnwrapRef<typeof import('../../node_modules/vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('../../node_modules/vue')['useCssVars']>
     readonly useError: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']>
+    readonly useExtendListAuth: UnwrapRef<typeof import('../../composables/useExtendListAuth')['useExtendListAuth']>
     readonly useFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']>
     readonly useFileUploadUrlCache: UnwrapRef<typeof import('../../composables/useFileUploadUrlCache')['useFileUploadUrlCache']>
     readonly useFluxThemeRoute: UnwrapRef<typeof import('../../composables/useFluxThemeRoute')['useFluxThemeRoute']>
