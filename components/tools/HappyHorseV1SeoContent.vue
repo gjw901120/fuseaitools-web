@@ -93,15 +93,12 @@
 
     <section class="info-section" aria-labelledby="faq-heading">
       <h2 id="faq-heading" class="section-title">❓ FAQ (HappyHorse v1)</h2>
-      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+      <div class="faq-list">
         <div
           v-for="(faq, index) in faqItems"
           :key="index"
           class="faq-item"
           :class="{ open: openFaqIndex === index }"
-          itemscope
-          itemprop="mainEntity"
-          itemtype="https://schema.org/Question"
         >
           <button
             type="button"
@@ -109,17 +106,14 @@
             :aria-expanded="openFaqIndex === index"
             @click="toggleFaq(index)"
           >
-            <span itemprop="name">{{ faq.question }}</span>
+            <span>{{ faq.question }}</span>
             <span class="faq-toggle" aria-hidden="true">{{ openFaqIndex === index ? '➖' : '➕' }}</span>
           </button>
           <div
             v-show="openFaqIndex === index"
             class="faq-answer"
-            itemscope
-            itemprop="acceptedAnswer"
-            itemtype="https://schema.org/Answer"
           >
-            <div itemprop="text" v-html="faq.answer" />
+            <div v-html="faq.answer" />
           </div>
         </div>
       </div>

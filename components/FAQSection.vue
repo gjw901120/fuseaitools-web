@@ -60,28 +60,30 @@ const faqItems = ref([
   }
 ])
 
-// FAQ 结构化数据（仅保留一处，避免与首页重复；Answer.text 使用纯文本）
 const faqSchema = computed(() => ({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqItems.value.map(item => ({
-    "@type": "Question",
-    "name": item.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": typeof item.answer === 'string' ? item.answer.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : item.answer
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.value.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: typeof item.answer === 'string'
+        ? item.answer.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+        : item.answer
     }
   }))
 }))
 
-// 添加 FAQ 结构化数据到页面 head
+// FAQPage JSON-LD（唯一来源，避免与 microdata 重复）
 useHead({
-  script: [
+  script: computed(() => [
     {
+      key: 'faq-page-schema',
       type: 'application/ld+json',
       innerHTML: JSON.stringify(faqSchema.value)
     }
-  ]
+  ])
 })
 
 // 切换FAQ展开/收起状态

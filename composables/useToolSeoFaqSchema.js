@@ -1,5 +1,5 @@
 /**
- * Inject FAQPage JSON-LD alongside page-level useToolSEOAsync head tags.
+ * Inject FAQPage JSON-LD (single source per page — do not add FAQPage microdata in templates).
  * @param {import('vue').MaybeRefOrGetter<Array<{ question: string, answer: string }>>} faqItems
  */
 function stripHtml(html) {
