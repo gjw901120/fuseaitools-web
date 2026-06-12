@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>ElevenLabs</h3>
-        <p>The most natural and expressive voice generation tool. Whether it's creators, publishers, or developers, they can easily generate high-quality voice content for videos, audiobooks, games, or applications using our technology.</p>
+        <p>ElevenLabs on FuseAITools—five audio workflows: Multilingual v2 and Turbo 2.5 TTS, Speech-to-Text, Sound Effect v2, and AI Audio Isolation. Voice synthesis, transcription, SFX, and stem separation in the browser.</p>
       </div>
     </div>
 

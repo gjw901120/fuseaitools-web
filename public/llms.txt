@@ -107,7 +107,14 @@ Suno on FuseAITools offers six music workflows—generate, extend, cover, expand
 
 ## Audio — ElevenLabs
 
-- [ElevenLabs](https://fuseaitools.com/home/elevenlabs): Text-to-speech, sound effects, and audio tools.
+ElevenLabs on FuseAITools offers five audio workflows—Multilingual v2 TTS, Turbo 2.5 TTS, Speech-to-Text, Sound Effect v2, and AI Audio Isolation.
+
+- [ElevenLabs Overview](https://fuseaitools.com/home/elevenlabs): Five voice and audio workflows; 20 free credits on sign-up.
+- [ElevenLabs Multilingual v2](https://fuseaitools.com/home/elevenlabs/multilingual-v2): Natural text-to-speech with voice controls and optional timestamps.
+- [ElevenLabs Turbo 2.5](https://fuseaitools.com/home/elevenlabs/turbo-2-5): Fast TTS for low-latency narration and assistants.
+- [ElevenLabs Speech-to-Text](https://fuseaitools.com/home/elevenlabs/speech-to-text): Upload audio (≤200MB) for transcripts with diarization.
+- [ElevenLabs Sound Effect v2](https://fuseaitools.com/home/elevenlabs/sound-effect-v2): Generate SFX from text (0.5–22s duration).
+- [ElevenLabs AI Audio Isolation](https://fuseaitools.com/home/elevenlabs/audio-isolation): Extract vocals or instruments from mixed audio (≤10MB).
 
 ## Optional
 

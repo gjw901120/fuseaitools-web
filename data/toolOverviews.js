@@ -919,60 +919,42 @@ All workflows run in the browser on FuseAITools with per-workflow credit pricing
     category: 'Audio',
     showCategory: false,
     introFullWidth: true,
-    intro: 'ElevenLabs delivers studio-grade voice and audio: natural text-to-speech in many languages, fast Turbo models for real-time use, accurate speech-to-text, and professional sound-effect generation. AI audio isolation extracts vocals or instruments from mixed tracks. Use ElevenLabs on FuseAITools for narration, dubbing, accessibility, and sound design—all in one place.',
+    intro: 'ElevenLabs on FuseAITools delivers voice and audio in the browser—Multilingual v2 and Turbo 2.5 text-to-speech, Speech-to-Text with diarization, Sound Effect v2, and AI Audio Isolation. Credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Multilingual v2', path: '/home/elevenlabs/multilingual-v2', description: '29 languages, native-level prosody and emotion; dubbing, audiobooks, and training.' },
-      { name: 'Turbo 2.5', path: '/home/elevenlabs/turbo-2-5', description: 'Sub-400ms latency for assistants, live translation, game NPCs, and streaming.' },
-      { name: 'Speech to Text', path: '/home/elevenlabs/speech-to-text', description: '100+ languages, speaker diarization, timestamps, SRT/VTT/TXT for subtitles and notes.' },
-      { name: 'Sound Effect v2', path: '/home/elevenlabs/sound-effect-v2', description: 'Generate pro sound effects from text: env, objects, abstract, transitions.' },
-      { name: 'AI Audio Isolation', path: '/home/elevenlabs/audio-isolation', description: 'Extract vocals or instruments with minimal quality loss for stems and remixes.' }
+      { name: 'ElevenLabs Multilingual v2', path: '/home/elevenlabs/multilingual-v2', description: 'Natural TTS—voice picker, stability/style sliders, optional timestamps and context text.' },
+      { name: 'ElevenLabs Turbo 2.5', path: '/home/elevenlabs/turbo-2-5', description: 'Fast TTS with the same voice controls—low latency for assistants and batch narration.' },
+      { name: 'ElevenLabs Speech-to-Text', path: '/home/elevenlabs/speech-to-text', description: 'Upload ≤200MB audio—auto language, speaker diarization, event tags, word timeline.' },
+      { name: 'ElevenLabs Sound Effect v2', path: '/home/elevenlabs/sound-effect-v2', description: 'Generate SFX from text—duration 0.5–22s, loop, intensity, MP3/PCM output.' },
+      { name: 'ElevenLabs AI Audio Isolation', path: '/home/elevenlabs/audio-isolation', description: 'Extract vocals or instruments from mixed uploads (≤10MB).' }
     ],
     sections: [
       {
-        title: 'Platform strengths',
-        content: `Voice synthesis: Human-level naturalness; fine emotional control; 29 languages with native prosody; high-fidelity voice cloning from short samples.
+        title: 'Core capabilities',
+        content: `Multilingual v2 TTS (elevenlabs_text_to_speech_multilingual): Required voice + text (max 5000 chars). Stability, similarity boost, style, speed (0.7–1.2); optional timestamps, previous/next context, language code; MP3/PCM output. Priced per 1K characters.
 
-Audio processing: Millisecond-scale latency; professional source separation; realistic acoustic environments; text-to-sound-effect generation.`
-      },
-      {
-        title: 'Core features',
-        content: `Multilingual v2: 29 languages and regional variants (e.g. US/UK English, Mandarin/Taiwan); domain terms and cultural nuance. Natural rhythm, emotion (joy, sadness, excitement, seriousness), age (child to elderly), and style (news, audiobook, business). For film dubbing, audiobooks, education, and corporate training.
+Turbo 2.5 TTS (elevenlabs_text_to_speech_turbo): Same parameter set as Multilingual v2—faster generation. Priced per 1K characters.
 
-Turbo 2.5: Sub-400ms end-to-end; high concurrency; real-time pace, tone, and emotion; edge-friendly. Use for virtual assistants, live translation, game NPCs, and live-stream interaction.
+Speech-to-Text (elevenlabs_speech_to_text): Upload audio URL (≤200MB). Language auto or ISO code; diarize; tagAudioEvents. Word-level timeline in results. Priced per minute.
 
-Speech to Text: 100+ languages, dialect and accent support, domain terms (medical, legal, tech), noise robustness. Auto punctuation and paragraphs, speaker diarization, word-level timestamps, SRT/VTT/TXT. For subtitles, meeting notes, content indexing, and accessibility.
+Sound Effect v2 (elevenlabs_sound_effect): Text description (max 5000 chars); duration 0.5–22s; loop; promptInfluence; output format. Priced per minute.
 
-Sound Effect v2: Natural-language descriptions; physics-based and abstract sounds; mood and atmosphere; layered effects. Environment, object, abstract (sci-fi, fantasy), and transition/UI sounds. Control pitch, duration, intensity, space; envelopes, filters, multi-layer mix; multiple output formats.
+AI Audio Isolation (elevenlabs_audio_isolation): Upload audio URL (≤10MB). Isolates vocals/instruments. Priced per minute.`
+      },
+      {
+        title: 'Workflow',
+        content: `Narration: pick Multilingual v2 or Turbo 2.5 → select voice → paste text → tune sliders → generate → download from history.
 
-AI Audio Isolation: Clean vocal and instrument separation (drums, bass, guitar, keys); background and multi-source separation. High quality, phase preservation, noise suppression; real-time capable. For music production, karaoke, post-production, and archival restoration.`
-      },
-      {
-        title: 'Industry solutions',
-        content: `Film and media: Auto dubbing, ADR, custom ambience, bulk subtitling. Games: Character and narrator voice, interactive ambience, UI sounds, dynamic mix. Enterprise and education: Training voiceover, demo narration, meeting notes, accessibility. Creative and art: Sound design for film and art, music production, installation and experimental sound.`
-      },
-      {
-        title: 'Technical specs',
-        content: `Audio: Up to 192kHz; 16/24/32-bit; WAV, MP3, FLAC, AAC, OGG; mono, stereo, 5.1, 7.1. Performance: Real-time to minute-scale; enterprise concurrency; storage and management; 99.9% API availability.`
-      },
-      {
-        title: 'Professional workflow',
-        content: `Dubbing: Script and timecode; choose voice and emotion; set pace, tone, intensity; batch generate; review and adjust; edit and mix; sync to picture. Sound design: Define concept and mood; describe in text; generate variants; tune parameters; layer and mix; export to pro formats.`
-      },
-      {
-        title: 'Advanced tips',
-        content: `Emotion: Base mood, temporal variation, cultural fit, and style (e.g. news vs. storytelling). Voice: Brand voice, character voice, regional and scenario tuning. Sound design: Physical modeling, abstract synthesis, emotion-to-sound mapping, 3D spatial design.`
-      },
-      {
-        title: 'Quality control',
-        content: `Auto: Naturalness, clarity, emotion accuracy; STT accuracy and recall; separation purity; sound-effect fit. Human: Emotion accuracy, technical standards, cultural suitability, commercial readiness.`
-      },
-      {
-        title: 'Roadmap',
-        content: `Richer emotion and real-time interaction; multimodal (voice, text, image); user-custom voice models. Singing synthesis, voice conversion, historical audio repair, 3D audio. Vertical solutions: healthcare, education, enterprise, and full API/developer support.`
+Transcription: Speech-to-Text → upload audio → set language/diarization → generate → copy transcript or use word timeline.
+
+Sound design: Sound Effect v2 → describe SFX → set duration/loop → generate.
+
+Stems: Audio Isolation → upload mixed track → download isolated output.
+
+Pair with Suno for full music tracks—ElevenLabs covers voice, transcription, SFX, and separation. All workflows run in the browser with per-run credit pricing—no local GPU required.`
       },
       {
         title: 'Try ElevenLabs on FuseAITools',
-        content: `ElevenLabs on FuseAITools redefines voice and audio creation—pro tools in a simple workflow. Whether you make film, games, training, or art, you get the right audio solution in one platform. Turn ideas into professional audio.`
+        content: `ElevenLabs on FuseAITools covers the voice and audio pipeline—from TTS narration to transcripts, sound effects, and stem isolation. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },

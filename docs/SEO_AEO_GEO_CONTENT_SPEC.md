@@ -571,7 +571,51 @@ Suno 六音频子页 + `/home/suno` 聚合页，按 §3 同一标准实施。
 
 ---
 
-## 14. Agent 修改工作流（执行顺序）
+## 14. ElevenLabs 对齐清单（以 Suno 为对照）
+
+ElevenLabs 五音频子页 + `/home/elevenlabs` 聚合页，按 §3 同一标准实施。
+
+### 14.1 涉及文件
+
+- `pages/home/elevenlabs/*.vue`（5 子页）  
+- `pages/home/elevenlabs.vue`  
+- `components/tools/ElevenLabsSeoContent.vue`  
+- `components/tools/ElevenLabsTool.vue`  
+- `data/toolOverviews.js` → `elevenlabs`
+
+### 14.2 API 参数（写作核对）
+
+| 工作流 | modelKey | 关键约束 |
+|------|----------|----------|
+| Multilingual v2 TTS | `elevenlabs_text_to_speech_multilingual` | voice + text ≤5000；stability/similarity/style/speed；optional timestamps, context, language_code |
+| Turbo 2.5 TTS | `elevenlabs_text_to_speech_turbo` | 同 Multilingual v2 参数集 |
+| Speech-to-Text | `elevenlabs_speech_to_text` | audioUrl ≤200MB；language auto/ISO；diarize；tagAudioEvents |
+| Sound Effect v2 | `elevenlabs_sound_effect` | text ≤5000；duration 0.5–22s；loop；promptInfluence |
+| AI Audio Isolation | `elevenlabs_audio_isolation` | audioUrl ≤10MB |
+
+### 14.3 实施自检（ElevenLabs 五子页 + 聚合）
+
+**子页（5 工作流）**
+
+- [x] `workflowIntroMap` + `workflowDefinitionMap` 按路由  
+- [x] 每页独立 `useToolSEOAsync` description / keywords  
+- [x] SEO 正文与 `ElevenLabsTool.vue` 一致  
+- [x] FAQ + `useToolSeoFaqSchema`  
+- [x] Technical specs + 五模式能力简表  
+- [x] `useToolSeoPageScroll` 工作流卡片回顶  
+- [x] 底部 ElevenLabs pipeline 内链 + Suno 音乐互链  
+
+**聚合页 `/home/elevenlabs`**
+
+- [x] intro + 5 features 命名带 `ElevenLabs` 前缀  
+- [x] sections 3 段  
+- [x] 与子页 meta 不重复  
+
+**组件**：`components/tools/ElevenLabsSeoContent.vue`
+
+---
+
+## 15. Agent 修改工作流（执行顺序）
 
 1. **读** `WanTool.vue`（或目标 `*Tool.vue`）+ `toolOverviews['wan']` + 本文 §9  
 2. **改** `useToolSEOAsync`（各子页；聚合页改 `toolOverviews` + 确认 `ToolOverview` head）  
@@ -583,7 +627,7 @@ Suno 六音频子页 + `/home/suno` 聚合页，按 §3 同一标准实施。
 
 ---
 
-## 15. 质量自检表（PR 前）
+## 16. 质量自检表（PR 前）
 
 ### 单个子页（以 Wan 视频页为基准）
 
@@ -610,7 +654,7 @@ Suno 六音频子页 + `/home/suno` 聚合页，按 §3 同一标准实施。
 
 ---
 
-## 16. 附录：英文句式模板（Wan）
+## 17. 附录：英文句式模板（Wan）
 
 ### Definition
 
@@ -630,6 +674,6 @@ Suno 六音频子页 + `/home/suno` 聚合页，按 §3 同一标准实施。
 
 ---
 
-**文档版本**：1.1  
+**文档版本**：1.2  
 **最后更新**：2026-05-20  
-**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13 为参考实现。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
+**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14 为参考实现。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。

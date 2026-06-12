@@ -257,6 +257,46 @@
       >Accompaniment</a>
       as needed.
     </div>
+
+    <div class="upgrade-tip">
+      🎙️ <strong>Audio companion — ElevenLabs</strong>
+      Narrate over Suno tracks with
+      <a
+        href="/home/elevenlabs/multilingual-v2"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/elevenlabs/multilingual-v2')"
+      >Multilingual v2</a>
+      or
+      <a
+        href="/home/elevenlabs/turbo-2-5"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/elevenlabs/turbo-2-5')"
+      >Turbo 2.5</a>
+      , add production SFX via
+      <a
+        href="/home/elevenlabs/sound-effect-v2"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/elevenlabs/sound-effect-v2')"
+      >Sound Effect v2</a>
+      , transcribe sessions with
+      <a
+        href="/home/elevenlabs/speech-to-text"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/elevenlabs/speech-to-text')"
+      >Speech-to-Text</a>
+      , or split stems using
+      <a
+        href="/home/elevenlabs/audio-isolation"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/elevenlabs/audio-isolation')"
+      >AI Audio Isolation</a>
+      . Browse the full
+      <a
+        href="/home/elevenlabs"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/elevenlabs')"
+      >ElevenLabs suite →</a>
+    </div>
   </div>
 </template>
 
