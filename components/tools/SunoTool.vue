@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Suno</h3>
-        <p>Where AI and Melody Unite Seamlessly! Transform text prompts into stunning AI-generated tracks, blending vocals and instruments with revolutionary realism. Newly added V5 delivers hyper-dynamic, natural performances—emotional arcs, breathing, and fluid progressions for lifelike depth. Ideal for developers crafting immersive apps: fast and scalable. Revolutionize music creation today!</p>
+        <p>Suno on FuseAITools—six AI music workflows from text or uploaded audio. Generate, extend, cover, expand, add instrumentals, or vocals with models V3.5 through V5.</p>
       </div>
     </div>
 

@@ -872,63 +872,45 @@ Best for: Growth teams, social creators, designers, indie makers, and product te
     category: 'Audio',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Suno turns text and creative ideas into full music: generate new songs from descriptions, extend existing clips, add instrumentals or vocals, and create cover-style versions from uploaded audio. Newer models support more natural dynamics and a wider emotional range. Use Suno on FuseAITools for film scoring, demos, and creative music production—all in one place.',
+    intro: 'Suno on FuseAITools turns text and uploaded audio into full music—generate new songs, extend tracks, create covers, expand short clips, and add instrumentals or vocals. Models V3.5 through V5 with Simple or Custom control. Credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Music Generation', path: '/home/suno/generate', description: 'Create full tracks from text: genre, mood, structure, and 50+ styles with BPM and key control.' },
-      { name: 'Music Extension', path: '/home/suno/extend', description: 'Extend tracks while keeping structure; add variations, transitions, and peak development.' },
-      { name: 'Audio Cover', path: '/home/suno/upload-cover', description: 'Reimagine songs: style shift, re-arrangement, emotion reshape, and cross-language adaptation.' },
-      { name: 'Audio Expansion', path: '/home/suno/upload-extend', description: 'Turn short clips into full pieces with structure, orchestration, and emotional arc.' },
-      { name: 'Accompaniment', path: '/home/suno/add-instrumental', description: 'Add harmony, drums, counter-melody, and atmosphere tailored to your lead.' },
-      { name: 'Vocal Generation', path: '/home/suno/add-vocals', description: 'Generate singing in multiple styles, languages, and with natural expression and effects.' }
+      { name: 'Suno Music Generation', path: '/home/suno/generate', description: 'Text-to-music—Simple mode (500 chars) or Custom with style, title, and lyrics. V3.5–V5; instrumental toggle.' },
+      { name: 'Suno Music Extension', path: '/home/suno/extend', description: 'Extend completed generate tasks via Audio ID—optional continueAt and custom style/title.' },
+      { name: 'Suno Audio Cover', path: '/home/suno/upload-cover', description: 'Upload ≤2 min MP3/WAV/M4A and reimagine style, title, and lyrics.' },
+      { name: 'Suno Audio Expansion', path: '/home/suno/upload-extend', description: 'Expand uploaded clips—default or custom parameter mode with continueAt.' },
+      { name: 'Suno Accompaniment', path: '/home/suno/add-instrumental', description: 'Add backing instruments via include/exclude tags—no prompt required.' },
+      { name: 'Suno Vocal Generation', path: '/home/suno/add-vocals', description: 'Add vocals to source audio—prompt up to 5000 chars plus style and exclude tags.' }
     ],
     sections: [
       {
-        title: 'Platform core value',
-        content: `Creative democratization: Create professional music without music theory; full pipeline from idea to finished track; diverse styles across genres and cultures; precise emotional expression.
+        title: 'Core capabilities',
+        content: `Music Generation (suno_generate): Prompt required. Simple mode max 500 chars; Custom mode adds style/title and longer prompts (3k on V3.5/V4, 5k on V4.5/V5). Models V3_5, V4 (~4 min), V4_5/V4_5PLUS (~8 min), V5. Instrumental toggle; optional vocal gender and weight sliders.
 
-Technical edge: Multimodal understanding of emotion and imagery in text; strong harmony, rhythm, and structure; natural dynamics and emotional arcs; accurate style adaptation and learning.`
-      },
-      {
-        title: 'Core features',
-        content: `Music Generation: From text to full tracks. Specify genre (pop, rock, jazz, classical, electronic, 50+), mood, structure (intro, verse, chorus, bridge, outro), and instruments. Control BPM (60–200), key and mode, harmony complexity, and time signatures (4/4, 3/4, 6/8).
+Music Extension (suno_extend): Audio ID from completed suno_generate tasks. Original params or custom continueAt, prompt (max 3000), style (max 200), title (max 80).
 
-Music Extension: Lengthen tracks while preserving structure; add variations, transitions, and peak development; keep style, motifs, and emotion consistent with balanced dynamics.
+Audio Cover (suno_upload_cover): Upload fileUrl (≤2 min). Style + title required; prompt when vocals enabled.
 
-Audio Cover: Style conversion, re-arrangement (modern or retro), emotion reshape, cross-language adaptation. For licensed adaptations, brand music, film scoring, and personal expression.
+Audio Expansion (suno_upload_extend): Upload fileUrl (≤2 min). Default params or custom mode with style, title, optional prompt, continueAt.
 
-Audio Expansion: Develop short clips into full works—motif development, structure, orchestration, emotional arc. Use for idea completion, sample-based creation, sound design, and experimental music.
+Accompaniment (suno_add_instrumental): Source audio + title + include tags + exclude tags (max 500 each). No prompt.
 
-Accompaniment: Harmony from melody, style-appropriate drums and rhythm, counter-melodies, and ambient beds. Style-aware, dynamic following, spatial and complexity control.
+Vocal Generation (suno_add_vocals): Source audio + prompt (max 5000) + title + style + exclude tags. Optional vocal gender m/f.`
+      },
+      {
+        title: 'Workflow',
+        content: `New song: Music Generation → pick Simple or Custom → choose model (V5 for speed, V4.5+ for length) → download from history.
 
-Vocal Generation: Multiple singing styles (pop, classical, folk, rap), emotion control, natural harmonies, multi-language. Control range, timbre, techniques (vibrato, slides, falsetto), and basic mix effects.`
-      },
-      {
-        title: 'Industry applications',
-        content: `Film and game: Theme songs, scene scoring, character themes, dynamic music systems. Ads and brand: Ad music, brand jingles, retail and event music. Independent creators: Idea sparking, demo production, arrangement learning, remote collaboration. Education and therapy: Music theory and creation teaching, therapeutic music, cognitive training, creative expression tools.`
-      },
-      {
-        title: 'Technical specs',
-        content: `Audio: 44.1kHz / 48kHz; 16bit / 24bit; WAV, MP3, FLAC, AAC; mono, stereo, 5.1. Generation: 30s to 5 minutes; minute-level turnaround; multiple variants per prompt; batch support.`
-      },
-      {
-        title: 'Professional workflow',
-        content: `Standard: Define emotion, style, and use; describe in text; set BPM, key, duration; generate 30s preview; refine; full-length generation; export and light post. Professional: Concept with team; style research; batch generation and A/B; edit and mix in DAW; client feedback; final delivery to spec.`
-      },
-      {
-        title: 'Advanced tips',
-        content: `Prompt structure: [Mood] + [Genre] + [Instruments] + [Structure] + [Tech]. Specify progressions, rhythm, dynamics, and timbre. Style: era (80s, 90s, modern), region, artist influence, production character. Emotion: base mood, development arc, moment emphasis, cultural nuance.`
-      },
-      {
-        title: 'Quality control',
-        content: `Auto: Harmony, rhythm, structure checks; technical params; style vs. description; emotion accuracy. Human: Creative fulfillment, emotional impact, commercial fit, cultural sensitivity.`
-      },
-      {
-        title: 'Roadmap',
-        content: `Longer works and album-length generation; real-time and interactive generation; multi-track editing; user-style training. Lyrics generation, mix and master tools, real-time collaboration. Education, therapy, enterprise, and pro-tier solutions.`
+Continue a track: complete Music Generation first → Music Extension → select Audio ID → optional custom continue point.
+
+Upload-based: Audio Cover or Expansion for external clips (≤2 min) → set style/title → generate.
+
+Layering: upload instrumental bed → Accompaniment or Vocal Generation to add backing or sung parts.
+
+All workflows run in the browser on FuseAITools with per-workflow credit pricing—no local GPU required.`
       },
       {
         title: 'Try Suno on FuseAITools',
-        content: `Suno on FuseAITools redefines what’s possible in music creation—complex production becomes simple and intuitive. Whether you’re a pro, creator, or enthusiast, you’ll find the right tools and expression here. Turn ideas into full music with AI.`
+        content: `Suno on FuseAITools covers the full creative pipeline—from first prompt to extended mixes, covers, and vocal layers. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },

@@ -93,9 +93,20 @@ Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro
 - [Hailuo](https://fuseaitools.com/home/hailuo): Hailuo image-to-video overview.
 - [Grok Video](https://fuseaitools.com/home/grok): Grok image and video tools overview.
 
-## Audio
+## Audio — Suno
 
-- [Suno](https://fuseaitools.com/home/suno): AI music generation (generate, extend, vocals, and more).
+Suno on FuseAITools offers six music workflows—generate, extend, cover, expand, accompaniment, and vocals—with models V3.5 through V5.
+
+- [Suno Overview](https://fuseaitools.com/home/suno): Six AI music workflows; 20 free credits on sign-up.
+- [Suno Music Generation](https://fuseaitools.com/home/suno/generate): Text-to-music with Simple or Custom mode, V3.5–V5.
+- [Suno Music Extension](https://fuseaitools.com/home/suno/extend): Extend completed generate tasks via Audio ID.
+- [Suno Audio Cover](https://fuseaitools.com/home/suno/upload-cover): Reimagine uploaded audio (≤2 min) in a new style.
+- [Suno Audio Expansion](https://fuseaitools.com/home/suno/upload-extend): Expand short uploaded clips into fuller tracks.
+- [Suno Accompaniment](https://fuseaitools.com/home/suno/add-instrumental): Add instrumentals via include/exclude tags.
+- [Suno Vocal Generation](https://fuseaitools.com/home/suno/add-vocals): Add vocals with prompts up to 5000 characters.
+
+## Audio — ElevenLabs
+
 - [ElevenLabs](https://fuseaitools.com/home/elevenlabs): Text-to-speech, sound effects, and audio tools.
 
 ## Optional
