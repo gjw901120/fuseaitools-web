@@ -431,7 +431,6 @@
 .home-layout--flux input.form-input,
 .home-layout--flux textarea.form-input,
 .home-layout--flux select.form-input,
-.home-layout--flux .model-select,
 .home-layout--flux .chat-input textarea,
 .home-layout--flux .chat-input input[type="text"],
 /* 未加 .form-input 的表单控件（如 GPT Image .form-group textarea） */
@@ -446,7 +445,7 @@
 .home-layout--flux .tool-interface-slot .config-form input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="hidden"]):not([type="image"]):not([type="range"]),
 .home-layout--flux .tool-interface-slot .select-with-arrow select,
 .home-layout--flux .tool-interface-slot .select-wrapper select {
-  background: var(--flux-input-bg) !important;
+  background-color: var(--flux-input-bg) !important;
   border-color: var(--flux-border) !important;
   color: var(--flux-foreground) !important;
 }
@@ -462,7 +461,6 @@
 .home-layout--flux .form-input:focus,
 .home-layout--flux textarea:focus,
 .home-layout--flux select:focus,
-.home-layout--flux .model-select:focus,
 .home-layout--flux .tool-interface-slot textarea:focus,
 .home-layout--flux .tool-interface-slot select:focus,
 .home-layout--flux .tool-interface-slot .form-group input:focus,
@@ -899,11 +897,34 @@
   background: var(--flux-primary-hover) !important;
 }
 
-.home-layout--flux .model-select-wrapper select,
-.home-layout--flux .model-select {
-  background: var(--flux-input-bg) !important;
+.home-layout--flux .chat-input .model-select-wrapper.select-with-arrow .model-select {
+  background-color: var(--flux-input-bg) !important;
   color: var(--flux-foreground) !important;
   border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .chat-input .model-select-wrapper.select-with-arrow .model-select:hover:not(:disabled) {
+  background-color: var(--flux-card-hover) !important;
+  border-color: var(--flux-border) !important;
+}
+
+.home-layout--flux .chat-input .model-select-wrapper.select-with-arrow .model-select:focus {
+  border-color: var(--flux-primary) !important;
+  box-shadow: 0 0 0 3px var(--flux-primary-muted) !important;
+}
+
+.home-layout--flux .chat-input .model-select-wrapper.select-with-arrow .model-select:disabled {
+  background-color: var(--flux-card) !important;
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .chat-input .select-with-arrow .select-arrow-icon {
+  color: var(--flux-muted) !important;
+}
+
+.home-layout--flux .chat-input .select-with-arrow .model-select:disabled ~ .select-arrow-icon {
+  color: var(--flux-muted) !important;
+  opacity: 0.6;
 }
 
 /* pages/home/index 内嵌聊天区 */

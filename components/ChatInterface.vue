@@ -69,7 +69,7 @@
         <!-- Model Selection and Icons (ClientOnly to prevent hydration mismatch) -->
         <ClientOnly>
           <!-- Model Selection Dropdown -->
-          <div v-if="modelCategory" class="model-select-wrapper">
+          <div v-if="modelCategory" class="model-select-wrapper select-with-arrow">
             <select 
               v-model="selectedModel" 
               class="model-select"
@@ -87,6 +87,7 @@
                 {{ model.name }}
               </option>
             </select>
+            <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true" />
           </div>
           <!-- Web Search Icon -->
           <div 
@@ -108,10 +109,11 @@
             <i class="fas fa-brain"></i>
           </div>
           <template #fallback>
-            <div v-if="modelCategory" class="model-select-wrapper">
+            <div v-if="modelCategory" class="model-select-wrapper select-with-arrow">
               <select class="model-select" disabled>
                 <option>Loading...</option>
               </select>
+              <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true" />
             </div>
           </template>
         </ClientOnly>
@@ -1612,10 +1614,10 @@ const generateAIResponse = (userInput) => {
   position: relative;
 }
 
-.model-select {
+.model-select-wrapper.select-with-arrow .model-select {
   min-width: 180px;
   height: 36px;
-  padding: 0 12px;
+  padding: 0 36px 0 12px;
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
@@ -1625,26 +1627,28 @@ const generateAIResponse = (userInput) => {
   transition: all 0.2s ease;
   outline: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
+  -webkit-appearance: none;
 }
 
-.model-select:hover {
+.model-select-wrapper.select-with-arrow .model-select:hover {
   border-color: #cbd5e1;
   background-color: #f8fafc;
 }
 
-.model-select:focus {
+.model-select-wrapper.select-with-arrow .model-select:focus {
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.model-select:disabled {
+.model-select-wrapper.select-with-arrow .model-select:disabled {
   background-color: #f1f5f9;
   color: #94a3b8;
   cursor: not-allowed;
+}
+
+.model-select-wrapper.select-with-arrow .select-arrow-icon {
+  right: 10px;
+  font-size: 11px;
 }
 
 .uploaded-files {
