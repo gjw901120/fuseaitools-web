@@ -53,7 +53,7 @@
               <label class="form-label">
                 Image URL <span class="required">*</span>
               </label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="qwen-image-upload"
                 label=""

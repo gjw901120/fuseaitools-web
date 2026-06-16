@@ -151,7 +151,7 @@
               <span v-if="formData.generationType === 'REFERENCE_2_VIDEO'" class="mode-hint">(1-3 images)</span>
             </label>
             <span v-if="isUploadingImages" class="form-hint">Uploading images...</span>
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="imageUploadRef"
               input-id="veo3-image-upload"
               label=""
@@ -166,6 +166,19 @@
               :multiple="true"
               @update:files="handleImageUpdate"
             />
+            <div v-if="isDetailView && formData.imageUrls?.length" class="detail-ref-urls">
+              <span class="form-label">Reference images (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a
+                  v-for="(u, idx) in formData.imageUrls"
+                  :key="idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-ref-link"
+                >Image {{ idx + 1 }}</a>
+              </div>
+            </div>
         </div>
 
         <!-- 模型选择 - 非视频扩展模式显示（含 Text to Video、First And Last Frames、Image to Video） -->
@@ -1278,6 +1291,11 @@ const shareVideo = () => {
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 .detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
+.detail-ref-urls { margin-top: 8px; }
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.detail-ref-link { font-size: 13px; color: #3b82f6; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 
 .empty-state {
   display: flex;

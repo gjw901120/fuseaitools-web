@@ -66,7 +66,7 @@
             </div>
           </div>
           <div class="form-group" v-if="form.taskType === 'mj_img2img'">
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="fileUrlsUploadRef"
               input-id="midjourney-input-images"
               label="Input Image(s) *"
@@ -78,6 +78,19 @@
               theme-color="#667eea"
               @update:files="handleFileUrlsUpdate"
             />
+            <div v-if="isDetailView && form.fileUrls?.length" class="detail-ref-urls">
+              <span class="form-label">Input images (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a
+                  v-for="(u, idx) in form.fileUrls"
+                  :key="idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-ref-link"
+                >Image {{ idx + 1 }}</a>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label>Aspect Ratio</label>
@@ -360,6 +373,19 @@ const detailOutputList = computed(() => {
 function fillFormFromOriginalData(originalData) {
   if (!originalData || typeof originalData !== 'object') return
   const o = originalData
+  const cat = activeCategory.value
+  if (cat === 'upscale') {
+    if (o.taskId != null) upscaleForm.taskId = String(o.taskId)
+    if (o.imageIndex != null) upscaleForm.imageIndex = Number(o.imageIndex)
+    if (o.waterMark != null) upscaleForm.waterMark = String(o.waterMark)
+    return
+  }
+  if (cat === 'vary') {
+    if (o.taskId != null) varyForm.taskId = String(o.taskId)
+    if (o.imageIndex != null) varyForm.imageIndex = Number(o.imageIndex)
+    if (o.waterMark != null) varyForm.waterMark = String(o.waterMark)
+    return
+  }
   if (o.taskType) form.taskType = String(o.taskType)
   if (o.prompt != null) form.prompt = String(o.prompt)
   if (o.speed) form.speed = String(o.speed)
@@ -1500,6 +1526,11 @@ const getResultType = (data) => {
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 .detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
+.detail-ref-urls { margin-top: 8px; }
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.detail-ref-link { font-size: 13px; color: #667eea; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 .detail-output-image { max-width: 100%; height: auto; border-radius: 8px; }
 
 .empty-state {

@@ -93,7 +93,7 @@
 
           <!-- 编辑模式：上传图片 -->
           <div class="form-group" v-if="mode === 'edit'">
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="inputImageUploadRef"
               input-id="flux-kontext-input-image"
               label="Upload Image *"
@@ -108,6 +108,12 @@
             />
             <div v-if="isUploadingImage" class="uploading-hint">
               <i class="fas fa-spinner fa-spin"></i> Uploading image...
+            </div>
+            <div v-if="isDetailView && formData.imageUrl" class="detail-ref-urls">
+              <span class="form-label">Input image (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a :href="formData.imageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+              </div>
             </div>
           </div>
 
@@ -270,7 +276,7 @@
               <textarea v-model="flux2Form.prompt" class="form-input" rows="4" maxlength="5000" placeholder="Prompt (3-5000 characters)" required></textarea>
             </div>
             <div class="form-group" v-if="isFlux2ImageToImage">
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="flux2InputImagesUploadRef"
                 input-id="flux2-input-images"
                 label="Input Image(s) *"
@@ -562,6 +568,9 @@ function fillFormFromOriginalData(originalData) {
   if (typeof o.enableTranslation === 'boolean') formData.enableTranslation = o.enableTranslation
   if (o.imageUrl) {
     formData.imageUrl = o.imageUrl
+    mode.value = 'edit'
+  } else if (o.image_url) {
+    formData.imageUrl = String(o.image_url)
     mode.value = 'edit'
   } else {
     mode.value = 'generate'
@@ -1342,6 +1351,16 @@ const clearResults = () => {
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 .detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.detail-ref-link { font-size: 13px; color: #667eea; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 
 .empty-state {
   text-align: center;

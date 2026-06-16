@@ -60,7 +60,7 @@
               <label class="form-label">
                 Image(s) <span class="required">*</span>
               </label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="seedream-image-upload"
                 label=""

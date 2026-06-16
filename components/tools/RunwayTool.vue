@@ -115,7 +115,7 @@
           <div class="form-group">
             <label class="form-label">Reference Image</label>
             <span v-if="isUploadingGenerateImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading image...</span>
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               input-id="runway-image-upload"
               label=""
               upload-icon="fas fa-cloud-upload-alt"
@@ -129,6 +129,12 @@
               :multiple="false"
               @update:files="handleImageUpdate"
             />
+            <div v-if="isDetailView && formData.uploadedImageUrl" class="detail-ref-urls">
+              <span class="form-label">Reference image (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a :href="formData.uploadedImageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+              </div>
+            </div>
           </div>
 
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -259,9 +265,10 @@
                 <i class="fas fa-spinner fa-spin"></i> Uploading video...
               </div>
               <div v-if="alephReferenceVideo && !isUploadingAlephVideo" class="aleph-video-display">
+                <div v-if="isDetailView" class="form-label">Input video (this task)</div>
                 <div class="aleph-video-preview-wrap">
                   <video :src="alephReferenceVideo" class="aleph-video-preview" controls></video>
-                  <button type="button" class="aleph-video-remove" title="Remove" @click="clearAlephReferenceVideo">
+                  <button v-if="!isDetailView" type="button" class="aleph-video-remove" title="Remove" @click="clearAlephReferenceVideo">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
@@ -364,7 +371,7 @@
           <div class="form-group">
             <label class="form-label">Reference Image</label>
             <span v-if="isUploadingAlephImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading image...</span>
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               input-id="runway-aleph-image-upload"
               label=""
               upload-icon="fas fa-cloud-upload-alt"
@@ -378,6 +385,12 @@
               :multiple="false"
               @update:files="handleAlephImageUpdate"
             />
+            <div v-if="isDetailView && alephFormData.uploadedReferenceImageUrl" class="detail-ref-urls">
+              <span class="form-label">Reference image (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a :href="alephFormData.uploadedReferenceImageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+              </div>
+            </div>
           </div>
 
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -702,9 +715,34 @@ const displayVideos = computed(() => {
 })
 function fillFormFromOriginalData(o) {
   if (!o || typeof o !== 'object') return
-  if (activeTab.value === 'generate') Object.keys(formData).forEach(k => { if (o[k] !== undefined) formData[k] = o[k] })
-  else if (activeTab.value === 'extend') Object.keys(extendFormData).forEach(k => { if (o[k] !== undefined) extendFormData[k] = o[k] })
-  else if (activeTab.value === 'aleph') Object.keys(alephFormData).forEach(k => { if (o[k] !== undefined) alephFormData[k] = o[k] })
+  const tab = activeTab.value
+  if (tab === 'generate') {
+    if (o.prompt != null) formData.prompt = String(o.prompt)
+    if (o.duration != null) formData.duration = String(o.duration)
+    if (o.quality) formData.quality = String(o.quality)
+    if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
+    if (o.waterMark != null) formData.waterMark = String(o.waterMark)
+    const img = o.imageUrl || o.uploadedImageUrl || o.image_url
+    if (img) formData.uploadedImageUrl = String(img)
+  } else if (tab === 'extend') {
+    const task = o.taskId ?? o.task ?? o.task_id
+    if (task != null) extendFormData.task = String(task)
+    if (o.prompt != null) extendFormData.prompt = String(o.prompt)
+    if (o.quality) extendFormData.quality = String(o.quality)
+    if (o.waterMark != null) extendFormData.waterMark = String(o.waterMark)
+  } else if (tab === 'aleph') {
+    if (o.prompt != null) alephFormData.prompt = String(o.prompt)
+    const video = o.videoUrl || o.uploadedVideoUrl || o.video_url
+    if (video) {
+      alephFormData.uploadedVideoUrl = String(video)
+      alephReferenceVideo.value = String(video)
+    }
+    const refImg = o.referenceImageUrl || o.uploadedReferenceImageUrl || o.reference_image_url
+    if (refImg) alephFormData.uploadedReferenceImageUrl = String(refImg)
+    if (o.aspectRatio) alephFormData.aspectRatio = String(o.aspectRatio)
+    if (o.seed != null && o.seed !== '') alephFormData.seed = Number(o.seed)
+    if (o.waterMark != null) alephFormData.waterMark = String(o.waterMark)
+  }
 }
 function getRouteRecordId() { return route.query['record-id'] || '' }
 async function loadDetailByRecordId(recordId) {
@@ -893,8 +931,9 @@ const alephFormData = reactive({ ...INIT_ALEPH_FORM })
 const INIT_EXTEND_FORM = { task: '', prompt: '', quality: '720p', waterMark: '' }
 const extendFormData = reactive({ ...INIT_EXTEND_FORM })
 
-// 切换 Tab 时当前表单恢复为初始状态，三个表单互不影响
+// 切换 Tab 时当前表单恢复为初始状态，三个表单互不影响（详情页保留 originalData 回显）
 watch(activeTab, (tab) => {
+  if (isDetailView.value) return
   if (tab === 'generate') Object.assign(formData, INIT_GENERATE_FORM)
   else if (tab === 'extend') Object.assign(extendFormData, INIT_EXTEND_FORM)
   else if (tab === 'aleph') Object.assign(alephFormData, INIT_ALEPH_FORM)
@@ -1994,6 +2033,16 @@ const generateExtendVideo = async () => {
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 .detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.detail-ref-link { font-size: 13px; color: #3b82f6; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 
 .empty-state {
   text-align: center;

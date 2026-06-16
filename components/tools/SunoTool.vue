@@ -175,6 +175,12 @@
                 :multiple="false"
                 @update:files="handleCoverAudioUpdate"
               />
+              <div v-if="isDetailView && coverFileUrl" class="detail-audio-replay">
+                <label class="form-label detail-audio-label">Original audio (this task)</label>
+                <div class="detail-audio-wrap">
+                  <audio controls class="detail-audio-player" :src="coverFileUrl"></audio>
+                </div>
+              </div>
             </div>
           </template>
 
@@ -199,6 +205,12 @@
                 :multiple="false"
                 @update:files="handleExpandAudioUpdate"
               />
+              <div v-if="isDetailView && expandFileUrl" class="detail-audio-replay">
+                <label class="form-label detail-audio-label">Original audio (this task)</label>
+                <div class="detail-audio-wrap">
+                  <audio controls class="detail-audio-player" :src="expandFileUrl"></audio>
+                </div>
+              </div>
             </div>
 
             <!-- 参数模式选择 -->
@@ -258,6 +270,12 @@
                 :multiple="false"
                 @update:files="handleAccompanimentAudioUpdate"
               />
+              <div v-if="isDetailView && accompanimentFileUrl" class="detail-audio-replay">
+                <label class="form-label detail-audio-label">Source audio (this task)</label>
+                <div class="detail-audio-wrap">
+                  <audio controls class="detail-audio-player" :src="accompanimentFileUrl"></audio>
+                </div>
+              </div>
             </div>
 
             <!-- 音乐标题 -->
@@ -338,6 +356,12 @@
                 :multiple="false"
                 @update:files="handleVocalAudioUpdate"
               />
+              <div v-if="isDetailView && vocalFileUrl" class="detail-audio-replay">
+                <label class="form-label detail-audio-label">Source audio (this task)</label>
+                <div class="detail-audio-wrap">
+                  <audio controls class="detail-audio-player" :src="vocalFileUrl"></audio>
+                </div>
+              </div>
             </div>
 
             <!-- 音乐标题 -->
@@ -905,15 +929,34 @@ const displayResult = computed(() => {
   return result.value
 })
 
+const sunoModelToFunction = {
+  suno_generate: 'generate',
+  suno_extend: 'extend',
+  suno_upload_cover: 'cover',
+  suno_upload_extend: 'expand',
+  suno_add_instrumental: 'accompaniment',
+  suno_add_vocals: 'vocal'
+}
+
 function fillFormFromOriginalData(originalData) {
   if (!originalData || typeof originalData !== 'object') return
   const o = originalData
+  if (o.function) formData.function = o.function
+  else if (o.model && sunoModelToFunction[o.model]) formData.function = sunoModelToFunction[o.model]
   const keys = ['prompt', 'customMode', 'instrumental', 'model', 'style', 'title', 'negativeTags', 'vocalGender', 'audioId', 'defaultParamFlag', 'continueAt', 'expandDefaultParamFlag', 'expandContinueAt', 'accompanimentTitle', 'accompanimentTags', 'accompanimentNegativeTags', 'vocalTitle', 'vocalStyle', 'vocalNegativeTags']
   keys.forEach(k => { if (o[k] !== undefined) formData[k] = o[k] })
-  if (o.function) formData.function = o.function
   if (o.styleWeight != null) formData.styleWeight = Number(o.styleWeight) ?? 0.65
   if (o.weirdnessConstraint != null) formData.weirdnessConstraint = Number(o.weirdnessConstraint) ?? 0.65
   if (o.audioWeight != null) formData.audioWeight = Number(o.audioWeight) ?? 0.65
+  const fileUrl = o.fileUrl || o.uploadUrl || o.audioUrl
+  if (fileUrl) {
+    const url = String(fileUrl)
+    const fn = formData.function
+    if (fn === 'cover') coverFileUrl.value = url
+    else if (fn === 'expand') expandFileUrl.value = url
+    else if (fn === 'accompaniment') accompanimentFileUrl.value = url
+    else if (fn === 'vocal') vocalFileUrl.value = url
+  }
 }
 
 function getRouteRecordId() { return route.query['record-id'] || '' }
@@ -2055,6 +2098,11 @@ const shareResult = () => {
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 .detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
+.detail-audio-replay { margin-top: 8px; }
+.detail-audio-replay .detail-audio-label { margin-bottom: 6px; display: block; }
+.detail-audio-wrap { width: 100%; }
+.detail-audio-player { width: 100%; max-width: 100%; }
 
 .empty-state {
   display: flex;

@@ -57,7 +57,7 @@
             <div v-if="isImageToImageMode" class="form-group">
               <label>Reference Image *</label>
               <span v-if="isUploadingImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading...</span>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="gpt-image-upload"
                 label=""

@@ -45,7 +45,7 @@
 
             <div v-if="mode === 'v1-image-to-video'" class="form-group">
               <label class="form-label">Input Image <span class="required">*</span></label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="happyhorse-image-upload"
                 label=""
@@ -58,11 +58,24 @@
                 @update:files="handleMainImageFiles"
               />
               <span v-if="isUploadingMainImage" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.imageUrls.length" class="detail-ref-urls">
+                <span class="form-label">Input image (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.imageUrls"
+                    :key="'hh-i2v-' + idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v1-reference-to-video'" class="form-group">
               <label class="form-label">Reference Images <span class="required">*</span></label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="referenceUploadRef"
                 input-id="happyhorse-reference-upload"
                 label=""
@@ -75,11 +88,24 @@
                 @update:files="handleReferenceImageFiles"
               />
               <span v-if="isUploadingReferences" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.imageUrls.length" class="detail-ref-urls">
+                <span class="form-label">Reference images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.imageUrls"
+                    :key="'hh-ref-' + idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v1-video-edit'" class="form-group">
               <label class="form-label">Input Video <span class="required">*</span></label>
-              <div class="file-upload-area">
+              <div v-if="!isDetailView" class="file-upload-area">
                 <input id="happyhorse-video-upload" ref="videoInputRef" type="file" class="file-input" accept="video/mp4,video/quicktime" @change="handleVideoFile" />
                 <label for="happyhorse-video-upload" class="file-upload-label">
                   <i class="fas fa-cloud-upload-alt"></i>
@@ -90,11 +116,15 @@
               <div v-else-if="sourceVideoDurationSec > 0" class="form-hint">
                 Source duration: {{ sourceVideoDurationSec.toFixed(2) }}s · Billing seconds: {{ Math.ceil(sourceVideoDurationSec) }}s
               </div>
+              <div v-if="isDetailView && formData.videoUrl" class="detail-ref-urls">
+                <span class="form-label">Input video (this task)</span>
+                <video :src="formData.videoUrl" controls playsinline preload="metadata" class="detail-ref-video"></video>
+              </div>
             </div>
 
             <div v-if="mode === 'v1-video-edit'" class="form-group">
               <label class="form-label">Reference Images (optional)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="editReferenceUploadRef"
                 input-id="happyhorse-edit-reference-upload"
                 label=""
@@ -107,6 +137,19 @@
                 @update:files="handleEditReferenceImageFiles"
               />
               <span v-if="isUploadingEditReferences" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.referenceImage.length" class="detail-ref-urls">
+                <span class="form-label">Reference images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.referenceImage"
+                    :key="'hh-edit-ref-' + idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="supportsAspectRatio" class="form-group">
@@ -456,10 +499,17 @@ function fillFormFromOriginalData(o) {
   if (o.prompt != null) formData.prompt = String(o.prompt)
   if (Array.isArray(o.imageUrls)) formData.imageUrls = [...o.imageUrls]
   else if (Array.isArray(o.image_urls)) formData.imageUrls = [...o.image_urls]
+  else if (o.imageUrl) formData.imageUrls = [String(o.imageUrl)]
+  else if (o.image_url) formData.imageUrls = [String(o.image_url)]
   if (o.videoUrl) formData.videoUrl = String(o.videoUrl)
   else if (o.video_url) formData.videoUrl = String(o.video_url)
-  if (Array.isArray(o.referenceImage)) formData.referenceImage = [...o.referenceImage]
-  else if (Array.isArray(o.reference_image)) formData.referenceImage = [...o.reference_image]
+  if (Array.isArray(o.referenceImage)) {
+    formData.referenceImage = [...o.referenceImage]
+    if (!formData.imageUrls.length) formData.imageUrls = [...o.referenceImage]
+  } else if (Array.isArray(o.reference_image)) {
+    formData.referenceImage = [...o.reference_image]
+    if (!formData.imageUrls.length) formData.imageUrls = [...o.reference_image]
+  }
   if (o.resolution) formData.resolution = String(o.resolution)
   if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
   else if (o.aspect_ratio) formData.aspectRatio = String(o.aspect_ratio)
@@ -716,6 +766,30 @@ function downloadVideo() {
   margin: 0;
   accent-color: #3b82f6;
 }
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detail-ref-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+.detail-ref-link:hover { text-decoration: underline; }
+.detail-ref-video {
+  width: 100%;
+  max-height: 240px;
+  border-radius: 8px;
+  background: #000;
+}
+
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
 .btn-primary {
   width: 100%;
@@ -754,7 +828,19 @@ function downloadVideo() {
 }
 .action-btn:hover { background: #e5e7eb; }
 .file-upload-area { position: relative; }
-.file-input { position: absolute; opacity: 0; pointer-events: none; }
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
 .file-upload-label { border: 2px dashed #d1d5db; border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; color: #475569; }
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; }

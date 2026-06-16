@@ -56,9 +56,10 @@
                 <i class="fas fa-spinner fa-spin"></i> Uploading video...
               </div>
               <div v-if="referenceVideo && !isUploadingVideo" class="luma-video-display">
+                <div v-if="isDetailView" class="form-label">Input video (this task)</div>
                 <div class="luma-video-preview-wrap">
                   <video :src="referenceVideo" class="luma-video-preview" controls></video>
-                  <button type="button" class="luma-video-remove" title="Remove" @click="clearReferenceVideo">
+                  <button v-if="!isDetailView" type="button" class="luma-video-remove" title="Remove" @click="clearReferenceVideo">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
@@ -280,7 +281,16 @@ const displayVideos = computed(() => {
   }
   return generatedVideos.value
 })
-function fillFormFromOriginalData(o) { if (!o || typeof o !== 'object') return; Object.keys(formData).forEach(k => { if (o[k] !== undefined) formData[k] = o[k] }) }
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) formData.prompt = String(o.prompt)
+  if (o.watermark != null) formData.watermark = String(o.watermark)
+  const video = o.videoUrl || o.uploadedVideoUrl || o.video_url
+  if (video) {
+    uploadedVideoUrl.value = String(video)
+    referenceVideo.value = String(video)
+  }
+}
 function getRouteRecordId() { return route.query['record-id'] || '' }
 async function loadDetailByRecordId(recordId) {
   if (!recordId) return

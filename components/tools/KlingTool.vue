@@ -49,12 +49,12 @@
             <!-- v2-5-turbo-image-to-video-pro: image_url, tail_image_url -->
             <div class="form-group" v-if="mode === 'v2-5-turbo-image-to-video-pro'">
               <label class="form-label">Image URL <span class="required">*</span></label>
-              <UploadImage ref="imageUploadRef" input-id="kling-i2v-pro-img" label="" upload-text="Click to upload image" upload-hint="JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleSingleImage" />
+              <UploadImage :readonly="isDetailView" ref="imageUploadRef" input-id="kling-i2v-pro-img" label="" upload-text="Click to upload image" upload-hint="JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleSingleImage" />
               <span v-if="isUploadingImage" class="form-hint">Uploading...</span>
             </div>
             <div class="form-group" v-if="mode === 'v2-5-turbo-image-to-video-pro'">
               <label class="form-label">Tail frame image (optional)</label>
-              <UploadImage ref="tailImageUploadRef" input-id="kling-i2v-pro-tail" label="" upload-text="Click to upload tail frame" upload-hint="Optional; JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleTailImage" />
+              <UploadImage :readonly="isDetailView" ref="tailImageUploadRef" input-id="kling-i2v-pro-tail" label="" upload-text="Click to upload tail frame" upload-hint="Optional; JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleTailImage" />
               <span v-if="isUploadingTail" class="form-hint">Uploading...</span>
             </div>
 
@@ -115,7 +115,7 @@
             <template v-if="mode === 'v2-6-image-to-video'">
               <div class="form-group">
                 <label class="form-label">Image URLs <span class="required">*</span></label>
-                <UploadImage ref="i2v26ImageRef" input-id="kling-26-i2v" label="" upload-text="Click to upload image" upload-hint="JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleImageUrlsSingle" />
+                <UploadImage :readonly="isDetailView" ref="i2v26ImageRef" input-id="kling-26-i2v" label="" upload-text="Click to upload image" upload-hint="JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleImageUrlsSingle" />
                 <span v-if="isUploadingImage" class="form-hint">Uploading...</span>
               </div>
               <div class="form-group">
@@ -138,7 +138,7 @@
             <template v-if="mode === 'v2-6-motion-control' || mode === 'v3-0-motion-control'">
               <div class="form-group">
                 <label class="form-label">Reference image <span class="required">*</span></label>
-                <UploadImage ref="motionImageRef" input-id="kling-motion-img" label="" upload-text="Click to upload reference image" upload-hint="JPG/PNG, max 10MB, min 300px" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/jpg" :multiple="false" @update:files="handleMotionImage" />
+                <UploadImage :readonly="isDetailView" ref="motionImageRef" input-id="kling-motion-img" label="" upload-text="Click to upload reference image" upload-hint="JPG/PNG, max 10MB, min 300px" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/jpg" :multiple="false" @update:files="handleMotionImage" />
                 <span v-if="isUploadingMotionImage" class="form-hint">Uploading...</span>
               </div>
               <div class="form-group">
@@ -202,7 +202,7 @@
             <template v-if="modeAvatar">
               <div class="form-group">
                 <label class="form-label">Avatar image <span class="required">*</span></label>
-                <UploadImage ref="avatarImageRef" input-id="kling-avatar-img" label="" upload-text="Click to upload avatar image" upload-hint="JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleAvatarImage" />
+                <UploadImage :readonly="isDetailView" ref="avatarImageRef" input-id="kling-avatar-img" label="" upload-text="Click to upload avatar image" upload-hint="JPEG, PNG, WebP; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png,image/webp" :multiple="false" @update:files="handleAvatarImage" />
                 <span v-if="isUploadingAvatarImage" class="form-hint">Uploading...</span>
               </div>
               <div class="form-group">
@@ -235,12 +235,12 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Start frame image (optional)</label>
-                <UploadImage ref="kling30ImageRef" input-id="kling-30-img" label="" upload-text="Click to upload image" upload-hint="PNG, JPG, JPEG" :max-files="1" :max-file-size="10*1024*1024" accept="image/png,image/jpeg,image/jpg" :multiple="false" @update:files="handleKling30Image" />
+                <UploadImage :readonly="isDetailView" ref="kling30ImageRef" input-id="kling-30-img" label="" upload-text="Click to upload image" upload-hint="PNG, JPG, JPEG" :max-files="1" :max-file-size="10*1024*1024" accept="image/png,image/jpeg,image/jpg" :multiple="false" @update:files="handleKling30Image" />
                 <span v-if="isUploadingKling30Image" class="form-hint">Uploading...</span>
               </div>
               <div v-if="!formData.v3_multi_shots" class="form-group">
                 <label class="form-label">End frame image (optional, single shot)</label>
-                <UploadImage ref="kling30EndImageRef" input-id="kling-30-end-img" label="" upload-text="Click to upload end frame" upload-hint="PNG, JPG, JPEG" :max-files="1" :max-file-size="10*1024*1024" accept="image/png,image/jpeg,image/jpg" :multiple="false" @update:files="handleKling30EndImage" />
+                <UploadImage :readonly="isDetailView" ref="kling30EndImageRef" input-id="kling-30-end-img" label="" upload-text="Click to upload end frame" upload-hint="PNG, JPG, JPEG" :max-files="1" :max-file-size="10*1024*1024" accept="image/png,image/jpeg,image/jpg" :multiple="false" @update:files="handleKling30EndImage" />
                 <span v-if="isUploadingKling30EndImage" class="form-hint">Uploading...</span>
               </div>
               <div class="form-group">
@@ -271,7 +271,7 @@
                       <div class="shot-element-label">Element for this shot</div>
                       <input v-model="shot.element.name" type="text" class="form-input" placeholder="Element name (e.g. element_dog)" />
                       <textarea v-model="shot.element.description" class="shot-text shot-text-desc" rows="2" placeholder="Description (required)"></textarea>
-                      <UploadImage
+                      <UploadImage :readonly="isDetailView"
                         :ref="(el) => setKlingShotElementRef(idx, el)"
                         :input-id="'kling-shot-el-' + idx"
                         label=""
@@ -313,6 +313,41 @@
             </div>
 
             <div class="form-actions">
+              <div v-if="isDetailView && detailKlingImageUrls.length" class="detail-ref-urls">
+                <span class="form-label">Input images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(item, idx) in detailKlingImageUrls"
+                    :key="'kling-img-' + idx"
+                    :href="item.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >{{ item.label }}</a>
+                </div>
+              </div>
+              <div v-if="isDetailView && detailKlingVideoUrls.length" class="detail-ref-urls">
+                <span class="form-label">Input video (this task)</span>
+                <video
+                  v-for="(u, idx) in detailKlingVideoUrls"
+                  :key="'kling-vid-' + idx"
+                  :src="u"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  class="detail-ref-video"
+                ></video>
+              </div>
+              <div v-if="isDetailView && detailKlingAudioUrls.length" class="detail-ref-urls">
+                <span class="form-label">Input audio (this task)</span>
+                <audio
+                  v-for="(u, idx) in detailKlingAudioUrls"
+                  :key="'kling-aud-' + idx"
+                  :src="u"
+                  controls
+                  class="detail-ref-audio"
+                ></audio>
+              </div>
               <div v-if="mode === 'v2-6-motion-control' || mode === 'v3-0-motion-control'" class="form-hint motion-price-hint">
                 <span v-if="mode === 'v2-6-motion-control'">RULE: per-second rate (720p / 1080p) × uploaded reference video duration in seconds (rounded up). Total appears on the button after upload.</span>
                 <span v-else>RULE: per-second rate (std → 720p, pro → 1080p) × uploaded reference video duration in seconds (rounded up). Total appears on the button after upload.</span>
@@ -1001,6 +1036,39 @@ const displayVideoUrl = computed(() => {
   return (r && r.videoUrl) || ''
 })
 
+const detailKlingImageUrls = computed(() => {
+  if (!isDetailView.value) return []
+  const m = mode.value
+  const urls = []
+  if (m === 'v2-5-turbo-image-to-video-pro') {
+    if (formData.image_url) urls.push({ label: 'Input image', url: formData.image_url })
+    if (formData.tail_image_url) urls.push({ label: 'Tail frame', url: formData.tail_image_url })
+  } else if (m === 'v2-6-image-to-video') {
+    ;(formData.image_urls || []).forEach((u, i) => urls.push({ label: `Image ${i + 1}`, url: u }))
+  } else if (m === 'v2-6-motion-control' || m === 'v3-0-motion-control') {
+    ;(formData.input_urls || []).forEach((u, i) => urls.push({ label: `Reference image ${i + 1}`, url: u }))
+  } else if (modeAvatar.value) {
+    if (formData.image_url) urls.push({ label: 'Avatar image', url: formData.image_url })
+  } else if (m === 'v3-0-video') {
+    ;(formData.kling_image_urls || []).forEach((u, i) => urls.push({ label: `Frame ${i + 1}`, url: u }))
+    if (formData.kling_end_frame_url) urls.push({ label: 'End frame', url: formData.kling_end_frame_url })
+  }
+  return urls.filter(x => x.url)
+})
+const detailKlingVideoUrls = computed(() => {
+  if (!isDetailView.value) return []
+  const m = mode.value
+  if (m === 'v2-6-motion-control' || m === 'v3-0-motion-control') {
+    return (formData.video_urls || []).filter(Boolean)
+  }
+  return []
+})
+const detailKlingAudioUrls = computed(() => {
+  if (!isDetailView.value) return []
+  if (modeAvatar.value && formData.audio_url) return [formData.audio_url]
+  return []
+})
+
 const apiPathByMode = {
   'v2-5-turbo-image-to-video-pro': '/api/video/kling/turbo-image-to-video-pro',
   'v2-5-turbo-text-to-video-pro': '/api/video/kling/turbo-text-to-video-pro',
@@ -1302,6 +1370,18 @@ watch(mode, (m) => {
 .btn-secondary { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; color: #64748b; font-size: 13px; cursor: pointer; }
 .btn-secondary:hover { border-color: #3b82f6; color: #3b82f6; }
 .detail-failure-state, .detail-loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center; }
+.detail-ref-urls {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.detail-ref-link { font-size: 13px; color: #3b82f6; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
+.detail-ref-video { width: 100%; max-height: 240px; border-radius: 8px; background: #000; }
+.detail-ref-audio { width: 100%; margin-top: 4px; }
 .detail-spinner { font-size: 48px; color: #3b82f6; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 @media (max-width: 1024px) { .main-content { flex-direction: column; } .config-panel, .result-panel { width: 100%; } }

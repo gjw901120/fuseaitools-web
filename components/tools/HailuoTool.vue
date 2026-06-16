@@ -58,7 +58,7 @@
               <label class="form-label">
                 Input Image <span class="required">*</span>
               </label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="hailuo-image-upload"
                 label=""

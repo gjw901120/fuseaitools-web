@@ -79,7 +79,7 @@
               <label class="form-label">
                 Image URLs <span v-if="mode === 'image-to-video'" class="required">*</span>
               </label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="wan-image-upload"
                 label=""
@@ -201,7 +201,7 @@
 
             <div v-if="mode === 'v2-7-image-to-video'" class="form-group">
               <label class="form-label">First Frame URL (optional)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="wan27FirstFrameUploadRef"
                 input-id="wan27-first-frame-upload"
                 label=""
@@ -213,11 +213,17 @@
                 :multiple="false"
                 @update:files="handleWan27FirstFrameFile"
               />
+              <div v-if="isDetailView && formData.firstFrameUrl" class="detail-ref-urls">
+                <span class="form-label">First frame (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.firstFrameUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v2-7-image-to-video'" class="form-group">
               <label class="form-label">Last Frame URL (optional)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="wan27LastFrameUploadRef"
                 input-id="wan27-last-frame-upload"
                 label=""
@@ -229,6 +235,12 @@
                 :multiple="false"
                 @update:files="handleWan27LastFrameFile"
               />
+              <div v-if="isDetailView && formData.lastFrameUrl" class="detail-ref-urls">
+                <span class="form-label">Last frame (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.lastFrameUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v2-7-image-to-video'" class="form-group">
@@ -293,7 +305,7 @@
 
             <div v-if="mode === 'v2-7-video-edit'" class="form-group">
               <label class="form-label">Reference Image (optional)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="wan27EditRefImageUploadRef"
                 input-id="wan27-edit-ref-image-upload"
                 label=""
@@ -305,11 +317,17 @@
                 :multiple="false"
                 @update:files="handleWan27EditReferenceImageFile"
               />
+              <div v-if="isDetailView && formData.referenceImageUrl" class="detail-ref-urls">
+                <span class="form-label">Reference image (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.referenceImageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v2-7-r2v'" class="form-group">
               <label class="form-label">Reference Images (optional, max 5)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="wan27R2vRefImageUploadRef"
                 input-id="wan27-r2v-ref-image-upload"
                 label=""
@@ -321,6 +339,19 @@
                 :multiple="true"
                 @update:files="handleWan27R2vReferenceImages"
               />
+              <div v-if="isDetailView && formData.referenceImages?.length" class="detail-ref-urls">
+                <span class="form-label">Reference images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in formData.referenceImages"
+                    :key="'wan-r2v-img-' + idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v2-7-r2v'" class="form-group">
@@ -351,7 +382,7 @@
 
             <div v-if="mode === 'v2-7-r2v'" class="form-group">
               <label class="form-label">First Frame (optional)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="wan27R2vFirstFrameUploadRef"
                 input-id="wan27-r2v-first-frame-upload"
                 label=""
@@ -363,6 +394,12 @@
                 :multiple="false"
                 @update:files="handleWan27R2vFirstFrame"
               />
+              <div v-if="isDetailView && formData.firstFrame" class="detail-ref-urls">
+                <span class="form-label">First frame (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.firstFrame" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <div v-if="mode === 'v2-7-r2v'" class="form-group">
@@ -1106,8 +1143,10 @@ function fillFormFromOriginalData(o) {
   else if (o.video_url != null) formData.videoUrl = String(o.video_url)
   if (Array.isArray(o.referenceImage)) formData.referenceImages = [...o.referenceImage]
   else if (Array.isArray(o.reference_image)) formData.referenceImages = [...o.reference_image]
-  else if (o.referenceImage != null) formData.referenceImageUrl = String(o.referenceImage)
-  else if (o.reference_image != null) formData.referenceImageUrl = String(o.reference_image)
+  else if (Array.isArray(o.reference_images)) formData.referenceImages = [...o.reference_images]
+  else if (o.referenceImage != null && typeof o.referenceImage === 'string') formData.referenceImageUrl = String(o.referenceImage)
+  else if (o.reference_image != null && typeof o.reference_image === 'string') formData.referenceImageUrl = String(o.reference_image)
+  else if (o.reference_image_url != null) formData.referenceImageUrl = String(o.reference_image_url)
   if (Array.isArray(o.referenceVideo)) formData.referenceVideos = [...o.referenceVideo]
   else if (Array.isArray(o.reference_video)) formData.referenceVideos = [...o.reference_video]
   if (o.firstFrame != null) formData.firstFrame = String(o.firstFrame)

@@ -72,7 +72,7 @@
 
           <!-- 文件上传 -->
           <div class="form-group">
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="referenceImagesUploadRef"
               input-id="gpt4o-reference-images"
               label="Reference Images (Optional)"
@@ -87,6 +87,19 @@
             />
             <div v-if="isUploadingRefs" class="uploading-hint">
               <i class="fas fa-spinner fa-spin"></i> Uploading reference images...
+            </div>
+            <div v-if="isDetailView && formData.filesUrl.length" class="detail-ref-urls">
+              <span class="form-label">Reference images (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a
+                  v-for="(u, idx) in formData.filesUrl"
+                  :key="'gpt4o-ref-' + idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-ref-link"
+                >Image {{ idx + 1 }}</a>
+              </div>
             </div>
           </div>
 
@@ -371,6 +384,8 @@ function fillFormFromOriginalData(originalData) {
   if (originalData.size) formData.size = originalData.size
   if (typeof originalData.prompt === 'string') formData.prompt = originalData.prompt
   if (Array.isArray(originalData.imageUrls)) formData.filesUrl = [...originalData.imageUrls]
+  else if (Array.isArray(originalData.image_urls)) formData.filesUrl = [...originalData.image_urls]
+  else if (Array.isArray(originalData.filesUrl)) formData.filesUrl = [...originalData.filesUrl]
   if (typeof originalData.isEnhance === 'boolean') formData.isEnhance = originalData.isEnhance
 }
 
@@ -960,6 +975,16 @@ const clearResults = () => {
   line-height: 1.6;
   color: #374151;
 }
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.detail-ref-link { font-size: 13px; color: #667eea; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 
 /* Responsive Design */
 @media (max-width: 1024px) {

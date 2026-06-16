@@ -36,7 +36,7 @@
             <div v-if="needsImageUrl(mode)" class="form-group">
               <label>Image URL *</label>
               <span v-if="isUploadingImage" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading...</span>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="ideogram-image"
                 label=""
@@ -59,7 +59,7 @@
             <div v-if="mode === 'v3-edit' || mode === 'character-edit'" class="form-group">
               <label>Mask URL *</label>
               <span v-if="isUploadingMask" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading...</span>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="maskUploadRef"
                 input-id="ideogram-mask"
                 label=""
@@ -82,7 +82,7 @@
             <div v-if="needsReferenceImages(mode)" class="form-group">
               <label>Reference image(s) *</label>
               <span v-if="isUploadingRefs" class="form-hint"><i class="fas fa-spinner fa-spin"></i> Uploading...</span>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="refsUploadRef"
                 input-id="ideogram-refs"
                 label=""

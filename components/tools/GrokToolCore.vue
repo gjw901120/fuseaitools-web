@@ -25,7 +25,7 @@
           <h4>Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
-          <fieldset class="config-fieldset" :disabled="loading">
+          <fieldset class="config-fieldset" :disabled="loading || isDetailView">
             <div v-if="mode !== 'upscale'" class="form-group">
               <label class="form-label">Prompt <span v-if="isPromptRequired" class="required">*</span></label>
               <textarea v-model="form.prompt" class="form-input" rows="4" :maxlength="promptMaxLength" :placeholder="placeholder"></textarea>
@@ -48,7 +48,7 @@
               <label class="form-label">
                 Image URL(s) <span v-if="mode === 'image-to-image'" class="required">*</span>
               </label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 input-id="grok-upload"
                 label=""
                 upload-text="Click to upload image(s)"
@@ -59,6 +59,19 @@
                 accept="image/jpeg,image/png,image/webp"
                 @update:files="handleFiles"
               />
+              <div v-if="isDetailView && form.imageUrls?.length" class="detail-ref-urls">
+                <span class="form-label">Input images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a
+                    v-for="(u, idx) in form.imageUrls"
+                    :key="idx"
+                    :href="u"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-ref-link"
+                  >Image {{ idx + 1 }}</a>
+                </div>
+              </div>
             </div>
 
             <template v-if="isVideoContext">
@@ -124,23 +137,31 @@
       </div>
 
       <div class="result-panel">
-        <div v-if="!result" class="empty-state">
+        <div v-if="isDetailView && detailData && detailData.status === 3" class="detail-failure-state">
+          <div class="failure-icon"><i class="fas fa-exclamation-circle"></i></div>
+          <p class="failure-message">Generation failed. You can try again with different parameters.</p>
+        </div>
+        <div v-else-if="isDetailView && (!detailData || detailData.status === 1)" class="detail-loading-state">
+          <i class="fas fa-spinner fa-spin detail-spinner"></i>
+          <p>Generating...</p>
+        </div>
+        <div v-else-if="!displayResult" class="empty-state">
           <h4>{{ isVideoContext ? 'No video generated yet' : 'No image generated yet' }}</h4>
           <p>Fill in the form and click generate to start.</p>
         </div>
         <div v-else class="result-display">
-          <div v-if="result.imageUrl" class="image-result">
-            <img :src="result.imageUrl" alt="Generated image" class="result-image" />
+          <div v-if="displayResult.imageUrl" class="image-result">
+            <img :src="displayResult.imageUrl" alt="Generated image" class="result-image" />
             <div class="media-actions">
-              <button class="action-btn" @click="downloadImage"><i class="fas fa-download"></i> Download</button>
+              <button v-if="!isDetailView" class="action-btn" @click="downloadImage"><i class="fas fa-download"></i> Download</button>
             </div>
           </div>
           <div v-else class="video-result">
             <div class="video-player">
-              <video :src="result.videoUrl" controls class="video-element"></video>
+              <video :src="displayResult.videoUrl" controls class="video-element"></video>
             </div>
             <div class="media-actions">
-              <button class="action-btn" @click="downloadVideo"><i class="fas fa-download"></i> Download</button>
+              <button v-if="!isDetailView" class="action-btn" @click="downloadVideo"><i class="fas fa-download"></i> Download</button>
             </div>
           </div>
         </div>
@@ -156,10 +177,12 @@ import UploadImage from './common/UploadImage.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useModelPrice } from '~/composables/useModelPrice'
+import { useRecordPolling } from '~/composables/useRecordPolling'
 
 const route = useRoute()
 const router = useRouter()
 const { post, get } = useApi()
+const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { token, isAuthenticated } = useAuth()
 const { guardExtendListFetch } = useExtendListAuth()
 const { showError } = useToast()
@@ -326,6 +349,85 @@ const form = reactive({
 const loading = ref(false)
 const result = ref(null)
 
+const routeRecordId = computed(() => route.query['record-id'] || '')
+const isDetailView = computed(() => !!routeRecordId.value)
+const detailData = ref(null)
+const loadingRecordId = ref(null)
+
+const MODEL_TO_MODE = {
+  'grok-imagine-text-to-image': 'text-to-image',
+  'grok-imagine-image-to-image': 'image-to-image',
+  'grok-imagine-text-to-video': 'text-to-video',
+  'grok-imagine-image-to-video': 'image-to-video',
+  'grok-imagine-upscale': 'upscale',
+  'grok-imagine-extend': 'extend'
+}
+
+function fillFormFromOriginalData(o) {
+  if (!o || typeof o !== 'object') return
+  if (o.prompt != null) form.prompt = String(o.prompt)
+  if (o.taskId != null) form.taskId = String(o.taskId)
+  if (Array.isArray(o.imageUrls)) form.imageUrls = [...o.imageUrls]
+  if (o.aspectRatio) form.aspectRatio = String(o.aspectRatio)
+  if (o.mode) form.motionMode = String(o.mode)
+  if (o.motionMode) form.motionMode = String(o.motionMode)
+  if (o.duration != null) form.duration = String(o.duration)
+  if (o.extendTimes != null) form.duration = String(o.extendTimes)
+  if (o.resolution) form.resolution = String(o.resolution)
+  if (o.extendAt != null) form.extendAt = Number(o.extendAt) || 0
+  if (o.model && MODEL_TO_MODE[o.model]) {
+    const m = MODEL_TO_MODE[o.model]
+    mode.value = m
+    const path = modeToPath[m]
+    if (path && route.path !== path) {
+      router.replace({ path, query: { ...route.query } })
+    }
+  }
+}
+
+function getRouteRecordId() { return route.query['record-id'] || '' }
+
+async function loadDetailByRecordId(recordId) {
+  if (!recordId) return
+  if (getRouteRecordId() !== recordId) return
+  if (loadingRecordId.value === recordId) return
+  loadingRecordId.value = recordId
+  detailData.value = null
+  try {
+    const data = await fetchRecordDetailOnce(recordId)
+    if (getRouteRecordId() !== recordId) return
+    detailData.value = data || null
+    if (data?.originalData) fillFormFromOriginalData(data.originalData)
+    if (data != null && Number(data.status) === 1) {
+      pollRecordByStatus(recordId, { getIsCancelled: () => getRouteRecordId() !== recordId }).then((res) => {
+        if (getRouteRecordId() !== recordId) return
+        detailData.value = res
+        if (res?.originalData) fillFormFromOriginalData(res.originalData)
+      }).catch(() => {})
+    }
+  } catch (e) {
+    console.error('Grok load record detail failed:', e)
+  } finally {
+    if (loadingRecordId.value === recordId) loadingRecordId.value = null
+  }
+}
+
+watch(() => route.query['record-id'], (recordId) => {
+  if (recordId) loadDetailByRecordId(recordId)
+  else { loadingRecordId.value = null; detailData.value = null }
+}, { immediate: true })
+
+const displayResult = computed(() => {
+  if (isDetailView.value && detailData.value?.status === 2 && detailData.value?.outputUrls?.length) {
+    const raw = detailData.value.outputUrls[0]
+    const url = typeof raw === 'string' ? raw : raw?.url
+    if (!url) return null
+    const isImage = imageModes.includes(mode.value) || /\.(jpe?g|png|gif|webp)(\?|$)/i.test(url)
+    return isImage ? { imageUrl: url } : { videoUrl: url }
+  }
+  return result.value
+})
+
 function go(m) {
   mode.value = m
   router.push(modeToPath[m] || modeToPath['text-to-image'])
@@ -403,6 +505,11 @@ async function generate() {
     }
 
     const data = await post(api, body)
+    const rid = data?.recordId ?? data?.data?.recordId
+    if (rid) {
+      router.push(`${modeToPath[mode.value] || '/home/grok/text-to-image'}?record-id=${encodeURIComponent(rid)}`)
+      return
+    }
     const url = data?.imageUrl ?? data?.videoUrl ?? data?.outputUrl ?? (Array.isArray(data?.outputUrls) ? data.outputUrls[0] : '')
     result.value = imageModes.includes(mode.value) ? { imageUrl: url } : { videoUrl: url }
   } catch (e) {
@@ -627,6 +734,18 @@ function downloadVideo() {
   gap: 4px;
 }
 .action-btn:hover { background: #e5e7eb; }
+
+.detail-loading-state, .detail-failure-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; text-align: center; flex: 1;
+}
+.detail-spinner { font-size: 48px; color: #3b82f6; }
+.detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
+.detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-ref-urls { margin-top: 8px; }
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.detail-ref-link { font-size: 13px; color: #3b82f6; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; }

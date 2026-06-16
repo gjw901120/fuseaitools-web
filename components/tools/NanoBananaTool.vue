@@ -188,7 +188,7 @@
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
           <div class="form-group">
             <label>Upload Image * (1-10)</label>
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="editImageUploadRef"
               input-id="nano-banana-edit-image-upload"
               label=""
@@ -205,6 +205,19 @@
             />
             <div v-if="isUploadingEdit" class="uploading-hint">
               <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
+            <div v-if="isDetailView && editFormData.image_urls.length" class="detail-ref-urls">
+              <span class="form-label">Input images (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a
+                  v-for="(u, idx) in editFormData.image_urls"
+                  :key="'nb-edit-' + idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-ref-link"
+                >Image {{ idx + 1 }}</a>
+              </div>
             </div>
           </div>
           <div class="form-group">
@@ -276,7 +289,7 @@
           <!-- 图片上传（必填 1-10 张） -->
           <div class="form-group">
             <label>Input Images * (1-10)</label>
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="proImageUploadRef"
               input-id="nano-banana-pro-image-upload"
               label=""
@@ -293,6 +306,19 @@
             />
             <div v-if="isUploadingPro" class="uploading-hint">
               <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
+            <div v-if="isDetailView && proFormData.image_input.length" class="detail-ref-urls">
+              <span class="form-label">Input images (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a
+                  v-for="(u, idx) in proFormData.image_input"
+                  :key="'nb-pro-' + idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-ref-link"
+                >Image {{ idx + 1 }}</a>
+              </div>
             </div>
           </div>
 
@@ -378,7 +404,7 @@
           </div>
           <div class="form-group">
             <label>Input Images (optional, 0-14)</label>
-            <UploadImage
+            <UploadImage :readonly="isDetailView"
               ref="nano2ImageUploadRef"
               input-id="nano-banana-2-image-upload"
               label=""
@@ -395,6 +421,19 @@
             />
             <div v-if="isUploadingNano2" class="uploading-hint">
               <i class="fas fa-spinner fa-spin"></i> Uploading images...
+            </div>
+            <div v-if="isDetailView && nano2FormData.image_input.length" class="detail-ref-urls">
+              <span class="form-label">Input images (this task)</span>
+              <div class="detail-ref-urls-links">
+                <a
+                  v-for="(u, idx) in nano2FormData.image_input"
+                  :key="'nb2-' + idx"
+                  :href="u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-ref-link"
+                >Image {{ idx + 1 }}</a>
+              </div>
             </div>
           </div>
           <div class="form-group">
@@ -1773,6 +1812,16 @@ const clearResults = () => {
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
 .detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.detail-ref-link { font-size: 13px; color: #667eea; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 
 .empty-state {
   text-align: center;

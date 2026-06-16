@@ -52,7 +52,7 @@
             <template v-if="isSeedance2Mode">
               <div class="form-group">
                 <label class="form-label">First Frame (optional)</label>
-                <UploadImage
+                <UploadImage :readonly="isDetailView"
                   ref="seedance2FirstFrameUploadRef"
                   input-id="seedance2-first-frame-upload"
                   label=""
@@ -65,10 +65,16 @@
                   @update:files="handleSeedance2FirstFrameFile"
                 />
                 <span v-if="isUploadingSeedance2FirstFrame" class="form-hint">Uploading...</span>
+                <div v-if="isDetailView && formData.firstFrameUrl" class="detail-input-urls">
+                  <span class="form-label">First frame (this task)</span>
+                  <div class="detail-input-urls-links">
+                    <a :href="formData.firstFrameUrl" target="_blank" rel="noopener noreferrer" class="detail-input-url-link">Open image</a>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Last Frame (optional)</label>
-                <UploadImage
+                <UploadImage :readonly="isDetailView"
                   ref="seedance2LastFrameUploadRef"
                   input-id="seedance2-last-frame-upload"
                   label=""
@@ -81,10 +87,16 @@
                   @update:files="handleSeedance2LastFrameFile"
                 />
                 <span v-if="isUploadingSeedance2LastFrame" class="form-hint">Uploading...</span>
+                <div v-if="isDetailView && formData.lastFrameUrl" class="detail-input-urls">
+                  <span class="form-label">Last frame (this task)</span>
+                  <div class="detail-input-urls-links">
+                    <a :href="formData.lastFrameUrl" target="_blank" rel="noopener noreferrer" class="detail-input-url-link">Open image</a>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Reference Images (optional)</label>
-                <UploadImage
+                <UploadImage :readonly="isDetailView"
                   ref="seedance2ReferenceImageUploadRef"
                   input-id="seedance2-reference-image-upload"
                   label=""
@@ -98,6 +110,19 @@
                 />
                 <span v-if="isUploadingSeedance2ReferenceImages" class="form-hint">Uploading...</span>
                 <div class="form-hint">Max 9 items. Combined with first/last frame total should not exceed 9 images.</div>
+                <div v-if="isDetailView && formData.referenceImageUrls.length" class="detail-input-urls">
+                  <span class="form-label">Reference images (this task)</span>
+                  <div class="detail-input-urls-links">
+                    <a
+                      v-for="(u, idx) in formData.referenceImageUrls"
+                      :key="'sd-ref-img-' + idx"
+                      :href="u"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="detail-input-url-link"
+                    >Image {{ idx + 1 }}</a>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Reference Videos (optional)</label>
@@ -196,7 +221,7 @@
               <label class="form-label">
                 Image URL <span class="required">*</span>
               </label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
                 input-id="seedance-image-upload"
                 label=""
@@ -209,12 +234,18 @@
                 @update:files="handleImageFile"
               />
               <span v-if="isUploadingImage" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.imageUrl" class="detail-input-urls">
+                <span class="form-label">Input image (this task)</span>
+                <div class="detail-input-urls-links">
+                  <a :href="formData.imageUrl" target="_blank" rel="noopener noreferrer" class="detail-input-url-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <!-- v1-lite-image-to-video: optional endImageUrl -->
             <div v-if="mode === 'v1-lite-image-to-video'" class="form-group">
               <label class="form-label">End Image URL (optional)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="endImageUploadRef"
                 input-id="seedance-end-image-upload"
                 label=""
@@ -227,12 +258,18 @@
                 @update:files="handleEndImageFile"
               />
               <span v-if="isUploadingEndImage" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.endImageUrl" class="detail-input-urls">
+                <span class="form-label">End frame (this task)</span>
+                <div class="detail-input-urls-links">
+                  <a :href="formData.endImageUrl" target="_blank" rel="noopener noreferrer" class="detail-input-url-link">Open image</a>
+                </div>
+              </div>
             </div>
 
             <!-- v1.5-pro: optional input_urls (0-2) -->
             <div v-if="mode === 'v1-5-pro'" class="form-group">
               <label class="form-label">Input Image URLs (optional, 0-2)</label>
-              <UploadImage
+              <UploadImage :readonly="isDetailView"
                 ref="pro15ImageUploadRef"
                 input-id="seedance-pro15-image-upload"
                 label=""
@@ -931,6 +968,8 @@ function fillFormFromOriginalData(originalData) {
   else if (Array.isArray(o.reference_video_urls)) formData.referenceVideoUrls = [...o.reference_video_urls]
   if (Array.isArray(o.referenceAudioUrls)) formData.referenceAudioUrls = [...o.referenceAudioUrls]
   else if (Array.isArray(o.reference_audio_urls)) formData.referenceAudioUrls = [...o.reference_audio_urls]
+  if (Array.isArray(o.inputUrls)) formData.inputUrls = [...o.inputUrls]
+  else if (Array.isArray(o.input_urls)) formData.inputUrls = [...o.input_urls]
   if (o.uploadDuration != null && o.uploadDuration !== '') {
     const u = Number(o.uploadDuration)
     referenceVideoUploadDurationSec.value = Number.isFinite(u) ? u : 0
@@ -944,7 +983,6 @@ function fillFormFromOriginalData(originalData) {
   if ('webSearch' in o) formData.webSearch = !!o.webSearch
   if ('web_search' in o) formData.webSearch = !!o.web_search
   if (mode.value === 'v1-5-pro') {
-    if (Array.isArray(o.inputUrls)) formData.inputUrls = [...o.inputUrls]
     if ('fixedLens' in o) formData.fixedLens = !!o.fixedLens
     if ('generateAudio' in o) formData.generateAudio = !!o.generateAudio
     return
@@ -956,7 +994,9 @@ function fillFormFromOriginalData(originalData) {
   }
   if ('enableSafetyChecker' in o) formData.enableSafetyChecker = !!o.enableSafetyChecker
   if (o.imageUrl) formData.imageUrl = String(o.imageUrl)
+  else if (o.image_url) formData.imageUrl = String(o.image_url)
   if (o.endImageUrl) formData.endImageUrl = String(o.endImageUrl)
+  else if (o.end_image_url) formData.endImageUrl = String(o.end_image_url)
 }
 
 async function loadDetailByRecordId(recordId) {

@@ -1,7 +1,7 @@
 <template>
-  <div class="uploaded-image">
+  <div v-if="!readonly" class="uploaded-image">
     <div class="form-group">
-      <label>{{ label }}</label>
+      <label v-if="label">{{ label }}</label>
       <div class="file-upload-area">
         <input
           :id="inputId"
@@ -108,6 +108,12 @@ const props = defineProps({
   themeColor: {
     type: String,
     default: '#6366f1'
+  },
+
+  /** 详情页只读：隐藏上传区，避免原生「选择文件 / 未选择任何文件」文案 */
+  readonly: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -325,6 +331,14 @@ defineExpose({
 
 .file-input {
   position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
   opacity: 0;
   pointer-events: none;
 }

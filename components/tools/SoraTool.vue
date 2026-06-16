@@ -79,7 +79,7 @@
         <div class="form-group" v-if="['image-to-video','pro-image-to-video','pro-storyboard'].includes(form.model)">
           <label>Reference Images *</label>
           <span v-if="isUploadingImages" class="form-hint">Uploading images...</span>
-          <UploadImage
+          <UploadImage :readonly="isDetailView"
             ref="imageUploadRef"
             input-id="sora-image-upload"
             label=""
@@ -93,7 +93,19 @@
             :multiple="true"
             @update:files="handleSoraImagesUpdate"
           />
-          
+          <div v-if="isDetailView && form.input.image_urls?.length" class="detail-ref-urls">
+            <span class="form-label">Reference images (this task)</span>
+            <div class="detail-ref-urls-links">
+              <a
+                v-for="(u, idx) in form.input.image_urls"
+                :key="'sora-ref-' + idx"
+                :href="u"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="detail-ref-link"
+              >Image {{ idx + 1 }}</a>
+            </div>
+          </div>
         </div>
 
         <!-- Aspect Ratio (tab 单选; hidden for watermark-remover) -->
@@ -966,6 +978,16 @@ const onSubmit = async () => {
 .detail-output-item { margin-bottom: 16px; border-radius: 8px; overflow: hidden; background: #000; }
 .detail-output-item .detail-video { width: 100%; max-height: 70vh; display: block; }
 .detail-output-item .detail-image { width: 100%; height: auto; display: block; }
+
+.detail-ref-urls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.detail-ref-link { font-size: 13px; color: #3b82f6; text-decoration: none; }
+.detail-ref-link:hover { text-decoration: underline; }
 .empty-state { text-align: center; color: #64748b; max-width: 500px; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .empty-icon { font-size: 72px; color: #cbd5e1; margin-bottom: 24px; }
 
