@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Kling</h3>
-        <p class="tool-description">Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.</p>
+        <p class="tool-description">Kling on FuseAITools—video generation across v2.5 Turbo, 2.6, and 3.0 tiers, plus a separate AI Avatar line for audio-driven talking heads.</p>
       </div>
     </div>
 

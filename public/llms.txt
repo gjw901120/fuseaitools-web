@@ -74,7 +74,16 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 - [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
 - [Runway](https://fuseaitools.com/home/runway): Runway video generation overview.
 - [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
-- [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
+- [Kling](https://fuseaitools.com/home/kling): Nine Kuaishou video workflows; 20 free credits on sign-up.
+- [Kling v2.5 Turbo I2V Pro](https://fuseaitools.com/home/kling/v2-5-turbo-image-to-video-pro): Image-to-video with optional tail frame, CFG scale.
+- [Kling v2.5 Turbo T2V Pro](https://fuseaitools.com/home/kling/v2-5-turbo-text-to-video-pro): Text-to-video with 16:9/9:16/1:1 aspect ratios.
+- [Kling 2.6 Text to Video](https://fuseaitools.com/home/kling/v2-6-text-to-video): Prompt-driven clips with optional sound.
+- [Kling 2.6 Image to Video](https://fuseaitools.com/home/kling/v2-6-image-to-video): Animate a single image with optional sound.
+- [Kling 2.6 Motion Control](https://fuseaitools.com/home/kling/v2-6-motion-control): Reference image + video motion transfer at 720p/1080p.
+- [Kling 3.0 Motion Control](https://fuseaitools.com/home/kling/v3-0-motion-control): std/pro motion control with background source.
+- [Kling AI Avatar Standard](https://fuseaitools.com/home/kling/ai-avatar-standard): Talking-head video from avatar image and audio.
+- [Kling AI Avatar Pro](https://fuseaitools.com/home/kling/ai-avatar-pro): High-quality talking-head avatar generation.
+- [Kling 3.0 Video](https://fuseaitools.com/home/kling/v3-0-video): Single or multi-shot video, 3–15 seconds.
 
 ## Video — Seedance
 

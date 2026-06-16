@@ -1367,94 +1367,54 @@ Pro vs Standard: Use Pro for client work, hero content, and when quality is the 
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.',
+    intro: 'Kling on FuseAITools covers Kuaishou video from v2.5 Turbo through 3.0—nine workflows for text-to-video, image-to-video, motion control, AI avatars, and multi-shot 3.0 Video. v2.5 Turbo adds CFG and negative prompts; 2.6 supports optional sound; motion control transfers reference-video motion; avatars turn image + audio into talking heads. Credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'v2.5 Turbo I2V Pro', path: '/home/kling/v2-5-turbo-image-to-video-pro', description: 'Image-to-video with tail frame option, duration 5/10s, negative prompt, CFG scale. Max prompt 2500 characters.' },
-      { name: 'v2.5 Turbo T2V Pro', path: '/home/kling/v2-5-turbo-text-to-video-pro', description: 'Text-to-video with aspect ratio 16:9, 9:16, 1:1; duration 5/10s; negative prompt and CFG scale.' },
-      { name: '2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Text-to-video with sound on/off, aspect ratio 1:1/16:9/9:16, duration 5/10s.' },
-      { name: '2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Image-to-video with sound, duration 5/10s. Single image input.' },
-      { name: '2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + reference video; character orientation (image/video); 720p/1080p.' },
-      { name: '3.0 Motion Control', path: '/home/kling/v3-0-motion-control', description: 'Reference image + reference video; optional prompt; std/pro mode; character orientation and background source.' },
-      { name: 'AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio to talking-head video. Prompt max 5000 characters.' },
-      { name: 'AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'High-quality avatar image + audio to talking-head video. Prompt max 5000 characters.' },
-      { name: '3.0 Video', path: '/home/kling/v3-0-video', description: 'Single shot or multi-shot; image refs; duration 3–15s; sound. std/pro mode.' }
+      { name: 'Kling v2.5 Turbo I2V Pro', path: '/home/kling/v2-5-turbo-image-to-video-pro', description: 'Image-to-video with optional tail frame—5/10s, negative prompt, CFG scale.' },
+      { name: 'Kling v2.5 Turbo T2V Pro', path: '/home/kling/v2-5-turbo-text-to-video-pro', description: 'Text-to-video—16:9/9:16/1:1, 5/10s, negative prompt and CFG.' },
+      { name: 'Kling 2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Prompt-only clips with sound toggle and aspect ratio—5s/10s.' },
+      { name: 'Kling 2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Single image animation with optional sound—5s/10s.' },
+      { name: 'Kling 2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + video; character orientation; 720p/1080p.' },
+      { name: 'Kling 3.0 Motion Control', path: '/home/kling/v3-0-motion-control', description: 'std/pro quality; background source; optional prompt.' },
+      { name: 'Kling AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio + prompt (max 5000)—talking-head video.' },
+      { name: 'Kling AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'Higher-quality talking-head from image and audio.' },
+      { name: 'Kling 3.0 Video', path: '/home/kling/v3-0-video', description: 'Single or multi-shot; 3–15s; std/pro; optional frames and elements.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Motion and creativity: Kling brings Kuaishou's latest video models into a unified workflow. From text or image to video, motion control with reference assets, AI avatars driven by audio, to 3.0 multi-shot storytelling—each mode is tuned for quality, prompt adherence, and fluid motion.
-
-Multi-mode first: Nine distinct modes cover text-to-video, image-to-video, motion control, talking-head avatars, and advanced 3.0 single/multi-shot. Choose the right mode for your project without leaving the platform.`
-      },
-      {
         title: 'Core capabilities',
-        content: `v2.5 Turbo
+        content: `v2.5 Turbo I2V Pro (kling-v2-5-turbo-image-to-video-pro): Image + prompt (max 2500); optional tail frame; duration 5/10s; negative prompt; CFG 0–1.
 
-Image-to-video Pro: Single image (optional tail frame), duration 5s or 10s, negative prompt and CFG scale. Prompt up to 2500 characters.
+v2.5 Turbo T2V Pro (kling-v2-5-turbo-text-to-video-pro): Prompt + aspect 16:9/9:16/1:1; duration 5/10s; negative prompt; CFG.
 
-Text-to-video Pro: Aspect ratio 16:9, 9:16, 1:1; duration 5s or 10s; negative prompt and CFG scale for fine control.
+2.6 Text to Video (kling-2.6-text-to-video): Prompt; sound on/off; aspect 1:1/16:9/9:16; 5/10s.
 
-2.6 series
+2.6 Image to Video (kling-2.6-image-to-video): Single image + prompt; sound; 5/10s.
 
-Text to Video: Sound on/off, aspect ratio 1:1, 16:9, 9:16; duration 5s or 10s.
+2.6 Motion Control (kling-2.6-motion-control): Reference image + video; character orientation; 720p/1080p; per-second pricing.
 
-Image to Video: Single image input, sound, duration 5s or 10s.
+3.0 Motion Control (kling-3.0-motion-control): Reference image + video; std/pro; background source; optional prompt.
 
-Motion Control: Reference image plus reference video; character orientation from image or video; output 720p or 1080p.
+AI Avatar Standard/Pro (kling-ai-avatar-standard / kling-ai-avatar-pro): Avatar image + audio + prompt (max 5000).
 
-AI Avatar
-
-Standard and Pro: Upload avatar image and audio; generate talking-head video. Prompt up to 5000 characters. Pro tier for higher quality output.
-
-3.0 Video
-
-Single shot or multi-shot; image references; duration 3–15 seconds; optional sound; standard or pro mode.`
-      },
-      {
-        title: 'Use cases',
-        content: `Social and short-form: Create text-to-video or image-to-video clips for TikTok, Reels, and Shorts with flexible aspect ratio and 5–10s duration.
-
-Motion control: Use reference image and video to steer character pose and motion for consistent, controllable results.
-
-AI avatars: Turn avatar image and voiceover into talking-head videos for explainers, dubbing, and personalized content.
-
-Multi-shot storytelling: Use 3.0 Video with multiple image references and 3–15s duration for scenes and narrative clips.
-
-Advertising and marketing: Animate product shots and concept art with v2.5 Turbo or 2.6; add motion control or avatars as needed.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Prompt length: Up to 2500 characters (v2.5 Turbo); up to 5000 characters (AI Avatar, others as per mode).
-
-Input: Image(s) JPEG/PNG/WebP; video for motion control; audio for AI Avatar. Size and format limits follow each mode.
-
-Duration: 5s or 10s (v2.5, 2.6); 3–15s (3.0 Video).
-
-Resolution: 720p or 1080p where applicable (e.g. motion control, 2.6); aspect ratios 1:1, 16:9, 9:16 (and 21:9 for some modes).
-
-Output: Video via URL or download; optional sound where supported.`
+3.0 Video (kling-3.0-video): Single or multi-shot (≤5); total 3–15s; std/pro; optional start/end frames and elements.`
       },
       {
         title: 'Workflow',
-        content: `Choose mode: Pick the Kling mode that matches your goal—v2.5 Turbo I2V/T2V, 2.6 text/image/motion, AI Avatar Standard/Pro, or 3.0 Video.
+        content: `Quick clips: v2.5 Turbo T2V or 2.6 T2V/I2V → pick aspect ratio and duration → generate.
 
-Upload assets: Provide image(s), and for motion control add reference video; for AI Avatar add audio.
+Product animation: v2.5 Turbo I2V with optional tail frame → tune CFG and negative prompt.
 
-Set parameters: Select duration, aspect ratio, resolution, and options (sound, negative prompt, CFG, etc.) as shown in the form.
+Controlled motion: 2.6 or 3.0 Motion Control → upload reference image + video → set orientation and quality.
 
-Generate: Submit and wait for the result; preview in the result panel and download when ready.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Prompt crafting: Be specific about motion, style, and composition. For avatars, clear speech and consistent tone in the audio improve lip-sync and expression.
+Talking heads: generate audio with ElevenLabs TTS → AI Avatar Standard or Pro → download from history.
 
-Mode choice: Use v2.5 Turbo for fast, high-quality text/image-to-video; 2.6 for sound and motion control; AI Avatar for talking-head; 3.0 for multi-shot and longer clips.
+Story beats: 3.0 Video multi-shot → define up to 5 shots (total 3–15s) with optional per-shot elements.
 
-Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). Use 1080p when the mode supports it for final deliverables.`
+All workflows run in the browser on FuseAITools—no local GPU required.`
       },
       {
         title: 'Try Kling on FuseAITools',
-        content: `Kling on FuseAITools brings Kuaishou's latest video models to your workflow. From text or image to video, motion control, AI avatars, and 3.0 multi-shot—choose the right mode and create video in seconds.`
+        content: `Kling on FuseAITools brings Kuaishou's latest video models into one suite—from Turbo text/image generation to motion control, avatars, and 3.0 multi-shot. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },
