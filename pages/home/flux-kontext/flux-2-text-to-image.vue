@@ -3,19 +3,24 @@
     <div class="tool-page">
       <FluxKontextTool />
     </div>
+    <template #below-main>
+      <FluxKontextV2SeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import FluxKontextTool from '~/components/tools/FluxKontextTool.vue'
+import FluxKontextV2SeoContent from '~/components/tools/FluxKontextV2SeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Flux 2 Text to Image Generator',
-  description: 'Generate images with Flux 2 text-to-image. Supports aspect ratio and 1K/2K resolution.',
+  description:
+    'Flux 2 text-to-image on FuseAITools—prompts 3–5000 chars, 1K/2K resolution, eight aspect ratios plus auto. 20 free credits on sign-up.',
   category: 'image',
   route: '/home/flux-kontext/flux-2-text-to-image',
-  keywords: ['Flux 2', 'Text to Image', 'AI image', 'Flux Kontext'],
+  keywords: ['Flux 2', 'Text to Image', 'Black Forest Labs', '1K 2K image', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Image Generation',
   offers: { price: '0', priceCurrency: 'USD' },
@@ -26,5 +31,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>

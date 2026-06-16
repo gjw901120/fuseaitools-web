@@ -395,56 +395,34 @@ Unified: Context and style consistency across the chat; full history and rollbac
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Flux is Black Forest Labs\' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.',
+    intro: 'Flux on FuseAITools is Black Forest Labs\' image suite: Flux Kontext (v1) for governed generate/edit with Pro/Max tiers, and Flux 2 (v2) for 1K/2K text-to-image and multi-reference image-to-image—including Flux 2 Pro for higher-fidelity finals. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Generate', path: '/home/flux-kontext/generate', description: 'Current Flux Kontext generate/edit workflow with Pro/Max model controls.' },
-      { name: 'Flux 2 Text to Image', path: '/home/flux-kontext/flux-2-text-to-image', description: 'Prompt-based image generation with aspect ratio and 1K/2K resolution.' },
-      { name: 'Flux 2 Image to Image', path: '/home/flux-kontext/flux-2-image-to-image', description: 'Reference-based image editing with 1-8 input images, prompt, aspect ratio, and resolution.' },
-      { name: 'Flux 2 Pro Text to Image', path: '/home/flux-kontext/flux-2-pro-text-to-image', description: 'Higher-fidelity text-to-image generation with Flux 2 Pro settings.' },
-      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'Higher-fidelity image-to-image generation with 1-8 input images and prompt control.' }
+      { name: 'Flux Kontext Generate', path: '/home/flux-kontext/generate', description: 'v1—text-to-image and single-image edit with Pro/Max, six aspect ratios, safety and prompt controls.' },
+      { name: 'Flux 2 Text to Image', path: '/home/flux-kontext/flux-2-text-to-image', description: 'v2—prompt-only 1K/2K generation, eight aspect ratios plus auto.' },
+      { name: 'Flux 2 Image to Image', path: '/home/flux-kontext/flux-2-image-to-image', description: 'v2—1–8 reference images + prompt, 1K/2K resolution.' },
+      { name: 'Flux 2 Pro Text to Image', path: '/home/flux-kontext/flux-2-pro-text-to-image', description: 'v2 Pro—higher-fidelity T2I at 1K/2K.' },
+      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'v2 Pro—multi-reference I2I with Pro-tier detail.' }
     ],
     sections: [
       {
-        title: 'Platform architecture',
-        content: `Tiered quality: Pro—balanced quality and speed for professional use; Max—flagship fidelity and detail; adaptive optimization by task; progressive rendering from overview to detail.
-
-Fine control: Precise style and composition parameters; consistent style across batches; control from macro concept to micro detail; content-aware optimization.`
-      },
-      {
         title: 'Core capabilities',
-        content: `Generate: Single-prompt high-fidelity images with full control.
+        content: `Flux Kontext (v1): Unified generate tab—text-to-image or single-image edit. Models flux_kontext_pro / flux_kontext_max (ONCE credits). Aspect 21:9, 16:9, 4:3, 1:1, 3:4, 9:16; JPEG/PNG; safety tolerance 0–6; optional prompt upsampling and watermark.
 
-Pro tier: ~15–30s per image; professional quality and detail; cost-efficient; efficient batch (10+ images). Max tier: Leading fidelity; ultra-fine texture and detail; strong artistic expression; print-ready output.
+Flux 2 (v2): Four workflows—flux-2-text-to-image, flux-2-image-to-image, flux-2-pro-text-to-image, flux-2-pro-image-to-image. Prompt 3–5000 chars; resolution 1K/2K (RULE pricing); aspect 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, auto. I2I accepts 1–8 images (max 10MB each).`
+      },
+      {
+        title: 'Workflow',
+        content: `v1 Kontext: write prompt → pick Pro or Max → choose generate or edit mode → set aspect ratio and output format → generate.
 
-Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techniques (oil, watercolor, sketch, digital), era (classical, retro, modern, futurist), culture. Composition—viewpoint (macro to micro), foreground/mid/background, selective focus and depth; visual balance and rhythm. Lighting and color—natural, studio, dramatic, cinematic; color theory; mood and time of day.`
+v2 Flux 2 T2I: prompt → aspect ratio → 1K/2K → generate.
+
+v2 Flux 2 I2I: upload 1–8 references → prompt → ratio and resolution → generate.
+
+v2 Pro: same steps on Pro T2I or Pro I2I tabs for higher-fidelity output.`
       },
       {
-        title: 'Industry applications',
-        content: `Concept: Film and TV concept art, game art (characters, environments, props), product and brand exploration. Content: Social (Instagram, TikTok), blog imagery, marketing assets, presentation visuals. Design: UI/UX and packaging mockups, spatial and fashion concept visuals. Education and publishing: Textbook and science visuals, book and magazine art, training materials.`
-      },
-      {
-        title: 'Technical specs',
-        content: `Pro: 2048×2048, 24-bit, PNG/JPG/WEBP, smart compression. Max: Up to 4096×4096, Adobe RGB/ProPhoto RGB, TIFF/PSD, CMYK for print. Speed: Pro ~15–30s, Max ~45–90s per image; batch 10+; queue and priority.`
-      },
-      {
-        title: 'Professional workflow',
-        content: `Single-prompt: Define goal and tier (Pro/Max); craft prompt; set style, composition, color; preview; final generate; light post. Batch: Define scope; design template prompts; batch generate; quality check; standardize post; deliver to spec.`
-      },
-      {
-        title: 'Advanced tips',
-        content: `Prompt structure: [Subject] + [Atmosphere] + [Composition] + [Lighting] + [Style] + [Tech]. Tier strategy: Pro for speed and exploration; Max for final, detail-heavy work; mix—explore with Pro, refine chosen direction with Max. Micro control: Brush (direction, wash, line weight), materials (metal, fabric, glass), light (highlight, shadow, reflection), space (perspective, depth, atmosphere). Composition: Line and color for gaze; emotion and culture; functional layout.`
-      },
-      {
-        title: 'Quality control',
-        content: `Pro: Clarity, color, composition; style vs. prompt; resolution/format/size; intent. Max: Micro detail; artistic quality; industry standards; commercial fit. Human: Pro—commercial fit and cost; Max—artistic and professional depth; style accuracy; novelty.`
-      },
-      {
-        title: 'Roadmap',
-        content: `Near real-time generation; 2D-to-3D; subtle motion and interactive content; user-style training. In-image editing, style fusion, enterprise batch, API ecosystem. Film, game, design-agency, and enterprise-marketing editions.`
-      },
-      {
-        title: 'Try Flux Kontext on FuseAITools',
-        content: `Flux Kontext on FuseAITools gives you pro-grade image generation with the right balance of speed and quality. Whether you need fast concept exploration or max-fidelity final assets, you get the right tier and control in one place. Turn ideas into precise, high-quality visuals.`
+        title: 'Try Flux on FuseAITools',
+        content: `Start with Flux Kontext Generate for governed text-in-image and single-image edits, or jump to Flux 2 for 2K drafts and multi-reference I2I. Upgrade to Flux 2 Pro when you need client-facing quality. Pair stills with Seedance image-to-video when you need motion. Credits appear on Generate before each run.`
       }
     ]
   },

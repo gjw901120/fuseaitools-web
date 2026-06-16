@@ -27,7 +27,12 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 
 - [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
 - [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
-- [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
+- [Flux Kontext Overview](https://fuseaitools.com/home/flux-kontext): Black Forest Labs Flux—Kontext v1 (Pro/Max generate/edit) and Flux 2 v2 (1K/2K T2I/I2I + Pro); 20 free credits on sign-up.
+- [Flux Kontext Generate](https://fuseaitools.com/home/flux-kontext/generate): v1—text-to-image and single-image edit; six aspect ratios; safety and prompt controls.
+- [Flux 2 Text to Image](https://fuseaitools.com/home/flux-kontext/flux-2-text-to-image): v2—prompt 3–5000 chars, 1K/2K, eight aspect ratios + auto.
+- [Flux 2 Image to Image](https://fuseaitools.com/home/flux-kontext/flux-2-image-to-image): v2—1–8 reference images + prompt, 1K/2K.
+- [Flux 2 Pro Text to Image](https://fuseaitools.com/home/flux-kontext/flux-2-pro-text-to-image): v2 Pro—higher-fidelity T2I at 1K/2K.
+- [Flux 2 Pro Image to Image](https://fuseaitools.com/home/flux-kontext/flux-2-pro-image-to-image): v2 Pro—multi-reference I2I with Pro-tier detail.
 - [Nano Banana Overview](https://fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
 - [Nano Banana Text to Image](https://fuseaitools.com/home/nano-banana/generate): Prompt-only, eleven aspect ratios, PNG/JPEG, up to 5000 chars.
 - [Nano Banana Image to Image](https://fuseaitools.com/home/nano-banana/edit): Edit 1–10 images with natural-language prompts.

@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Flux Kontext</h3>
-        <p class="tool-description">Flux is Black Forest Labs' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.</p>
+        <p class="tool-description">Flux on FuseAITools—Kontext (v1) for governed generate/edit with Pro/Max, and Flux 2 (v2) for 1K/2K T2I and multi-reference I2I including Pro finals.</p>
       </div>
     </div>
 
