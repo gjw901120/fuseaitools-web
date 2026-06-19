@@ -130,6 +130,7 @@
 |------|----------|----------|
 | Seedance | `SeedanceV1LiteProSeoContent` / `SeedanceV15SeoContent` / `SeedanceV2SeoContent` | v1 五页 / 1.5 Pro / 2 Fast & 2 |
 | Kling | `KlingV25TurboSeoContent` / `KlingV26SeoContent` / `KlingV30SeoContent` / `KlingAiAvatarSeoContent` | v2.5 两页 / 2.6 三页 / 3.0 两页 / Avatar 两页 |
+| Flux Kontext | `FluxKontextV1SeoContent` / `FluxKontextV2SeoContent` | generate 一页 / Flux 2 四页 |
 
 #### 3.3.2 向上互链（只链高版本，不回链低版本）
 
@@ -835,6 +836,60 @@ Kling 九视频子页 + `/home/kling` 聚合页，按 §3 同一标准实施。
 
 ---
 
-**文档版本**：1.4  
+## 19. Flux Kontext 对齐清单（§3.3 多版本实例）
+
+Flux Kontext 五图像子页 + `/home/flux-kontext` 聚合页。**generate = v1**；四个 Flux 2 工作流 = **v2**（含 Pro 子档）。
+
+### 19.1 涉及文件
+
+- `pages/home/flux-kontext/*.vue`（5 子页）  
+- `pages/home/flux-kontext.vue`  
+- `components/tools/FluxKontextV1SeoContent.vue`（generate 一页）  
+- `components/tools/FluxKontextV2SeoContent.vue`（Flux 2 / Pro 四页）  
+- `components/tools/FluxKontextTool.vue`  
+- `data/toolOverviews.js` → `flux-kontext`
+
+### 19.2 API 参数（写作核对）
+
+| 工作流 | modelKey | 关键约束 |
+|------|----------|----------|
+| Kontext Generate (Pro) | `flux_kontext_pro` | prompt；generate 或 edit（1 图）；aspect 21:9–9:16；JPEG/PNG；safety 0–6 |
+| Kontext Generate (Max) | `flux_kontext_max` | 同上 |
+| Flux 2 T2I | `flux-2-text-to-image` | prompt 3–5000；1K/2K；8 ratios + auto |
+| Flux 2 I2I | `flux-2-image-to-image` | 1–8 图 + prompt；1K/2K |
+| Flux 2 Pro T2I | `flux-2-pro-text-to-image` | 同 Flux 2 T2I，Pro 档位 |
+| Flux 2 Pro I2I | `flux-2-pro-image-to-image` | 同 Flux 2 I2I，Pro 档位 |
+
+### 19.3 实施自检
+
+**子页（5 工作流）**
+
+- [x] v1 / v2 分组件（§3.3.1）  
+- [x] v2 四页：`workflowIntroMap` + `workflowDefinitionMap` + 专属 FAQ  
+- [x] 每页独立 `useToolSEOAsync` description / keywords（含 20 free credits）  
+- [x] FAQ + `useToolSeoFaqSchema`  
+- [x] Technical specs + 能力简表  
+- [x] `useToolSeoPageScroll` 工作流卡片回顶  
+- [x] `#below-main` + 可滚动 `tool-page`  
+
+**多版本互链（§3.3 实例）**
+
+| 版本档 | Workflow grid 后对比表 | 底部互链 |
+|--------|------------------------|----------|
+| v1 Kontext | Kontext vs Flux 2 | → Flux 2 T2I / I2I / Pro |
+| v2 Flux 2（标准） | Flux 2 vs Flux 2 Pro | → 对应 Pro T2I 或 Pro I2I |
+| v2 Flux 2 Pro | 无版本对比 | pricing + → Seedance 视频 |
+
+**聚合页 `/home/flux-kontext`**
+
+- [x] intro 区分 v1 Kontext / v2 Flux 2  
+- [x] features 5 项带版本前缀  
+- [x] sections 3 段  
+
+**组件**：`FluxKontextV1SeoContent.vue` / `FluxKontextV2SeoContent.vue`
+
+---
+
+**文档版本**：1.5  
 **最后更新**：2026-05-20  
-**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
+**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
