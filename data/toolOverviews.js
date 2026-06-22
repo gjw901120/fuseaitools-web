@@ -701,131 +701,32 @@ Best for: Designers, developers, content creators, researchers, and anyone needi
   },
   grok: {
     title: 'Grok',
-    category: 'Image & Video',
+    category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Grok Imagine is xAI\'s multimodal image and video generation model that converts text or images into short visual outputs with coherent motion and synchronized audio.',
+    intro: 'Grok Imagine **image** on FuseAITools—xAI text-to-image and image-to-image from prompts or one reference upload. Compact controls, per-image credits on Generate. New users receive **20 free credits** on sign-up.',
     features: [
-      { name: 'Text to Image', path: '/home/grok/text-to-image', description: 'Model fixed to grok-imagine-text-to-image. Prompt required (max 5000). Aspect ratio options: 2:3, 3:2, 1:1, 16:9, 9:16.' },
-      { name: 'Image to Image', path: '/home/grok/image-to-image', description: 'Model fixed to grok-imagine-image-to-image. image_urls required (upload first), supports JPEG/PNG/WEBP with max 10MB per image. Prompt optional.' },
-      { name: 'Text to Video', path: '/home/grok/text-to-video', description: 'Model fixed to grok-imagine-text-to-video. Prompt required (max 5000). Configure aspect ratio, mode, duration (6/10), and resolution (480p/720p).' },
-      { name: 'Image to Video', path: '/home/grok/image-to-video', description: 'Model fixed to grok-imagine-image-to-video. Supports optional prompt and image_urls (up to 7). Configure mode, duration, resolution, and aspect ratio.' },
-      { name: 'Upscale', path: '/home/grok/upscale', description: 'Model fixed to grok-imagine-upscale. Requires a completed task_id from Grok generation to upscale output quality.' },
-      { name: 'Extend', path: '/home/grok/extend', description: 'Model fixed to grok-imagine-extend. Requires task_id and prompt, with configurable extend_at, extend_times (6/10), and resolution.' }
+      { name: 'Text to Image', path: '/home/grok/text-to-image', description: 'Model fixed to grok-imagine-text-to-image. Prompt required (max 5000). Current form outputs 1:1 square.' },
+      { name: 'Image to Image', path: '/home/grok/image-to-image', description: 'Model fixed to grok-imagine-image-to-image. Exactly one image URL required (JPEG/PNG/WebP, max 10MB). Prompt optional (max 5000).' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `One model, two creative lanes: Grok Imagine unifies image generation and short video generation in one workflow. You can start from text, start from an image, or continue an existing result with upscale and extend.
+        title: 'Grok Imagine Image',
+        content: `Text to Image: Prompt up to 5000 characters; model grok-imagine-text-to-image; current web form submits 1:1 square output.
 
-Control with simplicity: Grok keeps parameter design compact but practical—aspect ratio, motion mode, duration, and resolution are enough for most social, marketing, and prototype scenarios without overloading the UI.`
+Image to Image: Exactly one uploaded image; optional prompt up to 5000 characters; model grok-imagine-image-to-image. JPEG, PNG, WebP; max 10MB per file.`
       },
       {
-        title: 'Core capabilities',
-        content: `Text to Image
+        title: 'Typical Use Cases',
+        content: `Concept art and social thumbnails from text prompts.
 
-Model: grok-imagine-text-to-image (fixed)
-Prompt: Required, up to 5000 characters
-Aspect ratio: 2:3, 3:2, 1:1, 16:9, 9:16
-Use cases: Concept art, ad key visuals, social thumbnails, product mockups.
+Style variations and guided edits from a single reference image.
 
-Image to Image
-
-Model: grok-imagine-image-to-image (fixed)
-Prompt: Optional
-image_urls: Required; JPEG/PNG/WEBP, max 10MB each
-Use cases: Style transfer, visual iteration, brand-consistent variations.
-
-Text to Video
-
-Model: grok-imagine-text-to-video (fixed)
-Prompt: Required, up to 5000 characters
-Parameters: aspect_ratio, mode (fun/normal/spicy), duration (6/10), resolution (480p/720p)
-Use cases: Motion concepts, short promos, social clips, storyboard previews.
-
-Image to Video
-
-Model: grok-imagine-image-to-video (fixed)
-Prompt: Optional
-image_urls: Optional, up to 7 images
-Parameters: aspect_ratio, mode, duration, resolution
-Use cases: Animate posters/illustrations, product hero animation, before-after reveal clips.
-
-Upscale
-
-Model: grok-imagine-upscale (fixed)
-task_id: Required, from completed Grok generation
-Use cases: Final-output enhancement before publishing or client delivery.
-
-Extend
-
-Model: grok-imagine-extend (fixed)
-task_id: Required
-prompt: Required
-Parameters: extend_at, extend_times (6/10), resolution (480p/720p)
-Use cases: Continue successful shots, add ending beats, expand narrative timing.`
+Fast visual drafts before heavier design or video pipelines.`
       },
       {
-        title: 'Use cases',
-        content: `Creator workflows: Turn one idea into a full asset chain—key image -> animated clip -> upscale -> extended variant.
-
-Marketing and ads: Produce fast campaign materials for product launches, seasonal activities, and paid social creatives.
-
-E-commerce content: Build product hero images, lightweight motion ads, and platform-specific short videos.
-
-Education and explainers: Create visual examples from text instructions, then extend or refine with image/video modes.
-
-Rapid prototyping: Validate visual direction in minutes before entering heavy production pipelines.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Prompt support: Up to 5000 characters in key prompt-driven modes.
-
-Image input formats: JPEG, PNG, WEBP; max 10MB per image.
-
-Video controls: Duration 6s or 10s; resolution 480p or 720p; aspect ratio options include portrait, square, and widescreen.
-
-Motion behavior: fun / normal / spicy modes for different movement intensity.
-
-Output delivery: Generated media is returned as downloadable URLs suitable for preview and publishing workflows.`
-      },
-      {
-        title: 'Workflow',
-        content: `Image-first flow: Text to Image or Image to Image -> pick best variant -> optional Upscale -> export.
-
-Video-first flow: Text to Video or Image to Video -> choose motion mode and duration -> preview -> optional Extend -> export.
-
-Iterative production: Reuse successful prompts and task IDs, then branch into multiple variants for A/B testing.
-
-Team handoff: Use task IDs and fixed model endpoints to keep generation reproducible across teammates.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Prompt quality: Describe subject, environment, camera language, and timing explicitly for better motion coherence.
-
-Mode selection: Use normal as baseline; fun for creative reinterpretation; spicy for stronger dynamics when compatible.
-
-Resolution strategy: Use 480p for fast drafts and iteration; switch to 720p for final deliverables.
-
-Duration strategy: 6s for punchy loops and ad snippets; 10s for clearer scene progression and storytelling.
-
-Extend planning: Set extend_at at a visually stable frame and use continuation-focused prompts to reduce jump cuts.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Unified image + video stack: No tool switching between still generation and short-motion generation.
-
-Fixed model endpoints: Predictable behavior and easier API governance.
-
-Practical controls: Small parameter surface with high day-to-day usability.
-
-Scalable output paths: Supports direct generation, enhancement (upscale), and continuation (extend) in one suite.
-
-Best for: Growth teams, social creators, designers, indie makers, and product teams needing fast visual iteration.`
-      },
-      {
-        title: 'Try Grok on FuseAITools',
-        content: `Grok on FuseAITools gives you a complete visual pipeline from static images to short videos, then quality enhancement and timeline extension—all under one model family. If you need fast iteration with practical controls and production-ready exports, Grok is a strong default choice.`
+        title: 'Try on FuseAITools',
+        content: `Open Text to Image for prompt-only generation or Image to Image when you have a reference still. Credits appear on Generate; pair results with Ideogram or Flux Kontext when you need typography-heavy layouts or Pro-tier still editing.`
       }
     ]
   },

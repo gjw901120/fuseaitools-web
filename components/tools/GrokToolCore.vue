@@ -201,7 +201,7 @@ const getAuthToken = () => {
   }
 }
 
-const imageDesc = 'Grok Imagine is xAI\'s multimodal image and video generation model that converts text or images into short visual outputs with coherent motion and synchronized audio.'
+const imageDesc = 'Grok Imagine image on FuseAITools—xAI text-to-image and image-to-image. Generate from a prompt or transform one uploaded image; credits shown before Generate.'
 const videoDesc = 'Grok Imagine is xAI\'s multimodal image and video generation model that converts text or images into short visual outputs with coherent motion and synchronized audio.'
 const EXTEND_LIST_MODEL = 'grok-imagine-text-to-video'
 const extendList = ref([])
