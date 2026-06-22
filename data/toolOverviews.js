@@ -285,54 +285,38 @@ Future Roadmap: Will support more detailed dynamic image generation, 2D-to-3D ca
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Ideogram  is  image generation model, offering text-to-image, image editing, reframing, and remixing with improved consistency and creative control.',
+    intro: 'Ideogram on FuseAITools spans two product lines: **V3** for general text-to-image, edit, remix, and reframe; **Character** for reference-driven identity across scenes. All modes share TURBO/BALANCED/QUALITY speed tiers. New users receive **20 free credits** on sign-up.',
     features: [
-      { name: 'v3-text-to-image', path: '/home/ideogram/v3-text-to-image', description: 'Generate images from rich natural language prompts, with optional rendering speed, style, prompt expansion, image size, seed, and negative prompt controls.' },
-      { name: 'v3-edit', path: '/home/ideogram/v3-edit', description: 'Mask-based image editing: upload an image and mask, then fill or modify the masked region with a new prompt.' },
-      { name: 'v3-remix', path: '/home/ideogram/v3-remix', description: 'Remix an existing image with a new prompt, controlling strength, style, size, speed, seed, and negative prompt.' },
-      { name: 'v3-reframe', path: '/home/ideogram/v3-reframe', description: 'Reframe an image into new aspect ratios and resolutions (square, portrait, landscape), with optional style, speed, and multi-image outputs.' },
-      { name: 'character', path: '/home/ideogram/character', description: 'Generate character-centric scenes from reference images, preserving identity while changing setting, pose, or style.' },
-      { name: 'character-edit', path: '/home/ideogram/character-edit', description: 'Edit part of a character image using masks and reference images to adjust looks, clothing, or pose while keeping identity.' },
-      { name: 'character-remix', path: '/home/ideogram/character-remix', description: 'Remix character images with new prompts and style references, controlling strength, size, and negative prompts for nuanced variations.' }
+      { name: 'V3 Text to Image', path: '/home/ideogram/v3-text-to-image', description: 'V3—prompt-only generation with MagicPrompt, style presets, six aspect ratios, negative prompt, and seed.' },
+      { name: 'V3 Edit', path: '/home/ideogram/v3-edit', description: 'V3—mask-based inpainting: image + mask + prompt.' },
+      { name: 'V3 Remix', path: '/home/ideogram/v3-remix', description: 'V3—remix with strength, style, 1–4 outputs, and negative prompt.' },
+      { name: 'V3 Reframe', path: '/home/ideogram/v3-reframe', description: 'V3—reframe to square, portrait, or landscape presets without a prompt.' },
+      { name: 'Character', path: '/home/ideogram/character', description: 'Character—reference image + prompt for identity-locked scenes (AUTO/REALISTIC/FICTION).' },
+      { name: 'Character Edit', path: '/home/ideogram/character-edit', description: 'Character—image + mask + reference for local edits while preserving identity.' },
+      { name: 'Character Remix', path: '/home/ideogram/character-remix', description: 'Character—strength-controlled remix with reference images and negative prompt.' }
     ],
     sections: [
       {
-        title: 'Core Features',
-        content: `Text to Image (v3-text-to-image): Generate images from detailed text prompts, with options for TURBO/BALANCED/QUALITY rendering speed, style presets (AUTO, GENERAL, REALISTIC, DESIGN), MagicPrompt expansion, multiple aspect ratios (square, portrait, landscape), and seed/negative prompt control up to 5000 characters.
+        title: 'Ideogram V3 — General Image',
+        content: `Text to Image: Prompt up to 5000 chars; TURBO/BALANCED/QUALITY; styles AUTO, GENERAL, REALISTIC, DESIGN; MagicPrompt; square/portrait/landscape sizes; negative prompt and seed.
 
-Image Editing (v3-edit): Upload an image and a mask of the same size, then use a prompt to inpaint or modify only the masked region; supports rendering speed, MagicPrompt, and seed for reproducibility.
+Edit: Image + matching mask + prompt for inpainting.
 
-Image Remixing (v3-remix): Provide an input image and a remix prompt, optionally setting style, size, speed, expand_prompt, number of images, strength, seed, and negative prompt to explore new variations on the same base.
+Remix: Source image + prompt; strength 0.01–1; 1–4 outputs; style, size, negative prompt.
 
-Reframing (v3-reframe): Reframe existing images into different target aspect ratios and resolutions (square, square_hd, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9), with optional style, speed, num_images, and seed.`
+Reframe: Source image only—new aspect ratio presets; optional style, speed, 1–4 outputs, seed.`
       },
       {
-        title: 'Character Tools',
-        content: `Character (character): Use one or more reference images as character anchors, then place them into new scenes described by a prompt. Control rendering speed (TURBO, BALANCED, QUALITY), style (AUTO, REALISTIC, FICTION), MagicPrompt, num_images, image_size, seed, and negative_prompt for fine control.
+        title: 'Ideogram Character — Identity Lock',
+        content: `Character: One or more reference images + prompt—place the same identity in new scenes; REALISTIC/FICTION styles; 1–4 outputs.
 
-Character Edit (character-edit): Upload an image, a matching mask, and character reference images to selectively edit parts of a character while preserving identity. Supports the same rendering_speed, style, expand_prompt, num_images, and seed controls for guided edits.
+Character Edit: Image + mask + character reference + prompt for clothing, pose, or local edits.
 
-Character Remix (character-remix): Remix character images with new prompts and reference images, adjusting strength of the original, style, image_size, num_images, seed, and negative_prompt, plus optional style reference images and masks for even more precise control.`
+Character Remix: Source + reference + prompt with remix strength; multi-image output and negative prompts.`
       },
       {
-        title: 'Typical Use Cases',
-        content: `Brand and Product Visuals: Consistent product shots, lifestyle scenes, and campaign images; iterative refinement across formats (1:1, 4:3, 16:9).
-
-Character-Driven Content: Game and animation characters, mascots, and influencers; consistent identity across multiple scenes, poses, and outfits.
-
-Marketing and Social: Ad creatives, social posts, and story formats in portrait and landscape; fast remixing and reframing for each platform size.
-
-Design and Illustration: Concept art, storyboards, editorial illustration, and mood pieces that need controlled style, composition, and character continuity.`
-      },
-      {
-        title: 'Advanced Control & Workflow Tips',
-        content: `Prompt Craft: Combine subject, setting, mood, camera, and style; use negative prompts for unwanted artifacts (e.g., "no text," "avoid blur," "no extra limbs").
-
-Parameter Strategy: Start with BALANCED rendering speed; move to TURBO for quick ideation and QUALITY for final images. Use seeds to reproduce or iteratively refine good results.
-
-Aspect Ratio & Size: Choose square or square_hd for avatars and thumbnails; portrait_16_9 or portrait_4_3 for social stories; landscape_16_9 or landscape_4_3 for web, slides, and video frames.
-
-Character Consistency: For character modes, keep reference images clear and consistent; reuse reference_image_urls and seeds to maintain identity across scenes; use strength controls to balance between base image and new creative direction.`
+        title: 'Try on FuseAITools',
+        content: `Use V3 for posters, inpainting, and social reframes; use Character when mascots or serial avatars must stay consistent. Credits scale by rendering_speed (RULE pricing). Pair Character heroes with V3 backgrounds, or export stills to Seedance for motion.`
       }
     ]
   },

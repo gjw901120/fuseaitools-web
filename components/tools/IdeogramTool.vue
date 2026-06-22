@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>Ideogram</h3>
-        <p class="tool-description">Ideogram  is  image generation model, offering text-to-image, image editing, reframing, and remixing with improved consistency and creative control.</p>
+        <p class="tool-description">Ideogram on FuseAITools—V3 for text-to-image, edit, remix, and reframe; Character for reference-driven identity. TURBO/BALANCED/QUALITY speed tiers.</p>
       </div>
     </div>
 

@@ -131,6 +131,7 @@
 | Seedance | `SeedanceV1LiteProSeoContent` / `SeedanceV15SeoContent` / `SeedanceV2SeoContent` | v1 五页 / 1.5 Pro / 2 Fast & 2 |
 | Kling | `KlingV25TurboSeoContent` / `KlingV26SeoContent` / `KlingV30SeoContent` / `KlingAiAvatarSeoContent` | v2.5 两页 / 2.6 三页 / 3.0 两页 / Avatar 两页 |
 | Flux Kontext | `FluxKontextV1SeoContent` / `FluxKontextV2SeoContent` | generate 一页 / Flux 2 四页 |
+| Ideogram | `IdeogramV3SeoContent` / `IdeogramCharacterSeoContent` | V3 四页 / Character 三页 |
 
 #### 3.3.2 向上互链（只链高版本，不回链低版本）
 
@@ -890,6 +891,64 @@ Flux Kontext 五图像子页 + `/home/flux-kontext` 聚合页。**generate = v1*
 
 ---
 
-**文档版本**：1.5  
+## 20. Ideogram 对齐清单（§3.3 双产品线实例）
+
+Ideogram 七图像子页 + `/home/ideogram` 聚合页。**V3 四工作流** = 通用图像档；**Character 三工作流** = 独立产品线（身份锁定，非 V3 版本升级）。
+
+### 20.1 涉及文件
+
+- `pages/home/ideogram/*.vue`（7 子页；`generate` → 301 `v3-text-to-image`）  
+- `pages/home/ideogram.vue`  
+- `components/tools/IdeogramV3SeoContent.vue`（V3 四页）  
+- `components/tools/IdeogramCharacterSeoContent.vue`（Character 三页）  
+- `components/tools/IdeogramTool.vue`  
+- `data/toolOverviews.js` → `ideogram`
+
+### 20.2 API 参数（写作核对）
+
+| 工作流 | modelKey | 关键约束 |
+|------|----------|----------|
+| V3 Text to Image | `ideogram-v3-text-to-image` | prompt ≤5000；speed TURBO/BALANCED/QUALITY；style AUTO/GENERAL/REALISTIC/DESIGN |
+| V3 Edit | `ideogram-v3-edit` | image + mask + prompt |
+| V3 Remix | `ideogram-v3-remix` | image + prompt；strength 0.01–1；num_images 1–4 |
+| V3 Reframe | `ideogram-v3-reframe` | image；无 prompt；image_size 预设 |
+| Character | `ideogram-character` | reference_image_urls + prompt |
+| Character Edit | `ideogram-character-edit` | image + mask + reference + prompt |
+| Character Remix | `ideogram-character-remix` | image + reference + prompt；strength |
+
+计费：全部 **RULE**，按 `rendering_speed` + `scene: generate`（见 `PRICING_MAPPING.md` § Ideogram）。
+
+### 20.3 实施自检
+
+**子页（7 工作流）**
+
+- [x] V3 / Character 分组件（§3.3.1）  
+- [x] 各页：`workflowIntroMap` + `workflowDefinitionMap` + 专属 FAQ  
+- [x] 每页独立 `useToolSEOAsync` description / keywords（含 20 free credits）  
+- [x] FAQ + `useToolSeoFaqSchema`  
+- [x] 工作流内对比表 + Technical specs  
+- [x] `useToolSeoPageScroll` 工作流卡片回顶  
+- [x] `#below-main` + 可滚动 `tool-page`  
+
+**双产品线互链（§3.3 实例）**
+
+| 产品线档 | Workflow grid 后对比表 | 底部互链 |
+|----------|------------------------|----------|
+| V3（通用档） | V3 vs Character | → Character / Character Edit / Character Remix（关联，非版本降级） |
+| Character（独立产品线） | Character vs V3（可选） | → V3 T2I / V3 Reframe（互补场景） |
+
+说明：Ideogram 为 **V3 + Character 双产品线**，非 Kling 式版本梯队；V3 页放 **V3 vs Character** 对比帮助选型，Character 页可放反向对比并链回 V3 通用能力。
+
+**聚合页 `/home/ideogram`**
+
+- [x] intro 区分 V3 / Character  
+- [x] features 7 项带产品线前缀  
+- [x] sections 3 段  
+
+**组件**：`IdeogramV3SeoContent.vue` / `IdeogramCharacterSeoContent.vue`
+
+---
+
+**文档版本**：1.6  
 **最后更新**：2026-05-20  
-**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
+**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。

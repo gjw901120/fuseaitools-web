@@ -3,19 +3,24 @@
     <div class="tool-page">
       <IdeogramTool />
     </div>
+    <template #below-main>
+      <IdeogramCharacterSeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
+import IdeogramCharacterSeoContent from '~/components/tools/IdeogramCharacterSeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram Character Remix',
-  description: 'Remix character images with strength control using Ideogram. Pay per image with credits.',
+  description:
+    'Ideogram Character Remix on FuseAITools—reference + strength-controlled remix, 1–4 outputs, negative prompt. 20 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/character-remix',
-  keywords: ['Ideogram', 'Character Remix', 'AI character remix'],
+  keywords: ['Ideogram', 'Character Remix', 'strength', 'consistent character', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Image Generation',
   offers: { price: '0', priceCurrency: 'USD' },
@@ -26,5 +31,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>

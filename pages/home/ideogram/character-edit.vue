@@ -3,19 +3,24 @@
     <div class="tool-page">
       <IdeogramTool />
     </div>
+    <template #below-main>
+      <IdeogramCharacterSeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import IdeogramTool from '~/components/tools/IdeogramTool.vue'
+import IdeogramCharacterSeoContent from '~/components/tools/IdeogramCharacterSeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram Character Edit',
-  description: 'Edit character images with mask and prompt using Ideogram. Pay per image with credits.',
+  description:
+    'Ideogram Character Edit on FuseAITools—image + mask + character reference, identity-preserving inpaint. 20 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/character-edit',
-  keywords: ['Ideogram', 'Character Edit', 'AI character editing', 'mask'],
+  keywords: ['Ideogram', 'Character Edit', 'mask', 'character reference', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Image Generation',
   offers: { price: '0', priceCurrency: 'USD' },
@@ -26,5 +31,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>

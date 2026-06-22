@@ -26,7 +26,14 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 ## Image
 
 - [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
-- [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
+- [Ideogram Overview](https://fuseaitools.com/home/ideogram): V3 general image (T2I/edit/remix/reframe) + Character identity line; 20 free credits on sign-up.
+- [Ideogram V3 Text to Image](https://fuseaitools.com/home/ideogram/v3-text-to-image): V3—prompt, MagicPrompt, six aspect ratios, negative prompt.
+- [Ideogram V3 Edit](https://fuseaitools.com/home/ideogram/v3-edit): V3—image + mask inpainting.
+- [Ideogram V3 Remix](https://fuseaitools.com/home/ideogram/v3-remix): V3—strength remix, 1–4 outputs.
+- [Ideogram V3 Reframe](https://fuseaitools.com/home/ideogram/v3-reframe): V3—aspect reframe without prompt.
+- [Ideogram Character](https://fuseaitools.com/home/ideogram/character): Character—reference + prompt, identity lock.
+- [Ideogram Character Edit](https://fuseaitools.com/home/ideogram/character-edit): Character—mask edit with reference.
+- [Ideogram Character Remix](https://fuseaitools.com/home/ideogram/character-remix): Character—strength remix with reference.
 - [Flux Kontext Overview](https://fuseaitools.com/home/flux-kontext): Black Forest Labs Flux—Kontext v1 (Pro/Max generate/edit) and Flux 2 v2 (1K/2K T2I/I2I + Pro); 20 free credits on sign-up.
 - [Flux Kontext Generate](https://fuseaitools.com/home/flux-kontext/generate): v1—text-to-image and single-image edit; six aspect ratios; safety and prompt controls.
 - [Flux 2 Text to Image](https://fuseaitools.com/home/flux-kontext/flux-2-text-to-image): v2—prompt 3–5000 chars, 1K/2K, eight aspect ratios + auto.
