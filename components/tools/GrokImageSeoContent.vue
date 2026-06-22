@@ -172,12 +172,11 @@
     </div>
 
     <div class="upgrade-tip">
-      🎨 Need poster typography or character consistency?
-      Try
-      <a href="/home/ideogram/v3-text-to-image" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/ideogram/v3-text-to-image')">Ideogram V3 Text to Image →</a>
-      for legible text layouts, or
-      <a href="/home/flux-kontext/generate" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/flux-kontext/generate')">Flux Kontext</a>
-      for Pro/Max still generation and single-image edit.
+      🎬 Need short motion from your stills?
+      <a href="/home/grok/text-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/grok/text-to-video')">Try Grok Text to Video →</a>
+      or
+      <a href="/home/grok/image-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/grok/image-to-video')">Image to Video</a>
+      to animate Grok images—then upscale or extend the clip.
     </div>
   </div>
 </template>
