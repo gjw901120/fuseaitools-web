@@ -55,7 +55,7 @@
             <div class="points-info">
               <div class="points-row">
                 <span class="points-label">Base Credits:</span>
-                <span class="points-value">{{ getCurrentPricing('basic').points }}</span>
+                <span class="points-value">{{ formatPlanCredits('basic', 'base') }}</span>
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Rate:</span>
@@ -63,11 +63,14 @@
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Credits:</span>
-                <span class="points-value bonus">+{{ getCurrentPricing('basic').bonusPoints }}</span>
+                <span class="points-value bonus">{{ formatPlanCredits('basic', 'bonus') }}</span>
+              </div>
+              <div v-if="selectedSubscriptionType === 'yearly'" class="points-row points-row-formula">
+                <span class="points-value points-formula">{{ getYearlyCreditsFormula('basic') }}</span>
               </div>
               <div class="points-row total">
                 <span class="points-label">Total Credits:</span>
-                <span class="points-value total-value">{{ getCurrentPricing('basic').totalPoints }}</span>
+                <span class="points-value total-value">{{ selectedSubscriptionType === 'yearly' ? getCurrentPricing('basic').totalPoints : formatPlanCredits('basic', 'total') }}</span>
               </div>
             </div>
 
@@ -106,7 +109,7 @@
             <div class="points-info">
               <div class="points-row">
                 <span class="points-label">Base Credits:</span>
-                <span class="points-value">{{ getCurrentPricing('pro').points }}</span>
+                <span class="points-value">{{ formatPlanCredits('pro', 'base') }}</span>
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Rate:</span>
@@ -114,11 +117,14 @@
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Credits:</span>
-                <span class="points-value bonus">+{{ getCurrentPricing('pro').bonusPoints }}</span>
+                <span class="points-value bonus">{{ formatPlanCredits('pro', 'bonus') }}</span>
+              </div>
+              <div v-if="selectedSubscriptionType === 'yearly'" class="points-row points-row-formula">
+                <span class="points-value points-formula">{{ getYearlyCreditsFormula('pro') }}</span>
               </div>
               <div class="points-row total">
                 <span class="points-label">Total Credits:</span>
-                <span class="points-value total-value">{{ getCurrentPricing('pro').totalPoints }}</span>
+                <span class="points-value total-value">{{ selectedSubscriptionType === 'yearly' ? getCurrentPricing('pro').totalPoints : formatPlanCredits('pro', 'total') }}</span>
               </div>
             </div>
 
@@ -157,7 +163,7 @@
             <div class="points-info">
               <div class="points-row">
                 <span class="points-label">Base Credits:</span>
-                <span class="points-value">{{ getCurrentPricing('ultra').points }}</span>
+                <span class="points-value">{{ formatPlanCredits('ultra', 'base') }}</span>
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Rate:</span>
@@ -165,11 +171,14 @@
               </div>
               <div class="points-row">
                 <span class="points-label">Bonus Credits:</span>
-                <span class="points-value bonus">+{{ getCurrentPricing('ultra').bonusPoints }}</span>
+                <span class="points-value bonus">{{ formatPlanCredits('ultra', 'bonus') }}</span>
+              </div>
+              <div v-if="selectedSubscriptionType === 'yearly'" class="points-row points-row-formula">
+                <span class="points-value points-formula">{{ getYearlyCreditsFormula('ultra') }}</span>
               </div>
               <div class="points-row total">
                 <span class="points-label">Total Credits:</span>
-                <span class="points-value total-value">{{ getCurrentPricing('ultra').totalPoints }}</span>
+                <span class="points-value total-value">{{ selectedSubscriptionType === 'yearly' ? getCurrentPricing('ultra').totalPoints : formatPlanCredits('ultra', 'total') }}</span>
               </div>
             </div>
 
@@ -339,10 +348,10 @@ const pricingData = {
     },
     yearly: {
       price: 99.9,
-      points: 9990, // 99.9 * 100
+      points: 999,
       bonusPercent: 30,
-      bonusPoints: 2997, // 9990 * 0.3
-      totalPoints: 12987 // 9990 + 2997
+      bonusPoints: 299,
+      totalPoints: 15576 // (999 + 299) * 12
     }
   },
   pro: {
@@ -365,10 +374,10 @@ const pricingData = {
     },
     yearly: {
       price: 168.8,
-      points: 16880, // 168.8 * 100
+      points: 1688,
       bonusPercent: 40,
-      bonusPoints: 6752, // 16880 * 0.4
-      totalPoints: 23632 // 16880 + 6752
+      bonusPoints: 676,
+      totalPoints: 28368 // (1688 + 676) * 12
     }
   },
   ultra: {
@@ -391,10 +400,10 @@ const pricingData = {
     },
     yearly: {
       price: 199.9,
-      points: 19990, // 199.9 * 100
+      points: 1999,
       bonusPercent: 50,
-      bonusPoints: 9995, // 19990 * 0.5
-      totalPoints: 29985 // 19990 + 9995
+      bonusPoints: 999,
+      totalPoints: 35976 // (1999 + 999) * 12
     }
   }
 }
@@ -403,6 +412,23 @@ const pricingData = {
 const getCurrentPricing = (planType) => {
   const plan = pricingData[planType]
   return plan[selectedSubscriptionType.value]
+}
+
+/** Base/bonus show per-month on yearly */
+function formatPlanCredits (planType, field) {
+  const p = getCurrentPricing(planType)
+  if (selectedSubscriptionType.value === 'yearly') {
+    if (field === 'base') return `${p.points}/month`
+    if (field === 'bonus') return `+${p.bonusPoints}`
+  }
+  if (field === 'base') return String(p.points)
+  if (field === 'bonus') return `+${p.bonusPoints}`
+  return String(p.totalPoints)
+}
+
+function getYearlyCreditsFormula (planType) {
+  const p = getCurrentPricing(planType)
+  return `${p.points + p.bonusPoints} × 12`
 }
 
 const getComprehensiveDiscount = (planType) => {
@@ -916,6 +942,18 @@ const subscribePlan = (index) => {
   padding-top: 0.75rem;
   border-top: 2px solid var(--flux-border, hsl(215, 16%, 22%));
   margin-top: 0.75rem;
+}
+
+.points-row-formula {
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.points-formula {
+  width: 100%;
+  text-align: right;
+  font-weight: 600;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
 }
 
 .points-label {
