@@ -112,9 +112,13 @@ Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro
 - [Seedance 2](https://fuseaitools.com/home/seedance/v2): Full multimodal with up to 5 reference videos.
 
 - [Hailuo](https://fuseaitools.com/home/hailuo): Hailuo image-to-video overview.
-- [Grok Image Overview](https://fuseaitools.com/home/grok): xAI Grok Imagine still image—T2I and I2I; 20 free credits on sign-up.
+- [Grok Overview](https://fuseaitools.com/home/grok): xAI Grok Imagine—image (T2I/I2I) + video (T2V/I2V/Upscale/Extend); 20 free credits on sign-up.
 - [Grok Text to Image](https://fuseaitools.com/home/grok/text-to-image): Prompt up to 5000 chars; grok-imagine-text-to-image; 1:1 output in current form.
 - [Grok Image to Image](https://fuseaitools.com/home/grok/image-to-image): One reference image + optional prompt; grok-imagine-image-to-image.
+- [Grok Text to Video](https://fuseaitools.com/home/grok/text-to-video): Prompt, aspect ratio, fun/normal/spicy mode, 6s/10s, 480p/720p.
+- [Grok Image to Video](https://fuseaitools.com/home/grok/image-to-video): Up to 7 images and/or prompt; animate stills to short clips.
+- [Grok Upscale](https://fuseaitools.com/home/grok/upscale): Enhance a completed Grok task by Original Task ID.
+- [Grok Extend](https://fuseaitools.com/home/grok/extend): Continue a Grok clip—task ID, prompt, extend_at, 6s/10s.
 
 ## Audio — Suno
 

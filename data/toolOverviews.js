@@ -701,32 +701,36 @@ Best for: Designers, developers, content creators, researchers, and anyone needi
   },
   grok: {
     title: 'Grok',
-    category: 'Image',
+    category: 'Image & Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Grok Imagine **image** on FuseAITools—xAI text-to-image and image-to-image from prompts or one reference upload. Compact controls, per-image credits on Generate. New users receive **20 free credits** on sign-up.',
+    intro: 'Grok Imagine on FuseAITools—xAI **image** (text-to-image, image-to-image) and **video** (text-to-video, image-to-video, upscale, extend) in one suite. Image modes use per-run credits; video generate modes scale by duration and resolution. New users receive **20 free credits** on sign-up.',
     features: [
-      { name: 'Text to Image', path: '/home/grok/text-to-image', description: 'Model fixed to grok-imagine-text-to-image. Prompt required (max 5000). Current form outputs 1:1 square.' },
-      { name: 'Image to Image', path: '/home/grok/image-to-image', description: 'Model fixed to grok-imagine-image-to-image. Exactly one image URL required (JPEG/PNG/WebP, max 10MB). Prompt optional (max 5000).' }
+      { name: 'Image · Text to Image', path: '/home/grok/text-to-image', description: 'grok-imagine-text-to-image—prompt required (max 5000); current form outputs 1:1 square.' },
+      { name: 'Image · Image to Image', path: '/home/grok/image-to-image', description: 'grok-imagine-image-to-image—exactly one image URL; prompt optional (max 5000).' },
+      { name: 'Video · Text to Video', path: '/home/grok/text-to-video', description: 'grok-imagine-text-to-video—prompt, aspect ratio, fun/normal/spicy mode, 6s/10s, 480p/720p.' },
+      { name: 'Video · Image to Video', path: '/home/grok/image-to-video', description: 'grok-imagine-image-to-video—up to 7 images and/or prompt; same duration, resolution, and mode controls.' },
+      { name: 'Video · Upscale', path: '/home/grok/upscale', description: 'grok-imagine-upscale—Original Task ID from a completed Grok generation; no prompt.' },
+      { name: 'Video · Extend', path: '/home/grok/extend', description: 'grok-imagine-extend—task ID + prompt; extend_at; extend 6s/10s; 480p/720p.' }
     ],
     sections: [
       {
         title: 'Grok Imagine Image',
         content: `Text to Image: Prompt up to 5000 characters; model grok-imagine-text-to-image; current web form submits 1:1 square output.
 
-Image to Image: Exactly one uploaded image; optional prompt up to 5000 characters; model grok-imagine-image-to-image. JPEG, PNG, WebP; max 10MB per file.`
+Image to Image: Exactly one uploaded image; optional prompt; JPEG, PNG, WebP; max 10MB.`
       },
       {
-        title: 'Typical Use Cases',
-        content: `Concept art and social thumbnails from text prompts.
+        title: 'Grok Imagine Video',
+        content: `Text to Video & Image to Video: Prompt up to 5000 (required on T2V; optional on I2V with images). Aspect ratios 2:3, 3:2, 1:1, 16:9, 9:16. Motion modes fun, normal, spicy (spicy disabled when I2V has uploads). Duration 6s or 10s; resolution 480p or 720p.
 
-Style variations and guided edits from a single reference image.
+Upscale: Select Original Task from completed Grok runs—enhance prior output.
 
-Fast visual drafts before heavier design or video pipelines.`
+Extend: Task ID + continuation prompt; extend_at frame; extend length 6s/10s; 480p/720p.`
       },
       {
         title: 'Try on FuseAITools',
-        content: `Open Text to Image for prompt-only generation or Image to Image when you have a reference still. Credits appear on Generate; pair results with Ideogram or Flux Kontext when you need typography-heavy layouts or Pro-tier still editing.`
+        content: `Start with Image T2I or I2I for hero stills, animate via Image to Video, then Upscale or Extend winning clips. Credits appear on Generate—video pricing follows duration and resolution; image and upscale use per-run modelKey rates.`
       }
     ]
   },
