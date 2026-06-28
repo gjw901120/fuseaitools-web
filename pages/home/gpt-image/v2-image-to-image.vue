@@ -3,11 +3,15 @@
     <div class="tool-page">
       <GPTImageTool />
     </div>
+    <template #below-main>
+      <GptImageV2SeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import GPTImageTool from '~/components/tools/GPTImageTool.vue'
+import GptImageV2SeoContent from '~/components/tools/GptImageV2SeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({

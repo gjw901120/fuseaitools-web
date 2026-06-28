@@ -26,6 +26,10 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 ## Image
 
 - [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
+- [GPT Image 1.5 Text to Image](https://fuseaitools.com/home/gpt-image/text-to-image): Classic T2I—prompt ≤3000 chars, quality medium/high, 3 aspect ratios.
+- [GPT Image 1.5 Image to Image](https://fuseaitools.com/home/gpt-image/image-to-image): Classic I2I—edit 1 reference image with prompt, quality control.
+- [GPT Image v2 Text to Image](https://fuseaitools.com/home/gpt-image/v2-text-to-image): Modern T2I—prompt ≤20000 chars, 6 aspect ratios, 1K/2K/4K resolution.
+- [GPT Image v2 Image to Image](https://fuseaitools.com/home/gpt-image/v2-image-to-image): Modern I2I—up to 16 reference images, resolution tiers, 6 aspect ratios.
 - [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
 - [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
 - [Nano Banana Overview](https://fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
