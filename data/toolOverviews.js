@@ -285,38 +285,54 @@ Future Roadmap: Will support more detailed dynamic image generation, 2D-to-3D ca
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Ideogram on FuseAITools spans two product lines: **V3** for general text-to-image, edit, remix, and reframe; **Character** for reference-driven identity across scenes. All modes share TURBO/BALANCED/QUALITY speed tiers. New users receive **20 free credits** on sign-up.',
+    intro: 'Ideogram  is  image generation model, offering text-to-image, image editing, reframing, and remixing with improved consistency and creative control.',
     features: [
-      { name: 'V3 Text to Image', path: '/home/ideogram/v3-text-to-image', description: 'V3—prompt-only generation with MagicPrompt, style presets, six aspect ratios, negative prompt, and seed.' },
-      { name: 'V3 Edit', path: '/home/ideogram/v3-edit', description: 'V3—mask-based inpainting: image + mask + prompt.' },
-      { name: 'V3 Remix', path: '/home/ideogram/v3-remix', description: 'V3—remix with strength, style, 1–4 outputs, and negative prompt.' },
-      { name: 'V3 Reframe', path: '/home/ideogram/v3-reframe', description: 'V3—reframe to square, portrait, or landscape presets without a prompt.' },
-      { name: 'Character', path: '/home/ideogram/character', description: 'Character—reference image + prompt for identity-locked scenes (AUTO/REALISTIC/FICTION).' },
-      { name: 'Character Edit', path: '/home/ideogram/character-edit', description: 'Character—image + mask + reference for local edits while preserving identity.' },
-      { name: 'Character Remix', path: '/home/ideogram/character-remix', description: 'Character—strength-controlled remix with reference images and negative prompt.' }
+      { name: 'v3-text-to-image', path: '/home/ideogram/v3-text-to-image', description: 'Generate images from rich natural language prompts, with optional rendering speed, style, prompt expansion, image size, seed, and negative prompt controls.' },
+      { name: 'v3-edit', path: '/home/ideogram/v3-edit', description: 'Mask-based image editing: upload an image and mask, then fill or modify the masked region with a new prompt.' },
+      { name: 'v3-remix', path: '/home/ideogram/v3-remix', description: 'Remix an existing image with a new prompt, controlling strength, style, size, speed, seed, and negative prompt.' },
+      { name: 'v3-reframe', path: '/home/ideogram/v3-reframe', description: 'Reframe an image into new aspect ratios and resolutions (square, portrait, landscape), with optional style, speed, and multi-image outputs.' },
+      { name: 'character', path: '/home/ideogram/character', description: 'Generate character-centric scenes from reference images, preserving identity while changing setting, pose, or style.' },
+      { name: 'character-edit', path: '/home/ideogram/character-edit', description: 'Edit part of a character image using masks and reference images to adjust looks, clothing, or pose while keeping identity.' },
+      { name: 'character-remix', path: '/home/ideogram/character-remix', description: 'Remix character images with new prompts and style references, controlling strength, size, and negative prompts for nuanced variations.' }
     ],
     sections: [
       {
-        title: 'Ideogram V3 — General Image',
-        content: `Text to Image: Prompt up to 5000 chars; TURBO/BALANCED/QUALITY; styles AUTO, GENERAL, REALISTIC, DESIGN; MagicPrompt; square/portrait/landscape sizes; negative prompt and seed.
+        title: 'Core Features',
+        content: `Text to Image (v3-text-to-image): Generate images from detailed text prompts, with options for TURBO/BALANCED/QUALITY rendering speed, style presets (AUTO, GENERAL, REALISTIC, DESIGN), MagicPrompt expansion, multiple aspect ratios (square, portrait, landscape), and seed/negative prompt control up to 5000 characters.
 
-Edit: Image + matching mask + prompt for inpainting.
+Image Editing (v3-edit): Upload an image and a mask of the same size, then use a prompt to inpaint or modify only the masked region; supports rendering speed, MagicPrompt, and seed for reproducibility.
 
-Remix: Source image + prompt; strength 0.01–1; 1–4 outputs; style, size, negative prompt.
+Image Remixing (v3-remix): Provide an input image and a remix prompt, optionally setting style, size, speed, expand_prompt, number of images, strength, seed, and negative prompt to explore new variations on the same base.
 
-Reframe: Source image only—new aspect ratio presets; optional style, speed, 1–4 outputs, seed.`
+Reframing (v3-reframe): Reframe existing images into different target aspect ratios and resolutions (square, square_hd, portrait_4_3, portrait_16_9, landscape_4_3, landscape_16_9), with optional style, speed, num_images, and seed.`
       },
       {
-        title: 'Ideogram Character — Identity Lock',
-        content: `Character: One or more reference images + prompt—place the same identity in new scenes; REALISTIC/FICTION styles; 1–4 outputs.
+        title: 'Character Tools',
+        content: `Character (character): Use one or more reference images as character anchors, then place them into new scenes described by a prompt. Control rendering speed (TURBO, BALANCED, QUALITY), style (AUTO, REALISTIC, FICTION), MagicPrompt, num_images, image_size, seed, and negative_prompt for fine control.
 
-Character Edit: Image + mask + character reference + prompt for clothing, pose, or local edits.
+Character Edit (character-edit): Upload an image, a matching mask, and character reference images to selectively edit parts of a character while preserving identity. Supports the same rendering_speed, style, expand_prompt, num_images, and seed controls for guided edits.
 
-Character Remix: Source + reference + prompt with remix strength; multi-image output and negative prompts.`
+Character Remix (character-remix): Remix character images with new prompts and reference images, adjusting strength of the original, style, image_size, num_images, seed, and negative_prompt, plus optional style reference images and masks for even more precise control.`
       },
       {
-        title: 'Try on FuseAITools',
-        content: `Use V3 for posters, inpainting, and social reframes; use Character when mascots or serial avatars must stay consistent. Credits scale by rendering_speed (RULE pricing). Pair Character heroes with V3 backgrounds, or export stills to Seedance for motion.`
+        title: 'Typical Use Cases',
+        content: `Brand and Product Visuals: Consistent product shots, lifestyle scenes, and campaign images; iterative refinement across formats (1:1, 4:3, 16:9).
+
+Character-Driven Content: Game and animation characters, mascots, and influencers; consistent identity across multiple scenes, poses, and outfits.
+
+Marketing and Social: Ad creatives, social posts, and story formats in portrait and landscape; fast remixing and reframing for each platform size.
+
+Design and Illustration: Concept art, storyboards, editorial illustration, and mood pieces that need controlled style, composition, and character continuity.`
+      },
+      {
+        title: 'Advanced Control & Workflow Tips',
+        content: `Prompt Craft: Combine subject, setting, mood, camera, and style; use negative prompts for unwanted artifacts (e.g., "no text," "avoid blur," "no extra limbs").
+
+Parameter Strategy: Start with BALANCED rendering speed; move to TURBO for quick ideation and QUALITY for final images. Use seeds to reproduce or iteratively refine good results.
+
+Aspect Ratio & Size: Choose square or square_hd for avatars and thumbnails; portrait_16_9 or portrait_4_3 for social stories; landscape_16_9 or landscape_4_3 for web, slides, and video frames.
+
+Character Consistency: For character modes, keep reference images clear and consistent; reuse reference_image_urls and seeds to maintain identity across scenes; use strength controls to balance between base image and new creative direction.`
       }
     ]
   },
@@ -379,34 +395,56 @@ Unified: Context and style consistency across the chat; full history and rollbac
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Flux on FuseAITools is Black Forest Labs\' image suite: Flux Kontext (v1) for governed generate/edit with Pro/Max tiers, and Flux 2 (v2) for 1K/2K text-to-image and multi-reference image-to-image—including Flux 2 Pro for higher-fidelity finals. New users receive 20 free credits on sign-up.',
+    intro: 'Flux is Black Forest Labs\' advanced image generation model that delivers photoreal detail, strong multi-reference consistency, and accurate text rendering with flexible control.',
     features: [
-      { name: 'Flux Kontext Generate', path: '/home/flux-kontext/generate', description: 'v1—text-to-image and single-image edit with Pro/Max, six aspect ratios, safety and prompt controls.' },
-      { name: 'Flux 2 Text to Image', path: '/home/flux-kontext/flux-2-text-to-image', description: 'v2—prompt-only 1K/2K generation, eight aspect ratios plus auto.' },
-      { name: 'Flux 2 Image to Image', path: '/home/flux-kontext/flux-2-image-to-image', description: 'v2—1–8 reference images + prompt, 1K/2K resolution.' },
-      { name: 'Flux 2 Pro Text to Image', path: '/home/flux-kontext/flux-2-pro-text-to-image', description: 'v2 Pro—higher-fidelity T2I at 1K/2K.' },
-      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'v2 Pro—multi-reference I2I with Pro-tier detail.' }
+      { name: 'Generate', path: '/home/flux-kontext/generate', description: 'Current Flux Kontext generate/edit workflow with Pro/Max model controls.' },
+      { name: 'Flux 2 Text to Image', path: '/home/flux-kontext/flux-2-text-to-image', description: 'Prompt-based image generation with aspect ratio and 1K/2K resolution.' },
+      { name: 'Flux 2 Image to Image', path: '/home/flux-kontext/flux-2-image-to-image', description: 'Reference-based image editing with 1-8 input images, prompt, aspect ratio, and resolution.' },
+      { name: 'Flux 2 Pro Text to Image', path: '/home/flux-kontext/flux-2-pro-text-to-image', description: 'Higher-fidelity text-to-image generation with Flux 2 Pro settings.' },
+      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'Higher-fidelity image-to-image generation with 1-8 input images and prompt control.' }
     ],
     sections: [
       {
+        title: 'Platform architecture',
+        content: `Tiered quality: Pro—balanced quality and speed for professional use; Max—flagship fidelity and detail; adaptive optimization by task; progressive rendering from overview to detail.
+
+Fine control: Precise style and composition parameters; consistent style across batches; control from macro concept to micro detail; content-aware optimization.`
+      },
+      {
         title: 'Core capabilities',
-        content: `Flux Kontext (v1): Unified generate tab—text-to-image or single-image edit. Models flux_kontext_pro / flux_kontext_max (ONCE credits). Aspect 21:9, 16:9, 4:3, 1:1, 3:4, 9:16; JPEG/PNG; safety tolerance 0–6; optional prompt upsampling and watermark.
+        content: `Generate: Single-prompt high-fidelity images with full control.
 
-Flux 2 (v2): Four workflows—flux-2-text-to-image, flux-2-image-to-image, flux-2-pro-text-to-image, flux-2-pro-image-to-image. Prompt 3–5000 chars; resolution 1K/2K (RULE pricing); aspect 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, auto. I2I accepts 1–8 images (max 10MB each).`
+Pro tier: ~15–30s per image; professional quality and detail; cost-efficient; efficient batch (10+ images). Max tier: Leading fidelity; ultra-fine texture and detail; strong artistic expression; print-ready output.
+
+Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techniques (oil, watercolor, sketch, digital), era (classical, retro, modern, futurist), culture. Composition—viewpoint (macro to micro), foreground/mid/background, selective focus and depth; visual balance and rhythm. Lighting and color—natural, studio, dramatic, cinematic; color theory; mood and time of day.`
       },
       {
-        title: 'Workflow',
-        content: `v1 Kontext: write prompt → pick Pro or Max → choose generate or edit mode → set aspect ratio and output format → generate.
-
-v2 Flux 2 T2I: prompt → aspect ratio → 1K/2K → generate.
-
-v2 Flux 2 I2I: upload 1–8 references → prompt → ratio and resolution → generate.
-
-v2 Pro: same steps on Pro T2I or Pro I2I tabs for higher-fidelity output.`
+        title: 'Industry applications',
+        content: `Concept: Film and TV concept art, game art (characters, environments, props), product and brand exploration. Content: Social (Instagram, TikTok), blog imagery, marketing assets, presentation visuals. Design: UI/UX and packaging mockups, spatial and fashion concept visuals. Education and publishing: Textbook and science visuals, book and magazine art, training materials.`
       },
       {
-        title: 'Try Flux on FuseAITools',
-        content: `Start with Flux Kontext Generate for governed text-in-image and single-image edits, or jump to Flux 2 for 2K drafts and multi-reference I2I. Upgrade to Flux 2 Pro when you need client-facing quality. Pair stills with Seedance image-to-video when you need motion. Credits appear on Generate before each run.`
+        title: 'Technical specs',
+        content: `Pro: 2048×2048, 24-bit, PNG/JPG/WEBP, smart compression. Max: Up to 4096×4096, Adobe RGB/ProPhoto RGB, TIFF/PSD, CMYK for print. Speed: Pro ~15–30s, Max ~45–90s per image; batch 10+; queue and priority.`
+      },
+      {
+        title: 'Professional workflow',
+        content: `Single-prompt: Define goal and tier (Pro/Max); craft prompt; set style, composition, color; preview; final generate; light post. Batch: Define scope; design template prompts; batch generate; quality check; standardize post; deliver to spec.`
+      },
+      {
+        title: 'Advanced tips',
+        content: `Prompt structure: [Subject] + [Atmosphere] + [Composition] + [Lighting] + [Style] + [Tech]. Tier strategy: Pro for speed and exploration; Max for final, detail-heavy work; mix—explore with Pro, refine chosen direction with Max. Micro control: Brush (direction, wash, line weight), materials (metal, fabric, glass), light (highlight, shadow, reflection), space (perspective, depth, atmosphere). Composition: Line and color for gaze; emotion and culture; functional layout.`
+      },
+      {
+        title: 'Quality control',
+        content: `Pro: Clarity, color, composition; style vs. prompt; resolution/format/size; intent. Max: Micro detail; artistic quality; industry standards; commercial fit. Human: Pro—commercial fit and cost; Max—artistic and professional depth; style accuracy; novelty.`
+      },
+      {
+        title: 'Roadmap',
+        content: `Near real-time generation; 2D-to-3D; subtle motion and interactive content; user-style training. In-image editing, style fusion, enterprise batch, API ecosystem. Film, game, design-agency, and enterprise-marketing editions.`
+      },
+      {
+        title: 'Try Flux Kontext on FuseAITools',
+        content: `Flux Kontext on FuseAITools gives you pro-grade image generation with the right balance of speed and quality. Whether you need fast concept exploration or max-fidelity final assets, you get the right tier and control in one place. Turn ideas into precise, high-quality visuals.`
       }
     ]
   },
@@ -704,33 +742,128 @@ Best for: Designers, developers, content creators, researchers, and anyone needi
     category: 'Image & Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Grok Imagine on FuseAITools—xAI **image** (text-to-image, image-to-image) and **video** (text-to-video, image-to-video, upscale, extend) in one suite. Image modes use per-run credits; video generate modes scale by duration and resolution. New users receive **20 free credits** on sign-up.',
+    intro: 'Grok Imagine is xAI\'s multimodal image and video generation model that converts text or images into short visual outputs with coherent motion and synchronized audio.',
     features: [
-      { name: 'Image · Text to Image', path: '/home/grok/text-to-image', description: 'grok-imagine-text-to-image—prompt required (max 5000); current form outputs 1:1 square.' },
-      { name: 'Image · Image to Image', path: '/home/grok/image-to-image', description: 'grok-imagine-image-to-image—exactly one image URL; prompt optional (max 5000).' },
-      { name: 'Video · Text to Video', path: '/home/grok/text-to-video', description: 'grok-imagine-text-to-video—prompt, aspect ratio, fun/normal/spicy mode, 6s/10s, 480p/720p.' },
-      { name: 'Video · Image to Video', path: '/home/grok/image-to-video', description: 'grok-imagine-image-to-video—up to 7 images and/or prompt; same duration, resolution, and mode controls.' },
-      { name: 'Video · Upscale', path: '/home/grok/upscale', description: 'grok-imagine-upscale—Original Task ID from a completed Grok generation; no prompt.' },
-      { name: 'Video · Extend', path: '/home/grok/extend', description: 'grok-imagine-extend—task ID + prompt; extend_at; extend 6s/10s; 480p/720p.' }
+      { name: 'Text to Image', path: '/home/grok/text-to-image', description: 'Model fixed to grok-imagine-text-to-image. Prompt required (max 5000). Aspect ratio options: 2:3, 3:2, 1:1, 16:9, 9:16.' },
+      { name: 'Image to Image', path: '/home/grok/image-to-image', description: 'Model fixed to grok-imagine-image-to-image. image_urls required (upload first), supports JPEG/PNG/WEBP with max 10MB per image. Prompt optional.' },
+      { name: 'Text to Video', path: '/home/grok/text-to-video', description: 'Model fixed to grok-imagine-text-to-video. Prompt required (max 5000). Configure aspect ratio, mode, duration (6/10), and resolution (480p/720p).' },
+      { name: 'Image to Video', path: '/home/grok/image-to-video', description: 'Model fixed to grok-imagine-image-to-video. Supports optional prompt and image_urls (up to 7). Configure mode, duration, resolution, and aspect ratio.' },
+      { name: 'Upscale', path: '/home/grok/upscale', description: 'Model fixed to grok-imagine-upscale. Requires a completed task_id from Grok generation to upscale output quality.' },
+      { name: 'Extend', path: '/home/grok/extend', description: 'Model fixed to grok-imagine-extend. Requires task_id and prompt, with configurable extend_at, extend_times (6/10), and resolution.' }
     ],
     sections: [
       {
-        title: 'Grok Imagine Image',
-        content: `Text to Image: Prompt up to 5000 characters; model grok-imagine-text-to-image; current web form submits 1:1 square output.
+        title: 'Platform philosophy',
+        content: `One model, two creative lanes: Grok Imagine unifies image generation and short video generation in one workflow. You can start from text, start from an image, or continue an existing result with upscale and extend.
 
-Image to Image: Exactly one uploaded image; optional prompt; JPEG, PNG, WebP; max 10MB.`
+Control with simplicity: Grok keeps parameter design compact but practical—aspect ratio, motion mode, duration, and resolution are enough for most social, marketing, and prototype scenarios without overloading the UI.`
       },
       {
-        title: 'Grok Imagine Video',
-        content: `Text to Video & Image to Video: Prompt up to 5000 (required on T2V; optional on I2V with images). Aspect ratios 2:3, 3:2, 1:1, 16:9, 9:16. Motion modes fun, normal, spicy (spicy disabled when I2V has uploads). Duration 6s or 10s; resolution 480p or 720p.
+        title: 'Core capabilities',
+        content: `Text to Image
 
-Upscale: Select Original Task from completed Grok runs—enhance prior output.
+Model: grok-imagine-text-to-image (fixed)
+Prompt: Required, up to 5000 characters
+Aspect ratio: 2:3, 3:2, 1:1, 16:9, 9:16
+Use cases: Concept art, ad key visuals, social thumbnails, product mockups.
 
-Extend: Task ID + continuation prompt; extend_at frame; extend length 6s/10s; 480p/720p.`
+Image to Image
+
+Model: grok-imagine-image-to-image (fixed)
+Prompt: Optional
+image_urls: Required; JPEG/PNG/WEBP, max 10MB each
+Use cases: Style transfer, visual iteration, brand-consistent variations.
+
+Text to Video
+
+Model: grok-imagine-text-to-video (fixed)
+Prompt: Required, up to 5000 characters
+Parameters: aspect_ratio, mode (fun/normal/spicy), duration (6/10), resolution (480p/720p)
+Use cases: Motion concepts, short promos, social clips, storyboard previews.
+
+Image to Video
+
+Model: grok-imagine-image-to-video (fixed)
+Prompt: Optional
+image_urls: Optional, up to 7 images
+Parameters: aspect_ratio, mode, duration, resolution
+Use cases: Animate posters/illustrations, product hero animation, before-after reveal clips.
+
+Upscale
+
+Model: grok-imagine-upscale (fixed)
+task_id: Required, from completed Grok generation
+Use cases: Final-output enhancement before publishing or client delivery.
+
+Extend
+
+Model: grok-imagine-extend (fixed)
+task_id: Required
+prompt: Required
+Parameters: extend_at, extend_times (6/10), resolution (480p/720p)
+Use cases: Continue successful shots, add ending beats, expand narrative timing.`
       },
       {
-        title: 'Try on FuseAITools',
-        content: `Start with Image T2I or I2I for hero stills, animate via Image to Video, then Upscale or Extend winning clips. Credits appear on Generate—video pricing follows duration and resolution; image and upscale use per-run modelKey rates.`
+        title: 'Use cases',
+        content: `Creator workflows: Turn one idea into a full asset chain—key image -> animated clip -> upscale -> extended variant.
+
+Marketing and ads: Produce fast campaign materials for product launches, seasonal activities, and paid social creatives.
+
+E-commerce content: Build product hero images, lightweight motion ads, and platform-specific short videos.
+
+Education and explainers: Create visual examples from text instructions, then extend or refine with image/video modes.
+
+Rapid prototyping: Validate visual direction in minutes before entering heavy production pipelines.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Prompt support: Up to 5000 characters in key prompt-driven modes.
+
+Image input formats: JPEG, PNG, WEBP; max 10MB per image.
+
+Video controls: Duration 6s or 10s; resolution 480p or 720p; aspect ratio options include portrait, square, and widescreen.
+
+Motion behavior: fun / normal / spicy modes for different movement intensity.
+
+Output delivery: Generated media is returned as downloadable URLs suitable for preview and publishing workflows.`
+      },
+      {
+        title: 'Workflow',
+        content: `Image-first flow: Text to Image or Image to Image -> pick best variant -> optional Upscale -> export.
+
+Video-first flow: Text to Video or Image to Video -> choose motion mode and duration -> preview -> optional Extend -> export.
+
+Iterative production: Reuse successful prompts and task IDs, then branch into multiple variants for A/B testing.
+
+Team handoff: Use task IDs and fixed model endpoints to keep generation reproducible across teammates.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt quality: Describe subject, environment, camera language, and timing explicitly for better motion coherence.
+
+Mode selection: Use normal as baseline; fun for creative reinterpretation; spicy for stronger dynamics when compatible.
+
+Resolution strategy: Use 480p for fast drafts and iteration; switch to 720p for final deliverables.
+
+Duration strategy: 6s for punchy loops and ad snippets; 10s for clearer scene progression and storytelling.
+
+Extend planning: Set extend_at at a visually stable frame and use continuation-focused prompts to reduce jump cuts.`
+      },
+      {
+        title: 'Platform advantages',
+        content: `Unified image + video stack: No tool switching between still generation and short-motion generation.
+
+Fixed model endpoints: Predictable behavior and easier API governance.
+
+Practical controls: Small parameter surface with high day-to-day usability.
+
+Scalable output paths: Supports direct generation, enhancement (upscale), and continuation (extend) in one suite.
+
+Best for: Growth teams, social creators, designers, indie makers, and product teams needing fast visual iteration.`
+      },
+      {
+        title: 'Try Grok on FuseAITools',
+        content: `Grok on FuseAITools gives you a complete visual pipeline from static images to short videos, then quality enhancement and timeline extension—all under one model family. If you need fast iteration with practical controls and production-ready exports, Grok is a strong default choice.`
       }
     ]
   },
@@ -739,45 +872,63 @@ Extend: Task ID + continuation prompt; extend_at frame; extend length 6s/10s; 48
     category: 'Audio',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Suno on FuseAITools turns text and uploaded audio into full music—generate new songs, extend tracks, create covers, expand short clips, and add instrumentals or vocals. Models V3.5 through V5 with Simple or Custom control. Credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Suno turns text and creative ideas into full music: generate new songs from descriptions, extend existing clips, add instrumentals or vocals, and create cover-style versions from uploaded audio. Newer models support more natural dynamics and a wider emotional range. Use Suno on FuseAITools for film scoring, demos, and creative music production—all in one place.',
     features: [
-      { name: 'Suno Music Generation', path: '/home/suno/generate', description: 'Text-to-music—Simple mode (500 chars) or Custom with style, title, and lyrics. V3.5–V5; instrumental toggle.' },
-      { name: 'Suno Music Extension', path: '/home/suno/extend', description: 'Extend completed generate tasks via Audio ID—optional continueAt and custom style/title.' },
-      { name: 'Suno Audio Cover', path: '/home/suno/upload-cover', description: 'Upload ≤2 min MP3/WAV/M4A and reimagine style, title, and lyrics.' },
-      { name: 'Suno Audio Expansion', path: '/home/suno/upload-extend', description: 'Expand uploaded clips—default or custom parameter mode with continueAt.' },
-      { name: 'Suno Accompaniment', path: '/home/suno/add-instrumental', description: 'Add backing instruments via include/exclude tags—no prompt required.' },
-      { name: 'Suno Vocal Generation', path: '/home/suno/add-vocals', description: 'Add vocals to source audio—prompt up to 5000 chars plus style and exclude tags.' }
+      { name: 'Music Generation', path: '/home/suno/generate', description: 'Create full tracks from text: genre, mood, structure, and 50+ styles with BPM and key control.' },
+      { name: 'Music Extension', path: '/home/suno/extend', description: 'Extend tracks while keeping structure; add variations, transitions, and peak development.' },
+      { name: 'Audio Cover', path: '/home/suno/upload-cover', description: 'Reimagine songs: style shift, re-arrangement, emotion reshape, and cross-language adaptation.' },
+      { name: 'Audio Expansion', path: '/home/suno/upload-extend', description: 'Turn short clips into full pieces with structure, orchestration, and emotional arc.' },
+      { name: 'Accompaniment', path: '/home/suno/add-instrumental', description: 'Add harmony, drums, counter-melody, and atmosphere tailored to your lead.' },
+      { name: 'Vocal Generation', path: '/home/suno/add-vocals', description: 'Generate singing in multiple styles, languages, and with natural expression and effects.' }
     ],
     sections: [
       {
-        title: 'Core capabilities',
-        content: `Music Generation (suno_generate): Prompt required. Simple mode max 500 chars; Custom mode adds style/title and longer prompts (3k on V3.5/V4, 5k on V4.5/V5). Models V3_5, V4 (~4 min), V4_5/V4_5PLUS (~8 min), V5. Instrumental toggle; optional vocal gender and weight sliders.
+        title: 'Platform core value',
+        content: `Creative democratization: Create professional music without music theory; full pipeline from idea to finished track; diverse styles across genres and cultures; precise emotional expression.
 
-Music Extension (suno_extend): Audio ID from completed suno_generate tasks. Original params or custom continueAt, prompt (max 3000), style (max 200), title (max 80).
-
-Audio Cover (suno_upload_cover): Upload fileUrl (≤2 min). Style + title required; prompt when vocals enabled.
-
-Audio Expansion (suno_upload_extend): Upload fileUrl (≤2 min). Default params or custom mode with style, title, optional prompt, continueAt.
-
-Accompaniment (suno_add_instrumental): Source audio + title + include tags + exclude tags (max 500 each). No prompt.
-
-Vocal Generation (suno_add_vocals): Source audio + prompt (max 5000) + title + style + exclude tags. Optional vocal gender m/f.`
+Technical edge: Multimodal understanding of emotion and imagery in text; strong harmony, rhythm, and structure; natural dynamics and emotional arcs; accurate style adaptation and learning.`
       },
       {
-        title: 'Workflow',
-        content: `New song: Music Generation → pick Simple or Custom → choose model (V5 for speed, V4.5+ for length) → download from history.
+        title: 'Core features',
+        content: `Music Generation: From text to full tracks. Specify genre (pop, rock, jazz, classical, electronic, 50+), mood, structure (intro, verse, chorus, bridge, outro), and instruments. Control BPM (60–200), key and mode, harmony complexity, and time signatures (4/4, 3/4, 6/8).
 
-Continue a track: complete Music Generation first → Music Extension → select Audio ID → optional custom continue point.
+Music Extension: Lengthen tracks while preserving structure; add variations, transitions, and peak development; keep style, motifs, and emotion consistent with balanced dynamics.
 
-Upload-based: Audio Cover or Expansion for external clips (≤2 min) → set style/title → generate.
+Audio Cover: Style conversion, re-arrangement (modern or retro), emotion reshape, cross-language adaptation. For licensed adaptations, brand music, film scoring, and personal expression.
 
-Layering: upload instrumental bed → Accompaniment or Vocal Generation to add backing or sung parts.
+Audio Expansion: Develop short clips into full works—motif development, structure, orchestration, emotional arc. Use for idea completion, sample-based creation, sound design, and experimental music.
 
-All workflows run in the browser on FuseAITools with per-workflow credit pricing—no local GPU required.`
+Accompaniment: Harmony from melody, style-appropriate drums and rhythm, counter-melodies, and ambient beds. Style-aware, dynamic following, spatial and complexity control.
+
+Vocal Generation: Multiple singing styles (pop, classical, folk, rap), emotion control, natural harmonies, multi-language. Control range, timbre, techniques (vibrato, slides, falsetto), and basic mix effects.`
+      },
+      {
+        title: 'Industry applications',
+        content: `Film and game: Theme songs, scene scoring, character themes, dynamic music systems. Ads and brand: Ad music, brand jingles, retail and event music. Independent creators: Idea sparking, demo production, arrangement learning, remote collaboration. Education and therapy: Music theory and creation teaching, therapeutic music, cognitive training, creative expression tools.`
+      },
+      {
+        title: 'Technical specs',
+        content: `Audio: 44.1kHz / 48kHz; 16bit / 24bit; WAV, MP3, FLAC, AAC; mono, stereo, 5.1. Generation: 30s to 5 minutes; minute-level turnaround; multiple variants per prompt; batch support.`
+      },
+      {
+        title: 'Professional workflow',
+        content: `Standard: Define emotion, style, and use; describe in text; set BPM, key, duration; generate 30s preview; refine; full-length generation; export and light post. Professional: Concept with team; style research; batch generation and A/B; edit and mix in DAW; client feedback; final delivery to spec.`
+      },
+      {
+        title: 'Advanced tips',
+        content: `Prompt structure: [Mood] + [Genre] + [Instruments] + [Structure] + [Tech]. Specify progressions, rhythm, dynamics, and timbre. Style: era (80s, 90s, modern), region, artist influence, production character. Emotion: base mood, development arc, moment emphasis, cultural nuance.`
+      },
+      {
+        title: 'Quality control',
+        content: `Auto: Harmony, rhythm, structure checks; technical params; style vs. description; emotion accuracy. Human: Creative fulfillment, emotional impact, commercial fit, cultural sensitivity.`
+      },
+      {
+        title: 'Roadmap',
+        content: `Longer works and album-length generation; real-time and interactive generation; multi-track editing; user-style training. Lyrics generation, mix and master tools, real-time collaboration. Education, therapy, enterprise, and pro-tier solutions.`
       },
       {
         title: 'Try Suno on FuseAITools',
-        content: `Suno on FuseAITools covers the full creative pipeline—from first prompt to extended mixes, covers, and vocal layers. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
+        content: `Suno on FuseAITools redefines what’s possible in music creation—complex production becomes simple and intuitive. Whether you’re a pro, creator, or enthusiast, you’ll find the right tools and expression here. Turn ideas into full music with AI.`
       }
     ]
   },
@@ -786,85 +937,119 @@ All workflows run in the browser on FuseAITools with per-workflow credit pricing
     category: 'Audio',
     showCategory: false,
     introFullWidth: true,
-    intro: 'ElevenLabs on FuseAITools delivers voice and audio in the browser—Multilingual v2 and Turbo 2.5 text-to-speech, Speech-to-Text with diarization, Sound Effect v2, and AI Audio Isolation. Credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'ElevenLabs delivers studio-grade voice and audio: natural text-to-speech in many languages, fast Turbo models for real-time use, accurate speech-to-text, and professional sound-effect generation. AI audio isolation extracts vocals or instruments from mixed tracks. Use ElevenLabs on FuseAITools for narration, dubbing, accessibility, and sound design—all in one place.',
     features: [
-      { name: 'ElevenLabs Multilingual v2', path: '/home/elevenlabs/multilingual-v2', description: 'Natural TTS—voice picker, stability/style sliders, optional timestamps and context text.' },
-      { name: 'ElevenLabs Turbo 2.5', path: '/home/elevenlabs/turbo-2-5', description: 'Fast TTS with the same voice controls—low latency for assistants and batch narration.' },
-      { name: 'ElevenLabs Speech-to-Text', path: '/home/elevenlabs/speech-to-text', description: 'Upload ≤200MB audio—auto language, speaker diarization, event tags, word timeline.' },
-      { name: 'ElevenLabs Sound Effect v2', path: '/home/elevenlabs/sound-effect-v2', description: 'Generate SFX from text—duration 0.5–22s, loop, intensity, MP3/PCM output.' },
-      { name: 'ElevenLabs AI Audio Isolation', path: '/home/elevenlabs/audio-isolation', description: 'Extract vocals or instruments from mixed uploads (≤10MB).' }
+      { name: 'Multilingual v2', path: '/home/elevenlabs/multilingual-v2', description: '29 languages, native-level prosody and emotion; dubbing, audiobooks, and training.' },
+      { name: 'Turbo 2.5', path: '/home/elevenlabs/turbo-2-5', description: 'Sub-400ms latency for assistants, live translation, game NPCs, and streaming.' },
+      { name: 'Speech to Text', path: '/home/elevenlabs/speech-to-text', description: '100+ languages, speaker diarization, timestamps, SRT/VTT/TXT for subtitles and notes.' },
+      { name: 'Sound Effect v2', path: '/home/elevenlabs/sound-effect-v2', description: 'Generate pro sound effects from text: env, objects, abstract, transitions.' },
+      { name: 'AI Audio Isolation', path: '/home/elevenlabs/audio-isolation', description: 'Extract vocals or instruments with minimal quality loss for stems and remixes.' }
     ],
     sections: [
       {
-        title: 'Core capabilities',
-        content: `Multilingual v2 TTS (elevenlabs_text_to_speech_multilingual): Required voice + text (max 5000 chars). Stability, similarity boost, style, speed (0.7–1.2); optional timestamps, previous/next context, language code; MP3/PCM output. Priced per 1K characters.
+        title: 'Platform strengths',
+        content: `Voice synthesis: Human-level naturalness; fine emotional control; 29 languages with native prosody; high-fidelity voice cloning from short samples.
 
-Turbo 2.5 TTS (elevenlabs_text_to_speech_turbo): Same parameter set as Multilingual v2—faster generation. Priced per 1K characters.
-
-Speech-to-Text (elevenlabs_speech_to_text): Upload audio URL (≤200MB). Language auto or ISO code; diarize; tagAudioEvents. Word-level timeline in results. Priced per minute.
-
-Sound Effect v2 (elevenlabs_sound_effect): Text description (max 5000 chars); duration 0.5–22s; loop; promptInfluence; output format. Priced per minute.
-
-AI Audio Isolation (elevenlabs_audio_isolation): Upload audio URL (≤10MB). Isolates vocals/instruments. Priced per minute.`
+Audio processing: Millisecond-scale latency; professional source separation; realistic acoustic environments; text-to-sound-effect generation.`
       },
       {
-        title: 'Workflow',
-        content: `Narration: pick Multilingual v2 or Turbo 2.5 → select voice → paste text → tune sliders → generate → download from history.
+        title: 'Core features',
+        content: `Multilingual v2: 29 languages and regional variants (e.g. US/UK English, Mandarin/Taiwan); domain terms and cultural nuance. Natural rhythm, emotion (joy, sadness, excitement, seriousness), age (child to elderly), and style (news, audiobook, business). For film dubbing, audiobooks, education, and corporate training.
 
-Transcription: Speech-to-Text → upload audio → set language/diarization → generate → copy transcript or use word timeline.
+Turbo 2.5: Sub-400ms end-to-end; high concurrency; real-time pace, tone, and emotion; edge-friendly. Use for virtual assistants, live translation, game NPCs, and live-stream interaction.
 
-Sound design: Sound Effect v2 → describe SFX → set duration/loop → generate.
+Speech to Text: 100+ languages, dialect and accent support, domain terms (medical, legal, tech), noise robustness. Auto punctuation and paragraphs, speaker diarization, word-level timestamps, SRT/VTT/TXT. For subtitles, meeting notes, content indexing, and accessibility.
 
-Stems: Audio Isolation → upload mixed track → download isolated output.
+Sound Effect v2: Natural-language descriptions; physics-based and abstract sounds; mood and atmosphere; layered effects. Environment, object, abstract (sci-fi, fantasy), and transition/UI sounds. Control pitch, duration, intensity, space; envelopes, filters, multi-layer mix; multiple output formats.
 
-Pair with Suno for full music tracks—ElevenLabs covers voice, transcription, SFX, and separation. All workflows run in the browser with per-run credit pricing—no local GPU required.`
+AI Audio Isolation: Clean vocal and instrument separation (drums, bass, guitar, keys); background and multi-source separation. High quality, phase preservation, noise suppression; real-time capable. For music production, karaoke, post-production, and archival restoration.`
+      },
+      {
+        title: 'Industry solutions',
+        content: `Film and media: Auto dubbing, ADR, custom ambience, bulk subtitling. Games: Character and narrator voice, interactive ambience, UI sounds, dynamic mix. Enterprise and education: Training voiceover, demo narration, meeting notes, accessibility. Creative and art: Sound design for film and art, music production, installation and experimental sound.`
+      },
+      {
+        title: 'Technical specs',
+        content: `Audio: Up to 192kHz; 16/24/32-bit; WAV, MP3, FLAC, AAC, OGG; mono, stereo, 5.1, 7.1. Performance: Real-time to minute-scale; enterprise concurrency; storage and management; 99.9% API availability.`
+      },
+      {
+        title: 'Professional workflow',
+        content: `Dubbing: Script and timecode; choose voice and emotion; set pace, tone, intensity; batch generate; review and adjust; edit and mix; sync to picture. Sound design: Define concept and mood; describe in text; generate variants; tune parameters; layer and mix; export to pro formats.`
+      },
+      {
+        title: 'Advanced tips',
+        content: `Emotion: Base mood, temporal variation, cultural fit, and style (e.g. news vs. storytelling). Voice: Brand voice, character voice, regional and scenario tuning. Sound design: Physical modeling, abstract synthesis, emotion-to-sound mapping, 3D spatial design.`
+      },
+      {
+        title: 'Quality control',
+        content: `Auto: Naturalness, clarity, emotion accuracy; STT accuracy and recall; separation purity; sound-effect fit. Human: Emotion accuracy, technical standards, cultural suitability, commercial readiness.`
+      },
+      {
+        title: 'Roadmap',
+        content: `Richer emotion and real-time interaction; multimodal (voice, text, image); user-custom voice models. Singing synthesis, voice conversion, historical audio repair, 3D audio. Vertical solutions: healthcare, education, enterprise, and full API/developer support.`
       },
       {
         title: 'Try ElevenLabs on FuseAITools',
-        content: `ElevenLabs on FuseAITools covers the voice and audio pipeline—from TTS narration to transcripts, sound effects, and stem isolation. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
+        content: `ElevenLabs on FuseAITools redefines voice and audio creation—pro tools in a simple workflow. Whether you make film, games, training, or art, you get the right audio solution in one platform. Turn ideas into professional audio.`
       }
     ]
   },
   veo3: {
-    title: 'Veo 3.1',
+    title: 'Veo 3',
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Veo 3.1 on FuseAITools is Google DeepMind video—stable routes at /home/veo3 with text-to-video, first-and-last frames, reference-to-video, and extend. Standard (veo3) or Fast (veo3_fast) on generate modes; extend uses veo3_extend. 16:9 supports 1080P. Pair with Seedance for ByteDance video. New users receive 20 free credits on sign-up.',
+    intro: 'Google Veo 3 is Google\'s next-generation high-quality video generation model, built for cinematic-quality output. It combines advanced AI with fine motion control to deliver professional video for ads, social content, and film pre-visualization. Use Veo 3 on FuseAITools for text-to-video, first-and-last frame animation, reference-image-to-video, and video extension—all with 1080p output and flexible creative control.',
     features: [
-      { name: 'Veo 3.1 Text to Video', path: '/home/veo3/text-to-video', description: 'Prompt-only video—Standard or Fast, aspect 16:9/9:16/Auto, prompts up to 1000 chars.' },
-      { name: 'Veo 3.1 First and Last Frames', path: '/home/veo3/first-and-last-to-video', description: 'Upload 1–2 keyframe images—model generates motion between first and last frames.' },
-      { name: 'Veo 3.1 Reference to Video', path: '/home/veo3/reference-to-video', description: 'Animate 1–3 reference images while preserving look—Standard or Fast.' },
-      { name: 'Veo 3.1 Video Extend', path: '/home/veo3/extend', description: 'Extend completed Veo3 clips—select original task plus extension prompt.' }
+      { name: 'Text to Video', path: '/home/veo3/text-to-video', description: 'Generate high-quality video from text with full creative control: style, motion, duration, and 1080p output.' },
+      { name: 'First & Last to Video', path: '/home/veo3/first-and-last-to-video', description: 'Provide start and end frames; Veo 3 intelligently generates the in-between motion with smooth transitions.' },
+      { name: 'Reference to Video', path: '/home/veo3/reference-to-video', description: 'Animate a single reference image into video while preserving style, characters, and environment.' },
+      { name: 'Extend', path: '/home/veo3/extend', description: 'Extend existing clips with coherent extra seconds while keeping style and content consistency.' }
     ],
     sections: [
       {
         title: 'Core capabilities',
-        content: `Text to Video (TEXT_2_VIDEO): Required prompt (1–1000 chars). Model veo3 (Standard) or veo3_fast (Fast). Aspect ratio 16:9 (1080P-capable), 9:16, or Auto. Optional seed 10000–99999 and translation to English.
+        content: `Text to Video: Create video from written descriptions with precise style control (cinematic, animation, documentary), dynamic motion (camera moves, object speed, rhythm), custom duration, and 1080p resolution. Ideal for ads, social shorts, product demos, and concept visualization.
 
-First and Last Frames (FIRST_AND_LAST_FRAMES_2_VIDEO): Required 1–2 image URLs (JPG/PNG) + prompt. Same Standard/Fast and aspect-ratio options as text-to-video.
+First & Last to Video: Supply start and end frames; the model generates the motion in between. It predicts motion paths, keeps visual style consistent, and produces smooth transitions—even with multiple moving objects. Use it for product demos, dynamic charts, process flows, and educational videos.
 
-Reference to Video (REFERENCE_2_VIDEO): Required 1–3 image URLs + prompt. Standard or Fast; no aspect-ratio control in the form.
+Reference to Video: Turn a single reference image into coherent video while preserving style, character and object consistency, and atmosphere. Great for character animation, bringing scenes to life, illustration animation, and brand storytelling.
 
-Video Extend (VIDEO_EXTEND): Required original Veo3 task ID + extension prompt (1–1000 chars). Priced via veo3_extend. Clips after 1080P upscale cannot be extended.`
+Extend: Add seamless extra content to existing clips. The model maintains coherence, style, and smooth transitions, with multiple duration options. Use for lengthening shorts, expanding scenes, continuing stories, or completing content.`
       },
       {
-        title: 'Workflow',
-        content: `Text to video: write prompt → pick Standard or Fast → set aspect ratio → generate → download from history.
+        title: 'Technical highlights',
+        content: `Cinematic quality: 1080p output, realistic lighting and shadows, natural motion and physics, and detailed texture rendering.
 
-First and last frames: upload 1–2 keyframe images → describe motion → set model and ratio → generate.
+Fine control: Camera control (push, pull, pan, tilt, aerial, dolly), motion parameters (speed curves, acceleration, trajectories), style presets (cinematic, animated, photorealistic, artistic), and timing (keyframes, rhythm).
 
-Reference to video: upload 1–3 references → write motion prompt → pick Standard or Fast → generate.
-
-Extend: complete a Veo3 generation first → open extend → select original task → describe continuation → generate.
-
-ByteDance pipeline: pair Veo 3.1 with Seedance (v1 Lite I2V, 1.5 Pro, or Seedance 2) for image-to-video and multimodal clips.
-
-All workflows run in the browser—no local GPU required.`
+Smart understanding: Deep scene understanding, physics-aware motion, emotional tone, and narrative coherence.`
       },
       {
-        title: 'Try Veo 3.1 on FuseAITools',
-        content: `Veo 3.1 on FuseAITools delivers Google DeepMind video at /home/veo3—whether you need cinematic text-to-video, keyframe transitions, reference animation, or clip extension. Open any workflow above and start creating. New users receive 20 free credits on sign-up.`
+        title: 'Who it’s for',
+        content: `Creative professionals: Ad agencies for concept ads, film studios for pre-vis and storyboards, animation studios for concept validation, and social creators for high-quality content.
+
+Businesses and brands: Marketing teams for product videos, training for how-to and educational content, PR for brand stories, and e‑commerce for product showcases.
+
+Individual creators: YouTubers and TikTokers, digital artists, educators for teaching materials, and founders for product demos.`
+      },
+      {
+        title: 'Typical workflow',
+        content: `Define your concept (topic, style, duration), prepare inputs (text prompt, reference image, or video), set parameters (motion, style, resolution), generate a preview, refine as needed, then export the final 1080p video. Batch generation, saved presets, and versioning are supported for efficient production.`
+      },
+      {
+        title: 'Technical specs',
+        content: `Input: Text in multiple languages; images in JPG/PNG (e.g. 1920×1080 or higher); video in MP4 within duration limits.
+
+Output: Up to 1080p (1920×1080), 24fps or 30fps, MP4 (H.264). Clip length typically from a few seconds up to 60 seconds. Optional watermark handling.`
+      },
+      {
+        title: 'Use cases',
+        content: `Advertising: Product launches, seasonal campaigns, A/B tests with different styles. Film and TV: Pre-vis, concept tests, VFX previews. Education: Explainer animations, training and how-to videos, dynamic course materials. Social media: Brand content, trend-based clips, and personalized video.`
+      },
+      {
+        title: 'Quality and support',
+        content: `Content is subject to safety and quality checks. Try Veo 3 on FuseAITools to turn ideas into professional video—whether for ads, social content, or film pre-visualization—with high quality and flexible control.`
       }
     ]
   },
@@ -1234,54 +1419,94 @@ Pro vs Standard: Use Pro for client work, hero content, and when quality is the 
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Kling on FuseAITools covers Kuaishou video from v2.5 Turbo through 3.0—nine workflows for text-to-video, image-to-video, motion control, AI avatars, and multi-shot 3.0 Video. v2.5 Turbo adds CFG and negative prompts; 2.6 supports optional sound; motion control transfers reference-video motion; avatars turn image + audio into talking heads. Credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.',
     features: [
-      { name: 'Kling v2.5 Turbo I2V Pro', path: '/home/kling/v2-5-turbo-image-to-video-pro', description: 'Image-to-video with optional tail frame—5/10s, negative prompt, CFG scale.' },
-      { name: 'Kling v2.5 Turbo T2V Pro', path: '/home/kling/v2-5-turbo-text-to-video-pro', description: 'Text-to-video—16:9/9:16/1:1, 5/10s, negative prompt and CFG.' },
-      { name: 'Kling 2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Prompt-only clips with sound toggle and aspect ratio—5s/10s.' },
-      { name: 'Kling 2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Single image animation with optional sound—5s/10s.' },
-      { name: 'Kling 2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + video; character orientation; 720p/1080p.' },
-      { name: 'Kling 3.0 Motion Control', path: '/home/kling/v3-0-motion-control', description: 'std/pro quality; background source; optional prompt.' },
-      { name: 'Kling AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio + prompt (max 5000)—talking-head video.' },
-      { name: 'Kling AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'Higher-quality talking-head from image and audio.' },
-      { name: 'Kling 3.0 Video', path: '/home/kling/v3-0-video', description: 'Single or multi-shot; 3–15s; std/pro; optional frames and elements.' }
+      { name: 'v2.5 Turbo I2V Pro', path: '/home/kling/v2-5-turbo-image-to-video-pro', description: 'Image-to-video with tail frame option, duration 5/10s, negative prompt, CFG scale. Max prompt 2500 characters.' },
+      { name: 'v2.5 Turbo T2V Pro', path: '/home/kling/v2-5-turbo-text-to-video-pro', description: 'Text-to-video with aspect ratio 16:9, 9:16, 1:1; duration 5/10s; negative prompt and CFG scale.' },
+      { name: '2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Text-to-video with sound on/off, aspect ratio 1:1/16:9/9:16, duration 5/10s.' },
+      { name: '2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Image-to-video with sound, duration 5/10s. Single image input.' },
+      { name: '2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + reference video; character orientation (image/video); 720p/1080p.' },
+      { name: '3.0 Motion Control', path: '/home/kling/v3-0-motion-control', description: 'Reference image + reference video; optional prompt; std/pro mode; character orientation and background source.' },
+      { name: 'AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio to talking-head video. Prompt max 5000 characters.' },
+      { name: 'AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'High-quality avatar image + audio to talking-head video. Prompt max 5000 characters.' },
+      { name: '3.0 Video', path: '/home/kling/v3-0-video', description: 'Single shot or multi-shot; image refs; duration 3–15s; sound. std/pro mode.' }
     ],
     sections: [
       {
+        title: 'Platform philosophy',
+        content: `Motion and creativity: Kling brings Kuaishou's latest video models into a unified workflow. From text or image to video, motion control with reference assets, AI avatars driven by audio, to 3.0 multi-shot storytelling—each mode is tuned for quality, prompt adherence, and fluid motion.
+
+Multi-mode first: Nine distinct modes cover text-to-video, image-to-video, motion control, talking-head avatars, and advanced 3.0 single/multi-shot. Choose the right mode for your project without leaving the platform.`
+      },
+      {
         title: 'Core capabilities',
-        content: `v2.5 Turbo I2V Pro (kling-v2-5-turbo-image-to-video-pro): Image + prompt (max 2500); optional tail frame; duration 5/10s; negative prompt; CFG 0–1.
+        content: `v2.5 Turbo
 
-v2.5 Turbo T2V Pro (kling-v2-5-turbo-text-to-video-pro): Prompt + aspect 16:9/9:16/1:1; duration 5/10s; negative prompt; CFG.
+Image-to-video Pro: Single image (optional tail frame), duration 5s or 10s, negative prompt and CFG scale. Prompt up to 2500 characters.
 
-2.6 Text to Video (kling-2.6-text-to-video): Prompt; sound on/off; aspect 1:1/16:9/9:16; 5/10s.
+Text-to-video Pro: Aspect ratio 16:9, 9:16, 1:1; duration 5s or 10s; negative prompt and CFG scale for fine control.
 
-2.6 Image to Video (kling-2.6-image-to-video): Single image + prompt; sound; 5/10s.
+2.6 series
 
-2.6 Motion Control (kling-2.6-motion-control): Reference image + video; character orientation; 720p/1080p; per-second pricing.
+Text to Video: Sound on/off, aspect ratio 1:1, 16:9, 9:16; duration 5s or 10s.
 
-3.0 Motion Control (kling-3.0-motion-control): Reference image + video; std/pro; background source; optional prompt.
+Image to Video: Single image input, sound, duration 5s or 10s.
 
-AI Avatar Standard/Pro (kling-ai-avatar-standard / kling-ai-avatar-pro): Avatar image + audio + prompt (max 5000).
+Motion Control: Reference image plus reference video; character orientation from image or video; output 720p or 1080p.
 
-3.0 Video (kling-3.0-video): Single or multi-shot (≤5); total 3–15s; std/pro; optional start/end frames and elements.`
+AI Avatar
+
+Standard and Pro: Upload avatar image and audio; generate talking-head video. Prompt up to 5000 characters. Pro tier for higher quality output.
+
+3.0 Video
+
+Single shot or multi-shot; image references; duration 3–15 seconds; optional sound; standard or pro mode.`
+      },
+      {
+        title: 'Use cases',
+        content: `Social and short-form: Create text-to-video or image-to-video clips for TikTok, Reels, and Shorts with flexible aspect ratio and 5–10s duration.
+
+Motion control: Use reference image and video to steer character pose and motion for consistent, controllable results.
+
+AI avatars: Turn avatar image and voiceover into talking-head videos for explainers, dubbing, and personalized content.
+
+Multi-shot storytelling: Use 3.0 Video with multiple image references and 3–15s duration for scenes and narrative clips.
+
+Advertising and marketing: Animate product shots and concept art with v2.5 Turbo or 2.6; add motion control or avatars as needed.`
+      },
+      {
+        title: 'Technical performance',
+        content: `Prompt length: Up to 2500 characters (v2.5 Turbo); up to 5000 characters (AI Avatar, others as per mode).
+
+Input: Image(s) JPEG/PNG/WebP; video for motion control; audio for AI Avatar. Size and format limits follow each mode.
+
+Duration: 5s or 10s (v2.5, 2.6); 3–15s (3.0 Video).
+
+Resolution: 720p or 1080p where applicable (e.g. motion control, 2.6); aspect ratios 1:1, 16:9, 9:16 (and 21:9 for some modes).
+
+Output: Video via URL or download; optional sound where supported.`
       },
       {
         title: 'Workflow',
-        content: `Quick clips: v2.5 Turbo T2V or 2.6 T2V/I2V → pick aspect ratio and duration → generate.
+        content: `Choose mode: Pick the Kling mode that matches your goal—v2.5 Turbo I2V/T2V, 2.6 text/image/motion, AI Avatar Standard/Pro, or 3.0 Video.
 
-Product animation: v2.5 Turbo I2V with optional tail frame → tune CFG and negative prompt.
+Upload assets: Provide image(s), and for motion control add reference video; for AI Avatar add audio.
 
-Controlled motion: 2.6 or 3.0 Motion Control → upload reference image + video → set orientation and quality.
+Set parameters: Select duration, aspect ratio, resolution, and options (sound, negative prompt, CFG, etc.) as shown in the form.
 
-Talking heads: generate audio with ElevenLabs TTS → AI Avatar Standard or Pro → download from history.
+Generate: Submit and wait for the result; preview in the result panel and download when ready.`
+      },
+      {
+        title: 'Optimization tips',
+        content: `Prompt crafting: Be specific about motion, style, and composition. For avatars, clear speech and consistent tone in the audio improve lip-sync and expression.
 
-Story beats: 3.0 Video multi-shot → define up to 5 shots (total 3–15s) with optional per-shot elements.
+Mode choice: Use v2.5 Turbo for fast, high-quality text/image-to-video; 2.6 for sound and motion control; AI Avatar for talking-head; 3.0 for multi-shot and longer clips.
 
-All workflows run in the browser on FuseAITools—no local GPU required.`
+Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). Use 1080p when the mode supports it for final deliverables.`
       },
       {
         title: 'Try Kling on FuseAITools',
-        content: `Kling on FuseAITools brings Kuaishou's latest video models into one suite—from Turbo text/image generation to motion control, avatars, and 3.0 multi-shot. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
+        content: `Kling on FuseAITools brings Kuaishou's latest video models to your workflow. From text or image to video, motion control, AI avatars, and 3.0 multi-shot—choose the right mode and create video in seconds.`
       }
     ]
   },
@@ -1341,113 +1566,36 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Imagen4 is a versatile text-to-image generation model offering three distinct modes: Generate, Fast, and Ultra, designed to balance speed and quality for diverse creative needs. With support for detailed prompts, negative prompting, and precise control over aspect ratio and seed, Imagen4 delivers flexibility from rapid ideation to high-fidelity final assets.',
+    intro: 'Imagen 4 on FuseAITools is Google\'s text-to-image suite—Generate for balanced quality, Fast for 1–4 images per prompt, and Ultra for flagship fidelity. All tiers support prompts up to 5000 characters, optional negative prompts, five aspect ratios, and seed controls. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Imagen4 Generate', path: '/home/imagen4/imagen4-generate', description: 'Standard mode for balanced, high-quality image generation. Supports prompt-based creation with optional negative prompts, aspect ratio, and seed control.' },
-      { name: 'Imagen4 Fast', path: '/home/imagen4/imagen4-fast', description: 'Optimized for speed and iterative exploration. Generates 1-4 images per request, ideal for quick concept variations and high-volume testing.' },
-      { name: 'Imagen4 Ultra', path: '/home/imagen4/imagen4-ultra', description: 'Premium mode focused on maximum detail and visual fidelity. Designed for final assets where quality is paramount.' }
+      { name: 'Imagen 4 Generate', path: '/home/imagen4/imagen4-generate', description: 'Balanced text-to-image—one image per run, string seed (≤500 chars), five aspect ratios (default 1:1).' },
+      { name: 'Imagen 4 Fast', path: '/home/imagen4/imagen4-fast', description: 'Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).' },
+      { name: 'Imagen 4 Ultra', path: '/home/imagen4/imagen4-ultra', description: 'Flagship fidelity—one high-quality image per run, string seed, five aspect ratios (default 1:1).' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Precision and flexibility: Imagen4 puts creative control at the forefront. Choose from standard, fast, or ultra modes to match your workflow. With optional negative prompts, adjustable aspect ratios, and seed parameters, you can fine-tune results to meet exact specifications.
-
-Simplicity without compromise: Whether generating a single polished image or exploring dozens of variations, Imagen4 balances intuitive operation with professional-grade capabilities. Generous prompt limits and straightforward controls make it accessible for creators at every level.`
-      },
-      {
         title: 'Core capabilities',
-        content: `Imagen4 Generate
+        content: `Generate (imagen4-generate): Required prompt (max 5000 chars). Optional negative prompt (max 5000 chars), aspect ratio 1:1 / 16:9 / 9:16 / 3:4 / 4:3 (default 1:1), seed string (≤500 chars). One image per request.
 
-Prompt required (up to 5000 characters)
-Optional negative prompt (up to 5000 characters)
-Aspect ratio: 1:1, 16:9, 9:16, 3:4, 4:3
-Optional seed string (up to 500 characters)
-Ideal for general-purpose image creation: marketing assets, social media visuals, concept art, and drafts.
+Fast (imagen4-fast): Same prompt and negative-prompt limits. Output 1–4 images per request; integer seed; five aspect ratios (default 16:9).
 
-Imagen4 Fast
+Ultra (imagen4-ultra): Same prompt and ratio options as Generate with flagship quality priority; one image per request; seed string (≤500 chars); default aspect 1:1.
 
-Prompt required (up to 5000 characters)
-Optional negative prompt (up to 5000 characters)
-Aspect ratio defaults to 16:9
-Number of images: 1-4 per request
-Optional integer seed
-Ideal for high-speed exploration, A/B testing, and generating multiple variants in a single run.
-
-Imagen4 Ultra
-
-Prompt required (up to 5000 characters)
-Optional negative prompt (up to 5000 characters)
-Aspect ratio defaults to 1:1
-Optional seed string (up to 500 characters)
-Ideal for premium-quality outputs: final assets, high-resolution visuals, and detail-sensitive projects.`
-      },
-      {
-        title: 'Use cases',
-        content: `Marketing assets: Generate consistent, on-brand visuals for campaigns, ads, and social content across multiple aspect ratios.
-
-Concept iteration: Use Fast mode to explore dozens of variations quickly; refine with Generate or Ultra for final execution.
-
-Polished final assets: Leverage Ultra mode for high-fidelity images suitable for print, hero visuals, or client presentations.
-
-Creative exploration: Experiment with prompts and negative prompts to refine style, composition, and subject matter.
-
-Batch ideation: Fast mode's multi-output capability supports rapid prototyping and team brainstorming sessions.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Generate mode: Balanced speed and quality; typical generation time varies based on prompt complexity and aspect ratio.
-
-Fast mode: Optimized for speed; supports parallel generation of up to 4 images per request for rapid iteration.
-
-Ultra mode: Prioritizes detail and fidelity; longer generation time suited for final assets.
-
-Prompt length: Up to 5000 characters for both prompts and negative prompts, enabling highly detailed and nuanced instructions.
-
-Aspect ratios: Supports 1:1, 16:9, 9:16, 3:4, 4:3 across all modes for flexible output formatting.
-
-Seed control: Allows reproducibility and fine-grained variation tuning via optional seed parameters.`
+All tiers are text-to-image only—no image upload. Credits shown on Generate before submission.`
       },
       {
         title: 'Workflow',
-        content: `Quick create: Write a detailed prompt -> select mode (Generate, Fast, or Ultra) -> set aspect ratio and optional negative prompt -> generate -> review and refine.
+        content: `Everyday stills: write a detailed prompt → pick Generate → set aspect ratio and optional negative prompt → generate → download.
 
-Multi-output exploration: Use Fast mode with num_images set to 2-4 -> generate multiple variations simultaneously -> compare and select the best direction.
+Batch ideation: use Fast with num images 2–4 → compare variants from one prompt → lock direction with integer seed.
 
-Reproducible generation: Set a seed value in Generate or Ultra mode to recreate consistent results across sessions or team workflows.
+Final delivery: switch to Ultra for hero assets → optional seed string for reproducible composition → pair stills with Veo 3.1 video (first/last frames) when you need motion.
 
-Team collaboration: Share generated assets and seed values to ensure alignment; iterate using negative prompts to eliminate unwanted elements.`
+All workflows run in the browser—no local GPU required.`
       },
       {
-        title: 'Optimization tips',
-        content: `Prompt crafting: Be specific and structured: [Subject] + [Action/Scene] + [Style/Composition] + [Key details]. For negative prompts, clearly list elements to avoid (e.g., "no text, no watermark, no blurry background").
-
-Mode selection: Use Fast for early-stage ideation and volume generation. Use Generate for refined concepts. Use Ultra for final, high-stakes outputs where detail matters most.
-
-Aspect ratio strategy: Match aspect ratio to intended use: 16:9 for widescreen visuals, 1:1 for social posts, 9:16 for vertical stories.
-
-Seed utilization: When iterating, lock the seed to maintain composition consistency while tweaking prompts; change the seed to explore new compositions.
-
-Quality control: Run initial explorations in Fast mode to validate prompt effectiveness; scale to Generate or Ultra once the creative direction is locked.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Three distinct modes: Tailor speed and quality to your workflow from rapid ideation to premium output.
-
-Long prompt support: Up to 5000 characters for both prompts and negative prompts enables precise creative direction.
-
-Negative prompting: Explicitly exclude unwanted elements for cleaner, more accurate results.
-
-Flexible aspect ratios: Cover modern formats including square, widescreen, and vertical orientations.
-
-Seed control: Ensure reproducibility and fine-tune variation across generations.
-
-Multi-output capability: Fast mode supports 1-4 images per request for efficient exploration.
-
-Best for: Designers, marketers, content creators, and teams requiring flexible, high-quality image generation with control over speed, fidelity, and output consistency.`
-      },
-      {
-        title: 'Try Imagen4',
-        content: `Imagen4 combines speed, quality, and precision in one unified platform. Whether you are iterating rapidly in Fast mode, balancing quality in Generate, or perfecting final assets in Ultra, Imagen4 gives you the tools to create exactly what you envision. Start bringing your ideas to life today.`
+        title: 'Try Imagen 4 on FuseAITools',
+        content: `Imagen 4 on FuseAITools gives you three Google tiers in one tabbed workflow—Generate, Fast, and Ultra—without rewriting prompts. Credits appear before each run; new users get 20 free credits on sign-up. Start from any tier and switch tabs as your project moves from draft to final.`
       }
     ]
   }

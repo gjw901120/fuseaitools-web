@@ -26,20 +26,8 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 ## Image
 
 - [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
-- [Ideogram Overview](https://fuseaitools.com/home/ideogram): V3 general image (T2I/edit/remix/reframe) + Character identity line; 20 free credits on sign-up.
-- [Ideogram V3 Text to Image](https://fuseaitools.com/home/ideogram/v3-text-to-image): V3—prompt, MagicPrompt, six aspect ratios, negative prompt.
-- [Ideogram V3 Edit](https://fuseaitools.com/home/ideogram/v3-edit): V3—image + mask inpainting.
-- [Ideogram V3 Remix](https://fuseaitools.com/home/ideogram/v3-remix): V3—strength remix, 1–4 outputs.
-- [Ideogram V3 Reframe](https://fuseaitools.com/home/ideogram/v3-reframe): V3—aspect reframe without prompt.
-- [Ideogram Character](https://fuseaitools.com/home/ideogram/character): Character—reference + prompt, identity lock.
-- [Ideogram Character Edit](https://fuseaitools.com/home/ideogram/character-edit): Character—mask edit with reference.
-- [Ideogram Character Remix](https://fuseaitools.com/home/ideogram/character-remix): Character—strength remix with reference.
-- [Flux Kontext Overview](https://fuseaitools.com/home/flux-kontext): Black Forest Labs Flux—Kontext v1 (Pro/Max generate/edit) and Flux 2 v2 (1K/2K T2I/I2I + Pro); 20 free credits on sign-up.
-- [Flux Kontext Generate](https://fuseaitools.com/home/flux-kontext/generate): v1—text-to-image and single-image edit; six aspect ratios; safety and prompt controls.
-- [Flux 2 Text to Image](https://fuseaitools.com/home/flux-kontext/flux-2-text-to-image): v2—prompt 3–5000 chars, 1K/2K, eight aspect ratios + auto.
-- [Flux 2 Image to Image](https://fuseaitools.com/home/flux-kontext/flux-2-image-to-image): v2—1–8 reference images + prompt, 1K/2K.
-- [Flux 2 Pro Text to Image](https://fuseaitools.com/home/flux-kontext/flux-2-pro-text-to-image): v2 Pro—higher-fidelity T2I at 1K/2K.
-- [Flux 2 Pro Image to Image](https://fuseaitools.com/home/flux-kontext/flux-2-pro-image-to-image): v2 Pro—multi-reference I2I with Pro-tier detail.
+- [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
+- [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
 - [Nano Banana Overview](https://fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
 - [Nano Banana Text to Image](https://fuseaitools.com/home/nano-banana/generate): Prompt-only, eleven aspect ratios, PNG/JPEG, up to 5000 chars.
 - [Nano Banana Image to Image](https://fuseaitools.com/home/nano-banana/edit): Edit 1–10 images with natural-language prompts.
@@ -49,7 +37,10 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 - [Seedream 5 Lite Text to Image](https://fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
 - [Seedream 5 Lite Image to Image](https://fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.
 - [Qwen Image](https://fuseaitools.com/home/qwen): Qwen image tools overview.
-- [Imagen 4](https://fuseaitools.com/home/imagen4): Google Imagen 4 overview.
+- [Imagen 4 Overview](https://fuseaitools.com/home/imagen4): Google Imagen 4 text-to-image—Generate, Fast (1–4 images), and Ultra tiers; 20 free credits on sign-up.
+- [Imagen 4 Generate](https://fuseaitools.com/home/imagen4/imagen4-generate): Balanced text-to-image—prompt up to 5000 chars, five aspect ratios, optional negative prompt and seed string.
+- [Imagen 4 Fast](https://fuseaitools.com/home/imagen4/imagen4-fast): Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).
+- [Imagen 4 Ultra](https://fuseaitools.com/home/imagen4/imagen4-ultra): Flagship fidelity—one high-quality image per prompt; pairs with Veo 3.1 video.
 
 ## Video — HappyHorse v1
 
@@ -78,24 +69,11 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 
 ## Video — Other models
 
-- [Veo 3.1 Overview](https://fuseaitools.com/home/veo3): Google DeepMind video at /home/veo3—Standard/Fast + extend; pairs with Seedance; 20 free credits on sign-up.
-- [Veo 3.1 Text to Video](https://fuseaitools.com/home/veo3/text-to-video): Prompt-only, veo3 or veo3_fast, 16:9/9:16/Auto, up to 1000 chars.
-- [Veo 3.1 First and Last Frames](https://fuseaitools.com/home/veo3/first-and-last-to-video): 1–2 keyframe images plus prompt for transition video.
-- [Veo 3.1 Reference to Video](https://fuseaitools.com/home/veo3/reference-to-video): Animate 1–3 reference images with motion prompt.
-- [Veo 3.1 Video Extend](https://fuseaitools.com/home/veo3/extend): Extend prior Veo3 clips via veo3_extend.
+- [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
 - [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
 - [Runway](https://fuseaitools.com/home/runway): Runway video generation overview.
 - [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
-- [Kling](https://fuseaitools.com/home/kling): Nine Kuaishou video workflows; 20 free credits on sign-up.
-- [Kling v2.5 Turbo I2V Pro](https://fuseaitools.com/home/kling/v2-5-turbo-image-to-video-pro): Image-to-video with optional tail frame, CFG scale.
-- [Kling v2.5 Turbo T2V Pro](https://fuseaitools.com/home/kling/v2-5-turbo-text-to-video-pro): Text-to-video with 16:9/9:16/1:1 aspect ratios.
-- [Kling 2.6 Text to Video](https://fuseaitools.com/home/kling/v2-6-text-to-video): Prompt-driven clips with optional sound.
-- [Kling 2.6 Image to Video](https://fuseaitools.com/home/kling/v2-6-image-to-video): Animate a single image with optional sound.
-- [Kling 2.6 Motion Control](https://fuseaitools.com/home/kling/v2-6-motion-control): Reference image + video motion transfer at 720p/1080p.
-- [Kling 3.0 Motion Control](https://fuseaitools.com/home/kling/v3-0-motion-control): std/pro motion control with background source.
-- [Kling AI Avatar Standard](https://fuseaitools.com/home/kling/ai-avatar-standard): Talking-head video from avatar image and audio.
-- [Kling AI Avatar Pro](https://fuseaitools.com/home/kling/ai-avatar-pro): High-quality talking-head avatar generation.
-- [Kling 3.0 Video](https://fuseaitools.com/home/kling/v3-0-video): Single or multi-shot video, 3–15 seconds.
+- [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
 
 ## Video — Seedance
 
@@ -112,36 +90,12 @@ Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro
 - [Seedance 2](https://fuseaitools.com/home/seedance/v2): Full multimodal with up to 5 reference videos.
 
 - [Hailuo](https://fuseaitools.com/home/hailuo): Hailuo image-to-video overview.
-- [Grok Overview](https://fuseaitools.com/home/grok): xAI Grok Imagine—image (T2I/I2I) + video (T2V/I2V/Upscale/Extend); 20 free credits on sign-up.
-- [Grok Text to Image](https://fuseaitools.com/home/grok/text-to-image): Prompt up to 5000 chars; grok-imagine-text-to-image; 1:1 output in current form.
-- [Grok Image to Image](https://fuseaitools.com/home/grok/image-to-image): One reference image + optional prompt; grok-imagine-image-to-image.
-- [Grok Text to Video](https://fuseaitools.com/home/grok/text-to-video): Prompt, aspect ratio, fun/normal/spicy mode, 6s/10s, 480p/720p.
-- [Grok Image to Video](https://fuseaitools.com/home/grok/image-to-video): Up to 7 images and/or prompt; animate stills to short clips.
-- [Grok Upscale](https://fuseaitools.com/home/grok/upscale): Enhance a completed Grok task by Original Task ID.
-- [Grok Extend](https://fuseaitools.com/home/grok/extend): Continue a Grok clip—task ID, prompt, extend_at, 6s/10s.
+- [Grok Video](https://fuseaitools.com/home/grok): Grok image and video tools overview.
 
-## Audio — Suno
+## Audio
 
-Suno on FuseAITools offers six music workflows—generate, extend, cover, expand, accompaniment, and vocals—with models V3.5 through V5.
-
-- [Suno Overview](https://fuseaitools.com/home/suno): Six AI music workflows; 20 free credits on sign-up.
-- [Suno Music Generation](https://fuseaitools.com/home/suno/generate): Text-to-music with Simple or Custom mode, V3.5–V5.
-- [Suno Music Extension](https://fuseaitools.com/home/suno/extend): Extend completed generate tasks via Audio ID.
-- [Suno Audio Cover](https://fuseaitools.com/home/suno/upload-cover): Reimagine uploaded audio (≤2 min) in a new style.
-- [Suno Audio Expansion](https://fuseaitools.com/home/suno/upload-extend): Expand short uploaded clips into fuller tracks.
-- [Suno Accompaniment](https://fuseaitools.com/home/suno/add-instrumental): Add instrumentals via include/exclude tags.
-- [Suno Vocal Generation](https://fuseaitools.com/home/suno/add-vocals): Add vocals with prompts up to 5000 characters.
-
-## Audio — ElevenLabs
-
-ElevenLabs on FuseAITools offers five audio workflows—Multilingual v2 TTS, Turbo 2.5 TTS, Speech-to-Text, Sound Effect v2, and AI Audio Isolation.
-
-- [ElevenLabs Overview](https://fuseaitools.com/home/elevenlabs): Five voice and audio workflows; 20 free credits on sign-up.
-- [ElevenLabs Multilingual v2](https://fuseaitools.com/home/elevenlabs/multilingual-v2): Natural text-to-speech with voice controls and optional timestamps.
-- [ElevenLabs Turbo 2.5](https://fuseaitools.com/home/elevenlabs/turbo-2-5): Fast TTS for low-latency narration and assistants.
-- [ElevenLabs Speech-to-Text](https://fuseaitools.com/home/elevenlabs/speech-to-text): Upload audio (≤200MB) for transcripts with diarization.
-- [ElevenLabs Sound Effect v2](https://fuseaitools.com/home/elevenlabs/sound-effect-v2): Generate SFX from text (0.5–22s duration).
-- [ElevenLabs AI Audio Isolation](https://fuseaitools.com/home/elevenlabs/audio-isolation): Extract vocals or instruments from mixed audio (≤10MB).
+- [Suno](https://fuseaitools.com/home/suno): AI music generation (generate, extend, vocals, and more).
+- [ElevenLabs](https://fuseaitools.com/home/elevenlabs): Text-to-speech, sound effects, and audio tools.
 
 ## Optional
 
