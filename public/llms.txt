@@ -37,6 +37,12 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 - [Seedream 5 Lite Text to Image](https://fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
 - [Seedream 5 Lite Image to Image](https://fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.
 - [Qwen Image](https://fuseaitools.com/home/qwen): Qwen image tools overview.
+- [Qwen v1 Text to Image](https://fuseaitools.com/home/qwen/text-to-image): Full-parameter T2I—5000-char prompts, steps 2–250, guidance, acceleration, negative prompt.
+- [Qwen v1 Image to Image](https://fuseaitools.com/home/qwen/image-to-image): Transform reference images with denoising strength 0–1 and full controls.
+- [Qwen v1 Image Edit](https://fuseaitools.com/home/qwen/image-edit): Natural-language image editing—1–4 outputs, steps 2–49, sync mode.
+- [Qwen Z-Image](https://fuseaitools.com/home/qwen/z-image): Fast T2I with 5 aspect ratios (1:1–9:16), 3–15s generation.
+- [Qwen v2 Text to Image](https://fuseaitools.com/home/qwen/v2-text-to-image): Streamlined T2I with 5 aspect ratios, prompt up to 800 chars.
+- [Qwen v2 Image Edit](https://fuseaitools.com/home/qwen/v2-image-edit): Reference-based editing with 8 aspect ratios including 21:9.
 - [Imagen 4 Overview](https://fuseaitools.com/home/imagen4): Google Imagen 4 text-to-image—Generate, Fast (1–4 images), and Ultra tiers; 20 free credits on sign-up.
 - [Imagen 4 Generate](https://fuseaitools.com/home/imagen4/imagen4-generate): Balanced text-to-image—prompt up to 5000 chars, five aspect ratios, optional negative prompt and seed string.
 - [Imagen 4 Fast](https://fuseaitools.com/home/imagen4/imagen4-fast): Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).

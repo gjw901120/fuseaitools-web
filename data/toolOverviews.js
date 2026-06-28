@@ -589,151 +589,37 @@ All workflows run in the browser—no local GPU required.`
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'The Qwen Image empowers creators, developers, and businesses to generate and edit photorealistic images effortlessly. Whether you\'re crafting intricate designs or refining existing visuals, this powerful Qwen integrates seamlessly into your workflow, delivering multilingual text rendering and advanced editing capabilities that rival top models.',
+    intro: 'Qwen on FuseAITools is Alibaba\'s image generation and editing suite: v1 Classic with full parameter control (steps, guidance, acceleration) across three workflows, Z-Image for fast aspect-ratio T2I, and v2 for streamlined generation with modern quality. Six workflows cover text-to-image, image-to-image, and image editing. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Text to Image', path: '/home/qwen/text-to-image', description: 'Generate from text prompts up to 5000 characters. Control image size (square, portrait, landscape), inference steps (2–250), guidance scale (0–20), seed, output format (PNG/JPEG), negative prompts, and acceleration (none/regular/high). Safety checker included.' },
-      { name: 'Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with a text prompt. Set denoising strength (0–1) to balance between original and new content. Full parameter control: steps, guidance, seed, negative prompt, acceleration, output format.' },
-      { name: 'Image Edit', path: '/home/qwen/image-edit', description: 'Edit specific elements of an image via natural language. Choose image size, steps (2–49), number of outputs (1–4), sync mode, guidance scale, negative prompt, and safety checker. Prompt limit 2000 characters.' },
-      { name: 'Z-Image', path: '/home/qwen/z-image', description: 'Fast text-to-image with essential aspect ratio control. Prompt up to 1000 characters; select from 1:1, 4:3, 3:4, 16:9, 9:16. Ideal for quick ideation and format-specific assets.' },
-      { name: 'V2 Text to Image', path: '/home/qwen/v2-text-to-image', description: 'Generate images with model `qwen2-image-edit`. Required: prompt (<=800). Optional: image_size (1:1, 3:4, 4:3, 9:16, 16:9; default 16:9), seed, output_format (png/jpeg; default png).' },
-      { name: 'V2 Image Edit', path: '/home/qwen/v2-image-edit', description: 'Edit an uploaded image URL with model `qwen2/image-edit`. Required: prompt (<=800) + image_url. Optional: image_size (1:1, 2:3, 3:2, 3:4, 4:3, 9:16, 16:9, 21:9; default 16:9), seed, output_format (png/jpeg; default png).' }
+      { name: 'Qwen v1 · Text to Image', path: '/home/qwen/text-to-image', description: 'Generate from prompts up to 5000 chars—6 size presets, steps 2–250, guidance 0–20, acceleration, negative prompt, seed, PNG/JPEG.' },
+      { name: 'Qwen v1 · Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with denoising strength 0–1 and full parameter control—steps, guidance, seed, acceleration, safety checker.' },
+      { name: 'Qwen v1 · Image Edit', path: '/home/qwen/image-edit', description: 'Edit image elements via natural language—prompts up to 2000 chars, 1–4 outputs, steps 2–49, sync mode, guidance, safety checker.' },
+      { name: 'Qwen · Z-Image', path: '/home/qwen/z-image', description: 'Fast text-to-image with 5 aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16). Prompts up to 1000 chars; 3–15s generation—no advanced parameters.' },
+      { name: 'Qwen v2 · Text to Image', path: '/home/qwen/v2-text-to-image', description: 'Streamlined T2I with 5 aspect ratios (1:1–16:9), prompt up to 800 chars, seed control, PNG/JPEG output.' },
+      { name: 'Qwen v2 · Image Edit', path: '/home/qwen/v2-image-edit', description: 'Upload a reference image and edit with prompts up to 800 chars—8 aspect ratios including 21:9 ultra-wide.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Total creative control: Qwen puts every dial and switch in your hands—from step count and guidance scale to seed and acceleration. Whether you're a power user fine-tuning every detail or a rapid prototyper seeking speed, Qwen adapts to your workflow.
-
-Flexibility at scale: With support for extra-long prompts (up to 5000 characters) and multiple generation modes, Qwen handles everything from complex scene descriptions to targeted edits. The Z-Image mode offers a streamlined path for quick, aspect-aware generation.`
-      },
-      {
         title: 'Core capabilities',
-        content: `Text to Image
+        content: `v1 Classic (three workflows): Text to Image with 5000-char prompts, 6 size presets (square through landscape 16:9), inference steps 2–250, guidance 0–20, acceleration none/regular/high, negative prompt, seed, safety checker, PNG/JPEG output. Image to Image transforms one reference image with denoising strength 0–1 plus full parameter set. Image Edit edits specific elements (prompt ≤2000 chars), 1–4 outputs, sync mode, steps 2–49.
 
-Prompt: Up to 5000 characters, supporting rich descriptions and negative prompts.
+Z-Image: Fast T2I with 5 aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16), prompts ≤1000 chars, simplified workflow with no advanced parameters. Generation 3–15 seconds.
 
-Size options: Square (1024×1024), square_hd (1536×1536), portrait 3:4 (864×1152), portrait 9:16 (768×1344), landscape 4:3 (1152×864), landscape 16:9 (1344×768).
-
-Inference steps: 2–250 (higher steps = more detail, slower generation).
-
-Guidance scale: 0–20 (higher = stricter adherence to prompt).
-
-Seed: Set for reproducibility or leave random.
-
-Output format: PNG or JPEG.
-
-Acceleration: None, regular, or high—trade speed for quality.
-
-Safety checker: Optional filter for sensitive content.
-
-Image to Image
-
-Reference image: Required URL (JPEG, PNG, WebP).
-
-Prompt: Up to 5000 characters.
-
-Denoising strength: 0–1 (0 = minimal change, 1 = maximum deviation from original).
-
-Full parameter set: Steps, guidance, seed, negative prompt, acceleration, output format, safety checker—same as text-to-image.
-
-Image Edit
-
-Prompt: Up to 2000 characters for describing the edit.
-
-Image URL: Required input.
-
-Image size: Adjustable (same options as text-to-image).
-
-Steps: 2–49.
-
-Num images: 1–4 outputs per request.
-
-Sync mode: Enable for deterministic generation across multiple runs.
-
-Guidance scale: Default 4, adjustable.
-
-Negative prompt: Specify what to avoid.
-
-Safety checker: Optional.
-
-Z-Image
-
-Prompt: Up to 1000 characters.
-
-Aspect ratio: Required—1:1, 4:3, 3:4, 16:9, 9:16.
-
-Simplified workflow: No advanced parameters; designed for speed and format compliance.`
-      },
-      {
-        title: 'Use cases',
-        content: `Concept exploration: Quickly generate multiple variations with long, detailed prompts.
-
-Brand asset creation: Maintain consistency by setting seeds and using negative prompts to avoid unwanted elements.
-
-Photo editing and retouching: Use Image-to-Image or Image Edit to change backgrounds, adjust lighting, or add/remove objects.
-
-Content for social media: Generate assets in exact aspect ratios with Z-Image for platforms like Instagram, TikTok, or YouTube.
-
-Batch experimentation: Run parallel generations with different seeds and guidance scales to find the perfect result.
-
-Educational materials: Create diagrams, illustrations, and visual aids with precise control over style and content.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Text-to-image generation: 5–30 seconds depending on steps, acceleration, and resolution. High acceleration reduces time by up to 50%.
-
-Image-to-image / edit: 10–35 seconds; denoising strength affects speed (higher strength may take slightly longer).
-
-Z-Image: 3–15 seconds—optimized for rapid output.
-
-Concurrency: Supports 100+ parallel requests; smart queue management.
-
-Prompt limits: 5000 chars (text/image-to-image), 2000 chars (edit), 1000 chars (Z-Image).
-
-Input formats: JPEG, PNG, WebP (max 10MB for image inputs).
-
-Safety checker: Optional filter; adds minimal processing time.`
+v2 (two workflows): Text to Image with 5 aspect ratios (1:1, 3:4, 4:3, 9:16, 16:9), prompts ≤800 chars, seed control. Image Edit with 8 aspect ratios including 21:9, prompts ≤800 chars plus one image URL.`
       },
       {
         title: 'Workflow',
-        content: `Quick generate: Write prompt → choose size/parameters → generate → review → iterate with adjusted seed or guidance.
+        content: `v1 Classic: Write prompt → choose size and parameters → generate → iterate with adjusted seed or guidance. For I2I: upload image → set strength → generate. For edit: upload image → describe change → choose outputs → generate.
 
-Edit iteration: Upload image → describe edit → adjust strength/steps → generate multiple versions → select best.
+Z-Image: Write prompt → pick aspect ratio → generate in 3–15s.
 
-Batch production: Set seed and parameters → run multiple prompts in parallel → unify style with consistent negative prompts and guidance.
+v2: Write prompt (≤800 chars) → choose aspect ratio → generate. For v2 edit: upload image + prompt → set ratio → generate.
 
-Team collaboration: Share generated assets, compare versions, and collect feedback in real time on FuseAITools.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Prompt engineering: Be specific—[Subject] + [Action/Scene] + [Style] + [Details]. Use negative prompts to exclude unwanted elements (e.g., "blurry, low quality, extra limbs").
-
-Step/guidance tuning: Start with 20–30 steps and guidance 7–9; increase steps for fine detail, decrease for speed. For image-to-image, strength 0.3–0.7 often balances change and coherence.
-
-Seed strategy: Use a fixed seed to reproduce results; vary seed for exploration. Save successful seeds for future batches.
-
-Acceleration: Use "high" for drafts and internal reviews; "none" for final assets where quality is paramount.
-
-Cost efficiency: Match resolution to need—use smaller sizes for thumbnails, larger for print. Batch similar requests to reuse parameters.
-
-Safety checker: Enable only when necessary to avoid unintended filtering; disable for unrestricted creative exploration.`
-      },
-      {
-        title: 'Platform advantages',
-        content: `Granular control: Adjust steps, guidance, seed, and more—unmatched flexibility for power users.
-
-Long prompt support: Up to 5000 characters for intricate descriptions and detailed edits.
-
-Multiple modes: Text-to-image, image-to-image, edit, and Z-Image—all in one platform.
-
-Speed options: Acceleration levels let you prioritize speed or quality on demand.
-
-Reproducibility: Seed control ensures consistent outputs across sessions.
-
-Best for: Designers, developers, content creators, researchers, and anyone needing precise, repeatable image generation.`
+When to pick which: Use v1 Classic for full creative control and long prompts; Z-Image for rapid ideation with format compliance; v2 for streamlined generation with modern quality and more aspect ratio options.`
       },
       {
         title: 'Try Qwen on FuseAITools',
-        content: `Qwen on FuseAITools delivers the ultimate balance of control and speed—whether you're drafting concepts, refining details, or producing final assets. With four powerful modes, extensive parameter tuning, and support for long prompts, Qwen empowers you to create exactly what you envision. Start generating with precision today.`
+        content: 'Qwen on FuseAITools delivers image generation and editing across three tiers—v1 Classic for power users, Z-Image for speed, and v2 for modern streamlined quality. Open any workflow above and start creating. New users receive 20 free credits on sign-up.'
       }
     ]
   },
