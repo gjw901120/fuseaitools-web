@@ -1162,91 +1162,25 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Hailuo is MiniMax\'s high-fidelity AI video generation model designed to create realistic motion, expressive characters, and cinematic visuals. It supports both text-to-video and image-to-video, handling complex movements, lighting changes, and detailed facial expressions with stability and consistency.',
+    intro: 'Hailuo 2.3 (MiniMax) on FuseAITools animates a single image with a text prompt—realistic motion, expressive characters, and cinematic visuals at 6s/10s and 768P/1080P. Choose Pro for highest fidelity or Standard for faster iteration. Image-to-video only; new users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Pro Image to Video', path: '/home/hailuo/image-to-video-pro', description: 'High-fidelity image-to-video with 6s or 10s duration, 768P or 1080P resolution. Best for cinematic quality and detailed motion. Note: 10s videos do not support 1080P.' },
-      { name: 'Standard Image to Video', path: '/home/hailuo/image-to-video-standard', description: 'Efficient image-to-video with the same controls: prompt, single image input, 6s/10s duration, 768P/1080P. Balanced quality and speed.' }
+      { name: 'Hailuo 2.3 Pro Image to Video', path: '/home/hailuo/image-to-video-pro', description: 'High-fidelity I2V—prompt ≤5000, one image (JPEG/PNG/WebP, max 10MB), 6s/10s, 768P/1080P (10s → 768P only).' },
+      { name: 'Hailuo 2.3 Standard Image to Video', path: '/home/hailuo/image-to-video-standard', description: 'Same controls as Pro—balanced speed and quality for drafts and batch content.' }
     ],
     sections: [
       {
-        title: 'Platform philosophy',
-        content: `Motion and fidelity: Hailuo brings MiniMax's high-fidelity video generation to a single, easy-to-use workflow. Whether you choose Pro for maximum cinematic quality or Standard for faster iteration, you get realistic motion, expressive characters, and stable, consistent output.
-
-Image-to-video first: Both tiers focus on animating a single input image with a text prompt—ideal for concept art, product shots, character animation, and creative storytelling. No video editing expertise required.`
-      },
-      {
         title: 'Core capabilities',
-        content: `Pro Image to Video
+        content: `Pro (\`hailuo-2-3-image-to-video-pro\`) and Standard (\`hailuo-2-3-image-to-video-standard\`): Required **prompt (≤5000)** + **one image URL** (JPEG/PNG/WebP, max 10MB). Duration **6s or 10s**; resolution **768P or 1080P** (**10s clips → 768P only**). RULE pricing by duration + quality (768p/1080p).
 
-Prompt: Natural language description of the desired video animation; max 5000 characters.
-
-Input image: Single image required; formats JPEG, PNG, WebP; max 10MB.
-
-Duration: 6 seconds (standard) or 10 seconds (extended). Note: 10-second videos do not support 1080P resolution—use 768P.
-
-Resolution: 768P (web and social) or 1080P (full HD; only when duration is 6s).
-
-Use cases: Cinematic clips, character animation, product demos, high-quality social and marketing content.
-
-Standard Image to Video
-
-Same parameters as Pro: prompt (max 5000 characters), single image (JPEG/PNG/WebP, max 10MB), duration 6s or 10s, resolution 768P or 1080P (1080P not available for 10s).
-
-Optimized for speed and cost while maintaining strong motion and visual consistency.
-
-Use cases: Rapid prototyping, batch content, social shorts, and workflows where turnaround time matters.`
-      },
-      {
-        title: 'Use cases',
-        content: `Social media content: Create short, high-quality clips for TikTok, Instagram Reels, YouTube Shorts with 6s or 10s duration and 768P/1080P output.
-
-Advertising and marketing: Animate product shots, brand visuals, and concept art with realistic motion and lighting.
-
-Creative projects: Bring illustrations and character art to life with expressive motion and detailed facial expressions.
-
-Concept validation: Quickly test video ideas from a single image and prompt before committing to full production.
-
-Educational and explainer content: Produce clear, consistent motion for tutorials and visual explanations.`
-      },
-      {
-        title: 'Technical performance',
-        content: `Prompt length: Up to 5000 characters for both Pro and Standard.
-
-Input: Single image; JPEG, PNG, or WebP; max 10MB.
-
-Duration: 6 seconds or 10 seconds. Important: 10-second videos are not supported at 1080P—select 768P when using 10s.
-
-Resolution: 768P (all duration options) or 1080P (6s only).
-
-Output: Video delivered via secure URL or direct download; format and codec follow platform defaults.
-
-Concurrency: Supports parallel requests with queue management; typical generation time varies by resolution and duration.`
+Both tiers are **image-to-video only**—for text-to-video use Seedance or Wan.`
       },
       {
         title: 'Workflow',
-        content: `Choose tier: Select Pro Image to Video for highest quality or Standard Image to Video for balanced speed and quality.
-
-Upload image: Provide one image (JPEG, PNG, or WebP; max 10MB) as the base frame.
-
-Write prompt: Describe the desired animation—motion, lighting changes, character expression, scene evolution (up to 5000 characters).
-
-Set parameters: Pick duration (6s or 10s) and resolution (768P or 1080P; remember 1080P is only for 6s).
-
-Generate: Submit and wait for the result; preview in the result panel and download when ready.`
-      },
-      {
-        title: 'Optimization tips',
-        content: `Prompt crafting: Be specific about motion, lighting, and expression. Example: "A graceful geisha performs a traditional Japanese dance indoors. Soft hand movements, sleeves flowing naturally. Warm ambient lighting, cinematic, soft depth of field" yields better results than a generic "person dancing."
-
-Duration and resolution: Use 6s + 1080P for final HD assets; use 10s + 768P when you need longer clips (1080P is not available for 10s).
-
-Image quality: Higher resolution, well-lit input images produce smoother and more consistent animations.
-
-Pro vs Standard: Use Pro for client work, hero content, and when quality is the priority; use Standard for drafts, batch runs, and faster iteration.`
+        content: `Upload a hero still (or create one with Seedream), write a motion/lighting prompt, pick Pro or Standard, set 6s/1080P for final HD or 10s/768P for longer social clips. Draft on Standard, re-run on Pro for deliverables.`
       },
       {
         title: 'Try Hailuo on FuseAITools',
-        content: `Hailuo on FuseAITools brings MiniMax's cinematic AI video to your workflow. Animate still images with realistic motion, expressive characters, and consistent lighting. Choose Pro for highest fidelity or Standard for faster results. Start with an image and a prompt to create video in seconds.`
+        content: `Open Pro or Standard from the tabs—credits appear on Generate before submission. No local GPU required. See pricing for member discounts and credit top-ups.`
       }
     ]
   },

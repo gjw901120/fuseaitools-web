@@ -1119,6 +1119,62 @@ Luma **单**视频子页 + `/home/luma` 聚合页，按 §3 同一标准实施�
 
 ---
 
-**文档版本**：1.10  
+## 24. Hailuo 对齐清单（Pro / Standard 双档实例）
+
+Hailuo **两**图生子页 + `/home/hailuo` 聚合页，按 §3 同一标准实施。**单组件** `HailuoSeoContent.vue` 覆盖 Pro / Standard（同表单、不同 modelKey，非 §3.3 版本梯队）。
+
+### 24.1 涉及文件
+
+| 路由 | 页面文件 | SEO 组件 | `priceFromApi.modelKey` |
+|------|----------|----------|-------------------------|
+| `/home/hailuo` | `hailuo.vue` → `ToolOverview` | —（`toolOverviews.hailuo`） | — |
+| `/home/hailuo/image-to-video-pro` | `image-to-video-pro.vue` | `HailuoSeoContent` | `hailuo-2-3-image-to-video-pro` |
+| `/home/hailuo/image-to-video-standard` | `image-to-video-standard.vue` | `HailuoSeoContent` | `hailuo-2-3-image-to-video-standard` |
+
+**相关文件**：
+
+- `components/tools/HailuoTool.vue` — 事实源  
+- `components/tools/HailuoSeoContent.vue` — 两子页共用  
+- `data/toolOverviews.js` → `hailuo`  
+- `public/llms.txt` — `## Video — Hailuo`
+
+**Tab ↔ 路由**：`HailuoTool.vue` 中 `modeTabToPath` / `watch(route.path)` 同步 Pro / Standard；提交后 `modeTabToPath[mode] + '?record-id=xxx'`。
+
+### 24.2 API 参数（写作核对）
+
+| 档位 | modelKey | 关键约束 |
+|------|----------|----------|
+| Pro I2V | `hailuo-2-3-image-to-video-pro` | **1 图** + prompt ≤5000；duration 6/10s；768P/1080P（**10s 不可 1080P**）；JPEG/PNG/WebP ≤10MB |
+| Standard I2V | `hailuo-2-3-image-to-video-standard` | 同 Pro 表单约束 |
+
+计费：RULE（`duration` + `quality` 768p/1080p + `scene: 'generate'`）；见 `PRICING_MAPPING.md` §17。
+
+### 24.3 实施自检（Hailuo 两子页 + 聚合）
+
+**子页（2 档位）**
+
+- [x] `workflowIntroMap` + `workflowDefinitionMap` 按路由  
+- [x] 每页独立 `useToolSEOAsync` description / keywords  
+- [x] SEO 正文与 `HailuoTool.vue` 一致（**仅 I2V**、10s↔1080P 互斥）  
+- [x] FAQ 自然问句 + 每页 ≥2 条专属 FAQ  
+- [x] `useToolSeoFaqSchema` + FAQ microdata  
+- [x] Technical specs + **Pro vs Standard** 对比表  
+- [x] `useToolSeoPageScroll` 工作流卡片回顶  
+- [x] `#below-main` + 可滚动 `tool-page`  
+- [x] 底部互链 Standard ↔ Pro + Seedream / Seedance / Wan  
+
+**聚合页 `/home/hailuo`**
+
+- [x] intro + 2 features 命名带 `Hailuo 2.3` 前缀  
+- [x] sections 3 段（Core capabilities / Workflow / Try on FuseAITools）  
+- [x] 与子页 meta 不重复  
+
+**组件**：`components/tools/HailuoSeoContent.vue`
+
+**双档规则（Hailuo 实例）**：正文不得写 text-to-video（表单无 T2V）；`HailuoTool.vue` 头部简介含 T2V 表述时，SEO 以表单/API 为准并 FAQ 澄清。
+
+---
+
+**文档版本**：1.11  
 **最后更新**：2026-07-05  
-**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20**、**Grok §21**、**Runway §22**、**Luma §23** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
+**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20**、**Grok §21**、**Runway §22**、**Luma §23**、**Hailuo §24** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。

@@ -115,7 +115,14 @@ Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro
 - [Seedance 2 Fast](https://fuseaitools.com/home/seedance/v2-fast): Multimodal video with up to 3 reference videos.
 - [Seedance 2](https://fuseaitools.com/home/seedance/v2): Full multimodal with up to 5 reference videos.
 
-- [Hailuo](https://fuseaitools.com/home/hailuo): Hailuo image-to-video overview.
+## Video — Hailuo
+
+Hailuo 2.3 (MiniMax) image-to-video: one image + prompt, 6s/10s at 768P/1080P (10s → 768P only). Pro for max fidelity; Standard for faster drafts. Not text-to-video.
+
+- [Hailuo Overview](https://fuseaitools.com/home/hailuo): Pro and Standard I2V tiers; 20 free credits on sign-up.
+- [Hailuo 2.3 Pro Image to Video](https://fuseaitools.com/home/hailuo/image-to-video-pro): Cinematic I2V—prompt ≤5000, one image, RULE credits by duration and quality.
+- [Hailuo 2.3 Standard Image to Video](https://fuseaitools.com/home/hailuo/image-to-video-standard): Same controls as Pro—optimized for iteration speed.
+
 - [Grok Video](https://fuseaitools.com/home/grok): Grok image and video tools overview.
 
 ## Audio
