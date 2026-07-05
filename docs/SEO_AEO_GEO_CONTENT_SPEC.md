@@ -1065,6 +1065,60 @@ Runway 三视频子页 + `/home/runway` 聚合页，按 §3 同一标准实施�
 
 ---
 
-**文档版本**：1.9  
+## 23. Luma 对齐清单（单工作流实例）
+
+Luma **单**视频子页 + `/home/luma` 聚合页，按 §3 同一标准实施。路由为 `/home/luma/generate`，实际能力为 **Video Modification**（非 T2V/I2V）。
+
+### 23.1 涉及文件
+
+| 路由 | 页面文件 | SEO 组件 | `priceFromApi.modelKey` |
+|------|----------|----------|-------------------------|
+| `/home/luma` | `luma.vue` → `ToolOverview` | —（`toolOverviews.luma`） | — |
+| `/home/luma/generate` | `generate.vue` | `LumaSeoContent` | `Luma` |
+
+**相关文件**：
+
+- `components/tools/LumaTool.vue` — 事实源  
+- `components/tools/LumaSeoContent.vue` — 单子页  
+- `data/toolOverviews.js` → `luma`  
+- `public/llms.txt` — `## Video — Luma`
+
+**单页说明**：无 Tab / 多子路由；`watchRouteScroll` 仅匹配 `/home/luma/generate`。对比表用 **Luma vs Seedance I2V vs Wan Video Edit** 帮助选型，底部互链 **Seedance**（T2V/I2V）与 **Wan**（T2V / Video Edit）。
+
+### 23.2 API 参数（写作核对）
+
+| 工作流 | modelKey | 关键约束 |
+|------|----------|----------|
+| Video Modification | `Luma` | **English** prompt + videoUrl；MP4/MOV/AVI ≤**500MB**、≤**10s**；可选 watermark |
+
+计费：ONCE（见 `PRICING_MAPPING.md` §14）。API：`POST /api/video/luma/generate`。
+
+### 23.3 实施自检（Luma 单子页 + 聚合）
+
+**子页（1 工作流）**
+
+- [x] `workflowIntroMap` + `workflowDefinitionMap` 按路由  
+- [x] `useToolSEOAsync` description / keywords（**非** text-to-video 表述）  
+- [x] SEO 正文与 `LumaTool.vue` 一致（English prompt、500MB/10s、修改非生成）  
+- [x] FAQ ≥4 条（含 English 要求、与 Seedance / Wan 差异）  
+- [x] `useToolSeoFaqSchema` + FAQ microdata  
+- [x] Technical specs + 跨工具对比表  
+- [x] `useToolSeoPageScroll`  
+- [x] `#below-main` + 可滚动 `tool-page`  
+- [x] 底部互链 → Seedance T2V/I2V + Wan T2V / Video Edit  
+
+**聚合页 `/home/luma`**
+
+- [x] intro + 1 feature 命名带 `Luma` 前缀  
+- [x] sections 3 段（Core capabilities / Workflow / Try on FuseAITools）  
+- [x] 与子页 meta 不重复  
+
+**组件**：`components/tools/LumaSeoContent.vue`
+
+**单工作流规则（Luma 实例）**：正文不得写「text/image to video」—与表单事实不符；meta title 用 **Video Modification** 而非泛化 3D Generator。
+
+---
+
+**文档版本**：1.10  
 **最后更新**：2026-07-05  
-**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20**、**Grok §21**、**Runway §22** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
+**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20**、**Grok §21**、**Runway §22**、**Luma §23** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。

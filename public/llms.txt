@@ -88,11 +88,17 @@ Runway covers Generate (text or image to 5s/10s at 720p/1080p), Extend (continue
 - [Runway Extend](https://fuseaitools.com/home/runway/extend): Continue a Runway Generate task with prompt ≤1000 at 720p/1080p.
 - [Runway Aleph](https://fuseaitools.com/home/runway/aleph): Style-transform uploaded MP4/MOV/AVI (max 10MB) with optional reference image and seed.
 
+## Video — Luma
+
+Luma Dream Machine on FuseAITools is video modification only—upload MP4/MOV/AVI (max 500MB, 10s), describe changes in English, optional watermark. Not text-to-video; pair with Seedance or Wan for generation.
+
+- [Luma Overview](https://fuseaitools.com/home/luma): Single video-modification workflow; 20 free credits on sign-up.
+- [Luma Video Modification](https://fuseaitools.com/home/luma/generate): English prompt + uploaded clip; modelKey Luma; per-run credits.
+
 ## Video — Other models
 
 - [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
 - [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
-- [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
 - [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
 
 ## Video — Seedance

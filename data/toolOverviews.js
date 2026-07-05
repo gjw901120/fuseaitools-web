@@ -974,48 +974,24 @@ Aleph (\`runway_aleph\`): Uploaded video URL + prompt; optional reference image,
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Luma AI Dream Machine is a one-click AI video tool that turns text or images into high-quality video with smooth motion and realistic physics. Built for social content, product demos, and pre-visualization, it offers a minimal interface and strong results—no steep learning curve, with fast previews and quick iteration so you can experiment freely.',
+    intro: 'Luma Dream Machine on FuseAITools is a focused video modification workflow: upload a short clip (MP4/MOV/AVI, max 500MB, 10 seconds), describe visual changes in English, and receive a modified render—ideal for 3D-style tweaks and VFX experiments. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Generate', path: '/home/luma/generate', description: 'One-click video from text or image: natural language and multi-language support, style control, single-image animation, and scene extension with coherent motion.' }
+      { name: 'Luma Video Modification', path: '/home/luma/generate', description: 'Upload video + English modification prompt—MP4/MOV/AVI up to 500MB and 10s; optional watermark; per-run credits (modelKey Luma).' }
     ],
     sections: [
       {
-        title: 'Platform strengths',
-        content: `Minimal design: One-click generation, zero learning curve, real-time preview, and intuitive controls with few parameters and maximum creative freedom.
+        title: 'Core capabilities',
+        content: `Video Modification (\`Luma\`): Required **English prompt** + uploaded **video URL**. Input formats: MP4, MOV, AVI—max **500MB**, max **10 seconds**. Optional watermark identifier. ONCE pricing per modification; credits shown on the Modify Video button.
 
-Technical quality: Strong frame-to-frame coherence, physics-aware motion, rich texture and lighting, and support for multiple visual and artistic styles.`
+Luma on FuseAITools is **not** text-to-video—use Seedance Text/Image to Video or Wan Text to Video to create clips from scratch, then optionally refine with Luma or other edit flows.`
       },
       {
-        title: 'Core features',
-        content: `Generate turns text or images into video. Text-to-video: natural language and multi-language understanding, support for abstract and concrete scenes, and precise style control via description. Image-to-video: animate a single photo, preserve style, extend the scene, and generate natural character and creature motion.`
+        title: 'Workflow',
+        content: `Prepare a short source clip (≤10s), upload it, write a detailed English description of the visual changes you want, then submit. Iterate from the output or pair with Seedance Image to Video / Wan 2.7 Video Edit when you need image-driven generation or edit-with-prompt controls.`
       },
       {
-        title: 'Use cases',
-        content: `Social: TikTok, Instagram Reels, YouTube Shorts, brand marketing, and trend-driven content. Business and product: 360° product demos, service explainers, internal training, and pitch decks. Creative and concept: film and animation pre-vis, ad concept tests, game scene and character previews, and digital art and experimental video.`
-      },
-      {
-        title: 'Tech and performance',
-        content: `Quality: Rich dynamic range, natural motion and acceleration, high-fidelity detail. Speed: Minute-scale generation, concurrent tasks, progressive preview, and batch export. Formats: Input JPG, PNG, text; output MP4, GIF, PNG sequence; ready for social upload and professional editing.`
-      },
-      {
-        title: 'Creative workflow',
-        content: `Define your concept, add text or a reference image, choose aspect ratio and duration, then generate. Iterate from the result and export when satisfied. Effective prompts: [subject] + [action/scene] + [style/mood] + [technical]. Examples: product—"Modern smartphone slowly rotating on a lit table, metal finish and screen, cinematic light, 16:9"; nature—"Morning forest, sun through leaves, mist, birds flying, documentary style"; abstract—"Colored liquid mixing underwater, light refraction, artistic slow motion."`
-      },
-      {
-        title: 'Pro tips',
-        content: `Motion: Use concrete action verbs and adverbs, control pace and rhythm, set camera angle and path, describe physical interactions. Visual style: Specify lighting direction and color, color mood and contrast, texture and material, and art style or reference. Applications: Film—concept animation, camera tests, VFX preview, storyboards. E‑commerce and marketing—product videos, seasonal content, A/B tests, social ads. Education and training—explainer animations, learning materials, concept demos, training videos.`
-      },
-      {
-        title: 'Quality and feedback',
-        content: `Automatic checks for coherence, physical plausibility, detail preservation, and style consistency. User ratings, issue reporting, and feature requests feed into ongoing model and product improvements.`
-      },
-      {
-        title: 'Roadmap and value',
-        content: `Planned: Longer video, audio (music and SFX), template library, and team collaboration. Value: Major time and cost savings, no heavy equipment or crew; fast creative validation and scalable output. Luma makes professional video accessible—low-risk experimentation, quick iteration, and strong results for individuals and teams alike.`
-      },
-      {
-        title: 'Try Luma Dream Machine on FuseAITools',
-        content: `Luma AI Dream Machine turns complex video production into a single click. Whether you need a quick prototype or are new to video, you get simplicity and high quality in one place. Start with text or an image and turn ideas into video at speed.`
+        title: 'Try Luma on FuseAITools',
+        content: `Open Video Modification at /home/luma/generate—credits appear before you submit. No local GPU required. See pricing for member discounts and credit top-ups.`
       }
     ]
   },
