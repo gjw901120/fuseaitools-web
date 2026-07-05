@@ -1007,6 +1007,64 @@ Grok 六子页 + `/home/grok` 聚合页。**Image 两工作流** → `GrokImageS
 
 ---
 
-**文档版本**：1.8  
-**最后更新**：2026-05-20  
-**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20**、**Grok §21** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。
+## 22. Runway 对齐清单（以 HappyHorse / Grok Video 为对照）
+
+Runway 三视频子页 + `/home/runway` 聚合页，按 §3 同一标准实施。**单组件** `RunwaySeoContent.vue` 覆盖 Generate / Extend / Aleph 三工作流（生命周期管线，非多版本拆分）。
+
+### 22.1 涉及文件
+
+| 路由 | 页面文件 | SEO 组件 | `priceFromApi.modelKey` |
+|------|----------|----------|-------------------------|
+| `/home/runway` | `runway.vue` → `ToolOverview` | —（`toolOverviews.runway`） | — |
+| `/home/runway/generate` | `generate.vue` | `RunwaySeoContent` | `runway_generate` |
+| `/home/runway/extend` | `extend.vue` | `RunwaySeoContent` | `runway_extend` |
+| `/home/runway/aleph` | `aleph.vue` | `RunwaySeoContent` | `runway_aleph` |
+
+**相关文件**：
+
+- `components/tools/RunwayTool.vue` — 事实源  
+- `components/tools/RunwaySeoContent.vue` — 三子页共用  
+- `data/toolOverviews.js` → `runway`  
+- `public/llms.txt` — `## Video — Runway`
+
+**Tab ↔ 路由**：`RunwayTool.vue` 中 `runwayTabToPath` / `watch(route.path)` 同步 Generate / Extend / Aleph；提交后 `getRunwayRecordPath() + '?record-id=xxx'`。
+
+### 22.2 API 参数（写作核对）
+
+| 工作流 | modelKey | 关键约束 |
+|------|----------|----------|
+| Generate | `runway_generate` | prompt ≤1800；duration 5/10s；720p/1080p（**10s 不可 1080p**）；无图时 aspect 16:9/4:3/1:1/3:4/9:16；可选 imageUrl；waterMark |
+| Extend | `runway_extend` | **taskId**（已完成 `runway_generate` 任务，来自 extend-list）；prompt ≤1000；720p/1080p；waterMark ≤50 |
+| Aleph | `runway_aleph` | videoUrl（MP4/MOV/AVI ≤10MB）+ prompt；可选 referenceImageUrl、aspect（含 21:9）、seed、waterMark ≤20 |
+
+计费：Generate → RULE（`duration` + `quality` + `scene: 'generate'`）；Extend / Aleph → ONCE（见 `PRICING_MAPPING.md` §13）。
+
+### 22.3 实施自检（Runway 三子页 + 聚合）
+
+**子页（3 工作流）**
+
+- [x] `workflowIntroMap` + `workflowDefinitionMap` 按路由  
+- [x] 每页独立 `useToolSEOAsync` description / keywords  
+- [x] SEO 正文与 `RunwayTool.vue` 一致（含 10s↔1080p 互斥、Extend 仅 generate 任务）  
+- [x] FAQ 自然问句 + 每页 ≥2 条专属 FAQ  
+- [x] `useToolSeoFaqSchema` + FAQ microdata  
+- [x] Technical specs + 三工作流对比表  
+- [x] `useToolSeoPageScroll` 工作流卡片回顶  
+- [x] `#below-main` + 可滚动 `tool-page`  
+- [x] 底部 **Runway pipeline** 内链（generate → extend → aleph）  
+
+**聚合页 `/home/runway`**
+
+- [x] intro + 3 features 命名带 `Runway` 前缀  
+- [x] sections 3 段（Core capabilities / Workflow / Try on FuseAITools）  
+- [x] 与子页 meta 不重复  
+
+**组件**：`components/tools/RunwaySeoContent.vue`
+
+**管线规则（Runway 实例）**：Extend 的 Task 下拉来自 `/api/records/extend-list?model=runway_generate`—正文与 FAQ 须强调**仅 Generate 任务**可延展；Aleph 接受任意上传视频，与 Extend 输入来源不同。
+
+---
+
+**文档版本**：1.9  
+**最后更新**：2026-07-05  
+**维护**：Wan §9、HappyHorse §10、Seedance §11、Seedream §12、Suno §13、ElevenLabs §14、Kling §15、**Flux Kontext §19**、**Ideogram §20**、**Grok §21**、**Runway §22** 为参考实现；**多版本拆分与向上互链**见 **§3.3**。路由/计费变更时同步对应 API 表、`PRICING_MAPPING.md`、`llms.txt`。

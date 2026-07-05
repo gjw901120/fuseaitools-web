@@ -79,11 +79,19 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 - [Wan 2.7 Image](https://fuseaitools.com/home/wan/2-7-image): Wan 2.7 image generation.
 - [Wan 2.7 Image Pro](https://fuseaitools.com/home/wan/2-7-image-pro): Wan 2.7 Image Pro (higher quality tier).
 
+## Video — Runway
+
+Runway covers Generate (text or image to 5s/10s at 720p/1080p), Extend (continue a completed generate task), and Aleph (style transform on uploaded video). Typical pipeline: Generate → Extend → Aleph.
+
+- [Runway Overview](https://fuseaitools.com/home/runway): Three linked video workflows; 20 free credits on sign-up.
+- [Runway Generate](https://fuseaitools.com/home/runway/generate): Text-to-video or optional image-to-video—prompt ≤1800, 5s/10s, five aspect ratios.
+- [Runway Extend](https://fuseaitools.com/home/runway/extend): Continue a Runway Generate task with prompt ≤1000 at 720p/1080p.
+- [Runway Aleph](https://fuseaitools.com/home/runway/aleph): Style-transform uploaded MP4/MOV/AVI (max 10MB) with optional reference image and seed.
+
 ## Video — Other models
 
 - [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
 - [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
-- [Runway](https://fuseaitools.com/home/runway): Runway video generation overview.
 - [Luma](https://fuseaitools.com/home/luma): Luma video generation overview.
 - [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
 

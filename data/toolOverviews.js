@@ -944,54 +944,28 @@ Output: Up to 1080p (1920×1080), 24fps or 30fps, MP4 (H.264). Clip length typic
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Runway Gen-3 and its related models bring AI video generation and editing into one seamless workflow: create video from text or images, intelligently extend clip length, and use Aleph for fine motion control and visual effects. Used by filmmakers, marketers, and creators for quick drafts, storyboards, and polished short-form video—all without high-end hardware, from any device.',
+    intro: 'Runway on FuseAITools covers three linked video workflows: Generate short clips from text or a reference still (5s/10s at 720p/1080p), Extend a completed generate task with a continuation prompt, and Aleph to restyle uploaded footage while preserving motion. New users receive 20 free credits on sign-up.',
     features: [
-      { name: 'Generate', path: '/home/runway/generate', description: 'Create high-quality video from text or image prompts—up to 4K, multiple styles and frame rates, 3–16 second clips, and multiple variants per prompt.' },
-      { name: 'Extend', path: '/home/runway/extend', description: 'Extend video forward or backward with seamless, style-consistent content and natural motion continuation.' },
-      { name: 'Aleph', path: '/home/runway/aleph', description: 'Professional motion control, style transfer, color grading, VFX, compositing, and 3D integration with Runway Aleph.' }
+      { name: 'Runway Generate', path: '/home/runway/generate', description: 'Text-to-video or optional image-to-video—prompt ≤1800 chars, 5s/10s, 720p/1080p, five aspect ratios when no image.' },
+      { name: 'Runway Extend', path: '/home/runway/extend', description: 'Continue a Runway Generate task with prompt ≤1000 chars at 720p/1080p—task ID from your generate history.' },
+      { name: 'Runway Aleph', path: '/home/runway/aleph', description: 'Style-transform uploaded video (MP4/MOV/AVI, max 10MB) with prompts—optional reference image, seed, and six aspect ratios.' }
     ],
     sections: [
       {
-        title: 'Platform value',
-        content: `End-to-end workflow from concept to final video; a full toolset for generation, editing, and effects; real-time collaboration and versioning; and a cloud-native setup so you can create from anywhere without heavy hardware.
+        title: 'Core capabilities',
+        content: `Generate (\`runway_generate\`): Required prompt (≤1800 characters); optional one reference image (JPG/PNG, max 10MB). Duration 5s or 10s; 720p/1080p (10s clips are 720p only). Aspect ratio 16:9, 4:3, 1:1, 3:4, 9:16 when no image. RULE pricing by duration + quality.
 
-Gen-3 delivers high-quality video with strong temporal consistency, fine motion control, and style preservation—plus powerful style transfer and consistency across shots.`
-      },
-      {
-        title: 'Core features',
-        content: `Generate: Text-to-video with natural language, style presets (cinematic, animation, documentary, experimental), motion parameters (camera speed, angle, path), and mood. Image-to-video animates a single image while keeping its style, character motion, and scene extension. Output up to 4K, 24/30/60fps, 3–16 seconds, with multiple variants per prompt.
+Extend (\`runway_extend\`): Task ID from completed Runway Generate jobs + prompt (≤1000). Output 720p/1080p; per-run credits.
 
-Extend: Add length forward or backward with seamless joins, strict style consistency, and natural motion continuation. Use for lengthening shorts, pace adjustment, loop creation, or filling gaps. Modes include smart prediction, direction-guided extend, multi-step extend, and quality preview.
-
-Aleph: Camera path and object animation control, physics-aware motion, time remapping. Visual effects: style transfer, color grading, dynamic effects (rain, snow, particles), and scene transitions. Composition: layers, green-screen, 2D/3D blend, and audio sync.`
+Aleph (\`runway_aleph\`): Uploaded video URL + prompt; optional reference image, aspect ratio, seed, watermark (≤20 chars). Output length inherits source; per-run credits.`
       },
       {
-        title: 'Who it’s for',
-        content: `Film and TV: Pre-vis, storyboards, VFX previews, and extending existing footage. Marketing and ads: Product videos, social content, brand stories, and A/B tests. Content creators: YouTube, TikTok, Instagram, education, and personal projects. Enterprise: Training, product demos, internal comms, and event highlights.`
-      },
-      {
-        title: 'Tech and performance',
-        content: `Cloud-native: Browser access, real-time cloud rendering, smart caching, and full API support. Formats: Input MP4, MOV, PNG, JPG; output MP4, ProRes, GIF; 480p to 4K; H.264/H.265. Processing: Minute-scale generation, batch jobs, queue management, and live progress tracking.`
-      },
-      {
-        title: 'Creative workflow',
-        content: `Standard: Define concept, prepare text or images, set resolution and style, generate preview, iterate, then export. Optionally refine with Aleph. Team workflow: Shared projects, version history, comments and annotations, and role-based permissions.`
-      },
-      {
-        title: 'Tips and best practices',
-        content: `Prompts: Be specific about scene, action, and mood; reference directors or art styles; specify camera, motion, and lighting; use negative prompts to exclude elements. Motion: Use keyframes, speed curves, and planned camera paths; set physical constraints. Style: Use reference images, define color and atmosphere, keep texture and lighting consistent.`
-      },
-      {
-        title: 'Quality and optimization',
-        content: `Automated quality checks, human review options, and user-driven improvements. Rendering and caching optimizations, efficient compression, and load balancing for fast, reliable output.`
-      },
-      {
-        title: 'Future direction',
-        content: `Longer video, 3D and real-time generation, deeper multimodal (audio/video/text) integration. Ecosystem growth: plugins, template libraries, training, and enterprise solutions. Applications: Virtual production, game cinematics, VR/AR, and e‑commerce product video.`
+        title: 'Workflow',
+        content: `Typical pipeline: start with Generate (text or still → 5s/10s clip), use Extend to lengthen the same render from your task history, then optionally run Aleph on uploaded footage for style transfer. Extend only accepts tasks from Runway Generate—not arbitrary uploads or other tools.`
       },
       {
         title: 'Try Runway on FuseAITools',
-        content: `Runway Gen-3 gives you a one-stop AI video solution—from simple text descriptions to professional motion and VFX—all in one platform. Whether you’re a solo creator, small team, or large organization, Runway has the tools to match. Start with Generate, Extend, or Aleph and unlock your video potential.`
+        content: `Open Generate, Extend, or Aleph from the tabs—credits appear on each button before submission. No local GPU required. See pricing for member discounts and credit top-ups.`
       }
     ]
   },

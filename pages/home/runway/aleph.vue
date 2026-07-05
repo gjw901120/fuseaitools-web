@@ -3,19 +3,24 @@
     <div class="tool-page">
       <RunwayTool />
     </div>
+    <template #below-main>
+      <RunwaySeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import RunwayTool from '~/components/tools/RunwayTool.vue'
+import RunwaySeoContent from '~/components/tools/RunwaySeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Runway Aleph Video Generator',
-  description: 'AI video generation with Runway Aleph. Pay per video with credits.',
+  description:
+    'Runway Aleph on FuseAITools—style-transform uploaded video (MP4/MOV/AVI, max 10MB) with prompts, optional reference image, seed, and aspect ratio. Per-run credits; 20 free on sign-up.',
   category: 'video',
   route: '/home/runway/aleph',
-  keywords: ['Runway', 'Aleph', 'AI video'],
+  keywords: ['Runway', 'Runway Aleph', 'video style transfer', 'AI video transform', 'FuseAITools'],
   applicationCategory: 'MultimediaApplication',
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },
@@ -26,5 +31,13 @@ useHead(seoConfig)
 </script>
 
 <style scoped>
-.tool-page { width: 100%; height: 100%; }
+.tool-page {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 </style>
