@@ -98,7 +98,13 @@ Luma Dream Machine on FuseAITools is video modification only—upload MP4/MOV/AV
 ## Video — Other models
 
 - [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
-- [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview.
+- [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview; two tiers (Sora 2 standard and Sora 2 Pro) plus a standalone watermark remover; 20 free credits on sign-up.
+- [Sora 2 Text to Video](https://fuseaitools.com/home/sora/text-to-video): Standard T2V—prompt ≤10000 chars, portrait/landscape, 10s/15s, optional watermark removal.
+- [Sora 2 Image to Video](https://fuseaitools.com/home/sora/image-to-video): Standard I2V—animate up to 3 reference images with prompt, aspect ratio and duration controls.
+- [Sora 2 Pro Text to Video](https://fuseaitools.com/home/sora/pro-text-to-video): Pro T2V—standard/high size control, 10s/15s, watermark removal.
+- [Sora 2 Pro Image to Video](https://fuseaitools.com/home/sora/pro-image-to-video): Pro I2V—size control (standard/high), up to 3 ref images, watermark removal.
+- [Sora 2 Pro Storyboard](https://fuseaitools.com/home/sora/pro-storyboard): Multi-scene narrative builder—per-shot descriptions, 10s/15s/25s, optional reference images.
+- [Sora Watermark Remover](https://fuseaitools.com/home/sora/watermark-remover): Standalone utility—upload Sora videos/images and remove OpenAI watermark, no prompt or aspect ratio needed.
 - [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
 
 ## Video — Seedance

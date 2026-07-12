@@ -8,11 +8,15 @@
         </template>
       </ClientOnly>
     </div>
+    <template #below-main>
+      <SoraWatermarkSeoContent />
+    </template>
   </HomeLayout>
 </template>
 
 <script setup>
 import SoraTool from '~/components/tools/SoraTool.vue'
+import SoraWatermarkSeoContent from '~/components/tools/SoraWatermarkSeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
