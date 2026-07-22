@@ -59,6 +59,8 @@
 </template>
 
 <script setup>
+import { generateBrowserFingerprint } from '@kedwithgod/browser-fingerprint'
+
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -152,11 +154,21 @@ const handleVerify = async () => {
   try {
     const code = codeDigits.value.join('')
     
+    // 生成设备指纹，获取不到时给空字符串
+    let deviceId = ''
+    try {
+      const fingerprintResult = await generateBrowserFingerprint()
+      deviceId = fingerprintResult.fingerprint
+    } catch (e) {
+      // 指纹生成失败不影响登录
+    }
+    
     // 使用统一的 API 封装，自动处理响应结构和错误
     // 成功时返回 data，失败时自动显示错误提示
     const data = await post('/api/user/login-by-email', {
       email: props.email,
-      code: code
+      code: code,
+      deviceId: deviceId
     })
 
     // data 中应该包含 token
