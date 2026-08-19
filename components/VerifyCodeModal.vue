@@ -60,6 +60,7 @@
 
 <script setup>
 import { generateBrowserFingerprint } from '@kedwithgod/browser-fingerprint'
+import md5 from 'blueimp-md5'
 
 const props = defineProps({
   isOpen: {
@@ -163,12 +164,19 @@ const handleVerify = async () => {
       // 指纹生成失败不影响登录
     }
     
+    // 生成唯一请求ID：MD5(设备ID + 邮箱)，服务端在处理前据此校验请求合法性
+    const requestId = md5(deviceId + props.email)
+    
     // 使用统一的 API 封装，自动处理响应结构和错误
     // 成功时返回 data，失败时自动显示错误提示
     const data = await post('/api/user/login-by-email', {
       email: props.email,
       code: code,
       deviceId: deviceId
+    }, {
+      headers: {
+        'X-Request-Id': requestId
+      }
     })
 
     // data 中应该包含 token
