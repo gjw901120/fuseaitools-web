@@ -88,6 +88,7 @@
 
 <script setup>
 import { clampDescription } from '~/composables/seoDescription'
+import { useDateFormat } from '~/composables/useDateFormat'
 // 获取路由参数
 const route = useRoute()
 const router = useRouter()
@@ -227,16 +228,7 @@ useHead({
   }
 }, { immediate: true })
 
-// 方法
-const formatDate = (dateString) => {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
+const { formatDate } = useDateFormat()
 
 const navigateToDetail = (slug) => {
   navigateTo(`/news/${slug}`)

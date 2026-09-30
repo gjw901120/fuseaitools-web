@@ -722,8 +722,10 @@ const clearResults = () => {
 
 const formatJson = (obj) => JSON.stringify(obj, null, 2)
 
+const { formatDateTime } = useDateFormat()
+
 const formatTime = (timeStr) => {
-  return new Date(timeStr).toLocaleString('zh-CN')
+  return formatDateTime(timeStr)
 }
 
 const getResultType = (data) => {

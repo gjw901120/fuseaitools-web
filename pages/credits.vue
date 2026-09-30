@@ -120,7 +120,7 @@
                   <td>
                     <span :class="['badge', 'status-' + (row.status || '').toLowerCase()]">{{ row.status || '—' }}</span>
                   </td>
-                  <td>{{ row.completedDate || '—' }}</td>
+                  <td>{{ formatDateTime(row.completedAt) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -178,6 +178,7 @@ useHead({
 
 const router = useRouter()
 const midjourneyEnabled = Boolean(useRuntimeConfig().public.midjourneyEnabled)
+const { formatDateTime } = useDateFormat()
 const loading = ref(false)
 const refundLoading = ref(false)
 const { showError, showSuccess } = useToast()

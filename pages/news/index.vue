@@ -192,15 +192,7 @@ const pagination = computed(() => {
 const pendingMore = ref(false)
 
 // 方法
-const formatDate = (dateString) => {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
+const { formatDate } = useDateFormat()
 
 const navigateToDetail = (article) => {
   navigateTo(`/news/${article.slug}`)

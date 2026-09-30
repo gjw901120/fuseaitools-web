@@ -1,6 +1,6 @@
 /**
  * 历史记录列表接口代理：GET /api/records/list?page=1&size=10
- * 返回 { errorCode, data: Array<{ recordId, modelId, category, model, title, gtmCreated }> }
+ * 返回 { errorCode, data: Array<{ recordId, modelId, category, model, title, gmtCreated }> }
  */
 export default defineEventHandler(async (event) => {
   const apiBase = getEffectiveApiBase(event)

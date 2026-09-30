@@ -3,6 +3,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useState } from 'nuxt/app'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
+import { useDateFormat } from '~/composables/useDateFormat'
 export const useHomeLayout = () => {
   const midjourneyEnabled = Boolean(useRuntimeConfig().public.midjourneyEnabled)
 
@@ -427,30 +428,7 @@ export const useHomeLayout = () => {
   const lastHistoryLoadAt = useState('home-history-last-load-at', () => 0)
   const HISTORY_COOLDOWN_MS = 10 * 60 * 1000
 
-  // 方法：24 小时内显示相对时间（如 21 hours ago），超过 24 小时显示实际时间
-  const formatTime = (timestamp) => {
-    if (!timestamp) return ''
-    const date = typeof timestamp === 'string' ? new Date(timestamp.replace(' ', 'T')) : timestamp
-    if (Number.isNaN(date.getTime())) return ''
-    const now = new Date()
-    const diff = now - date
-    const oneDayMs = 24 * 60 * 60 * 1000
-    if (diff >= oneDayMs) {
-      return date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      })
-    }
-    const minutes = Math.floor(diff / 60000)
-    const hours = Math.floor(diff / 3600000)
-    if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`
-    if (minutes > 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`
-    return 'Just now'
-  }
+  const { formatRelativeTime } = useDateFormat()
 
   // model -> 路由（History 详情用；多 Tab 工具按 model 区分到对应 Tab 路由）
   const modelToPath = {
@@ -754,7 +732,7 @@ export const useHomeLayout = () => {
       model: item.model,
       toolName: category,
       type,
-      timestamp: item.gtmCreated,
+      timestamp: item.gmtCreated,
       description: item.title != null ? String(item.title) : '',
       icon: logoUrl || getToolIcon(type),
       iconIsImage: !!logoUrl,
@@ -1084,7 +1062,7 @@ export const useHomeLayout = () => {
     toolRouteMap,
     isLoading,
     hasMoreData,
-    formatTime,
+    formatTime: formatRelativeTime,
     getToolCount,
     getCurrentTools,
     getSelectedToolInfo,
