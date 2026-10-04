@@ -163,5 +163,16 @@
     "publishDate": "2023-12-10",
     "readTime": 9,
     "content": "Full article content about prompt engineering..."
+  },
+  {
+    "id": 16,
+    "slug": "veo31-google-professionalism-redifining-ai-video-boundaries",
+    "title": "Veo 3.1: Google Redefines the Boundaries of AI Video with Professionalism",
+    "excerpt": "From 8 seconds to 148 seconds, from silent film to stereo sound, from landscape to 4K portrait — Google's Veo 3.1 hasn't broken the AI video generation duration ceiling, but it's rewriting every inch of space beneath it.",
+    "category": "Video",
+    "image": "/images/news/veo31-analysis.jpg",
+    "publishDate": "2026-01-20",
+    "readTime": 10,
+    "content": "Full article content about Veo 3.1..."
   }
 ]
