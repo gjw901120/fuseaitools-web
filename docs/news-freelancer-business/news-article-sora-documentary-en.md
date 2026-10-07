@@ -1,4 +1,4 @@
-# News Article: Freelance Documentary Film Services with Sora — Building an AI Documentary Production Business (English)
+﻿# News Article: Freelance Documentary Film Services with Sora — Building an AI Documentary Production Business (English)
 
 Sora enables freelance documentary filmmakers and visual storytellers to offer scalable AI documentary production services — generating historical reconstructions, scientific visualizations, and atmospheric footage for documentary projects, educational content, and institutional films.
 
@@ -25,10 +25,10 @@ Sora, documentary service, freelance documentary filmmaker, AI documentary, hist
     <title>Building an AI Documentary Production Service with Sora for Freelance Documentary Filmmakers</title>
 </head>
 <body>
-    <article class="ai-model-comparison" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(251,146,60,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(249,115,22,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
+    <article class="ai-model-comparison" itemscope itemtype="https://schema.org/Article" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(251,146,60,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(249,115,22,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
 
         <section class="introduction">
-            <p style="color:#d1d5db;">Documentary filmmakers, educational content creators, and institutional producers all face the same problem: they need visuals for moments that were never recorded. Historical events, scientific processes, future scenarios, and inaccessible locations — all require visual representation that traditional production can't provide at reasonable cost. A single minute of historical reenactment costs $10,000–50,000. Scientific CGI runs $5,000–50,000 per sequence. Most documentary and educational projects simply go without.</p>
+            <p style="color:#d1d5db;">Documentary filmmakers, educational content creators, and institutional producers all face the same problem: they need visuals for moments that were never recorded. Historical events, scientific processes, future scenarios, and inaccessible locations — all require visual representation that traditional production can't provide at reasonable cost. A single minute of historical reenactment costs $10,000–50,000. Scientific CGI runs $5,000–50,000 per sequence. Most documentary and educational projects simply go without. Try <a href="https://www.fuseaitools.com/home/sora/text-to-video" style="color:#60a5fa">Text-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/image-to-video" style="color:#60a5fa">Image-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/pro-text-to-video" style="color:#60a5fa">Pro Text-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/pro-storyboard" style="color:#60a5fa">Pro Storyboard</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/watermark-remover" style="color:#60a5fa">Watermark Remover</a> for this workflow.</p>
 
             <p style="color:#d1d5db;"><a href="https://www.fuseaitools.com/home/sora" style="color:#fb923c;">Sora</a> enables freelance documentary filmmakers to offer AI documentary visual services at scale. Your research skills, storytelling ability, and ethical commitment to factual accuracy + AI video generation = professional documentary visuals that fill archival gaps, visualize the invisible, and bring complete stories to screen — at prices that make comprehensive visual coverage possible for every documentary project.</p>
 
@@ -144,6 +144,30 @@ Sora, documentary service, freelance documentary filmmaker, AI documentary, hist
             </ol>
         </section>
 
+
+        <section class="faq">
+            <h2 style="color:#f9fafb;border-bottom-color:#374151;">Frequently Asked Questions</h2>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What AI model is used in this workflow?</h3>
+                <p style="color:#d1d5db;">The workflows in this article use the AI model available through the platform. Specific model versions and capabilities may vary. Check the tool page for current model availability and feature specifications.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I get started with this business model?</h3>
+                <p style="color:#d1d5db;">Start by building a portfolio of 10-15 sample outputs that demonstrate quality and range. Offer discounted or free samples to initial clients. Use the pricing models and acquisition strategies outlined in the action checklist to launch your service.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the typical profit margins?</h3>
+                <p style="color:#d1d5db;">Profit margins depend on your pricing model and client acquisition costs. AI-assisted production typically reduces costs by 80-95% compared to traditional methods, allowing healthy margins even at competitive pricing. Focus on value-based pricing rather than hourly rates.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I handle quality control and client revisions?</h3>
+                <p style="color:#d1d5db;">Build QC checkpoints into your workflow. Include 2 rounds of revisions in base pricing. Charge additional fees for extra revision rounds. The speed of AI generation makes quick turnarounds possible while maintaining quality standards.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the legal and ethical considerations?</h3>
+                <p style="color:#d1d5db;">Review the platform's commercial terms for usage rights. Disclose AI usage where required by platforms or clients. Never reproduce copyrighted material. Build compliance into your standard workflow and contracts.</p>
+            </div>
+        </section>
         <section class="closing">
             <h2 style="color:#f9fafb;border-bottom-color:#374151;">Closing: Complete Stories, Visually Told</h2>
             <p style="color:#d1d5db;">Every story deserves to be told completely — with visuals for every moment, not just the ones that happened to be recorded. AI documentary services make this possible. Your research, storytelling, and ethical commitment + AI generation = documentaries that fill every visual gap, responsibly and transparently. The documentary market is growing — streaming platforms, educational institutions, and NGOs all need visual content. Build this service now.</p>

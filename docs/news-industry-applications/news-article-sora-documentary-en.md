@@ -1,4 +1,4 @@
-# News Article: Sora for Documentary Production — From Archival Gaps to AI-Generated Documentary Visuals (English)
+﻿# News Article: Sora for Documentary Production — From Archival Gaps to AI-Generated Documentary Visuals (English)
 
 Sora transforms documentary production by enabling filmmakers to fill archival gaps, recreate historical scenes, and visualize abstract concepts — generating cinematic documentary footage that brings stories to life when real footage doesn't exist.
 
@@ -25,10 +25,10 @@ Sora, documentary production, AI documentary, historical recreation, archival fo
     <title>From Archival Gaps to AI Documentary Visuals: An Industry Application Guide with Sora for Documentary Production</title>
 </head>
 <body>
-    <article class="ai-model-comparison" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(251,146,60,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(249,115,22,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
+    <article class="ai-model-comparison" itemscope itemtype="https://schema.org/Article" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(251,146,60,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(249,115,22,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
 
         <section class="introduction">
-            <p style="color:#d1d5db;">Documentary filmmaking is constrained by available footage. Every filmmaker faces the same problem: the story needs a visual for a moment that was never recorded. Historical events without film coverage, scientific concepts too small or large to film, future scenarios that haven't happened yet, and personal stories where no camera was present. Traditionally, filmmakers use animation, stock footage, or dramatic reenactments — none of which fully satisfy the documentary audience's expectation of authenticity.</p>
+            <p style="color:#d1d5db;">Documentary filmmaking is constrained by available footage. Every filmmaker faces the same problem: the story needs a visual for a moment that was never recorded. Historical events without film coverage, scientific concepts too small or large to film, future scenarios that haven't happened yet, and personal stories where no camera was present. Traditionally, filmmakers use animation, stock footage, or dramatic reenactments — none of which fully satisfy the documentary audience's expectation of authenticity. Try <a href="https://www.fuseaitools.com/home/sora/text-to-video" style="color:#60a5fa">Text-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/image-to-video" style="color:#60a5fa">Image-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/pro-text-to-video" style="color:#60a5fa">Pro Text-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/pro-storyboard" style="color:#60a5fa">Pro Storyboard</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/sora/watermark-remover" style="color:#60a5fa">Watermark Remover</a> for this workflow.</p>
 
             <p style="color:#d1d5db;"><a href="https://www.fuseaitools.com/home/sora" style="color:#fb923c;">Sora</a> transforms documentary production by enabling filmmakers to generate cinematic footage that fills archival gaps — recreating historical moments with period accuracy, visualizing scientific phenomena, and rendering future scenarios with documentary realism. Not fabricating evidence or creating fake footage — but providing visual context where no camera was present, clearly labeled as AI-generated reconstruction. The ethical framework is critical: AI footage in documentaries must serve understanding, not deceive.</p>
 
@@ -142,6 +142,30 @@ Sora, documentary production, AI documentary, historical recreation, archival fo
             </ol>
         </section>
 
+
+        <section class="faq">
+            <h2 style="color:#f9fafb;border-bottom-color:#374151;">Frequently Asked Questions</h2>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What AI model is used in this workflow?</h3>
+                <p style="color:#d1d5db;">The workflows in this article use the AI model available through the platform. Specific model versions and capabilities may vary. Check the tool page for current model availability and feature specifications.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I get started with this business model?</h3>
+                <p style="color:#d1d5db;">Start by building a portfolio of 10-15 sample outputs that demonstrate quality and range. Offer discounted or free samples to initial clients. Use the pricing models and acquisition strategies outlined in the action checklist to launch your service.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the typical profit margins?</h3>
+                <p style="color:#d1d5db;">Profit margins depend on your pricing model and client acquisition costs. AI-assisted production typically reduces costs by 80-95% compared to traditional methods, allowing healthy margins even at competitive pricing. Focus on value-based pricing rather than hourly rates.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I handle quality control and client revisions?</h3>
+                <p style="color:#d1d5db;">Build QC checkpoints into your workflow. Include 2 rounds of revisions in base pricing. Charge additional fees for extra revision rounds. The speed of AI generation makes quick turnarounds possible while maintaining quality standards.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the legal and ethical considerations?</h3>
+                <p style="color:#d1d5db;">Review the platform's commercial terms for usage rights. Disclose AI usage where required by platforms or clients. Never reproduce copyrighted material. Build compliance into your standard workflow and contracts.</p>
+            </div>
+        </section>
         <section class="closing">
             <h2 style="color:#f9fafb;border-bottom-color:#374151;">Closing: Every Story Deserves to Be Seen</h2>
             <p style="color:#d1d5db;">Documentary storytelling has always been limited by available footage. AI removes that limitation — not by fabricating evidence, but by filling visual gaps with researched, verified, transparently labeled reconstructions. The documentaries that use AI responsibly don't compromise their integrity. They enhance their ability to tell complete stories. Every historical moment, every scientific concept, every future scenario deserves visual representation. AI makes that possible.</p>

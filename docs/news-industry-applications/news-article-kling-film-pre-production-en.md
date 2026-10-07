@@ -1,4 +1,4 @@
-# News Article: Kling for Film Pre-Production — From Storyboards to AI-Generated Pre-Visualization Videos (English)
+﻿# News Article: Kling for Film Pre-Production — From Storyboards to AI-Generated Pre-Visualization Videos (English)
 
 Kling transforms film pre-production by enabling directors and production teams to generate pre-visualization videos, storyboard animations, shot sequence tests, and visual pitch materials — collapsing the pre-viz process from weeks of illustration to hours of cinematic video generation.
 
@@ -25,10 +25,10 @@ Kling, film pre-production, AI pre-visualization, storyboard animation, director
     <title>From Storyboards to AI Pre-Viz: An Industry Application Guide with Kling for Film Pre-Production</title>
 </head>
 <body>
-    <article class="ai-model-comparison" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(248,113,113,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(239,68,68,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
+    <article class="ai-model-comparison" itemscope itemtype="https://schema.org/Article" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(248,113,113,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(239,68,68,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
 
         <section class="introduction">
-            <p style="color:#d1d5db;">Film pre-production is where movies are won or lost. Directors need to visualize scenes before shooting them — blocking, camera movement, pacing, visual tone, and emotional rhythm. Traditional pre-visualization involves storyboard artists ($500–2,000 per page), animatics ($5,000–20,000 per sequence), and weeks of back-and-forth between director and artist. For independent filmmakers and smaller productions, comprehensive pre-viz is often skipped entirely due to cost, leading to expensive on-set decision-making.</p>
+            <p style="color:#d1d5db;">Film pre-production is where movies are won or lost. Directors need to visualize scenes before shooting them — blocking, camera movement, pacing, visual tone, and emotional rhythm. Traditional pre-visualization involves storyboard artists ($500–2,000 per page), animatics ($5,000–20,000 per sequence), and weeks of back-and-forth between director and artist. For independent filmmakers and smaller productions, comprehensive pre-viz is often skipped entirely due to cost, leading to expensive on-set decision-making. Try <a href="https://www.fuseaitools.com/home/kling/v2-6-text-to-video" style="color:#f472b6">V2.6 Text-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/kling/v2-6-image-to-video" style="color:#f472b6">V2.6 Image-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/kling/v3-0-video" style="color:#f472b6">V3.0 Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/kling/v2-5-turbo-text-to-video-pro" style="color:#f472b6">V2.5 Turbo</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/kling/v2-6-motion-control" style="color:#f472b6">Motion Control</a> for this workflow.</p>
 
             <p style="color:#d1d5db;"><a href="https://www.fuseaitools.com/home/kling" style="color:#f87171;">Kling</a> transforms film pre-production by enabling directors to generate cinematic pre-visualization videos from scene descriptions and shot lists. Not replacing the director's creative vision — but giving them a rapid visualization tool that turns script pages into moving images within hours. The director can test camera angles, lighting moods, pacing choices, and visual approaches before committing to them on set — where changes cost thousands per minute.</p>
 
@@ -148,6 +148,30 @@ Kling, film pre-production, AI pre-visualization, storyboard animation, director
             </ol>
         </section>
 
+
+        <section class="faq">
+            <h2 style="color:#f9fafb;border-bottom-color:#374151;">Frequently Asked Questions</h2>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What AI model is used in this workflow?</h3>
+                <p style="color:#d1d5db;">The workflows in this article use the AI model available through the platform. Specific model versions and capabilities may vary. Check the tool page for current model availability and feature specifications.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I get started with this business model?</h3>
+                <p style="color:#d1d5db;">Start by building a portfolio of 10-15 sample outputs that demonstrate quality and range. Offer discounted or free samples to initial clients. Use the pricing models and acquisition strategies outlined in the action checklist to launch your service.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the typical profit margins?</h3>
+                <p style="color:#d1d5db;">Profit margins depend on your pricing model and client acquisition costs. AI-assisted production typically reduces costs by 80-95% compared to traditional methods, allowing healthy margins even at competitive pricing. Focus on value-based pricing rather than hourly rates.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I handle quality control and client revisions?</h3>
+                <p style="color:#d1d5db;">Build QC checkpoints into your workflow. Include 2 rounds of revisions in base pricing. Charge additional fees for extra revision rounds. The speed of AI generation makes quick turnarounds possible while maintaining quality standards.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the legal and ethical considerations?</h3>
+                <p style="color:#d1d5db;">Review the platform's commercial terms for usage rights. Disclose AI usage where required by platforms or clients. Never reproduce copyrighted material. Build compliance into your standard workflow and contracts.</p>
+            </div>
+        </section>
         <section class="closing">
             <h2 style="color:#f9fafb;border-bottom-color:#374151;">Closing: See the Movie Before You Shoot It</h2>
             <p style="color:#d1d5db;">The best directors know what they want before they arrive on set. AI pre-visualization makes this knowledge accessible to every filmmaker — not just the ones with budgets for weeks of storyboard and animatic production. See every scene, test every approach, communicate every intention — before the camera rolls. The films that pre-visualize comprehensively shoot more efficiently, make better creative choices, and stay on budget.</p>

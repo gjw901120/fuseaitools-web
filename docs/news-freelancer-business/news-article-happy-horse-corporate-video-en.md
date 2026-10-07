@@ -1,4 +1,4 @@
-# News Article: Freelance Corporate Video Services with Happy Horse — Building an AI Training Video Business (English)
+﻿# News Article: Freelance Corporate Video Services with Happy Horse — Building an AI Training Video Business (English)
 
 Happy Horse enables freelance instructional designers and corporate video producers to offer scalable AI training video services — generating onboarding content, compliance training videos, skill development modules, and product knowledge libraries for organizations at a fraction of traditional production costs.
 
@@ -25,10 +25,10 @@ Happy Horse, corporate video service, freelance instructional designer, AI train
     <title>Building an AI Corporate Training Video Service with Happy Horse for Freelance Instructional Designers</title>
 </head>
 <body>
-    <article class="ai-model-comparison" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(192,132,252,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(168,85,247,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
+    <article class="ai-model-comparison" itemscope itemtype="https://schema.org/Article" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(192,132,252,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(168,85,247,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
 
         <section class="introduction">
-            <p style="color:#d1d5db;">Every company needs training videos. Onboarding, compliance, product knowledge, soft skills — the demand for training content is constant and growing. But producing training video traditionally costs $5,000–20,000 per module and takes 2–6 weeks. Most organizations have a massive backlog of training content that needs video transformation but can't afford the production budget. They settle for slides-with-narration and wonder why completion rates are 30%.</p>
+            <p style="color:#d1d5db;">Every company needs training videos. Onboarding, compliance, product knowledge, soft skills — the demand for training content is constant and growing. But producing training video traditionally costs $5,000–20,000 per module and takes 2–6 weeks. Most organizations have a massive backlog of training content that needs video transformation but can't afford the production budget. They settle for slides-with-narration and wonder why completion rates are 30%. Try <a href="https://www.fuseaitools.com/home/happy-horse/v1-text-to-video" style="color:#34d399">V1 Text-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/happy-horse/v1-image-to-video" style="color:#34d399">V1 Image-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/happy-horse/v1-reference-to-video" style="color:#34d399">V1 Reference-to-Video</a> for this workflow. Try <a href="https://www.fuseaitools.com/home/happy-horse/v1-video-edit" style="color:#34d399">V1 Video Edit</a> for this workflow.</p>
 
             <p style="color:#d1d5db;"><a href="https://www.fuseaitools.com/home/happy-horse" style="color:#c084fc;">Happy Horse</a> enables freelance instructional designers and corporate video specialists to offer AI training video services at scale. Your instructional design expertise — understanding learning objectives, structuring content for retention, designing engaging educational experiences — combined with AI video generation = professional training videos delivered at prices that make comprehensive video coverage accessible to organizations of every size. You're not just producing videos — you're solving the corporate training engagement crisis.</p>
 
@@ -149,6 +149,30 @@ Happy Horse, corporate video service, freelance instructional designer, AI train
             </ol>
         </section>
 
+
+        <section class="faq">
+            <h2 style="color:#f9fafb;border-bottom-color:#374151;">Frequently Asked Questions</h2>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What AI model is used in this workflow?</h3>
+                <p style="color:#d1d5db;">The workflows in this article use the AI model available through the platform. Specific model versions and capabilities may vary. Check the tool page for current model availability and feature specifications.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I get started with this business model?</h3>
+                <p style="color:#d1d5db;">Start by building a portfolio of 10-15 sample outputs that demonstrate quality and range. Offer discounted or free samples to initial clients. Use the pricing models and acquisition strategies outlined in the action checklist to launch your service.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the typical profit margins?</h3>
+                <p style="color:#d1d5db;">Profit margins depend on your pricing model and client acquisition costs. AI-assisted production typically reduces costs by 80-95% compared to traditional methods, allowing healthy margins even at competitive pricing. Focus on value-based pricing rather than hourly rates.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I handle quality control and client revisions?</h3>
+                <p style="color:#d1d5db;">Build QC checkpoints into your workflow. Include 2 rounds of revisions in base pricing. Charge additional fees for extra revision rounds. The speed of AI generation makes quick turnarounds possible while maintaining quality standards.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What are the legal and ethical considerations?</h3>
+                <p style="color:#d1d5db;">Review the platform's commercial terms for usage rights. Disclose AI usage where required by platforms or clients. Never reproduce copyrighted material. Build compliance into your standard workflow and contracts.</p>
+            </div>
+        </section>
         <section class="closing">
             <h2 style="color:#f9fafb;border-bottom-color:#374151;">Closing: The $370 Billion Training Market Needs Video</h2>
             <p style="color:#d1d5db;">Corporate training is a massive market stuck with outdated content formats. Video transforms training effectiveness, but traditional production costs make comprehensive video coverage impossible. AI changes the equation. Your instructional design expertise + AI video generation = a service that every organization with employees needs. The companies that make this shift don't just improve training — they build a more knowledgeable, more capable workforce. Build this business now.</p>

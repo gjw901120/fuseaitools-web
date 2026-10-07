@@ -23,9 +23,10 @@ GPT, copywriting service, freelance copywriter, AI copywriting, conversion copy,
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building an AI Copywriting Service Business with GPT for Freelance Writers</title>
+    <meta name="description" content="GPT enables freelance copywriters to build scalable businesses delivering conversion-optimized copy. Guide covering website copy packages, ad campaigns, email sequences, and sales materials with AI-assisted production.">
 </head>
 <body>
-    <article class="ai-model-comparison" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(16,185,129,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(5,150,105,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
+    <article class="ai-model-comparison" itemscope itemtype="https://schema.org/Article" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(16,185,129,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(5,150,105,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
 
         <section class="introduction">
             <p style="color:#d1d5db;">Good copy is the difference between a website that converts and one that doesn't. Between an ad campaign that pays for itself and one that burns budget. Between a product launch that generates buzz and one that falls flat. Every business needs conversion-optimized copy — but professional copywriters charge $200–500/hour and have waiting lists measured in months.</p>
@@ -177,6 +178,26 @@ GPT, copywriting service, freelance copywriter, AI copywriting, conversion copy,
                 <li style="margin-bottom:8px;"><strong style="color:#10b981;">Offer A/B testing as an add-on.</strong> "3 headline variants for $500 extra" is easy upsell revenue. Clients love testing options; AI makes variant generation nearly free.</li>
                 <li style="margin-bottom:8px;"><strong style="color:#10b981;">Build retainers.</strong> Every project client is a monthly retainer prospect. "Ongoing ad copy + email content for $3,000/month" stabilizes your revenue.</li>
             </ol>
+        </section>
+
+        <section class="faq">
+            <h2 style="color:#f9fafb;border-bottom-color:#374151;">Frequently Asked Questions</h2>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: Won't AI copywriting sound the same as everyone else's?</h3>
+                <p style="color:#d1d5db;">AI copy without human editing sounds generic. Your value is in strategic positioning, brand voice, and persuasive nuance that AI cannot replicate. Clients don't pay for words — they pay for copy that converts. That requires human judgment about audience, timing, and persuasion.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How should I price AI-assisted copywriting?</h3>
+                <p style="color:#d1d5db;">Price by deliverable and value, not by hour or word count. Full website copy: $3K–10K. Ad campaigns: $1K–3K. Email sequences: $1K–3K. Your AI efficiency means higher margins, not lower prices — clients pay for conversion-optimized copy regardless of how fast you produce it.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: Can I promise specific ROI from copywriting?</h3>
+                <p style="color:#d1d5db;">No. Copy is one variable in conversion — landing page design, product quality, and market conditions all matter. Promise professionally crafted, research-backed copy optimized for the client's audience. Never guarantee specific conversion rates or revenue outcomes.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How do I handle revision requests with AI-assisted work?</h3>
+                <p style="color:#d1d5db;">Include 2 rounds of revisions in your base price. Additional rounds at $150–300 each. AI makes revisions fast, but unlimited revisions destroy margins. Set clear scope boundaries in contracts — "AI-powered" doesn't mean "unlimited free changes."</p>
+            </div>
         </section>
 
         <section class="closing">

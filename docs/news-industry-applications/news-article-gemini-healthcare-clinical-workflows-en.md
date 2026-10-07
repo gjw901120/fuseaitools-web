@@ -23,9 +23,10 @@ Gemini, healthcare AI, clinical decision support, medical AI, HIPAA compliance, 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>From Paper Charts to AI Clinical Decision Support: An Industry Application Guide with Gemini in Healthcare</title>
+    <meta name="description" content="Gemini transforms healthcare clinical workflows with AI-assisted diagnostic support, clinical documentation, medical imaging analysis, and patient communication. Industry guide covering HIPAA-compliant deployment.">
 </head>
 <body>
-    <article class="ai-model-comparison" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(129,140,248,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(99,102,241,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
+    <article class="ai-model-comparison" itemscope itemtype="https://schema.org/Article" style="background:#0b0c0f;background-image:radial-gradient(ellipse 65% 50% at 50% 0%, rgba(129,140,248,.07), transparent),radial-gradient(ellipse 50% 40% at 100% 90%, rgba(99,102,241,.05), transparent),linear-gradient(180deg, #151318, #0b0c0f);color:#e5e7eb;padding:20px;border-radius:12px;">
 
         <section class="introduction">
             <p style="color:#d1d5db;">Healthcare faces a triple constraint: clinician burnout from administrative overhead, diagnostic errors affecting 12 million Americans annually, and growing patient volumes with stagnant staffing. The average physician spends 16 minutes on documentation for every patient encounter — time stolen from direct care. Meanwhile, diagnostic errors contribute to approximately 10% of patient deaths, not because clinicians are incompetent, but because the cognitive load of differential diagnosis under time pressure exceeds human capacity.</p>
@@ -213,6 +214,26 @@ Gemini, healthcare AI, clinical decision support, medical AI, HIPAA compliance, 
                 <li style="margin-bottom:8px;"><strong style="color:#818cf8;">Measure outcomes, not just efficiency.</strong> Track: documentation time saved, diagnostic accuracy rates, patient readmission rates, patient satisfaction scores, and clinician burnout indicators. The ROI story needs clinical outcome data.</li>
                 <li style="margin-bottom:8px;"><strong style="color:#818cf8;">Engage clinical governance early.</strong> Present the AI deployment plan to your medical executive committee, ethics board, and risk management. Clinical AI requires institutional buy-in, not just IT approval.</li>
             </ol>
+        </section>
+
+        <section class="faq">
+            <h2 style="color:#f9fafb;border-bottom-color:#374151;">Frequently Asked Questions</h2>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: Can Gemini be used for actual clinical diagnosis?</h3>
+                <p style="color:#d1d5db;">No. Gemini generates differential diagnoses for clinician review — it does not diagnose. The clinician retains full diagnostic and treatment authority. AI is positioned as a cognitive augment, not a decision-maker, with all output verified by qualified providers.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: Is Gemini HIPAA-compliant for healthcare use?</h3>
+                <p style="color:#d1d5db;">Yes, when deployed through Google Cloud with a signed BAA (Business Associate Agreement). Use the Healthcare API to ensure PHI stays within your compliant environment. Never input patient data into consumer AI tools — enterprise deployment is essential.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: How much documentation time can Gemini save clinicians?</h3>
+                <p style="color:#d1d5db;">Clinical documentation time drops from 16 minutes per encounter to 3–5 minutes with AI-assisted generation — a 60–80% reduction. This directly addresses the 2 hours of daily "pajama time" (after-hours charting) that drives physician burnout.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <h3 style="color:#f3f4f6;">Q: What about AI hallucination risks in clinical settings?</h3>
+                <p style="color:#d1d5db;">A hallucinated drug interaction or fabricated guideline could harm patients. Build verification into every workflow: cross-reference AI clinical suggestions against established formularies and current guidelines. Start with high specificity (fewer flags, higher confidence) to prevent alert fatigue.</p>
+            </div>
         </section>
 
         <section class="closing">
