@@ -235,7 +235,7 @@
         class="seo-inline-link"
         @click.prevent="navigateToToolTop('/home/seedance/v1-5-pro')"
       >Try Seedance 1.5 Pro →</a>
-      for 4/8/12s clips and fixed-lens control.
+      for 4–12s clips and fixed-lens control.
     </div>
 
     <div class="upgrade-tip">
@@ -246,6 +246,16 @@
         @click.prevent="navigateToToolTop('/home/seedance/v2')"
       >Explore Seedance 2 →</a>
       for 4–15s outputs with image, video, and audio references.
+    </div>
+
+    <div class="upgrade-tip">
+      ⏱️ Need longer multimodal clips (up to 30s)?
+      <a
+        href="/home/seedance/v2-5"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedance/v2-5')"
+      >Try Seedance 2.5 →</a>
+      for 4–30s at 480p/720p/1080p.
     </div>
   </div>
 </template>

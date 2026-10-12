@@ -318,6 +318,12 @@
                 <template v-if="isSeedance2Mode">
                   <button type="button" class="tab-option" :class="{ active: formData.resolution === '480p' }" @click="formData.resolution = '480p'">480p</button>
                   <button type="button" class="tab-option" :class="{ active: formData.resolution === '720p' }" @click="formData.resolution = '720p'">720p</button>
+                  <template v-if="mode !== 'seedance-2-mini'">
+                    <button type="button" class="tab-option" :class="{ active: formData.resolution === '1080p' }" @click="formData.resolution = '1080p'">1080p</button>
+                  </template>
+                  <template v-if="mode === 'seedance-2' || mode === 'seedance-2-fast'">
+                    <button type="button" class="tab-option" :class="{ active: formData.resolution === '4K' }" @click="formData.resolution = '4K'">4K</button>
+                  </template>
                 </template>
                 <template v-else>
                   <button v-if="mode !== 'v1-pro-fast-image-to-video'" type="button" class="tab-option" :class="{ active: formData.resolution === '480p' }" @click="formData.resolution = '480p'">480p</button>
@@ -336,15 +342,21 @@
                     type="range"
                     class="duration-range"
                     min="4"
-                    max="15"
+                    :max="mode === 'seedance-2-5' ? 30 : 15"
                     step="1"
                   />
-                  <div class="form-hint">Duration: {{ formData.durationInt }}s (4-15s)</div>
+                  <div class="form-hint">Duration: {{ formData.durationInt }}s (4-{{ mode === 'seedance-2-5' ? '30' : '15' }}s)</div>
                 </template>
                 <template v-else-if="mode === 'v1-5-pro'">
-                  <button type="button" class="tab-option" :class="{ active: formData.duration === '4' }" @click="formData.duration = '4'">4s</button>
-                  <button type="button" class="tab-option" :class="{ active: formData.duration === '8' }" @click="formData.duration = '8'">8s</button>
-                  <button type="button" class="tab-option" :class="{ active: formData.duration === '12' }" @click="formData.duration = '12'">12s</button>
+                  <input
+                    v-model.number="formData.durationInt"
+                    type="range"
+                    class="duration-range"
+                    min="4"
+                    max="12"
+                    step="1"
+                  />
+                  <div class="form-hint">Duration: {{ formData.durationInt }}s (4-12s)</div>
                 </template>
                 <template v-else>
                   <button type="button" class="tab-option" :class="{ active: formData.duration === '5' }" @click="formData.duration = '5'">5s</button>
@@ -526,7 +538,9 @@ const modeList = [
   { id: 'v1-pro-fast-image-to-video', label: 'v1 Pro Fast I2V', icon: 'fas fa-bolt' },
   { id: 'v1-5-pro', label: 'v1.5 Pro', icon: 'fas fa-video' },
   { id: 'seedance-2-fast', label: 'Seedance 2 Fast', icon: 'fas fa-forward' },
-  { id: 'seedance-2', label: 'Seedance 2', icon: 'fas fa-film' }
+  { id: 'seedance-2', label: 'Seedance 2', icon: 'fas fa-film' },
+  { id: 'seedance-2-mini', label: 'Seedance 2 Mini', icon: 'fas fa-compress-arrows-alt' },
+  { id: 'seedance-2-5', label: 'Seedance 2.5', icon: 'fas fa-star' }
 ]
 
 const modeTabToPath = {
@@ -537,7 +551,9 @@ const modeTabToPath = {
   'v1-pro-fast-image-to-video': '/home/seedance/v1-pro-fast-image-to-video',
   'v1-5-pro': '/home/seedance/v1-5-pro',
   'seedance-2-fast': '/home/seedance/v2-fast',
-  'seedance-2': '/home/seedance/v2'
+  'seedance-2': '/home/seedance/v2',
+  'seedance-2-mini': '/home/seedance/v2-mini',
+  'seedance-2-5': '/home/seedance/v2-5'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -594,23 +610,25 @@ const seedancePriceModelKeyMap = {
   'v1-pro-fast-image-to-video': 'seedance-v1-pro-fast-image-to-video',
   'v1-5-pro': 'seedance-1.5-pro',
   'seedance-2-fast': 'seedance-2-fast',
-  'seedance-2': 'seedance-2'
+  'seedance-2': 'seedance-2',
+  'seedance-2-mini': 'seedance-2-mini',
+  'seedance-2-5': 'seedance-2-5'
 }
 const seedancePriceText = computed(() => {
   const modelKey = seedancePriceModelKeyMap[mode.value]
   if (!modelKey) return ''
 
   // seedance-2-fast / seedance-2：RULE 中 duration=1 为「每 1 秒」单价；scene=with_video 表示已上传 Reference Videos（与接口 rules 一致）
-  if (mode.value === 'seedance-2-fast' || mode.value === 'seedance-2') {
+  if (mode.value === 'seedance-2-fast' || mode.value === 'seedance-2' || mode.value === 'seedance-2-mini' || mode.value === 'seedance-2-5') {
     const hasRefVideos = Array.isArray(formData.referenceVideoUrls) && formData.referenceVideoUrls.length > 0
     const scene = hasRefVideos ? 'with_video' : 'without_video'
     const perSecond = getPrice(modelKey, {
       duration: 1,
-      quality: formData.resolution === '480p' ? '480p' : '720p',
+      quality: ['480p', '720p', '1080p', '4K'].includes(formData.resolution) ? formData.resolution : '720p',
       scene
     })
     if (perSecond == null) return ''
-    const durOut = Math.max(4, Math.min(15, Number(formData.durationInt) || 4))
+    const durOut = Math.max(4, Math.min(mode.value === 'seedance-2-5' ? 30 : 15, Number(formData.durationInt) || 4))
     const uploadCeil = Math.ceil(Number(referenceVideoUploadDurationSec.value) || 0)
     const totalCredits = hasRefVideos
       ? perSecond * (uploadCeil + durOut)
@@ -621,7 +639,7 @@ const seedancePriceText = computed(() => {
   }
 
   const priceFields = {
-    duration: formData.duration,
+    duration: String(formData.durationInt),
     quality: formData.resolution
   }
   if (mode.value === 'v1-5-pro') {
@@ -660,7 +678,7 @@ const detailData = ref(null)
 const loadingRecordId = ref(null)
 
 const isTextToVideoMode = computed(() => mode.value === 'v1-lite-text-to-video' || mode.value === 'v1-pro-text-to-video')
-const isSeedance2Mode = computed(() => mode.value === 'seedance-2-fast' || mode.value === 'seedance-2')
+const isSeedance2Mode = computed(() => mode.value === 'seedance-2-fast' || mode.value === 'seedance-2' || mode.value === 'seedance-2-mini' || mode.value === 'seedance-2-5')
 const isImageMode = computed(() => [
   'v1-lite-image-to-video',
   'v1-pro-image-to-video',
@@ -678,7 +696,7 @@ const promptMaxLength = computed(() => {
 })
 const promptPlaceholder = computed(() => mode.value === 'v1-5-pro'
   ? 'Prompt for Seedance 1.5 Pro (3-2500 characters)'
-  : (isSeedance2Mode.value ? 'Prompt for Seedance 2 / 2 Fast (3-20000 characters)' : 'The text prompt used to generate the video (max 10000 characters)')
+  : (isSeedance2Mode.value ? `Prompt for ${mode.value === 'seedance-2-mini' ? 'Seedance 2 Mini' : mode.value === 'seedance-2-5' ? 'Seedance 2.5' : 'Seedance 2 / 2 Fast'} (3-20000 characters)` : 'The text prompt used to generate the video (max 10000 characters)')
 )
 
 async function uploadFileToUrl(file) {
@@ -1113,7 +1131,7 @@ async function generate() {
         inputUrls: formData.inputUrls.length ? formData.inputUrls : undefined,
         aspectRatio: formData.aspectRatio,
         resolution: formData.resolution,
-        duration: String(formData.duration || '8'),
+        duration: String(formData.durationInt || 8),
         fixedLens: !!formData.fixedLens,
         generateAudio: !!formData.generateAudio
       }
@@ -1128,16 +1146,23 @@ async function generate() {
       if (totalImageCount > 9) {
         throw new Error('first/last frame and reference images total must be <= 9')
       }
-      apiPath = modeVal === 'seedance-2-fast'
-        ? '/api/video/seedance/v2-fast'
-        : '/api/video/seedance/v2'
-      const durStr = String(Math.max(4, Math.min(15, Number(formData.durationInt) || 4)))
+      if (modeVal === 'seedance-2-5') {
+        apiPath = '/api/video/seedance/v2-5'
+      } else if (modeVal === 'seedance-2-mini') {
+        apiPath = '/api/video/seedance/v2-mini'
+      } else if (modeVal === 'seedance-2-fast') {
+        apiPath = '/api/video/seedance/v2-fast'
+      } else {
+        apiPath = '/api/video/seedance/v2'
+      }
+      const durMax = modeVal === 'seedance-2-5' ? 30 : 15
+      const durStr = String(Math.max(4, Math.min(durMax, Number(formData.durationInt) || 4)))
       const uploadDur =
         referenceVideoUrls.length > 0
           ? String(Math.ceil(referenceVideoUploadDurationSec.value))
           : undefined
       body = {
-        model: modeVal === 'seedance-2-fast' ? 'seedance-2-fast' : 'seedance-2',
+        model: modeVal === 'seedance-2-5' ? 'seedance-2-5' : (modeVal === 'seedance-2-mini' ? 'seedance-2-mini' : (modeVal === 'seedance-2-fast' ? 'seedance-2-fast' : 'seedance-2')),
         prompt: p,
         firstFrameUrl: first || undefined,
         lastFrameUrl: last || undefined,
@@ -1145,7 +1170,11 @@ async function generate() {
         referenceVideoUrls: referenceVideoUrls.length ? referenceVideoUrls : undefined,
         referenceAudioUrls: referenceAudioUrls.length ? referenceAudioUrls : undefined,
         generateAudio: !!formData.generateAudioV2,
-        resolution: formData.resolution === '480p' ? '480p' : '720p',
+        resolution: modeVal === 'seedance-2-mini'
+          ? (formData.resolution === '480p' ? '480p' : '720p')
+          : (modeVal === 'seedance-2-5'
+            ? (['480p', '720p', '1080p'].includes(formData.resolution) ? formData.resolution : '720p')
+            : (['480p', '720p', '1080p', '4K'].includes(formData.resolution) ? formData.resolution : '720p')),
         aspectRatio: formData.aspectRatio,
         duration: durStr,
         webSearch: !!formData.webSearch,
@@ -1185,11 +1214,11 @@ watch(mode, (m) => {
   if (m === 'v1-5-pro') {
     formData.aspectRatio = '1:1'
     formData.resolution = '720p'
-    formData.duration = '8'
+    formData.durationInt = 8
     formData.fixedLens = false
     formData.generateAudio = false
   }
-  if (m === 'seedance-2-fast' || m === 'seedance-2') {
+  if (m === 'seedance-2-fast' || m === 'seedance-2' || m === 'seedance-2-mini' || m === 'seedance-2-5') {
     formData.aspectRatio = '16:9'
     formData.resolution = '720p'
     formData.durationInt = 5

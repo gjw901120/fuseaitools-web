@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Seedance 2 Generator',
   description:
-    'Seedance 2 on FuseAITools—multimodal video with first/last frame and up to 5 reference videos plus audio refs. 4–15s at 480p/720p, prompts up to 20,000 chars. 20 free credits on sign-up.',
+    'Seedance 2 on FuseAITools—multimodal video with first/last frame and up to 5 reference videos plus audio refs. 4–15s at 480p/720p/1080p/4K, prompts up to 20,000 chars. 20 free credits on sign-up.',
   category: 'video',
   route: '/home/seedance/v2',
   keywords: ['Seedance 2', 'multimodal video', 'reference video', 'AI video generation', 'FuseAITools'],

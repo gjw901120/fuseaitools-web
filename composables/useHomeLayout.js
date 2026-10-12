@@ -540,6 +540,8 @@ export const useHomeLayout = () => {
     'seedance-v1-pro-fast-image-to-video': '/home/seedance/v1-pro-fast-image-to-video',
     'seedance-2-fast': '/home/seedance/v2-fast',
     'seedance-2': '/home/seedance/v2',
+    'seedance-2-mini': '/home/seedance/v2-mini',
+    'seedance-2-5': '/home/seedance/v2-5',
     // Qwen
     'qwen-text-to-image': '/home/qwen/text-to-image',
     'qwen-image-to-image': '/home/qwen/image-to-image',

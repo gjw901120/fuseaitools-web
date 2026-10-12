@@ -1285,7 +1285,7 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro and Seedance 2—eight workflows for text, image, and multimodal generation. Pair with Seedream for 2K/3K stills and image edits. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4/8/12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s. Credits are shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro, Seedance 2, Seedance 2 Mini, and Seedance 2.5—ten workflows for text, image, and multimodal generation. Pair with Seedream for 2K/3K stills and image edits. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4–12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s up to 4K; Seedance 2 Mini provides the same at 480p/720p for cost-effective generation; Seedance 2.5 extends duration to 4–30s at up to 1080p. Credits are shown before each run. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Seedance v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Prompt-only clips—16:9 through 9:21, 480p/720p/1080p, 5s or 10s. Camera fixed, seed, and safety checker.' },
       { name: 'Seedance v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate one image with optional end frame—5/10s at up to 1080p with camera and seed controls.' },
@@ -1294,7 +1294,9 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
       { name: 'Seedance v1 Pro Fast Image to Video', path: '/home/seedance/v1-pro-fast-image-to-video', description: 'Speed-optimized I2V—720p/1080p only, 5s/10s, streamlined form without extra toggles.' },
       { name: 'Seedance 1.5 Pro', path: '/home/seedance/v1-5-pro', description: 'Unified T2V/I2V—0–2 reference images, 4/8/12s, optional audio and fixed lens at 480p–1080p.' },
       { name: 'Seedance 2 Fast', path: '/home/seedance/v2-fast', description: 'Multimodal generation—first/last frame, up to 3 reference videos, 4–15s at 480p/720p, prompts up to 20k chars.' },
-      { name: 'Seedance 2', path: '/home/seedance/v2', description: 'Full multimodal control—up to 5 reference videos plus image/audio refs, 4–15s at 480p/720p.' }
+      { name: 'Seedance 2', path: '/home/seedance/v2', description: 'Full multimodal control—up to 5 reference videos plus image/audio refs, 4–15s at 480p/720p/1080p/4K.' },
+      { name: 'Seedance 2 Mini', path: '/home/seedance/v2-mini', description: 'Lightweight multimodal—first/last frame, up to 3 reference videos, 4–15s at 480p/720p only. Cost-effective for fast iteration.' },
+      { name: 'Seedance 2.5', path: '/home/seedance/v2-5', description: 'Extended-duration multimodal—first/last frame, up to 3 reference videos, 4–30s at 480p/720p/1080p. Ideal for longer storytelling.' }
     ],
     sections: [
       {
@@ -1313,7 +1315,11 @@ Seedance 1.5 Pro (seedance-1.5-pro): Prompt 3–2500 chars. Optional 0–2 input
 
 Seedance 2 Fast (seedance-2-fast): Prompt 3–20,000 chars. First/last frame; ≤9 images total; ≤3 reference videos; ≤3 reference audios. Duration 4–15s. Resolution 480p/720p. Aspect ratio adaptive option. Web search flag required. Per-second credits.
 
-Seedance 2 (seedance-2): Same as 2 Fast with up to 5 reference videos. Per-second credits when reference videos are uploaded.`
+Seedance 2 (seedance-2): Same as 2 Fast with up to 5 reference videos. Resolution 480p/720p/1080p/4K. Per-second credits when reference videos are uploaded.
+
+Seedance 2 Mini (seedance-2-mini): Same multimodal inputs as Seedance 2—prompt 3–20,000 chars, first/last frame, ≤9 images, ≤3 reference videos, ≤3 reference audios. Duration 4–15s. Resolution 480p/720p only (no 1080p/4K). Web search flag required. Per-second credits.
+
+Seedance 2.5 (seedance-2-5): Same multimodal inputs as Seedance 2 Mini—prompt 3–20,000 chars, first/last frame, ≤9 images, ≤3 reference videos, ≤3 reference audios. Duration 4–30s. Resolution 480p/720p/1080p (no 4K). Web search flag required. Per-second credits.`
       },
       {
         title: 'Workflow',
@@ -1321,13 +1327,17 @@ Seedance 2 (seedance-2): Same as 2 Fast with up to 5 reference videos. Per-secon
 
 1.5 Pro: one page for text-only or 0–2 reference images—set 4/8/12s, toggle audio and fixed lens as needed.
 
-Seedance 2 / 2 Fast: upload first/last frames and optional reference media → set 4–15s duration, 480p/720p, aspect ratio (adaptive optional) → enable web search → generate.
+Seedance 2 / 2 Fast: upload first/last frames and optional reference media → set 4–15s duration, 480p/720p/1080p/4K, aspect ratio (adaptive optional) → enable web search → generate.
+
+Seedance 2 Mini: same workflow as Seedance 2 but at 480p/720p only—ideal for quick drafts and cost-effective batch generation.
+
+Seedance 2.5: same multimodal workflow at 480p/720p/1080p with 4–30s duration—ideal for longer storytelling and ads when 4K is not needed.
 
 All workflows run in the browser on FuseAITools with credit-based pricing—no local GPU required.`
       },
       {
         title: 'Try Seedance on FuseAITools',
-        content: `Seedance on FuseAITools spans eight workflows—from v1 Lite/Pro text and image modes through 1.5 Pro with optional audio to Seedance 2 multimodal generation. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
+        content: `Seedance on FuseAITools spans ten workflows—from v1 Lite/Pro text and image modes through 1.5 Pro with optional audio, Seedance 2 multimodal generation at up to 4K, Seedance 2 Mini for lightweight 480p/720p output, to Seedance 2.5 for extended 4–30s duration at up to 1080p. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },

@@ -10,7 +10,7 @@
     <meta itemprop="operatingSystem" content="Web" />
     <meta
       itemprop="description"
-      content="Seedance 1.5 Pro unified text and image-to-video on FuseAITools—4/8/12s, 480p/720p/1080p, optional audio and fixed lens."
+      content="Seedance 1.5 Pro unified text and image-to-video on FuseAITools—4–12s slider, 480p/720p/1080p, optional audio and fixed lens."
     />
 
     <div class="version-badge">🎵 Seedance 1.5 Pro · Unified T2V/I2V · Optional Audio</div>
@@ -74,7 +74,7 @@
             </tr>
             <tr>
               <td>Duration</td>
-              <td><strong>4s / 8s / 12s</strong></td>
+              <td><strong>4–12s</strong> (slider, 1s step)</td>
               <td>5s / 10s</td>
             </tr>
             <tr>
@@ -145,14 +145,14 @@
             <tr>
               <td><strong>Text to Video</strong></td>
               <td>Prompt (3–2500 chars)</td>
-              <td>4s / 8s / 12s</td>
+              <td>4–12s</td>
               <td>480p–1080p; 1:1, 4:3, 3:4, 16:9, 9:16, 21:9</td>
               <td>Fixed lens, generate audio</td>
             </tr>
             <tr>
               <td><strong>Image to Video</strong></td>
               <td>Prompt + 1–2 image URLs</td>
-              <td>4s / 8s / 12s</td>
+              <td>4–12s</td>
               <td>480p–1080p; same aspect ratios</td>
               <td>Fixed lens, generate audio</td>
             </tr>
@@ -227,6 +227,16 @@
       >Explore Seedance 2 →</a>
       for 4–15s clips with image, video, and audio conditioning.
     </div>
+
+    <div class="upgrade-tip">
+      ⏱️ Need longer duration (up to 30s) with multimodal refs?
+      <a
+        href="/home/seedance/v2-5"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedance/v2-5')"
+      >Try Seedance 2.5 →</a>
+      for 4–30s at 480p/720p/1080p.
+    </div>
   </div>
 </template>
 
@@ -238,7 +248,7 @@ const videoWorkflows = [
   {
     name: 'Seedance 1.5 Pro',
     title: 'Unified T2V / I2V',
-    description: 'Prompt-only or 0–2 reference images—4/8/12s, optional audio, fixed lens.',
+    description: 'Prompt-only or 0–2 reference images—4–12s slider, optional audio, fixed lens.',
     path: '/home/seedance/v1-5-pro',
     icon: 'fas fa-video'
   }
@@ -247,7 +257,7 @@ const videoWorkflows = [
 const workflowIntroMap = {
   '/home/seedance/v1-5-pro': {
     title: '🎵 Seedance 1.5 Pro',
-    lead: 'One workflow for <strong>text-to-video</strong> or <strong>image-to-video</strong>—add up to <strong>two reference images</strong> when needed. Pick <strong>4, 8, or 12 seconds</strong>, <strong>480p/720p/1080p</strong>, aspect ratios through <strong>21:9</strong>, plus optional <strong>audio generation</strong> and <strong>fixed lens</strong>.'
+    lead: 'One workflow for <strong>text-to-video</strong> or <strong>image-to-video</strong>—add up to <strong>two reference images</strong> when needed. Pick <strong>4–12 seconds</strong> with a smooth slider, <strong>480p/720p/1080p</strong>, aspect ratios through <strong>21:9</strong>, plus optional <strong>audio generation</strong> and <strong>fixed lens</strong>.'
   }
 }
 
@@ -255,7 +265,7 @@ const workflowDefinitionMap = {
   '/home/seedance/v1-5-pro': {
     title: 'What is Seedance 1.5 Pro?',
     body:
-      '<strong>Seedance 1.5 Pro</strong> on FuseAITools is a unified video generator (<code>seedance-1.5-pro</code>). Required: <strong>prompt (3–2500 characters)</strong>. Optional: <strong>0–2 input image URLs</strong> for image-guided scenes. Duration is <strong>4s, 8s, or 12s</strong> at <strong>480p, 720p, or 1080p</strong>—toggle <strong>fixed lens</strong> and <strong>generate audio</strong> as needed.'
+      '<strong>Seedance 1.5 Pro</strong> on FuseAITools is a unified video generator (<code>seedance-1.5-pro</code>). Required: <strong>prompt (3–2500 characters)</strong>. Optional: <strong>0–2 input image URLs</strong> for image-guided scenes. Duration is a <strong>4–12 second slider</strong> (whole seconds) at <strong>480p, 720p, or 1080p</strong>—toggle <strong>fixed lens</strong> and <strong>generate audio</strong> as needed.'
   }
 }
 
@@ -269,7 +279,7 @@ const workflowFaqMap = {
     {
       question: 'How does audio generation affect pricing on Seedance 1.5 Pro?',
       answer:
-        'Enabling <strong>generate audio</strong> uses the <strong>with_sound</strong> pricing tier; disabling it uses <strong>without_sound</strong>. Credits also depend on <strong>duration (4/8/12s)</strong> and <strong>resolution</strong>—check the Generate button before submitting.'
+        'Enabling <strong>generate audio</strong> uses the <strong>with_sound</strong> pricing tier; disabling it uses <strong>without_sound</strong>. Credits also depend on <strong>duration (4–12s)</strong> and <strong>resolution</strong>—check the Generate button before submitting.'
     },
     {
       question: 'What does fixed lens do on Seedance 1.5 Pro?',
@@ -330,9 +340,9 @@ const coreFeatures = [
   },
   {
     icon: '⏱️',
-    title: '4 / 8 / 12 Second Clips',
+    title: '4–12 Second Clips',
     description:
-      'Longer duration steps than v1—pick <strong>4s, 8s, or 12s</strong> at <strong>480p–1080p</strong>.'
+      'Continuous duration slider from 4 to 12 seconds—pick any whole-second length at <strong>480p–1080p</strong>.'
   },
   {
     icon: '☁️',

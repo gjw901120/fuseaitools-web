@@ -2,13 +2,11 @@
  * 根据 /api/common/models/price 返回的定价数据，按模型与表单字段计算并展示 credits
  * - type ONCE：直接使用 once.credits
  * - type RULE：用表单字段（duration, quality, size, batchSize, speed, scene）匹配 rules，取匹配规则的 credits
- * - 接口结果缓存到本地 1 小时，无有效缓存时再请求接口并写入缓存
+ * - 缓存策略由服务端 /api/common/models/price 代理层负责，前端不做本地缓存
  */
 import { ref, computed } from 'vue'
-import { fetchWithCache } from '~/composables/useApiCache'
 import { useUserDetail } from '~/composables/useUserDetail'
 
-const CACHE_KEY_PRICE = 'api_common_models_price'
 const priceDataCache = ref(null)
 
 /** 与 PRICING_MAPPING 一致：定价接口 key 可能为下划线或连字符，取不到时尝试互换后再查 */
@@ -69,16 +67,13 @@ export function useModelPrice() {
   const { discount } = useUserDetail()
 
   /**
-   * 拉取价格数据（先读本地 1 小时缓存，无有效缓存时请求接口并写入缓存）
+   * 拉取价格数据（直接请求服务端接口，缓存由服务端代理层管理）
    * @returns {Promise<Object>} data 为 { [modelKey]: { type, once?, rules? } }
    */
   const fetchPrices = async () => {
     try {
-      const data = await fetchWithCache(CACHE_KEY_PRICE, async () => {
-        const res = await get('/api/common/models/price')
-        return res && typeof res === 'object' ? res : null
-      })
-      priceDataCache.value = data
+      const res = await get('/api/common/models/price')
+      priceDataCache.value = res && typeof res === 'object' ? res : null
       return priceDataCache.value
     } catch (e) {
       console.warn('Failed to fetch model price:', e)

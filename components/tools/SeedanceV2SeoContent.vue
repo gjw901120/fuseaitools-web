@@ -10,7 +10,7 @@
     <meta itemprop="operatingSystem" content="Web" />
     <meta
       itemprop="description"
-      content="Seedance 2 and Seedance 2 Fast multimodal video on FuseAITools—first/last frame, reference images/videos/audio, 4–15s, 480p/720p."
+      content="Seedance 2 and Seedance 2 Fast multimodal video on FuseAITools—first/last frame, reference images/videos/audio, 4–15s, 480p/720p/1080p/4K."
     />
 
     <div class="version-badge">🎬 Seedance 2 · Multimodal Video · Fast & Full</div>
@@ -34,7 +34,7 @@
         <strong>images, videos, and audio</strong>. Choose <strong>Seedance 2 Fast</strong> for
         quicker iteration or <strong>Seedance 2</strong> when you need up to
         <strong>five reference videos</strong>. Output is <strong>4–15 seconds</strong> at
-        <strong>480p or 720p</strong>; credits scale by duration and reference usage. New users
+        <strong>480p, 720p, 1080p, or 4K</strong>; credits scale by duration and reference usage. New users
         receive <strong>20 free credits</strong> on sign-up.
       </p>
     </section>
@@ -91,7 +91,7 @@
             </tr>
             <tr>
               <td>Duration & resolution</td>
-              <td><strong>4–15s</strong> slider; <strong>480p / 720p</strong></td>
+              <td><strong>4–15s</strong> slider; <strong>480p / 720p / 1080p / 4K</strong></td>
               <td>Same</td>
             </tr>
             <tr>
@@ -154,14 +154,14 @@
               <td>3–20,000 chars</td>
               <td>First/last frame; ≤9 images total; ≤3 videos; ≤3 audios</td>
               <td>4–15s (slider)</td>
-              <td>480p/720p; 1:1–21:9 + adaptive</td>
+              <td>480p/720p/1080p/4K; 1:1–21:9 + adaptive</td>
             </tr>
             <tr>
               <td><strong>Seedance 2</strong></td>
               <td>3–20,000 chars</td>
               <td>First/last frame; ≤9 images total; ≤5 videos; ≤3 audios</td>
               <td>4–15s (slider)</td>
-              <td>480p/720p; 1:1–21:9 + adaptive</td>
+              <td>480p/720p/1080p/4K; 1:1–21:9 + adaptive</td>
             </tr>
           </tbody>
         </table>
@@ -232,7 +232,17 @@
         class="seo-inline-link"
         @click.prevent="navigateToToolTop('/home/seedance/v1-5-pro')"
       >Try Seedance 1.5 Pro →</a>
-      for 4/8/12s clips and fixed-lens control.
+      for 4–12s clips and fixed-lens control.
+    </div>
+
+    <div class="upgrade-tip">
+      ⏱️ Need longer duration (up to 30s)?
+      <a
+        href="/home/seedance/v2-5"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedance/v2-5')"
+      >Try Seedance 2.5 →</a>
+      for 4–30s at 480p/720p/1080p.
     </div>
   </div>
 </template>
@@ -245,7 +255,7 @@ const videoWorkflows = [
   {
     name: 'Seedance 2 Fast',
     title: 'Seedance 2 Fast',
-    description: 'Multimodal generation with up to 3 reference videos—4–15s at 480p/720p.',
+    description: 'Multimodal generation with up to 3 reference videos—4–15s at 480p/720p/1080p/4K.',
     path: '/home/seedance/v2-fast',
     icon: 'fas fa-forward'
   },
@@ -261,11 +271,11 @@ const videoWorkflows = [
 const workflowIntroMap = {
   '/home/seedance/v2-fast': {
     title: '⚡ Seedance 2 Fast',
-    lead: 'Seedance 2 Fast (<code>seedance-2-fast</code>) accepts ultra-long prompts (up to <strong>20,000 characters</strong>) plus optional <strong>first/last frames</strong> and reference <strong>images, videos, and audio</strong>. Set <strong>4–15 seconds</strong> on a slider, pick <strong>480p or 720p</strong>, and enable the required <strong>web search</strong> switch.'
+    lead: 'Seedance 2 Fast (<code>seedance-2-fast</code>) accepts ultra-long prompts (up to <strong>20,000 characters</strong>) plus optional <strong>first/last frames</strong> and reference <strong>images, videos, and audio</strong>. Set <strong>4–15 seconds</strong> on a slider, pick <strong>480p, 720p, 1080p, or 4K</strong>, and enable the required <strong>web search</strong> switch.'
   },
   '/home/seedance/v2': {
     title: '🎬 Seedance 2',
-    lead: 'Seedance 2 (<code>seedance-2</code>) extends Fast with up to <strong>five reference videos</strong> for richer scene conditioning. Same <strong>4–15s</strong> duration range, <strong>480p/720p</strong> output, and multimodal controls—including optional <strong>audio generation</strong> and <strong>adaptive</strong> aspect ratio.'
+    lead: 'Seedance 2 (<code>seedance-2</code>) extends Fast with up to <strong>five reference videos</strong> for richer scene conditioning. Same <strong>4–15s</strong> duration range, <strong>480p/720p/1080p/4K</strong> output, and multimodal controls—including optional <strong>audio generation</strong> and <strong>adaptive</strong> aspect ratio.'
   }
 }
 
@@ -273,12 +283,12 @@ const workflowDefinitionMap = {
   '/home/seedance/v2-fast': {
     title: 'What is Seedance 2 Fast?',
     body:
-      '<strong>Seedance 2 Fast</strong> on FuseAITools generates video from a prompt (3–20,000 characters) with optional <strong>firstFrameUrl</strong> and <strong>lastFrameUrl</strong>. Add up to <strong>9 total images</strong> (including frames), <strong>3 reference videos</strong>, and <strong>3 reference audios</strong>. Duration is <strong>4–15 seconds</strong> at <strong>480p or 720p</strong>; aspect ratios include <strong>adaptive</strong>.'
+      '<strong>Seedance 2 Fast</strong> on FuseAITools generates video from a prompt (3–20,000 characters) with optional <strong>firstFrameUrl</strong> and <strong>lastFrameUrl</strong>. Add up to <strong>9 total images</strong> (including frames), <strong>3 reference videos</strong>, and <strong>3 reference audios</strong>. Duration is <strong>4–15 seconds</strong> at <strong>480p, 720p, 1080p, or 4K</strong>; aspect ratios include <strong>adaptive</strong>.'
   },
   '/home/seedance/v2': {
     title: 'What is Seedance 2?',
     body:
-      '<strong>Seedance 2</strong> on FuseAITools matches Seedance 2 Fast for core controls but allows up to <strong>five reference videos</strong>—better for complex multi-clip conditioning. Prompt limit is <strong>20,000 characters</strong>; output remains <strong>4–15s</strong> at <strong>480p/720p</strong> with optional audio generation and web search enabled.'
+      '<strong>Seedance 2</strong> on FuseAITools matches Seedance 2 Fast for core controls but allows up to <strong>five reference videos</strong>—better for complex multi-clip conditioning. Prompt limit is <strong>20,000 characters</strong>; output remains <strong>4–15s</strong> at <strong>480p, 720p, 1080p, or 4K</strong> with optional audio generation and web search enabled.'
   }
 }
 
@@ -309,7 +319,7 @@ const workflowFaqMap = {
     {
       question: 'What aspect ratios does Seedance 2 support?',
       answer:
-        'Choose <strong>1:1, 4:3, 3:4, 16:9, 9:16, 21:9, or adaptive</strong>. Resolution is <strong>480p or 720p</strong>—there is no 1080p tier on Seedance 2 workflows.'
+        'Choose <strong>1:1, 4:3, 3:4, 16:9, 9:16, 21:9, or adaptive</strong>. Resolution options are <strong>480p, 720p, 1080p, or 4K</strong>.'
     }
   ]
 }
@@ -368,7 +378,7 @@ const coreFeatures = [
     icon: '☁️',
     title: 'Cloud on FuseAITools',
     description:
-      '<strong>4–15s</strong> outputs at <strong>480p/720p</strong>—per-second credits shown on Generate before submission.'
+      '<strong>4–15s</strong> outputs at <strong>480p/720p/1080p/4K</strong>—per-second credits shown on Generate before submission.'
   }
 ]
 
