@@ -1109,6 +1109,8 @@ watch(() => route.path, (newPath) => {
     '/home/seedance/v1-5-pro': 'Seedance',
     '/home/seedance/v2-fast': 'Seedance',
     '/home/seedance/v2': 'Seedance',
+    '/home/seedance/v2-mini': 'Seedance',
+    '/home/seedance/v2-5': 'Seedance',
     '/home/seedream': 'Seedream',
     '/home/seedream/5-lite-text-to-image': 'Seedream',
     '/home/seedream/5-lite-image-to-image': 'Seedream',

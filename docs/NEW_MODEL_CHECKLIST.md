@@ -321,6 +321,19 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 
 > 确保生成完成后，历史记录点击能正确跳转到带 `record-id` 的详情页。
 
+## 6.1 侧边栏路由识别映射（⚠️ 容易遗漏）
+
+在 **两处** `routeToToolMap` 中新增：
+
+```js
+'{pageRoute}': '{ParentToolName}',
+```
+
+- `composables/useHomeLayout.js` → `syncRouteToSelection()` 内的 `routeToToolMap`
+- `pages/home/index.vue` → `watch(() => route.path)` 内的 `routeToToolMap`
+
+> **不添加会导致**：访问新页面时侧边栏无法识别当前工具，`onMounted` 回退跳转到 `/home/gpt/generate`。
+
 ---
 
 ## 7. 完成检查清单
@@ -350,6 +363,8 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 | 21 | toolOverviews.js Workflow 新增 | `data/toolOverviews.js` |
 | 22 | toolOverviews.js Try 段落更新 | `data/toolOverviews.js` |
 | 23 | useHomeLayout.js modelToPath 新增 | `composables/useHomeLayout.js` |
+| 23b | useHomeLayout.js routeToToolMap 新增 | `composables/useHomeLayout.js` |
+| 23c | index.vue routeToToolMap 新增 | `pages/home/index.vue` |
 | 24 | 后端价格接口已有 `{priceModelKey}` 定价规则 | 后端（非前端） |
 | 25 | 后端 API 已部署 `{backendPath}` 接口 | 后端（非前端） |
 

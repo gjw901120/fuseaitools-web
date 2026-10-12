@@ -879,6 +879,8 @@ export const useHomeLayout = () => {
       '/home/seedance/v1-5-pro': 'Seedance',
       '/home/seedance/v2-fast': 'Seedance',
       '/home/seedance/v2': 'Seedance',
+      '/home/seedance/v2-mini': 'Seedance',
+      '/home/seedance/v2-5': 'Seedance',
       '/home/hailuo': 'Hailuo',
       '/home/hailuo/image-to-video-pro': 'Hailuo',
       '/home/hailuo/image-to-video-standard': 'Hailuo',
