@@ -1166,57 +1166,5 @@
   margin: 0 0 0.5rem 0;
 }
 
-/* ══════════════════════════════════════════════════════════
-   全局 Toast 通知（.toast-*）
-   Toast.vue 内联了一套淡红/粉色配色（#fff1f2→#ffe4e6 渐变），
-   与站点主题无关，导致 flux 暗色路由（如 /home/gemini 的 SSE
-   business_error「credits is not enough」）仍弹粉色框。此处仅在
-   .flux-theme 作用域下覆写为深色卡片 + 语义色描边，浅色站不受影响。
-   注意：类型色条规则须排在容器规则之后，才能覆盖 border 简写的左边。
-   ══════════════════════════════════════════════════════════ */
-.flux-theme .toast-container {
-  background: var(--flux-card) !important;
-  border: 1px solid var(--flux-border) !important;
-  box-shadow: var(--flux-modal-shadow) !important;
-  backdrop-filter: blur(10px);
-}
-
-.flux-theme .toast-message {
-  color: var(--flux-foreground) !important;
-}
-
-.flux-theme .toast-close {
-  color: var(--flux-muted) !important;
-}
-.flux-theme .toast-close:hover {
-  color: var(--flux-foreground) !important;
-}
-
-/* 左侧类型色条 + 图标改用 flux 语义色 */
-.flux-theme .toast-error {
-  border-left: 4px solid var(--flux-destructive) !important;
-}
-.flux-theme .toast-success {
-  border-left: 4px solid var(--flux-success) !important;
-}
-.flux-theme .toast-warning {
-  border-left: 4px solid var(--flux-warning) !important;
-}
-.flux-theme .toast-info {
-  border-left: 4px solid var(--flux-primary) !important;
-}
-.flux-theme .toast-error .toast-icon {
-  color: var(--flux-destructive) !important;
-}
-.flux-theme .toast-success .toast-icon {
-  color: var(--flux-success) !important;
-}
-.flux-theme .toast-warning .toast-icon {
-  color: var(--flux-warning) !important;
-}
-.flux-theme .toast-info .toast-icon {
-  color: var(--flux-primary) !important;
-}
-
 /* 全局模态图片预览（lightbox）层级参照：命令式创建，见 UploadImage.vue */
 
