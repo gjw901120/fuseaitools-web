@@ -28,7 +28,7 @@
     <div class="main-content">
       <div class="config-panel">
         <div class="config-header">
-          <h4>Configuration</h4>
+          <h4 class="panel-title">Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -663,36 +663,38 @@
       </div>
     </div>
 
-    <Teleport to="body">
-      <div v-if="bboxModalOpen" class="bbox-modal-root" @keydown.esc="closeBboxModalCancel">
-        <div class="bbox-modal-backdrop" @click="closeBboxModalCancel" />
-        <div class="bbox-modal" role="dialog" aria-modal="true" @click.stop>
-          <div class="bbox-modal-header">
-            <div>
-              <h4 class="bbox-modal-title">Add box for Image {{ bboxModalImageIdx + 1 }}</h4>
-              <p class="bbox-modal-hint">Drag to draw a rectangle. Saved coordinates use original image pixels (same as API bbox_list).</p>
-            </div>
-            <button type="button" class="bbox-modal-close" aria-label="Close" @click="closeBboxModalCancel">×</button>
+    <BaseModal
+      :is-open="bboxModalOpen"
+      max-width="920px"
+      heavy
+      aria-label="Add bounding box"
+      @close="closeBboxModalCancel"
+    >
+      <div class="bbox-modal-body">
+        <div class="bbox-modal-header">
+          <div>
+            <h4 class="panel-title bbox-modal-title">Add box for Image {{ bboxModalImageIdx + 1 }}</h4>
+            <p class="bbox-modal-hint">Drag to draw a rectangle. Saved coordinates use original image pixels (same as API bbox_list).</p>
           </div>
-          <p v-if="bboxModalNaturalW" class="bbox-modal-size">Original size: {{ bboxModalNaturalW }} × {{ bboxModalNaturalH }}</p>
-          <div class="bbox-modal-canvas-wrap">
-            <canvas
-              ref="bboxModalCanvasRef"
-              class="bbox-modal-canvas"
-              @mousedown.prevent="onBboxCanvasPointerDown"
-              @mouseup.prevent="onBboxCanvasPointerUp"
-            />
-          </div>
-          <div class="bbox-modal-footer">
-            <button type="button" class="action-btn" @click="clearBboxModalDraft">Clear selection</button>
-            <div class="bbox-modal-footer-right">
-              <button type="button" class="action-btn action-btn-ghost" @click="closeBboxModalCancel">Cancel</button>
-              <button type="button" class="btn-primary bbox-modal-save" :disabled="!bboxDraftValid" @click="saveBboxModal">Save box</button>
-            </div>
+        </div>
+        <p v-if="bboxModalNaturalW" class="bbox-modal-size">Original size: {{ bboxModalNaturalW }} × {{ bboxModalNaturalH }}</p>
+        <div class="bbox-modal-canvas-wrap">
+          <canvas
+            ref="bboxModalCanvasRef"
+            class="bbox-modal-canvas"
+            @mousedown.prevent="onBboxCanvasPointerDown"
+            @mouseup.prevent="onBboxCanvasPointerUp"
+          />
+        </div>
+        <div class="bbox-modal-footer">
+          <button type="button" class="action-btn" @click="clearBboxModalDraft">Clear selection</button>
+          <div class="bbox-modal-footer-right">
+            <button type="button" class="action-btn action-btn-ghost" @click="closeBboxModalCancel">Cancel</button>
+            <button type="button" class="btn-primary bbox-modal-save" :disabled="!bboxDraftValid" @click="saveBboxModal">Save box</button>
           </div>
         </div>
       </div>
-    </Teleport>
+    </BaseModal>
   </div>
 </template>
 
@@ -2030,7 +2032,7 @@ watch(() => formData.enableSequential, (enabled) => {
 }
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
+.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: var(--flux-foreground); }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .tool-details p.tool-description { line-height: 1.55; }
 
@@ -2096,13 +2098,13 @@ watch(() => formData.enableSequential, (enabled) => {
   min-height: 0;
 }
 .config-header { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; }
-.config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
+.config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
 
 .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
 .form-group:last-of-type { margin-bottom: 0; }
-.form-label { font-size: 14px; font-weight: 500; color: #374151; }
+.form-label { font-size: 14px; font-weight: 500; color: var(--flux-muted); }
 .required { color: #ef4444; }
 .form-input, .form-select { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
 .form-input:focus { outline: none; border-color: #3b82f6; }
@@ -2112,7 +2114,7 @@ watch(() => formData.enableSequential, (enabled) => {
 .select-with-arrow .form-input { width: 100%; appearance: none; padding-right: 32px; }
 .select-arrow-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6b7280; }
 
-.checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #374151; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: var(--flux-muted); }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; }
 
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
@@ -2133,7 +2135,7 @@ watch(() => formData.enableSequential, (enabled) => {
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   background: #f8fafc;
-  color: #374151;
+  color: var(--flux-muted);
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 13px;
@@ -2200,7 +2202,7 @@ watch(() => formData.enableSequential, (enabled) => {
   flex-direction: column;
 }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; }
-.empty-state h4 { margin: 0; font-size: 18px; color: #374151; }
+.empty-state h4 { margin: 0; font-size: 18px; color: var(--flux-foreground); }
 .video-result { display: flex; flex-direction: column; gap: 16px; }
 .video-player { background: #000; border-radius: 8px; overflow: hidden; }
 .video-element { width: 100%; height: auto; display: block; }
@@ -2209,7 +2211,7 @@ watch(() => formData.enableSequential, (enabled) => {
 .image-element { width: 100%; height: auto; display: block; object-fit: contain; }
 .video-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; color: #6b7280; }
 .video-actions { display: flex; gap: 8px; }
-.action-btn { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.action-btn { background: var(--flux-card); color: var(--flux-muted); border: 1px solid var(--flux-border); padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .action-btn:hover { background: #e5e7eb; }
 
 /* Color Palette：整块包在单一容器内，与周围表单项区分 */
@@ -2469,7 +2471,7 @@ watch(() => formData.enableSequential, (enabled) => {
 .bbox-boxes-title {
   font-weight: 600;
   font-size: 14px;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 .bbox-add-link {
   border: none;
@@ -2509,7 +2511,7 @@ watch(() => formData.enableSequential, (enabled) => {
   margin-bottom: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-muted);
 }
 .bbox-card-actions {
   display: flex;
@@ -2552,33 +2554,9 @@ watch(() => formData.enableSequential, (enabled) => {
   background: #fef2f2 !important;
 }
 
-/* bbox 模态（Teleport 到 body，仍受 scoped 属性限制） */
-.bbox-modal-root {
-  position: fixed;
-  inset: 0;
-  z-index: 10050;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  box-sizing: border-box;
-}
-.bbox-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.55);
-}
-.bbox-modal {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: min(920px, 96vw);
-  max-height: min(92vh, 900px);
-  overflow: auto;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-  padding: 20px;
+/* bbox 模态（现由 BaseModal 承载，Teleport 到 body，scoped 令牌仍生效） */
+/* bbox 弹窗：遮罩 / 卡片 / 关闭 / ESC / 滚动锁 由 BaseModal + .flux-modal-* 全局类统一负责 */
+.bbox-modal-body {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -2594,38 +2572,23 @@ watch(() => formData.enableSequential, (enabled) => {
   margin: 0 0 6px 0;
   font-size: 17px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--flux-foreground);
 }
 .bbox-modal-hint {
   margin: 0;
   font-size: 12px;
-  color: #64748b;
+  color: var(--flux-muted);
   line-height: 1.45;
-}
-.bbox-modal-close {
-  border: none;
-  background: #f1f5f9;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  color: #64748b;
-  flex-shrink: 0;
-}
-.bbox-modal-close:hover {
-  background: #e2e8f0;
-  color: #0f172a;
 }
 .bbox-modal-size {
   margin: 0;
   font-size: 12px;
-  color: #64748b;
+  color: var(--flux-muted);
   text-align: right;
 }
 .bbox-modal-canvas-wrap {
-  background: #0f172a;
+  background: var(--flux-bg);
+  border: 1px solid var(--flux-border);
   border-radius: 10px;
   padding: 8px;
   display: flex;
@@ -2660,6 +2623,18 @@ watch(() => formData.enableSequential, (enabled) => {
   width: auto !important;
   padding: 10px 22px !important;
   display: inline-flex !important;
+}
+/* bbox 弹窗 Teleport 到 body，拿不到 .home-layout--flux 作用域覆盖，此处显式补 flux 令牌 */
+.bbox-modal-footer .btn-primary,
+.bbox-modal-footer button.btn-primary {
+  background: var(--flux-gradient);
+  color: var(--flux-foreground);
+  box-shadow: none;
+}
+.bbox-modal-footer .action-btn:hover {
+  background: var(--flux-card-hover);
+  color: var(--flux-foreground);
+  border-color: var(--flux-primary);
 }
 
 .wan-video-input { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }

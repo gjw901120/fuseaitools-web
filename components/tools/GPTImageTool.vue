@@ -48,7 +48,7 @@
     <div class="main-content">
       <div class="config-panel">
         <div class="config-header">
-          <h4>{{ modeTitle }}</h4>
+          <h4 class="panel-title">{{ modeTitle }}</h4>
         </div>
         <form class="config-form" @submit.prevent="onSubmit">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -179,7 +179,7 @@
 
       <div class="result-panel">
         <div class="result-header">
-          <h4>Result</h4>
+          <h4 class="panel-title">Result</h4>
           <button v-if="!isDetailView && results.length > 0" type="button" class="btn-secondary" @click="clearResults">
             <i class="fas fa-trash"></i> Clear
           </button>
@@ -588,7 +588,7 @@ const clearResults = () => {
 .tool-header { display: flex; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; margin-right: 16px; flex-shrink: 0; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
+.tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .tool-details .tool-description { margin: 0; font-size: 14px; color: #6b7280; }
 
 .mode-tabs { display: flex; gap: 8px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
@@ -599,11 +599,11 @@ const clearResults = () => {
 .main-content { display: flex; flex: 1; min-height: 0; gap: 20px; }
 .config-panel { width: 36%; background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; min-height: 0; }
 .config-header { padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; margin-bottom: 16px; }
-.config-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: #1e293b; }
+.config-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--flux-foreground); }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 
 .form-group { margin-bottom: 18px; }
-.form-group label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; }
+.form-group label { display: block; font-size: 14px; font-weight: 500; color: var(--flux-muted); margin-bottom: 8px; }
 .form-group textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; resize: vertical; }
 .form-group textarea:focus { outline: none; border-color: #3b82f6; }
 .char-count { text-align: right; font-size: 12px; color: #64748b; margin-top: 4px; }
@@ -639,7 +639,7 @@ const clearResults = () => {
 
 .result-panel { flex: 1; background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; min-height: 0; }
 .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; margin-bottom: 16px; }
-.result-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: #1e293b; }
+.result-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--flux-foreground); }
 .result-container { flex: 1; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 16px; align-content: flex-start; }
 .tutorial-showcase {
   width: 100%;

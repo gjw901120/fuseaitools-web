@@ -29,7 +29,7 @@
 
     <div class="main-content">
       <div class="config-panel">
-        <div class="config-header"><h4>Configuration</h4></div>
+        <div class="config-header"><h4 class="panel-title">Configuration</h4></div>
         <form class="config-form" @submit.prevent="generate">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
             <div v-if="requiresPrompt" class="form-group">
@@ -633,7 +633,7 @@ function downloadVideo() {
 }
 .tool-avatar { width: 48px; height: 48px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; color: #1f2937; }
+.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; color: var(--flux-foreground); }
 .tool-description { margin: 0; color: #6b7280; font-size: 13px; }
 .mode-tabs-wrap {
   padding-bottom: 20px;
@@ -714,10 +714,10 @@ function downloadVideo() {
   overflow: visible;
   box-sizing: border-box;
 }
-.config-header h4 { margin: 0 0 14px 0; color: #1f2937; }
+.config-header h4 { margin: 0 0 14px 0; color: var(--flux-foreground); }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .form-group { margin-bottom: 16px; }
-.form-label { font-size: 14px; color: #374151; font-weight: 500; display: block; margin-bottom: 6px; }
+.form-label { font-size: 14px; color: var(--flux-muted); font-weight: 500; display: block; margin-bottom: 6px; }
 .required { color: #ef4444; }
 .form-input, .text-input { width: 100%; box-sizing: border-box; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; }
 .form-input { resize: vertical; }
@@ -739,7 +739,7 @@ function downloadVideo() {
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   background: #f8fafc;
-  color: #374151;
+  color: var(--flux-muted);
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 13px;
@@ -816,7 +816,7 @@ function downloadVideo() {
 .video-actions { display: flex; justify-content: flex-end; }
 .action-btn {
   background: #f3f4f6;
-  color: #374151;
+  color: var(--flux-muted);
   border: 1px solid #d1d5db;
   padding: 8px 12px;
   border-radius: 6px;

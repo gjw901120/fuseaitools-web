@@ -28,7 +28,7 @@
     <div class="main-content">
       <div class="config-panel">
         <div class="config-header">
-          <h4>Configuration</h4>
+          <h4 class="panel-title">Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -1295,7 +1295,7 @@ watch(mode, (m) => {
 .tool-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
+.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: var(--flux-foreground); }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .mode-tabs-wrap { padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .mode-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1305,18 +1305,18 @@ watch(mode, (m) => {
 .main-content { display: flex; flex: 1; min-height: 0; gap: 20px; }
 .config-panel { width: 35%; background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; min-height: 0; }
 .config-header { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; }
-.config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
+.config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
 .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
-.form-label { font-size: 14px; font-weight: 500; color: #374151; }
+.form-label { font-size: 14px; font-weight: 500; color: var(--flux-muted); }
 .required { color: #ef4444; }
 .form-input { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
 .form-input:focus { outline: none; border-color: #3b82f6; }
 .form-hint { font-size: 12px; color: #6b7280; }
 .char-count { font-size: 12px; color: #6b7280; text-align: right; }
 .tab-group { display: flex; gap: 8px; flex-wrap: wrap; }
-.tab-option { flex: 1; min-width: 60px; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; background: #f8fafc; color: #374151; cursor: pointer; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+.tab-option { flex: 1; min-width: 60px; padding: 10px 12px; border: 2px solid var(--flux-border); border-radius: 8px; background: var(--flux-input-bg); color: var(--flux-muted); cursor: pointer; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
 .tab-option:hover { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6; color: #3b82f6; }
 .tab-option.active { border-color: #3b82f6; background: #3b82f6; color: #fff; }
 .file-input-hidden { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -1341,21 +1341,21 @@ watch(mode, (m) => {
 .kling-video-preview { width: 100%; height: auto; display: block; }
 .result-panel { width: 65%; background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column; }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; }
-.empty-state h4 { margin: 0; font-size: 18px; color: #374151; }
+.empty-state h4 { margin: 0; font-size: 18px; color: var(--flux-foreground); }
 .video-result { display: flex; flex-direction: column; gap: 16px; }
 .video-player { background: #000; border-radius: 8px; overflow: hidden; }
 .video-element { width: 100%; height: auto; display: block; }
 .video-actions { display: flex; gap: 8px; }
-.action-btn { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.action-btn { background: var(--flux-card); color: var(--flux-muted); border: 1px solid var(--flux-border); padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .action-btn:hover { background: #e5e7eb; }
 .v3-shot-element { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb; display: flex; flex-direction: column; gap: 8px; }
-.shot-element-label { font-size: 13px; font-weight: 600; color: #1f2937; margin-bottom: 4px; }
+.shot-element-label { font-size: 13px; font-weight: 600; color: var(--flux-foreground); margin-bottom: 4px; }
 .shot-text-desc { min-height: 56px; resize: vertical; }
 .add-element-btn { align-self: flex-start; }
 /* shots list (Sora pro-storyboard style) */
 .shots-list { display: flex; flex-direction: column; gap: 16px; }
 .shot-card { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
-.shot-title { font-size: 13px; font-weight: 600; color: #1f2937; margin-bottom: 8px; }
+.shot-title { font-size: 13px; font-weight: 600; color: var(--flux-foreground); margin-bottom: 8px; }
 .shot-text { width: var(--shot-text-w); padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; resize: vertical; min-height: var(--shot-text-min-h); box-sizing: border-box; }
 .shot-text:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
 .shot-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }

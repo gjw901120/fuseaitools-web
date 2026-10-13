@@ -632,9 +632,10 @@ When to pick which: Use v1 Classic for full creative control and long prompts; Z
     features: [
       { name: 'Text to Image', path: '/home/grok/text-to-image', description: 'Model fixed to grok-imagine-text-to-image. Prompt required (max 5000). Aspect ratio options: 2:3, 3:2, 1:1, 16:9, 9:16.' },
       { name: 'Image to Image', path: '/home/grok/image-to-image', description: 'Model fixed to grok-imagine-image-to-image. image_urls required (upload first), supports JPEG/PNG/WEBP with max 10MB per image. Prompt optional.' },
-      { name: 'Text to Video', path: '/home/grok/text-to-video', description: 'Model fixed to grok-imagine-text-to-video. Prompt required (max 5000). Configure aspect ratio, mode, duration (6/10), and resolution (480p/720p).' },
+      { name: 'Text to Video', path: '/home/grok/text-to-video', description: 'Model fixed to grok-imagine-text-to-video. Prompt required (max 5000). Configure aspect ratio, mode, duration (6-30s slider), and resolution (480p/720p/1080p); billed per second.' },
       { name: 'Image to Video', path: '/home/grok/image-to-video', description: 'Model fixed to grok-imagine-image-to-video. Supports optional prompt and image_urls (up to 7). Configure mode, duration, resolution, and aspect ratio.' },
-      { name: 'Upscale', path: '/home/grok/upscale', description: 'Model fixed to grok-imagine-upscale. Requires a completed task_id from Grok generation to upscale output quality.' },
+      { name: 'Video 1.5 Preview', path: '/home/grok/video-1-5-preview', description: 'Model fixed to grok-imagine-video-1-5-preview. Unified entry: no image_urls = text-to-video, image_urls (up to 7) = image-to-video. Prompt optional (max 4096); aspect ratio includes auto (ignored on a single image); duration 1-15s; resolution 480p/720p billed per second; NSFW toggle.' },
+      { name: 'Upscale', path: '/home/grok/upscale', description: 'Model fixed to grok-imagine-upscale. Requires a completed task_id from Grok generation; pick a target Resolution 720p or 1080p (submits scene upscale-720p/upscale-1080p). 720p source locks to 1080p; 1080p source unsupported. Credits match source resolution + duration + target.' },
       { name: 'Extend', path: '/home/grok/extend', description: 'Model fixed to grok-imagine-extend. Requires task_id and prompt, with configurable extend_at, extend_times (6/10), and resolution.' }
     ],
     sections: [
@@ -664,7 +665,7 @@ Text to Video
 
 Model: grok-imagine-text-to-video (fixed)
 Prompt: Required, up to 5000 characters
-Parameters: aspect_ratio, mode (fun/normal/spicy), duration (6/10), resolution (480p/720p)
+Parameters: aspect_ratio, mode (fun/normal/spicy), duration (6-30s slider), resolution (480p/720p/1080p)
 Use cases: Motion concepts, short promos, social clips, storyboard previews.
 
 Image to Video
@@ -675,10 +676,19 @@ image_urls: Optional, up to 7 images
 Parameters: aspect_ratio, mode, duration, resolution
 Use cases: Animate posters/illustrations, product hero animation, before-after reveal clips.
 
+Video 1.5 Preview
+
+Model: grok-imagine-video-1-5-preview (fixed)
+Prompt: Optional, up to 4096 characters
+image_urls: Optional, up to 7 images (no images = text-to-video; with images = image-to-video)
+Parameters: aspect_ratio (includes auto; ignored on a single image), duration (1-15s slider), resolution (480p/720p, billed per second), nsfw_checker
+Use cases: One endpoint for quick text- or image-driven drafts; unified preview before committing to a dedicated mode.
+
 Upscale
 
 Model: grok-imagine-upscale (fixed)
 task_id: Required, from completed Grok generation
+target scene: upscale-720p / upscale-1080p (shown as Resolution 720p / 1080p); 720p source locks to 1080p, 1080p source unsupported
 Use cases: Final-output enhancement before publishing or client delivery.
 
 Extend
@@ -707,7 +717,7 @@ Rapid prototyping: Validate visual direction in minutes before entering heavy pr
 
 Image input formats: JPEG, PNG, WEBP; max 10MB per image.
 
-Video controls: Duration 6s or 10s; resolution 480p or 720p; aspect ratio options include portrait, square, and widescreen.
+Video controls: Text/image to video use a 6-30s duration slider at 480p/720p/1080p (billed per second); extend uses 6s or 10s at 480p/720p. Video 1.5 Preview uses a 1-15s slider at 480p/720p (billed per second) with an auto aspect option. Aspect ratio options include portrait, square, and widescreen.
 
 Motion behavior: fun / normal / spicy modes for different movement intensity.
 
@@ -729,9 +739,9 @@ Team handoff: Use task IDs and fixed model endpoints to keep generation reproduc
 
 Mode selection: Use normal as baseline; fun for creative reinterpretation; spicy for stronger dynamics when compatible.
 
-Resolution strategy: Use 480p for fast drafts and iteration; switch to 720p for final deliverables.
+Resolution strategy: Use 480p for fast drafts and iteration; 720p for balanced quality; 1080p for final HD deliverables.
 
-Duration strategy: 6s for punchy loops and ad snippets; 10s for clearer scene progression and storytelling.
+Duration strategy: With the 6-30s slider, keep 6-8s for punchy loops and ad snippets and 10s+ for clearer scene progression and storytelling; cost scales per second.
 
 Extend planning: Set extend_at at a visually stable frame and use continuation-focused prompts to reduce jump cuts.`
       },

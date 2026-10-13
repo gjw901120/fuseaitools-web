@@ -32,7 +32,7 @@
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>Music Generation Configuration</h4>
+          <h4 class="panel-title">Music Generation Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generateMusic">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -614,7 +614,7 @@
       <!-- 右侧：结果展示区域 (2/3) -->
       <div class="result-panel">
         <div class="result-header">
-          <h4>Generation Result</h4>
+          <h4 class="panel-title">Generation Result</h4>
         </div>
 
         <div class="result-content">
@@ -1686,7 +1686,7 @@ const shareResult = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -1723,7 +1723,7 @@ const shareResult = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -1749,7 +1749,7 @@ const shareResult = () => {
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .required {
@@ -1850,7 +1850,7 @@ const shareResult = () => {
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -1954,7 +1954,7 @@ const shareResult = () => {
   margin: 0 0 8px 0;
   font-size: 16px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .upload-area span {
@@ -1981,7 +1981,7 @@ const shareResult = () => {
 .uploaded-file span {
   flex: 1;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .remove-btn {
@@ -2055,7 +2055,7 @@ const shareResult = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .result-content {
@@ -2097,7 +2097,7 @@ const shareResult = () => {
 .detail-spinner { font-size: 48px; color: #667eea; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
-.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: var(--flux-muted); }
 
 .detail-audio-replay { margin-top: 8px; }
 .detail-audio-replay .detail-audio-label { margin-bottom: 6px; display: block; }
@@ -2174,7 +2174,7 @@ const shareResult = () => {
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .music-info p {
@@ -2222,7 +2222,7 @@ const shareResult = () => {
   border-radius: 6px;
   font-size: 13px;
   background: #fff;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .play-btn {

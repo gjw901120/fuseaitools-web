@@ -22,7 +22,7 @@
       <!-- Left: Parameter Configuration Panel -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>Image Generation Configuration</h4>
+          <h4 class="panel-title">Image Generation Configuration</h4>
         </div>
 
         <form class="config-form" @submit.prevent="generateImage">
@@ -125,7 +125,7 @@
       <!-- Right: Image Display Area -->
       <div class="image-display-panel">
         <div class="image-header">
-          <h4>Image Preview</h4>
+          <h4 class="panel-title">Image Preview</h4>
           <div class="image-actions" v-if="!isDetailView && generatedImages.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
@@ -545,7 +545,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-info p {
@@ -586,7 +586,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -608,7 +608,7 @@ const clearResults = () => {
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-muted);
   margin-bottom: 8px;
 }
 
@@ -753,7 +753,7 @@ const clearResults = () => {
 }
 
 .tip-item strong {
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .image-display-panel {
@@ -779,7 +779,7 @@ const clearResults = () => {
 .image-header h4 {
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -789,7 +789,7 @@ const clearResults = () => {
   gap: 6px;
   padding: 8px 16px;
   background: #f3f4f6;
-  color: #374151;
+  color: var(--flux-muted);
   border: 1px solid #d1d5db;
   border-radius: 8px;
   cursor: pointer;
@@ -907,7 +907,7 @@ const clearResults = () => {
 .empty-state h3 {
   font-size: 28px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-foreground);
   margin: 0 0 12px 0;
 }
 
@@ -973,7 +973,7 @@ const clearResults = () => {
 .detail-failure-state .failure-message {
   max-width: 420px;
   line-height: 1.6;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .detail-ref-urls {

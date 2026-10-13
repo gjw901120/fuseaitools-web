@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Grok Video Upscale',
   description:
-    'Grok Imagine upscale on FuseAITools—enhance a completed Grok generation by task ID. Per-run credits on Generate. 20 free credits on sign-up.',
+    'Grok Imagine upscale on FuseAITools—enhance a completed Grok generation by task ID and upscale the output to 720p or 1080p. Credits match the source resolution, duration, and target. 20 free credits on sign-up.',
   category: 'video',
   route: '/home/grok/upscale',
   keywords: ['Grok', 'Grok Imagine', 'xAI', 'Video Upscale', 'AI video enhancement', 'FuseAITools'],

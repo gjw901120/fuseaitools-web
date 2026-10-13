@@ -55,7 +55,7 @@
       <!-- 左侧配置面板 -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>Sora Configuration</h4>
+          <h4 class="panel-title">Sora Configuration</h4>
         </div>
 
         <!-- 模式选择已移动至顶部 -->
@@ -324,7 +324,7 @@
       <!-- 右侧结果面板 -->
       <div class="result-panel">
         <div class="video-header">
-          <h4>Result Preview</h4>
+          <h4 class="panel-title">Result Preview</h4>
           <div class="video-actions" v-if="results.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
@@ -869,7 +869,7 @@ const onSubmit = async () => {
 .tool-header { display: flex; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .tool-avatar { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; margin-right: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
-.tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
+.tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .tool-details p { margin: 0; font-size: 14px; color: #6b7280; }
 
 /* 顶部模式切换 */
@@ -882,12 +882,12 @@ const onSubmit = async () => {
 .main-content { display: flex; flex: 1; min-height: 0; gap: 20px; }
 .config-panel { width: 35%; background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; min-height: 0; }
 .config-header { padding: 0 0 20px 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
-.config-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: #1e293b; }
+.config-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--flux-foreground); }
 .config-form { flex: 1; overflow-y: auto; }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 
 .form-group { margin-bottom: 20px; }
-.form-group label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; }
+.form-group label { display: block; font-size: 14px; font-weight: 500; color: var(--flux-muted); margin-bottom: 8px; }
 .form-group .required { color: #ef4444; }
 .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s ease; box-sizing: border-box; }
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
@@ -896,7 +896,7 @@ const onSubmit = async () => {
 
 .tab-group { flex: 1; border: none; border-radius: 12px; overflow: hidden; background: white; }
 .tab-options { display: flex; gap: 8px; }
-.tab-option { flex: 1; padding: 10px 12px; border: 2px solid #e2e8f0; background: #f8fafc; color: #374151; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500; }
+.tab-option { flex: 1; padding: 10px 12px; border: 2px solid var(--flux-border); background: var(--flux-input-bg); color: var(--flux-muted); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500; }
 .tab-option:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); color: #3b82f6; }
 .tab-option.active { border-color: #3b82f6; background: #3b82f6; color: white; }
 
@@ -915,7 +915,7 @@ const onSubmit = async () => {
 .upload-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #3b82f6; border-radius: 50%; color: white; font-size: 20px; }
 .upload-area.has-files .upload-icon { background: #10b981; }
 .upload-text { display: flex; flex-direction: column; gap: 4px; }
-.upload-title { font-size: 16px; font-weight: 600; color: #1f2937; margin: 0; }
+.upload-title { font-size: 16px; font-weight: 600; color: var(--flux-foreground); margin: 0; }
 .upload-subtitle { font-size: 14px; color: #6b7280; margin: 0; }
 .file-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
@@ -943,7 +943,7 @@ const onSubmit = async () => {
 /* shots builder */
 .shots-list { display: flex; flex-direction: column; gap: 16px; }
 .shot-card { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
-.shot-title { font-size: 13px; font-weight: 600; color: #1f2937; margin-bottom: 8px; }
+.shot-title { font-size: 13px; font-weight: 600; color: var(--flux-foreground); margin-bottom: 8px; }
 .shot-text { width: var(--shot-text-w); padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; resize: vertical; min-height: var(--shot-text-min-h); box-sizing: border-box; }
 .shot-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
 .duration-input { display: inline-flex; align-items: center; gap: 6px; }
@@ -970,7 +970,7 @@ const onSubmit = async () => {
 
 .result-panel { width: 65%; background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; min-height: 400px; display: flex; flex-direction: column; min-height: 0; }
 .video-header { padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-.video-header h4 { font-size: 16px; font-weight: 600; color: #1e293b; margin: 0; }
+.video-header h4 { font-size: 16px; font-weight: 600; color: var(--flux-foreground); margin: 0; }
 .video-container { flex: 1; padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 80vh; }
 .video-showcase { width: 100%; max-width: 100%; }
 .video-showcase-item { width: 100%; background: #f8fafc; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }

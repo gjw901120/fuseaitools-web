@@ -244,7 +244,7 @@
 
       <div class="results-display-panel">
         <div class="results-header">
-          <h4>Generation Results</h4>
+          <h4 class="panel-title">Generation Results</h4>
           <div class="results-actions" v-if="!isDetailView && results.length">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
@@ -897,7 +897,7 @@ const getResultType = (data) => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -932,7 +932,7 @@ const getResultType = (data) => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -949,7 +949,7 @@ const getResultType = (data) => {
 .config-header h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -1038,7 +1038,7 @@ const getResultType = (data) => {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .option-label i {
@@ -1067,7 +1067,7 @@ const getResultType = (data) => {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   margin-bottom: 8px;
 }
 
@@ -1268,7 +1268,7 @@ const getResultType = (data) => {
 
 .checkbox-text {
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 /* 单选按钮组 */
@@ -1290,7 +1290,7 @@ const getResultType = (data) => {
 
 .radio-label {
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 /* 其他设置 */
@@ -1363,7 +1363,7 @@ const getResultType = (data) => {
 .results-header h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -1483,7 +1483,7 @@ const getResultType = (data) => {
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .result-meta {
@@ -1527,7 +1527,7 @@ const getResultType = (data) => {
 .detail-spinner { font-size: 48px; color: #667eea; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
-.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: var(--flux-muted); }
 
 .detail-ref-urls { margin-top: 8px; }
 .detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
@@ -1555,7 +1555,7 @@ const getResultType = (data) => {
 .empty-state h3 {
   font-size: 28px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-foreground);
   margin: 0 0 12px 0;
 }
 
@@ -1622,7 +1622,7 @@ const getResultType = (data) => {
 }
 
 .tip-item strong {
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 
@@ -1653,7 +1653,7 @@ const getResultType = (data) => {
 .ratio-tab:hover {
   background: #f8fafc;
   border-color: #667eea;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .ratio-tab.active {

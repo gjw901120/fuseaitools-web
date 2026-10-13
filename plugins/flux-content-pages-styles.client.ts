@@ -1,5 +1,5 @@
 /**
- * 将 pricing / news / about 深色样式注入到 document.head 末尾，覆盖页面 scoped 浅色样式。
+ * 将 pricing / news / about / credits 深色样式注入到 document.head 末尾，覆盖页面 scoped 浅色样式。
  */
 import fluxContentPagesCss from '@/assets/css/flux-content-pages.css?inline'
 

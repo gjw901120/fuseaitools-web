@@ -25,7 +25,7 @@
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>Image Generation Configuration</h4>
+          <h4 class="panel-title">Image Generation Configuration</h4>
         </div>
 
         <form class="config-form" @submit.prevent="onSubmit">
@@ -335,7 +335,7 @@
       <!-- 右侧：结果展示区域 (2/3) -->
       <div class="result-panel">
         <div class="result-header">
-          <h4>Generation Result</h4>
+          <h4 class="panel-title">Generation Result</h4>
           <button 
             v-if="!isDetailView && generatedImages.length > 0" 
             @click="clearResults" 
@@ -932,7 +932,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -1026,7 +1026,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -1050,7 +1050,7 @@ const clearResults = () => {
 .form-label {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .required {
@@ -1123,7 +1123,7 @@ const clearResults = () => {
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -1291,7 +1291,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .clear-btn {
@@ -1350,7 +1350,7 @@ const clearResults = () => {
 .detail-spinner { font-size: 48px; color: #667eea; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
-.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: var(--flux-muted); }
 
 .detail-ref-urls {
   margin-top: 10px;
@@ -1434,7 +1434,7 @@ const clearResults = () => {
 
 .image-overlay .action-btn {
   background: rgba(255, 255, 255, 0.9);
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .image-overlay .action-btn:hover {
@@ -1463,7 +1463,7 @@ const clearResults = () => {
 
 .image-prompt {
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;

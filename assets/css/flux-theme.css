@@ -18,6 +18,21 @@
   --flux-gradient: linear-gradient(135deg, hsl(173, 80%, 42%) 0%, hsl(200, 90%, 42%) 100%);
   --flux-glass: hsla(215, 25%, 18%, 0.55);
   --flux-input-bg: hsl(215, 20%, 10%);
+
+  /* ── z-index 统一刻度（全站所有浮层/弹窗必须引用这些令牌，禁止再写裸数字）──
+     1000 header/吸顶 · 2000 工具内浮层/下拉 · 3000 普通模态(auth/refund)
+     4000 重交互模态(bbox) · 5000 图片全屏预览(lightbox) · 9000 Toast(永远最上) */
+  --z-header: 1000;
+  --z-dropdown: 2000;
+  --z-modal: 3000;
+  --z-modal-heavy: 4000;
+  --z-lightbox: 5000;
+  --z-toast: 9000;
+
+  /* ── 弹窗统一视觉规范令牌 ── */
+  --flux-modal-radius: 14px;
+  --flux-modal-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+  --flux-modal-backdrop: rgba(0, 0, 0, 0.55);
 }
 
 /* ── Site shell (homepage) ── */
@@ -410,10 +425,11 @@
   border-bottom-color: var(--flux-border) !important;
 }
 
-.home-layout--flux .config-header h4,
+/* 面板标题统一由 .panel-title 承载（Configuration / Result / Video / Image Preview 等），
+   不再枚举 video-header / image-header / result-header / results-header 旧命名 */
 .home-layout--flux .panel-title,
 .home-layout--flux .section-label {
-  color: var(--flux-foreground) !important;
+  color: #fff !important;
 }
 
 .home-layout--flux .form-label,
@@ -743,6 +759,7 @@
   color: var(--flux-muted) !important;
 }
 
+.home-layout--flux .empty-state h3,
 .home-layout--flux .empty-state h4 {
   color: var(--flux-foreground) !important;
 }
@@ -1071,4 +1088,83 @@
 .home-layout--flux .message-content pre {
   background: var(--flux-bg) !important;
 }
+
+/* ══════════════════════════════════════════════════════════
+   全局弹窗基础规范（.flux-modal-*）
+   供 BaseModal.vue 使用。因弹窗均 Teleport 到 body、游离在
+   .home-layout--flux 作用域外，故此处用全局选择器 + :root 令牌，
+   保证暗色站里弹窗一致为深色卡片。
+   ══════════════════════════════════════════════════════════ */
+.flux-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--flux-modal-backdrop);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  z-index: var(--z-modal);
+  animation: fluxModalFade 0.2s ease;
+}
+.flux-modal-overlay--heavy {
+  z-index: var(--z-modal-heavy);
+}
+@keyframes fluxModalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.flux-modal-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  max-height: 92vh;
+  overflow: auto;
+  background: var(--flux-card);
+  color: var(--flux-foreground);
+  border: 1px solid var(--flux-border);
+  border-radius: var(--flux-modal-radius);
+  box-shadow: var(--flux-modal-shadow);
+  padding: 2rem;
+  animation: fluxModalSlideUp 0.3s ease;
+  box-sizing: border-box;
+}
+@keyframes fluxModalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.flux-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--flux-muted);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.flux-modal-close:hover {
+  background: var(--flux-card-hover);
+  color: var(--flux-foreground);
+}
+
+/* 弹窗内标题：复用已预留的 panel-title 语义 */
+.flux-modal-card .panel-title {
+  color: var(--flux-foreground) !important;
+  margin: 0 0 0.5rem 0;
+}
+
+/* 全局模态图片预览（lightbox）层级参照：命令式创建，见 UploadImage.vue */
 

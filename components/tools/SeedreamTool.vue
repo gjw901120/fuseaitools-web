@@ -34,7 +34,7 @@
     <div class="main-content">
       <div class="config-panel">
         <div class="config-header">
-          <h4>Configuration</h4>
+          <h4 class="panel-title">Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">

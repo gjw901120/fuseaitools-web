@@ -333,7 +333,8 @@
 | image-to-image | `grok-imagine-image-to-image` | ONCE / RULE | 同上 |
 | text-to-video | `grok-imagine-text-to-video` | RULE | `getPrice(modelKey, { duration: form.duration, quality: form.resolution })` |
 | image-to-video | `grok-imagine-image-to-video` | RULE | 同上 |
-| upscale | `grok-imagine-upscale` | ONCE / RULE | `getPrice(modelKey)` |
+| video-1-5-preview | `grok-imagine-video-1-5-preview` | RULE | `getPrice(modelKey, { duration: 1, quality: form.resolution })` 取**每秒单价**，再乘所选 1-15s 时长（统一入口，resolution 仅 480p/720p） |
+| upscale | `grok-imagine-upscale` | RULE | `getPrice(modelKey, { quality: 源任务分辨率, duration: 源任务时长, scene: form.scene })`（scene 取 `upscale-720p`/`upscale-1080p`；源为 1080p 时拦截） |
 | extend | `grok-imagine-extend` | RULE | `getPrice(modelKey, { duration: form.duration, quality: form.resolution })` |
 
 - **组件**：`components/tools/GrokToolCore.vue`
@@ -380,6 +381,8 @@
 | `seedance-2-fast` / `seedance-2` | 展示价：`duration: 1` + quality（480p/720p）+ scene（with_video/without_video），再乘秒数（见上文「### 16. Seedance」） |
 | `hailuo-2-3-image-to-video-*` | duration、quality（768p/1080p）、scene |
 | `grok-imagine-text-to-video` / `grok-imagine-image-to-video` / `grok-imagine-extend` | duration、quality |
+| `grok-imagine-video-1-5-preview` | 展示价：`duration: 1`（每秒单价）+ quality（480p/720p），再乘 1-15s 秒数 |
+| `grok-imagine-upscale` | duration（源任务时长）、quality（源任务分辨率）、scene（`upscale-720p`/`upscale-1080p`） |
 | `kling-v2-5-turbo-*`        | duration、scene: generate |
 | `kling-2.6-text-to-video` / `kling-2.6-image-to-video` | duration、scene（with_sound/without_sound） |
 | `kling-2.6-motion-control`  | duration、quality（720p/1080p）、scene |

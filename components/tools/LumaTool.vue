@@ -16,7 +16,7 @@
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>Video Modification Configuration</h4>
+          <h4 class="panel-title">Video Modification Configuration</h4>
         </div>
 
         <form class="config-form" @submit.prevent="modifyVideo">
@@ -107,7 +107,7 @@
       <!-- 右侧：视频展示区域 (2/3) -->
       <div class="result-panel">
         <div class="video-header">
-          <h4>Video Preview</h4>
+          <h4 class="panel-title">Video Preview</h4>
           <div class="video-actions" v-if="generatedVideos.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear All
@@ -479,7 +479,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -510,7 +510,7 @@ const clearResults = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -553,7 +553,7 @@ const clearResults = () => {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   margin-bottom: 8px;
 }
 
@@ -694,7 +694,7 @@ const clearResults = () => {
 .upload-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -762,7 +762,7 @@ const clearResults = () => {
 .luma-video-trigger-inner span {
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-muted);
 }
 .luma-video-trigger-inner small {
   font-size: 11px;
@@ -829,7 +829,7 @@ const clearResults = () => {
 .luma-video-name {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -966,7 +966,7 @@ const clearResults = () => {
 .video-header h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -1075,7 +1075,7 @@ const clearResults = () => {
 .empty-state h3 {
   font-size: 28px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-foreground);
   margin: 0 0 12px 0;
 }
 
@@ -1141,7 +1141,7 @@ const clearResults = () => {
 }
 
 .tip-item strong {
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 /* 响应式设计 */

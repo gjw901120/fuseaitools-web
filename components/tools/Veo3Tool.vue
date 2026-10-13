@@ -54,7 +54,7 @@
       <!-- 左侧：参数配置面板 -->
       <div class="config-panel">
       <div class="config-header">
-        <h4>Video Generation Configuration</h4>
+        <h4 class="panel-title">Video Generation Configuration</h4>
       </div>
 
       <form class="config-form" @submit.prevent="generateVideo">
@@ -1014,7 +1014,7 @@ const shareVideo = () => {
   margin: 0 0 4px 0;
   font-size: 20px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -1057,7 +1057,7 @@ const shareVideo = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .config-fieldset {
@@ -1084,7 +1084,7 @@ const shareVideo = () => {
 .form-label {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .required {
@@ -1123,7 +1123,7 @@ const shareVideo = () => {
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -1213,7 +1213,7 @@ const shareVideo = () => {
   transition: all 0.3s ease;
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .option-tab:hover {
@@ -1290,7 +1290,7 @@ const shareVideo = () => {
 .detail-spinner { font-size: 48px; color: #667eea; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
-.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: var(--flux-muted); }
 
 .detail-ref-urls { margin-top: 8px; }
 .detail-ref-urls-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
@@ -1334,7 +1334,7 @@ const shareVideo = () => {
 .empty-state h4 {
   margin: 0 0 8px 0;
   font-size: 18px;
-  color: #374151;
+  color: var(--flux-foreground);
 }
 
 .empty-state p {
@@ -1382,7 +1382,7 @@ const shareVideo = () => {
 .video-info h5 {
   margin: 0 0 8px 0;
   font-size: 16px;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .video-meta {
@@ -1406,7 +1406,7 @@ const shareVideo = () => {
 
 .action-btn {
   background: #f3f4f6;
-  color: #374151;
+  color: var(--flux-muted);
   border: 1px solid #d1d5db;
   padding: 8px 12px;
   border-radius: 6px;
@@ -1433,7 +1433,7 @@ const shareVideo = () => {
 .video-extend h6 {
   margin: 0 0 12px 0;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .extend-form {

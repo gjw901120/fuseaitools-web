@@ -32,7 +32,7 @@
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>{{ getConfigTitle() }}</h4>
+          <h4 class="panel-title">{{ getConfigTitle() }}</h4>
         </div>
         <form class="config-form" @submit.prevent="generateContent">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -507,7 +507,7 @@
       <!-- 右侧：结果展示区域 (2/3) -->
       <div class="result-panel">
         <div class="result-header">
-          <h4>Generation Result</h4>
+          <h4 class="panel-title">Generation Result</h4>
           <div class="result-actions" v-if="displayResult">
             <button v-if="isDetailView" class="action-btn" @click="downloadResult" title="Download">
               <i class="fas fa-download"></i>
@@ -1688,7 +1688,7 @@ const shareResult = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -1725,7 +1725,7 @@ const shareResult = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -1751,7 +1751,7 @@ const shareResult = () => {
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .required {
@@ -1826,7 +1826,7 @@ const shareResult = () => {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
   cursor: pointer;
   transition: border-color 0.2s;
   text-align: left;
@@ -1877,7 +1877,7 @@ const shareResult = () => {
   gap: 8px;
   padding: 10px 12px;
   font-size: 13px;
-  color: #374151;
+  color: var(--flux-muted);
   cursor: pointer;
   transition: background 0.15s;
   border-bottom: 1px solid #f1f5f9;
@@ -1963,7 +1963,7 @@ const shareResult = () => {
   margin-bottom: 8px;
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .form-slider {
@@ -2009,7 +2009,7 @@ const shareResult = () => {
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -2093,7 +2093,7 @@ const shareResult = () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .result-actions {
@@ -2144,7 +2144,7 @@ const shareResult = () => {
 .detail-spinner { font-size: 48px; color: #667eea; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
-.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: var(--flux-muted); }
 
 .empty-state {
   display: flex;
@@ -2202,7 +2202,7 @@ const shareResult = () => {
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .speech-info p,
@@ -2312,7 +2312,7 @@ const shareResult = () => {
   margin: 0 0 16px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .transcript {
@@ -2322,7 +2322,7 @@ const shareResult = () => {
   padding: 16px;
   font-size: 14px;
   line-height: 1.6;
-  color: #374151;
+  color: var(--flux-muted);
   margin-bottom: 16px;
 }
 
@@ -2443,7 +2443,7 @@ const shareResult = () => {
   margin: 0 0 12px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .speaker-item {
@@ -2459,7 +2459,7 @@ const shareResult = () => {
 
 .speaker-name {
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .speaker-time {

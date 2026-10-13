@@ -1,67 +1,64 @@
 <template>
-  <Teleport to="body">
-    <div v-if="isOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <button class="close-btn" @click="closeModal">
-          <i class="fas fa-times"></i>
+  <BaseModal
+    :is-open="isOpen"
+    max-width="420px"
+    aria-label="Sign in"
+    @close="closeModal"
+  >
+    <div class="modal-header">
+      <h2 class="panel-title">Welcome</h2>
+      <p class="modal-subtitle">Sign in or sign up to continue</p>
+    </div>
+
+    <div class="login-options">
+      <!-- Google登录 -->
+      <button class="login-btn google-btn" @click="handleGoogleLogin">
+        <div class="btn-content">
+          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </div>
+      </button>
+
+      <!-- 分隔线 -->
+      <div class="divider">
+        <span class="divider-text">OR</span>
+      </div>
+
+      <!-- 邮箱登录 -->
+      <div class="email-login">
+        <input
+          v-model="email"
+          type="email"
+          class="email-input"
+          placeholder="Enter your email"
+          @keyup.enter="handleEmailLogin"
+        />
+        <button
+          class="login-btn continue-btn"
+          @click="handleEmailLogin"
+          :disabled="loading"
+        >
+          <span v-if="loading">Sending...</span>
+          <span v-else>Continue</span>
         </button>
-        
-        <div class="modal-header">
-          <h2 class="modal-title">Welcome</h2>
-          <p class="modal-subtitle">Sign in or sign up to continue</p>
-        </div>
-
-        <div class="login-options">
-          <!-- Google登录 -->
-          <button class="login-btn google-btn" @click="handleGoogleLogin">
-            <div class="btn-content">
-              <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-              </svg>
-              <span>Continue with Google</span>
-            </div>
-          </button>
-
-          <!-- 分隔线 -->
-          <div class="divider">
-            <span class="divider-text">OR</span>
-          </div>
-
-          <!-- 邮箱登录 -->
-          <div class="email-login">
-            <input 
-              v-model="email" 
-              type="email" 
-              class="email-input" 
-              placeholder="Enter your email"
-              @keyup.enter="handleEmailLogin"
-            />
-            <button 
-              class="login-btn continue-btn" 
-              @click="handleEmailLogin"
-              :disabled="loading"
-            >
-              <span v-if="loading">Sending...</span>
-              <span v-else>Continue</span>
-            </button>
-            <p v-if="error" class="error-message">{{ error }}</p>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <p class="footer-text">
-            By signing up, you agree to the 
-            <a href="#" class="footer-link">Terms of Service</a> 
-            and 
-            <a href="#" class="footer-link">Privacy Policy</a>.
-          </p>
-        </div>
+        <p v-if="error" class="error-message">{{ error }}</p>
       </div>
     </div>
-  </Teleport>
+
+    <div class="modal-footer">
+      <p class="footer-text">
+        By signing up, you agree to the
+        <a href="#" class="footer-link">Terms of Service</a>
+        and
+        <a href="#" class="footer-link">Privacy Policy</a>.
+      </p>
+    </div>
+  </BaseModal>
 </template>
 
 <script setup>
@@ -93,7 +90,7 @@ const handleGoogleLogin = () => {
   const clientId = '423114934028-8rscjpq0a544tor5i3olc2pq8iaf0iig.apps.googleusercontent.com'
   const scope = encodeURIComponent('openid email profile')
   const responseType = 'code'
-  
+
   // 生成随机 state 用于防止 CSRF 攻击
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
   // 将 state 存储到 sessionStorage，用于回调时验证
@@ -108,7 +105,7 @@ const handleGoogleLogin = () => {
 
 const handleEmailLogin = async () => {
   const emailValue = email.value.trim()
-  
+
   if (!emailValue) {
     error.value = 'Please enter your email'
     return
@@ -140,108 +137,26 @@ const handleEmailLogin = async () => {
     loading.value = false
   }
 }
-
-// 监听ESC键关闭模态框
-onMounted(() => {
-  const handleEscape = (e) => {
-    if (e.key === 'Escape' && props.isOpen) {
-      closeModal()
-    }
-  }
-  window.addEventListener('keydown', handleEscape)
-  
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleEscape)
-  })
-})
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modal-content {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 420px;
-  position: relative;
-  animation: slideUp 0.3s ease;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.close-btn:hover {
-  background: #f3f4f6;
-  color: #1f2937;
-}
+/* 遮罩 / 卡片 / 关闭按钮 / ESC / 滚动锁 均由 BaseModal + .flux-modal-* 全局类负责 */
 
 .modal-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.modal-title {
+.panel-title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0 0 0.5rem 0;
 }
 
 .modal-subtitle {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   margin: 0;
 }
 
@@ -254,14 +169,14 @@ onMounted(() => {
 .login-btn {
   width: 100%;
   padding: 0.875rem 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--flux-border);
   border-radius: 8px;
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: white;
-  color: #1f2937;
+  background: var(--flux-input-bg);
+  color: var(--flux-foreground);
 }
 
 .google-btn {
@@ -271,8 +186,8 @@ onMounted(() => {
 }
 
 .google-btn:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
+  background: var(--flux-card-hover);
+  border-color: var(--flux-primary);
 }
 
 .btn-content {
@@ -298,14 +213,14 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 1px;
-  background: #e5e7eb;
+  background: var(--flux-border);
 }
 
 .divider-text {
   position: relative;
-  background: white;
+  background: var(--flux-card);
   padding: 0 1rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   font-size: 0.875rem;
 }
 
@@ -318,45 +233,54 @@ onMounted(() => {
 .email-input {
   width: 100%;
   padding: 0.875rem 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--flux-border);
   border-radius: 8px;
   font-size: 0.9375rem;
+  background: var(--flux-input-bg);
+  color: var(--flux-foreground);
   transition: all 0.2s ease;
+}
+
+.email-input::placeholder {
+  color: var(--flux-muted);
 }
 
 .email-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--flux-primary);
+  box-shadow: 0 0 0 3px var(--flux-primary-muted);
 }
 
 .error-message {
-  color: #ef4444;
+  color: var(--flux-destructive);
   font-size: 0.875rem;
   margin: 0;
   text-align: center;
 }
 
-.continue-btn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-}
-
 .continue-btn {
-  background: #1f2937;
-  color: white;
-  border-color: #1f2937;
+  background: var(--flux-primary);
+  color: var(--flux-foreground);
+  border-color: var(--flux-primary);
 }
 
-.continue-btn:hover {
-  background: #111827;
+.continue-btn:hover:not(:disabled) {
+  background: var(--flux-primary-hover);
+  border-color: var(--flux-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--flux-primary-glow);
 }
 
 .continue-btn:active {
   transform: translateY(0);
+}
+
+.continue-btn:disabled {
+  background: var(--flux-border);
+  border-color: var(--flux-border);
+  color: var(--flux-muted);
+  cursor: not-allowed;
+  transform: none;
 }
 
 .modal-footer {
@@ -366,31 +290,25 @@ onMounted(() => {
 
 .footer-text {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   margin: 0;
   line-height: 1.5;
 }
 
 .footer-link {
-  color: #667eea;
+  color: var(--flux-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-link:hover {
-  color: #5a6fd8;
+  color: var(--flux-primary-hover);
   text-decoration: underline;
 }
 
 @media (max-width: 480px) {
-  .modal-content {
-    padding: 1.5rem;
-    width: 95%;
-  }
-  
-  .modal-title {
+  .panel-title {
     font-size: 1.5rem;
   }
 }
 </style>
-

@@ -32,7 +32,7 @@
       <!-- 左侧：参数配置面板 (1/3) -->
       <div class="config-panel">
         <div class="config-header">
-          <h4>{{ getConfigHeaderTitle() }}</h4>
+          <h4 class="panel-title">{{ getConfigHeaderTitle() }}</h4>
         </div>
 
         <!-- Generate Tab 表单 -->
@@ -506,7 +506,7 @@
       <!-- 右侧：视频展示区域 (2/3) -->
       <div class="result-panel">
         <div class="video-header">
-          <h4>Video Preview</h4>
+          <h4 class="panel-title">Video Preview</h4>
           <div class="video-actions" v-if="!isDetailView && generatedVideos.length > 0">
             <button @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
@@ -1298,7 +1298,7 @@ const generateExtendVideo = async () => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
 }
 
 .tool-details p {
@@ -1376,7 +1376,7 @@ const generateExtendVideo = async () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .config-form {
@@ -1419,7 +1419,7 @@ const generateExtendVideo = async () => {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   margin-bottom: 8px;
 }
 
@@ -1478,7 +1478,7 @@ const generateExtendVideo = async () => {
 .tab-title {
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .tab-content {
@@ -1496,7 +1496,7 @@ const generateExtendVideo = async () => {
   padding: 10px 12px;
   border: 2px solid #e2e8f0;
   background: #f8fafc;
-  color: #374151;
+  color: var(--flux-muted);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1574,7 +1574,7 @@ const generateExtendVideo = async () => {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .radio-label small {
@@ -1668,7 +1668,7 @@ const generateExtendVideo = async () => {
 .upload-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -1800,7 +1800,7 @@ const generateExtendVideo = async () => {
 .aleph-video-trigger-inner span {
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-muted);
 }
 .aleph-video-trigger-inner small {
   font-size: 11px;
@@ -1867,7 +1867,7 @@ const generateExtendVideo = async () => {
 .aleph-video-name {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1946,7 +1946,7 @@ const generateExtendVideo = async () => {
 .video-header h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
   margin: 0;
 }
 
@@ -2032,7 +2032,7 @@ const generateExtendVideo = async () => {
 .detail-spinner { font-size: 48px; color: #667eea; }
 .detail-loading-state p, .detail-failure-state p { margin: 0; font-size: 16px; color: #64748b; }
 .detail-failure-state .failure-icon { font-size: 56px; color: #ef4444; }
-.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: #374151; }
+.detail-failure-state .failure-message { max-width: 420px; line-height: 1.6; color: var(--flux-muted); }
 
 .detail-ref-urls {
   margin-top: 10px;
@@ -2064,7 +2064,7 @@ const generateExtendVideo = async () => {
 .empty-state h3 {
   font-size: 28px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-foreground);
   margin: 0 0 12px 0;
 }
 
@@ -2130,7 +2130,7 @@ const generateExtendVideo = async () => {
 }
 
 .tip-item strong {
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 /* 响应式设计 */

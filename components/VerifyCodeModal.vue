@@ -1,61 +1,58 @@
 <template>
-  <Teleport to="body">
-    <div v-if="isOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <button class="close-btn" @click="closeModal">
-          <i class="fas fa-times"></i>
-        </button>
-        
-        <div class="modal-header">
-          <h2 class="modal-title">Enter Verification Code</h2>
-          <p class="modal-subtitle">We've sent a verification code to<br><strong>{{ email }}</strong></p>
-        </div>
-
-        <div class="verify-form">
-          <div class="code-input-container">
-            <input
-              v-for="(digit, index) in codeDigits"
-              :key="index"
-              :ref="el => codeInputs[index] = el"
-              v-model="codeDigits[index]"
-              type="text"
-              maxlength="1"
-              class="code-input"
-              :class="{ 'error': hasError }"
-              @input="handleCodeInput(index, $event)"
-              @keydown="handleKeyDown(index, $event)"
-              @paste="handlePaste"
-            />
-          </div>
-
-          <p v-if="error" class="error-message">{{ error }}</p>
-          <p v-if="success" class="success-message">{{ success }}</p>
-
-          <div class="resend-section">
-            <p class="resend-text">
-              Didn't receive the code? 
-              <button 
-                class="resend-btn" 
-                @click="resendCode"
-                :disabled="resendCooldown > 0"
-              >
-                {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend' }}
-              </button>
-            </p>
-          </div>
-
-          <button 
-            class="verify-btn" 
-            @click="handleVerify"
-            :disabled="!isCodeComplete || loading"
-          >
-            <span v-if="loading">Verifying...</span>
-            <span v-else>Verify</span>
-          </button>
-        </div>
-      </div>
+  <BaseModal
+    :is-open="isOpen"
+    max-width="420px"
+    aria-label="Enter verification code"
+    @close="closeModal"
+  >
+    <div class="modal-header">
+      <h2 class="panel-title">Enter Verification Code</h2>
+      <p class="modal-subtitle">We've sent a verification code to<br><strong>{{ email }}</strong></p>
     </div>
-  </Teleport>
+
+    <div class="verify-form">
+      <div class="code-input-container">
+        <input
+          v-for="(digit, index) in codeDigits"
+          :key="index"
+          :ref="el => codeInputs[index] = el"
+          v-model="codeDigits[index]"
+          type="text"
+          maxlength="1"
+          class="code-input"
+          :class="{ 'error': hasError }"
+          @input="handleCodeInput(index, $event)"
+          @keydown="handleKeyDown(index, $event)"
+          @paste="handlePaste"
+        />
+      </div>
+
+      <p v-if="error" class="error-message">{{ error }}</p>
+      <p v-if="success" class="success-message">{{ success }}</p>
+
+      <div class="resend-section">
+        <p class="resend-text">
+          Didn't receive the code?
+          <button
+            class="resend-btn"
+            @click="resendCode"
+            :disabled="resendCooldown > 0"
+          >
+            {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend' }}
+          </button>
+        </p>
+      </div>
+
+      <button
+        class="verify-btn"
+        @click="handleVerify"
+        :disabled="!isCodeComplete || loading"
+      >
+        <span v-if="loading">Verifying...</span>
+        <span v-else>Verify</span>
+      </button>
+    </div>
+  </BaseModal>
 </template>
 
 <script setup>
@@ -255,114 +252,33 @@ watch(() => props.isOpen, (newVal) => {
     })
   }
 })
-
-// 监听ESC键关闭模态框
-onMounted(() => {
-  const handleEscape = (e) => {
-    if (e.key === 'Escape' && props.isOpen) {
-      closeModal()
-    }
-  }
-  window.addEventListener('keydown', handleEscape)
-  
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleEscape)
-  })
-})
+// ESC 关闭已由 BaseModal 统一处理
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modal-content {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 420px;
-  position: relative;
-  animation: slideUp 0.3s ease;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.close-btn:hover {
-  background: #f3f4f6;
-  color: #1f2937;
-}
+/* 遮罩 / 卡片 / 关闭按钮 / 入场动画 由 BaseModal + .flux-modal-* 全局类统一负责 */
 
 .modal-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.modal-title {
+.panel-title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--flux-foreground);
   margin: 0 0 0.5rem 0;
 }
 
 .modal-subtitle {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   margin: 0;
   line-height: 1.5;
 }
 
 .modal-subtitle strong {
-  color: #1f2937;
+  color: var(--flux-foreground);
   font-weight: 600;
 }
 
@@ -381,23 +297,24 @@ onMounted(() => {
 .code-input {
   width: 48px;
   height: 56px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--flux-border);
   border-radius: 8px;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  background: var(--flux-input-bg);
+  color: var(--flux-foreground);
   transition: all 0.2s ease;
 }
 
 .code-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--flux-primary);
+  box-shadow: 0 0 0 3px var(--flux-primary-muted);
 }
 
 .code-input.error {
-  border-color: #ef4444;
+  border-color: var(--flux-destructive);
   animation: shake 0.3s ease;
 }
 
@@ -408,14 +325,14 @@ onMounted(() => {
 }
 
 .error-message {
-  color: #ef4444;
+  color: var(--flux-destructive);
   font-size: 0.875rem;
   text-align: center;
   margin: 0;
 }
 
 .success-message {
-  color: #10b981;
+  color: var(--flux-success);
   font-size: 0.875rem;
   text-align: center;
   margin: 0;
@@ -427,14 +344,14 @@ onMounted(() => {
 
 .resend-text {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--flux-muted);
   margin: 0;
 }
 
 .resend-btn {
   background: none;
   border: none;
-  color: #667eea;
+  color: var(--flux-primary);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -444,11 +361,11 @@ onMounted(() => {
 }
 
 .resend-btn:hover:not(:disabled) {
-  color: #5a6fd8;
+  color: var(--flux-primary-hover);
 }
 
 .resend-btn:disabled {
-  color: #9ca3af;
+  color: var(--flux-muted);
   cursor: not-allowed;
   text-decoration: none;
 }
@@ -456,8 +373,8 @@ onMounted(() => {
 .verify-btn {
   width: 100%;
   padding: 0.875rem 1rem;
-  background: #1f2937;
-  color: white;
+  background: var(--flux-primary);
+  color: var(--flux-foreground);
   border: none;
   border-radius: 8px;
   font-size: 0.9375rem;
@@ -467,24 +384,20 @@ onMounted(() => {
 }
 
 .verify-btn:hover:not(:disabled) {
-  background: #111827;
+  background: var(--flux-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--flux-primary-glow);
 }
 
 .verify-btn:disabled {
-  background: #9ca3af;
+  background: var(--flux-border);
+  color: var(--flux-muted);
   cursor: not-allowed;
   transform: none;
 }
 
 @media (max-width: 480px) {
-  .modal-content {
-    padding: 1.5rem;
-    width: 95%;
-  }
-  
-  .modal-title {
+  .panel-title {
     font-size: 1.5rem;
   }
 

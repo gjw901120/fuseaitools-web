@@ -21,7 +21,7 @@ const { toasts, removeToast } = useToast()
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10001;
+  z-index: var(--z-toast);
   pointer-events: none;
   display: flex;
   flex-direction: column;

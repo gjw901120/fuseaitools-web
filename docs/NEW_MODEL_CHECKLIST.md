@@ -323,16 +323,85 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 
 ## 6.1 侧边栏路由识别映射（⚠️ 容易遗漏）
 
-在 **两处** `routeToToolMap` 中新增：
+在 **单一数据源** `constants/routeToToolMap.js` 中新增：
 
 ```js
 '{pageRoute}': '{ParentToolName}',
 ```
 
-- `composables/useHomeLayout.js` → `syncRouteToSelection()` 内的 `routeToToolMap`
-- `pages/home/index.vue` → `watch(() => route.path)` 内的 `routeToToolMap`
+- `composables/useHomeLayout.js` 与 `pages/home/index.vue` 均 `import { routeToToolMap } from '~/constants/routeToToolMap'`，只需改这一处
 
 > **不添加会导致**：访问新页面时侧边栏无法识别当前工具，`onMounted` 回退跳转到 `/home/gpt/generate`。
+
+## 6.2 样式规范：禁止在 scoped CSS 写死颜色
+
+工具组件的 `<style scoped>` 中**不允许**出现硬编码色值（如 `#374151`/`#1e293b`），统一使用 flux 令牌：
+
+| 用途 | 令牌 |
+|---|---|
+| 主文字（标题、label、激活态） | `var(--flux-foreground)` |
+| 次要文字（说明、hint、空状态段落） | `var(--flux-muted)` |
+| 卡片/按钮底色 | `var(--flux-card)` |
+| 输入区底色 | `var(--flux-input-bg)` |
+| 边框 | `var(--flux-border)` |
+
+> 令牌定义在 `assets/css/flux-theme.css` 的 `:root`，全局可用。写死浅色主题色会被主题 `!important` 覆盖，形成"两套真相"，新页面漏写覆盖时出现白底白字。
+
+## 6.3 弹窗规范：一律使用 `BaseModal`
+
+全站模态框统一走基座组件 `components/BaseModal.vue`，**禁止**在业务组件里自写 `Teleport + overlay + 卡片 + 关闭按钮 + ESC + 滚动锁`。
+
+```vue
+<BaseModal :is-open="open" max-width="420px" aria-label="Xxx" @close="open = false">
+  <h3 class="panel-title">标题</h3>
+  ... 弹窗内容 ...
+</BaseModal>
+```
+
+| prop | 说明 |
+|---|---|
+| `isOpen` | Boolean，控制显隐 |
+| `maxWidth` | String，默认 `420px`；宽内容（如画布编辑器）传 `920px` |
+| `heavy` | Boolean，默认 false；为 true 时遮罩用 `--z-modal-heavy`（覆盖普通弹窗） |
+| `closeOnOverlay` | Boolean，默认 true，点遮罩关闭 |
+| `showClose` | Boolean，默认 true，右上角 × |
+| `ariaLabel` | String，无障碍标签 |
+
+- BaseModal 已内置：`Teleport to="body"`、遮罩 `.flux-modal-overlay`、卡片 `.flux-modal-card`（暗色令牌底色）、ESC 监听、`body` 滚动锁。
+- 弹窗内容色值一律用 flux 令牌（`:root` 全局可用，Teleport 到 body 也能取到）。
+- 弹窗内的按钮若依赖 `.home-layout--flux` 作用域样式，因 Teleport 逃过该作用域，需在组件内补一条 flux 覆盖（参见 `WanTool.vue` 的 `.bbox-modal-footer .btn-primary`）。
+- 已迁移示例：`LoginModal.vue`、`VerifyCodeModal.vue`、`credits.vue`（退款双弹窗）、`WanTool.vue`（bbox 弹窗）。
+
+## 6.4 面板/弹窗标题统一用 `panel-title`
+
+工具页预览/配置标题、弹窗标题一律使用 class `panel-title`，**不再**新增 `video-header`/`image-header`/`result-header`/`results-header` 等散落命名。
+
+- 新工具页的左右面板直接用壳组件 `ToolResultPanel.vue` / `ToolConfigPanel.vue`（已内置 `panel-title` + `actions` 插槽，flux 令牌化外观），**不要**再复制粘贴数百行 scoped 样式。
+- `flux-theme.css` 对标题的覆盖已收敛为 `.home-layout--flux .panel-title, .home-layout--flux .section-label`，无需再枚举旧命名。
+
+## 6.5 z-index：只用 `:root` 刻度，禁止随手写数值
+
+层级统一定义在 `flux-theme.css` 的 `:root`，按需取用，**禁止**硬编码 `9999`/`10001` 之类：
+
+| 令牌 | 值 | 适用 |
+|---|---|---|
+| `--z-header` | 1000 | 顶栏 / 吸顶 |
+| `--z-dropdown` | 2000 | 下拉菜单 |
+| `--z-modal` | 3000 | 普通弹窗（BaseModal 遮罩） |
+| `--z-modal-heavy` | 4000 | 重型弹窗（`heavy`，如 bbox 编辑器） |
+| `--z-lightbox` | 5000 | 图片放大预览 |
+| `--z-toast` | 9000 | Toast（恒在最上） |
+
+> 历史 bug：Toast 曾写 `10001` 被 bbox 弹窗 `10050` 盖住；退款 `9999` 低于认证 `10000`。刻度化后彻底消除。
+
+## 6.6 新页面接入 flux 暗色主题
+
+内容页（非工具页）要从浅色转 flux 暗色，两步：
+
+1. 在 `composables/useFluxThemeRoute.js` 放行路由（`if (path === '/xxx') return true`），使 `.app-layout` 挂上 `.flux-theme`。
+2. 在 `assets/css/flux-content-pages.css` 追加 `.flux-theme .xxx-page ...` 覆盖块，把页面 scoped 里的硬编码浅色换成 flux 令牌。该文件由 `plugins/flux-content-pages-styles.client.ts` 注入 `document.head` 末尾，用 `!important` 盖过 scoped。
+
+> 已接入：`/pricing`、`/news`、`/about`、`/credits`。
 
 ---
 
@@ -363,8 +432,11 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 | 21 | toolOverviews.js Workflow 新增 | `data/toolOverviews.js` |
 | 22 | toolOverviews.js Try 段落更新 | `data/toolOverviews.js` |
 | 23 | useHomeLayout.js modelToPath 新增 | `composables/useHomeLayout.js` |
-| 23b | useHomeLayout.js routeToToolMap 新增 | `composables/useHomeLayout.js` |
-| 23c | index.vue routeToToolMap 新增 | `pages/home/index.vue` |
+| 23b | routeToToolMap.js 新增（单一数据源） | `constants/routeToToolMap.js` |
+| 23c | scoped CSS 无硬编码色值，全部使用 flux 令牌 | `{ParentTool}.vue` / 新建页面 |
+| 23d | 弹窗一律用 `BaseModal`，标题用 `panel-title` | 含弹窗的组件 |
+| 23e | z-index 只取 `:root` 刻度（`--z-*`），无硬编码数值 | 含层级样式的组件 |
+| 23f | 工具面板优先用 `ToolResultPanel` / `ToolConfigPanel` 壳 | `{ParentTool}.vue` |
 | 24 | 后端价格接口已有 `{priceModelKey}` 定价规则 | 后端（非前端） |
 | 25 | 后端 API 已部署 `{backendPath}` 接口 | 后端（非前端） |
 

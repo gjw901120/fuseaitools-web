@@ -28,7 +28,7 @@
     <div class="main-content">
       <div class="config-panel">
         <div class="config-header">
-          <h4>Configuration</h4>
+          <h4 class="panel-title">Configuration</h4>
         </div>
         <form class="config-form" @submit.prevent="generate">
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
@@ -438,7 +438,7 @@
 
       <div class="result-panel">
         <div class="video-header">
-          <h4>Result Preview</h4>
+          <h4 class="panel-title">Result Preview</h4>
           <div class="video-actions" v-if="result && !isDetailView">
             <button type="button" @click="clearResults" class="btn-secondary">
               <i class="fas fa-trash"></i> Clear
@@ -1252,7 +1252,7 @@ watch(mode, (m) => {
 }
 .tool-avatar { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
 .tool-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: #1f2937; }
+.tool-details h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; color: var(--flux-foreground); }
 .tool-details p { margin: 0; font-size: 13px; color: #6b7280; line-height: 1.5; }
 .tool-details p.tool-description { line-height: 1.55; }
 
@@ -1303,13 +1303,13 @@ watch(mode, (m) => {
   display: flex; flex-direction: column; min-height: 0;
 }
 .config-header { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; }
-.config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: #1f2937; }
+.config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
 
 .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
 .form-group:last-of-type { margin-bottom: 0; }
-.form-label { font-size: 14px; font-weight: 500; color: #374151; }
+.form-label { font-size: 14px; font-weight: 500; color: var(--flux-muted); }
 .required { color: #ef4444; }
 .form-input { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
 .form-input:focus { outline: none; border-color: #3b82f6; }
@@ -1335,7 +1335,7 @@ watch(mode, (m) => {
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   background: #f8fafc;
-  color: #374151;
+  color: var(--flux-muted);
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 13px;
@@ -1356,7 +1356,7 @@ watch(mode, (m) => {
   color: white;
 }
 
-.checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #374151; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: var(--flux-muted); }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #3b82f6; }
 
 .form-actions { margin-top: 24px; padding-bottom: 20px; }
@@ -1383,7 +1383,7 @@ watch(mode, (m) => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 .video-header .video-actions {
   display: flex;
@@ -1391,7 +1391,7 @@ watch(mode, (m) => {
 }
 .btn-secondary {
   background: #f3f4f6;
-  color: #374151;
+  color: var(--flux-muted);
   border: 1px solid #d1d5db;
   padding: 8px 14px;
   border-radius: 8px;
@@ -1443,13 +1443,13 @@ watch(mode, (m) => {
   box-sizing: border-box;
 }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; color: #6b7280; gap: 16px; width: 100%; }
-.empty-state h4 { margin: 0; font-size: 18px; color: #374151; }
+.empty-state h4 { margin: 0; font-size: 18px; color: var(--flux-foreground); }
 .video-result { display: flex; flex-direction: column; gap: 16px; }
 .video-player { background: #000; border-radius: 8px; overflow: hidden; }
 .video-element { width: 100%; height: auto; display: block; }
 .video-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; color: #6b7280; }
 .video-actions { display: flex; gap: 8px; }
-.action-btn { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.action-btn { background: var(--flux-card); color: var(--flux-muted); border: 1px solid var(--flux-border); padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .action-btn:hover { background: #e5e7eb; }
 .seedance-file-input { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
 .duration-range { width: 100%; accent-color: #3b82f6; }

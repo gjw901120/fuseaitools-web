@@ -242,7 +242,7 @@ const previewImage = (file) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: var(--z-lightbox);
     cursor: pointer;
   `
   
@@ -321,7 +321,7 @@ defineExpose({
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .file-upload-area {
@@ -385,7 +385,7 @@ defineExpose({
 .file-upload-label span {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
 }
 
 .file-upload-label small {
@@ -482,7 +482,7 @@ defineExpose({
 .file-name {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   word-break: break-all;
 }
 

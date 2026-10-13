@@ -1,4 +1,4 @@
-/* pricing / news / about 内容页深色主题（.flux-theme 由 layout 根据路由启用） */
+/* pricing / news / about / credits 内容页深色主题（.flux-theme 由 layout 根据路由启用） */
 
 .flux-theme .pricing-page,
 .flux-theme .news-page,
@@ -442,4 +442,148 @@
 .flux-theme .contact-commitment {
   background: var(--flux-primary-muted) !important;
   border-left-color: var(--flux-primary) !important;
+}
+
+/* ── Credits（/credits 页并入 flux 暗色；btn-refund / refund-modal-* 已在组件内令牌化，此处不重复）── */
+.flux-theme .credits-page {
+  background: var(--flux-bg) !important;
+  color: var(--flux-foreground);
+}
+
+.flux-theme .credits-page .hero-section {
+  background: var(--flux-bg) !important;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, hsla(173, 80%, 40%, 0.14), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, hsla(200, 90%, 42%, 0.1), transparent),
+    linear-gradient(180deg, hsl(215, 25%, 11%) 0%, var(--flux-bg) 100%) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .credits-page .page-title {
+  color: var(--flux-foreground) !important;
+}
+
+/* 折扣横幅：浅黄底 → 暗色 warning 描边卡 */
+.flux-theme .credits-page .discount-banner {
+  background: hsla(38, 92%, 50%, 0.12) !important;
+  border-color: hsla(38, 92%, 50%, 0.4) !important;
+}
+
+.flux-theme .credits-page .discount-value {
+  color: var(--flux-warning) !important;
+}
+
+.flux-theme .credits-page .discount-desc {
+  color: var(--flux-muted) !important;
+}
+
+/* 进度卡片 */
+.flux-theme .credits-page .progress-card {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  box-shadow: none !important;
+}
+
+.flux-theme .credits-page .progress-title {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .credits-page .title-dates,
+.flux-theme .credits-page .title-package,
+.flux-theme .credits-page .progress-value,
+.flux-theme .credits-page .progress-meta {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .credits-page .refund-status-text,
+.flux-theme .credits-page .overflow-plus {
+  color: var(--flux-success) !important;
+}
+
+.flux-theme .credits-page .progress-track {
+  background: var(--flux-input-bg) !important;
+}
+
+.flux-theme .credits-page .progress-fill.subscription {
+  background: var(--flux-gradient) !important;
+}
+
+.flux-theme .credits-page .progress-fill.recharge {
+  background: linear-gradient(90deg, hsl(142, 70%, 45%), hsl(160, 80%, 42%)) !important;
+}
+
+.flux-theme .credits-page .recharge-ruler .ruler-tick {
+  color: var(--flux-muted) !important;
+}
+
+/* 历史记录区 */
+.flux-theme .credits-page .history-section {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  box-shadow: none !important;
+}
+
+.flux-theme .credits-page .section-title {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .credits-page .loading-state,
+.flux-theme .credits-page .empty-state {
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .credits-page .history-table th,
+.flux-theme .credits-page .history-table td {
+  border-bottom-color: var(--flux-border) !important;
+}
+
+.flux-theme .credits-page .history-table th {
+  color: var(--flux-foreground) !important;
+  background: var(--flux-input-bg) !important;
+}
+
+.flux-theme .credits-page .history-table td {
+  color: var(--flux-foreground) !important;
+}
+
+.flux-theme .credits-page .history-row:hover {
+  background: var(--flux-card-hover) !important;
+}
+
+/* 状态徽标：浅底深字 → 暗色半透明底 + 亮字 */
+.flux-theme .credits-page .badge.discount,
+.flux-theme .credits-page .badge.status-completed {
+  background: hsla(142, 70%, 45%, 0.16) !important;
+  color: hsl(142, 60%, 58%) !important;
+}
+
+.flux-theme .credits-page .badge.status-failed {
+  background: hsla(0, 72%, 55%, 0.16) !important;
+  color: hsl(0, 80%, 70%) !important;
+}
+
+.flux-theme .credits-page .badge.status-progress {
+  background: hsla(217, 90%, 60%, 0.16) !important;
+  color: hsl(217, 90%, 72%) !important;
+}
+
+/* 分页 */
+.flux-theme .credits-page .pagination-bar {
+  border-top-color: var(--flux-border) !important;
+}
+
+.flux-theme .credits-page .page-btn {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-muted) !important;
+}
+
+.flux-theme .credits-page .page-btn:hover:not(:disabled) {
+  background: var(--flux-card-hover) !important;
+  border-color: var(--flux-primary) !important;
+  color: var(--flux-primary) !important;
+}
+
+.flux-theme .credits-page .page-info {
+  color: var(--flux-muted) !important;
 }

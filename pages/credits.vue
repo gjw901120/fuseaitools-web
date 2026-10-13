@@ -135,32 +135,34 @@
     </section>
 
     <!-- Recharge 退款确认弹窗 -->
-    <Teleport to="body">
-      <div v-if="rechargeRefundModal" class="refund-modal-overlay" @click.self="rechargeRefundModal = false">
-        <div class="refund-modal">
-          <h3 class="refund-modal-title">Recharge Refund</h3>
-          <p class="refund-modal-amount">Refundable amount: <strong>${{ rechargeRefundAmount }}</strong></p>
-          <div class="refund-modal-actions">
-            <button type="button" class="btn-refund btn-secondary" :disabled="rechargeRefundSubmitting" @click="rechargeRefundModal = false">Cancel</button>
-            <button type="button" class="btn-refund btn-primary" :disabled="rechargeRefundSubmitting" @click="confirmRechargeRefund">Confirm Refund</button>
-          </div>
-        </div>
+    <BaseModal
+      :is-open="rechargeRefundModal"
+      max-width="360px"
+      aria-label="Recharge Refund"
+      @close="rechargeRefundModal = false"
+    >
+      <h3 class="panel-title refund-modal-title">Recharge Refund</h3>
+      <p class="refund-modal-amount">Refundable amount: <strong>${{ rechargeRefundAmount }}</strong></p>
+      <div class="refund-modal-actions">
+        <button type="button" class="btn-refund btn-secondary" :disabled="rechargeRefundSubmitting" @click="rechargeRefundModal = false">Cancel</button>
+        <button type="button" class="btn-refund btn-primary" :disabled="rechargeRefundSubmitting" @click="confirmRechargeRefund">Confirm Refund</button>
       </div>
-    </Teleport>
+    </BaseModal>
 
     <!-- Subscription 退款确认弹窗 -->
-    <Teleport to="body">
-      <div v-if="subscriptionRefundModal" class="refund-modal-overlay" @click.self="subscriptionRefundModal = false">
-        <div class="refund-modal">
-          <h3 class="refund-modal-title">Subscription Refund</h3>
-          <p class="refund-modal-amount">Refundable amount: <strong>${{ subscriptionRefundAmount }}</strong></p>
-          <div class="refund-modal-actions">
-            <button type="button" class="btn-refund btn-secondary" :disabled="subscriptionRefundSubmitting" @click="subscriptionRefundModal = false">Cancel</button>
-            <button type="button" class="btn-refund btn-primary" :disabled="subscriptionRefundSubmitting" @click="confirmSubscriptionRefund">Confirm Refund</button>
-          </div>
-        </div>
+    <BaseModal
+      :is-open="subscriptionRefundModal"
+      max-width="360px"
+      aria-label="Subscription Refund"
+      @close="subscriptionRefundModal = false"
+    >
+      <h3 class="panel-title refund-modal-title">Subscription Refund</h3>
+      <p class="refund-modal-amount">Refundable amount: <strong>${{ subscriptionRefundAmount }}</strong></p>
+      <div class="refund-modal-actions">
+        <button type="button" class="btn-refund btn-secondary" :disabled="subscriptionRefundSubmitting" @click="subscriptionRefundModal = false">Cancel</button>
+        <button type="button" class="btn-refund btn-primary" :disabled="subscriptionRefundSubmitting" @click="confirmSubscriptionRefund">Confirm Refund</button>
       </div>
-    </Teleport>
+    </BaseModal>
   </div>
 </template>
 
@@ -573,59 +575,43 @@ onMounted(() => {
 }
 
 .btn-refund.btn-secondary {
-  background: #fff;
-  border-color: #cbd5e1;
-  color: #475569;
+  background: var(--flux-input-bg);
+  border-color: var(--flux-border);
+  color: var(--flux-muted);
 }
 
 .btn-refund.btn-secondary:hover:not(:disabled) {
-  background: #f1f5f9;
-  border-color: #94a3b8;
+  background: var(--flux-card-hover);
+  border-color: var(--flux-primary);
+  color: var(--flux-foreground);
 }
 
 .btn-refund.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-color: #5a67d8;
+  background: var(--flux-gradient);
+  color: var(--flux-foreground);
+  border-color: transparent;
 }
 
 .btn-refund.btn-primary:hover:not(:disabled) {
   filter: brightness(1.08);
 }
 
-.refund-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.refund-modal {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  min-width: 320px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-}
-
+/* 退款弹窗遮罩/卡片/关闭按钮由 BaseModal + .flux-modal-* 全局类统一负责 */
 .refund-modal-title {
   margin: 0 0 16px 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--flux-foreground);
 }
 
 .refund-modal-amount {
   margin: 0 0 20px 0;
   font-size: 1rem;
-  color: #475569;
+  color: var(--flux-muted);
 }
 
 .refund-modal-amount strong {
-  color: #059669;
+  color: var(--flux-success);
 }
 
 .refund-modal-actions {

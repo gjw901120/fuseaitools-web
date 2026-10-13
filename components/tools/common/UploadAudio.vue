@@ -356,7 +356,7 @@ onUnmounted(() => {
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--flux-muted);
   margin: 0 0 2px 0;
 }
 
@@ -401,7 +401,7 @@ onUnmounted(() => {
 .file-name {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--flux-muted);
   word-break: break-all;
 }
 

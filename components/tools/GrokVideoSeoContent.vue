@@ -10,10 +10,10 @@
     <meta itemprop="operatingSystem" content="Web" />
     <meta
       itemprop="description"
-      content="Grok Imagine text-to-video, image-to-video, upscale, and extend on FuseAITools—6s/10s clips at 480p/720p with fun, normal, or spicy motion modes."
+      content="Grok Imagine text-to-video, image-to-video, Video 1.5 Preview, upscale, and extend on FuseAITools—6-30s clips up to 1080p with fun, normal, or spicy motion modes, plus a unified text/image 1.5 preview entry at 480p/720p, billed per second."
     />
 
-    <div class="version-badge">🎬 Grok Imagine · xAI Video · Four Workflows</div>
+    <div class="version-badge">🎬 Grok Imagine · xAI Video · Five Workflows</div>
 
     <section v-if="workflowIntro" class="info-section workflow-intro" aria-labelledby="workflow-intro-heading">
       <h2 id="workflow-intro-heading" class="section-title">{{ workflowIntro.title }}</h2>
@@ -30,9 +30,8 @@
       <p class="tool-sub">
         <strong>Grok Imagine video</strong> on
         <a href="/" class="seo-inline-link">FuseAITools</a> covers short clip generation and post steps—
-        <strong>text-to-video</strong>, <strong>image-to-video</strong>, <strong>upscale</strong>, and
-        <strong>extend</strong>. Pick aspect ratio, motion mode, duration (6s/10s), and resolution (480p/720p) on
-        generate modes. Need stills first? Use
+        <strong>text-to-video</strong>, <strong>image-to-video</strong>, <strong>Video 1.5 Preview</strong>,
+        <strong>upscale</strong>, and <strong>extend</strong>. <strong>Video 1.5 Preview</strong> is a unified entry—one endpoint for text-to-video or up to 7 reference images at 480p/720p, 1–15s. On text and image to video, pick aspect ratio, motion mode, a <strong>6–30s duration slider</strong>, and resolution (<strong>480p / 720p / 1080p</strong>); extend keeps 6s/10s at 480p/720p. Need stills first? Use
         <a href="/home/grok/text-to-image" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/grok/text-to-image')">Grok Text to Image</a>.
         New users receive <strong>20 free credits</strong> on sign-up.
       </p>
@@ -65,6 +64,7 @@
               <th>Dimension</th>
               <th>T2V</th>
               <th>I2V</th>
+              <th>Preview</th>
               <th>Upscale</th>
               <th>Extend</th>
             </tr>
@@ -74,6 +74,7 @@
               <td><strong>Input</strong></td>
               <td>Prompt</td>
               <td>Images and/or prompt</td>
+              <td>Prompt and/or up to 7 images</td>
               <td>Original task ID</td>
               <td>Task ID + prompt</td>
             </tr>
@@ -81,6 +82,7 @@
               <td><strong>modelKey</strong></td>
               <td><code>grok-imagine-text-to-video</code></td>
               <td><code>grok-imagine-image-to-video</code></td>
+              <td><code>grok-imagine-video-1-5-preview</code></td>
               <td><code>grok-imagine-upscale</code></td>
               <td><code>grok-imagine-extend</code></td>
             </tr>
@@ -90,25 +92,29 @@
               <td>fun / normal / spicy*</td>
               <td>—</td>
               <td>—</td>
+              <td>—</td>
             </tr>
             <tr>
               <td><strong>Duration</strong></td>
-              <td>6s / 10s</td>
-              <td>6s / 10s</td>
+              <td>6–30s (slider)</td>
+              <td>6–30s (slider)</td>
+              <td>1–15s (slider)</td>
               <td>—</td>
               <td>Extend 6s / 10s</td>
             </tr>
             <tr>
               <td><strong>Resolution</strong></td>
+              <td>480p / 720p / 1080p</td>
+              <td>480p / 720p / 1080p</td>
               <td>480p / 720p</td>
-              <td>480p / 720p</td>
-              <td>—</td>
+              <td>720p / 1080p target</td>
               <td>480p / 720p</td>
             </tr>
             <tr>
               <td><strong>Best for</strong></td>
               <td>Motion from scratch</td>
               <td>Animate a poster or product still</td>
+              <td>Unified T2V + I2V preview</td>
               <td>Sharpen a prior Grok clip</td>
               <td>Continue a successful shot</td>
             </tr>
@@ -152,7 +158,7 @@
             <tr>
               <td><strong>Text to Video</strong></td>
               <td>Prompt (≤5000)</td>
-              <td>Aspect 2:3–9:16; mode fun/normal/spicy; 6s/10s; 480p/720p</td>
+              <td>Aspect 2:3–9:16; mode fun/normal/spicy; 6–30s slider; 480p/720p/1080p</td>
             </tr>
             <tr>
               <td><strong>Image to Video</strong></td>
@@ -160,9 +166,14 @@
               <td>Same as T2V; JPEG/PNG/WebP max 10MB each</td>
             </tr>
             <tr>
+              <td><strong>Video 1.5 Preview</strong></td>
+              <td>Prompt and/or up to 7 images</td>
+              <td>Unified entry; aspect incl. auto (ignored on single image); 1–15s slider; 480p/720p; NSFW toggle; no motion mode</td>
+            </tr>
+            <tr>
               <td><strong>Upscale</strong></td>
-              <td>Original task ID</td>
-              <td>Pick from completed Grok generation list</td>
+              <td>Original task ID + target Resolution</td>
+              <td>Target 720p / 1080p (submits <code>scene: upscale-720p / upscale-1080p</code>); 720p source locks to 1080p; 1080p source unsupported</td>
             </tr>
             <tr>
               <td><strong>Extend</strong></td>
@@ -172,11 +183,11 @@
           </tbody>
         </table>
       </div>
-      <p class="meta-note">T2V / I2V / Extend: RULE credits by <strong>duration</strong> + <strong>resolution</strong>. Upscale: per-run credits on Generate.</p>
+      <p class="meta-note">T2V / I2V: per-second rate (RULE <code>duration=1</code>) × chosen 6–30s duration, at the selected resolution. Video 1.5 Preview: same per-second model × chosen 1–15s at 480p/720p. Extend: RULE credits by <strong>duration</strong> + <strong>resolution</strong>. Upscale: RULE credits matched by the source task <strong>resolution</strong> + <strong>duration</strong> + target <strong>scene</strong> (<code>upscale-720p</code> / <code>upscale-1080p</code>); switching target recomputes the price.</p>
     </section>
 
     <section class="info-section" aria-labelledby="workflows-heading">
-      <h2 id="workflows-heading" class="section-title">Grok Imagine — Four Video Workflows</h2>
+      <h2 id="workflows-heading" class="section-title">Grok Imagine — Five Video Workflows</h2>
       <div class="model-modes-grid">
         <NuxtLink
           v-for="item in videoWorkflows"
@@ -217,8 +228,9 @@ const route = useRoute()
 const { navigateToToolTop, handleModeClick, watchRouteScroll } = useToolSeoPageScroll()
 
 const videoWorkflows = [
-  { name: 'Grok Text to Video', title: 'Text to Video', description: 'Prompt-driven 6s/10s clips—aspect, mode, resolution.', path: '/home/grok/text-to-video', icon: 'fas fa-font' },
+  { name: 'Grok Text to Video', title: 'Text to Video', description: 'Prompt-driven 6–30s clips up to 1080p—aspect, mode, resolution.', path: '/home/grok/text-to-video', icon: 'fas fa-font' },
   { name: 'Grok Image to Video', title: 'Image to Video', description: 'Up to 7 images and/or prompt—animate stills.', path: '/home/grok/image-to-video', icon: 'fas fa-film' },
+  { name: 'Grok Video 1.5 Preview', title: 'Video 1.5 Preview', description: 'Unified text/image entry—480p/720p, 1–15s.', path: '/home/grok/video-1-5-preview', icon: 'fas fa-bolt' },
   { name: 'Grok Upscale', title: 'Upscale', description: 'Enhance a completed Grok task output.', path: '/home/grok/upscale', icon: 'fas fa-up-right-and-down-left-from-center' },
   { name: 'Grok Extend', title: 'Extend', description: 'Continue a clip with prompt + extend_at.', path: '/home/grok/extend', icon: 'fas fa-video' }
 ]
@@ -226,15 +238,19 @@ const videoWorkflows = [
 const workflowIntroMap = {
   '/home/grok/text-to-video': {
     title: '🎬 Grok Text to Video',
-    lead: 'Write a <strong>prompt</strong> (≤5000 chars), pick <strong>aspect ratio</strong> (2:3 through 9:16), <strong>motion mode</strong> (fun / normal / spicy), <strong>duration</strong> (6s or 10s), and <strong>resolution</strong> (480p or 720p) via <code>grok-imagine-text-to-video</code>.'
+    lead: 'Write a <strong>prompt</strong> (≤5000 chars), pick <strong>aspect ratio</strong> (2:3 through 9:16), <strong>motion mode</strong> (fun / normal / spicy), a <strong>duration</strong> on the 6–30s slider, and <strong>resolution</strong> (480p / 720p / 1080p) via <code>grok-imagine-text-to-video</code>.'
   },
   '/home/grok/image-to-video': {
     title: '🖼️ Grok Image to Video',
     lead: 'Upload up to <strong>7 images</strong> (JPEG/PNG/WebP, max 10MB each) and/or add a prompt. Configure motion mode, duration, resolution, and aspect ratio through <code>grok-imagine-image-to-video</code>.'
   },
+  '/home/grok/video-1-5-preview': {
+    title: '🧩 Grok Video 1.5 Preview',
+    lead: 'One unified endpoint for text-to-video (prompt ≤4096) or image-to-video (up to <strong>7 images</strong>). Pick <strong>aspect ratio</strong> (incl. auto; ignored on a single image), <strong>1–15s</strong> duration, and <strong>480p / 720p</strong> resolution via <code>grok-imagine-video-1-5-preview</code>.'
+  },
   '/home/grok/upscale': {
     title: '⬆️ Grok Upscale',
-    lead: 'Select an <strong>Original Task</strong> from your completed Grok generations—no prompt required. Model: <code>grok-imagine-upscale</code>.'
+    lead: 'Select an <strong>Original Task</strong> from your completed Grok generations, then pick a target <strong>720p</strong> or <strong>1080p</strong>—no prompt required. Model: <code>grok-imagine-upscale</code>.'
   },
   '/home/grok/extend': {
     title: '⏩ Grok Extend',
@@ -245,15 +261,19 @@ const workflowIntroMap = {
 const workflowDefinitionMap = {
   '/home/grok/text-to-video': {
     title: 'What is Grok Text to Video?',
-    body: '<strong>Grok Text to Video</strong> (<code>grok-imagine-text-to-video</code>) on FuseAITools generates a short clip from text. Required: <strong>prompt</strong> (max 5000). Optional controls: aspect ratio, motion mode, 6s/10s duration, 480p/720p resolution.'
+    body: '<strong>Grok Text to Video</strong> (<code>grok-imagine-text-to-video</code>) on FuseAITools generates a clip from text. Required: <strong>prompt</strong> (max 5000). Optional controls: aspect ratio, motion mode, 6–30s duration slider, 480p/720p/1080p resolution.'
   },
   '/home/grok/image-to-video': {
     title: 'What is Grok Image to Video?',
     body: '<strong>Grok Image to Video</strong> (<code>grok-imagine-image-to-video</code>) animates uploaded stills. Required: <strong>prompt and/or at least one image</strong>. Up to 7 reference images; spicy mode is disabled when images are present.'
   },
+  '/home/grok/video-1-5-preview': {
+    title: 'What is Grok Video 1.5 Preview?',
+    body: '<strong>Grok Video 1.5 Preview</strong> (<code>grok-imagine-video-1-5-preview</code>) is a unified generation entry: no images runs text-to-video, images run image-to-video (up to 7). Controls: optional prompt (max 4096), aspect ratio including auto (ignored in single-image mode), 1–15s duration, 480p/720p resolution, and an NSFW safety toggle. There is no separate motion mode.'
+  },
   '/home/grok/upscale': {
     title: 'What is Grok Upscale?',
-    body: '<strong>Grok Upscale</strong> (<code>grok-imagine-upscale</code>) enhances output from a prior Grok generation. Required: <strong>task_id</strong> from the Original Task dropdown—no prompt field.'
+    body: '<strong>Grok Upscale</strong> (<code>grok-imagine-upscale</code>) enhances output from a prior Grok generation. Required: <strong>task_id</strong> from the Original Task dropdown plus a target <strong>scene</strong> (<code>upscale-720p</code> / <code>upscale-1080p</code>)—no prompt field. 1080p source clips cannot be upscaled.'
   },
   '/home/grok/extend': {
     title: 'What is Grok Extend?',
@@ -282,6 +302,16 @@ const workflowFaqMap = {
       answer: 'The form disables <strong>spicy</strong> when reference images are present on Image to Video—use <strong>fun</strong> or <strong>normal</strong> instead.'
     }
   ],
+  '/home/grok/video-1-5-preview': [
+    {
+      question: 'Is Grok Video 1.5 Preview text-to-video or image-to-video?',
+      answer: 'Both from one entry—submit a <strong>prompt</strong> alone for text-to-video, or add up to <strong>7 reference images</strong> for image-to-video. At least one of prompt or images is required.'
+    },
+    {
+      question: 'Why is the aspect ratio greyed out on Grok Video 1.5 Preview?',
+      answer: 'When exactly <strong>one reference image</strong> is uploaded, aspect ratio is ignored (the image sets framing). The selector unlocks at 0 or 2–7 inputs.'
+    }
+  ],
   '/home/grok/upscale': [
     {
       question: 'Where does the Original Task on Grok Upscale come from?',
@@ -289,7 +319,7 @@ const workflowFaqMap = {
     },
     {
       question: 'Can I upscale any video with Grok Upscale?',
-      answer: 'Upscale expects a <strong>Grok task_id</strong> from a prior Grok run on FuseAITools—not arbitrary external URLs.'
+      answer: 'Upscale expects a <strong>Grok task_id</strong> from a prior Grok run on FuseAITools—not arbitrary external URLs. Pick a 720p or 1080p target; 1080p source clips are not supported.'
     }
   ],
   '/home/grok/extend': [
@@ -311,7 +341,7 @@ const commonFaq = [
   },
   {
     question: 'How is Grok Imagine video priced on FuseAITools?',
-    answer: 'Text-to-video, image-to-video, and extend use <strong>duration</strong> (6s/10s) and <strong>resolution</strong> (480p/720p) for RULE credits. Upscale uses a fixed per-run rate. See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
+    answer: 'Text-to-video and image-to-video are billed <strong>per second</strong> (the RULE <code>duration=1</code> rate × your 6–30s choice) at the selected <strong>resolution</strong> (480p/720p/1080p). Video 1.5 Preview uses the same <strong>per-second</strong> model × your 1–15s choice at 480p/720p. Extend uses <strong>duration</strong> (6s/10s) + <strong>resolution</strong> (480p/720p) for RULE credits. Upscale matches RULE credits by the source task <strong>resolution</strong> and <strong>duration</strong> plus the target <strong>scene</strong> (<code>upscale-720p</code>/<code>upscale-1080p</code>). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
   }
 ]
 
@@ -322,7 +352,8 @@ const faqItems = computed(() => [...(workflowFaqMap[normalizedPath.value] || [])
 useToolSeoFaqSchema(faqItems)
 
 const coreFeatures = [
-  { icon: '🎬', title: 'T2V & I2V', description: 'Generate <strong>6s or 10s</strong> clips from prompts or up to <strong>7 reference images</strong>.' },
+  { icon: '🎬', title: 'T2V & I2V', description: 'Generate <strong>6–30s</strong> clips up to <strong>1080p</strong> from prompts or up to <strong>7 reference images</strong>.' },
+  { icon: '🧩', title: 'Video 1.5 Preview', description: 'Unified entry—text or up to <strong>7 images</strong> at <strong>480p/720p</strong>, <strong>1–15s</strong>, aspect incl. auto.' },
   { icon: '🎛️', title: 'Motion Modes', description: '<strong>fun / normal / spicy</strong> on generate modes—spicy disabled when I2V has uploads.' },
   { icon: '⬆️', title: 'Upscale & Extend', description: 'Reuse <strong>task IDs</strong> to sharpen output or continue a winning shot.' },
   { icon: '☁️', title: 'Cloud on FuseAITools', description: 'xAI Grok Imagine video—credits by duration and resolution before generate.' }
@@ -334,7 +365,7 @@ function isCurrentMode(path) {
   return route.path === path || route.path === `${path}/`
 }
 
-const videoPaths = new Set(['/home/grok/text-to-video', '/home/grok/image-to-video', '/home/grok/upscale', '/home/grok/extend'])
+const videoPaths = new Set(['/home/grok/text-to-video', '/home/grok/image-to-video', '/home/grok/video-1-5-preview', '/home/grok/upscale', '/home/grok/extend'])
 watchRouteScroll((path) => videoPaths.has(path.replace(/\/$/, '')))
 
 const openFaqIndex = ref(0)
