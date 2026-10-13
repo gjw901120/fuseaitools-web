@@ -3,7 +3,7 @@
     <div v-if="isVisible" class="toast-container" :class="typeClass">
       <div class="toast-content">
         <div class="toast-icon">
-          <span v-if="type === 'error'" class="toast-emoji">😔</span>
+          <i v-if="type === 'error'" class="fas fa-times-circle"></i>
           <i v-else-if="type === 'success'" class="fas fa-check-circle"></i>
           <i v-else-if="type === 'warning'" class="fas fa-exclamation-triangle"></i>
           <i v-else class="fas fa-info-circle"></i>
@@ -101,12 +101,6 @@ onUnmounted(() => {
   font-size: 24px;
   flex-shrink: 0;
   margin-top: 2px;
-}
-
-.toast-emoji {
-  font-size: 32px;
-  display: block;
-  line-height: 1;
 }
 
 .toast-error .toast-icon {
