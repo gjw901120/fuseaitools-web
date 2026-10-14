@@ -6,7 +6,7 @@
       </div>
       <div class="tool-details">
         <h3>HappyHorse</h3>
-        <p class="tool-description">HappyHorse provides text-to-video, image-to-video, reference-to-video, and video-edit workflows for fast AI video creation.</p>
+        <p class="tool-description">HappyHorse provides text-to-video, image-to-video, reference-to-video, and video-edit workflows across v1 and v1.1 for fast AI video creation.</p>
       </div>
     </div>
 
@@ -23,6 +23,15 @@
         </div>
         <div class="mode-tab" :class="{ active: mode === 'v1-video-edit' }" @click="goToTab('v1-video-edit')">
           <i class="fas fa-film"></i><span>v1-video-edit</span>
+        </div>
+        <div class="mode-tab" :class="{ active: mode === 'v1-1-text-to-video' }" @click="goToTab('v1-1-text-to-video')">
+          <i class="fas fa-keyboard"></i><span>v1.1-text-to-video</span>
+        </div>
+        <div class="mode-tab" :class="{ active: mode === 'v1-1-image-to-video' }" @click="goToTab('v1-1-image-to-video')">
+          <i class="fas fa-image"></i><span>v1.1-image-to-video</span>
+        </div>
+        <div class="mode-tab" :class="{ active: mode === 'v1-1-reference-to-video' }" @click="goToTab('v1-1-reference-to-video')">
+          <i class="fas fa-images"></i><span>v1.1-reference-to-video</span>
         </div>
       </div>
     </div>
@@ -43,7 +52,7 @@
               <div class="char-count">{{ formData.prompt.length }}/5000</div>
             </div>
 
-            <div v-if="mode === 'v1-image-to-video'" class="form-group">
+            <div v-if="mode === 'v1-image-to-video' || mode === 'v1-1-image-to-video'" class="form-group">
               <label class="form-label">Input Image <span class="required">*</span></label>
               <UploadImage :readonly="isDetailView"
                 ref="imageUploadRef"
@@ -73,7 +82,7 @@
               </div>
             </div>
 
-            <div v-if="mode === 'v1-reference-to-video'" class="form-group">
+            <div v-if="mode === 'v1-reference-to-video' || mode === 'v1-1-reference-to-video'" class="form-group">
               <label class="form-label">Reference Images <span class="required">*</span></label>
               <UploadImage :readonly="isDetailView"
                 ref="referenceUploadRef"
@@ -156,7 +165,7 @@
               <label class="form-label">Aspect Ratio</label>
               <div class="tab-group">
                 <button
-                  v-for="ratio in ['16:9','9:16','1:1','4:3','3:4']"
+                  v-for="ratio in aspectRatioOptions"
                   :key="ratio"
                   type="button"
                   class="tab-option"
@@ -190,7 +199,7 @@
               <div class="form-hint">{{ formData.duration }}s</div>
             </div>
 
-            <div class="form-group">
+            <div v-if="!isV11Active" class="form-group">
               <label class="form-label">Seed (optional)</label>
               <input v-model.number="formData.seed" type="number" class="text-input" min="0" max="2147483647" />
             </div>
@@ -252,9 +261,18 @@ const modeTabToPath = {
   'v1-text-to-video': '/home/happy-horse/v1-text-to-video',
   'v1-image-to-video': '/home/happy-horse/v1-image-to-video',
   'v1-reference-to-video': '/home/happy-horse/v1-reference-to-video',
-  'v1-video-edit': '/home/happy-horse/v1-video-edit'
+  'v1-video-edit': '/home/happy-horse/v1-video-edit',
+  'v1-1-text-to-video': '/home/happy-horse/v1-1-text-to-video',
+  'v1-1-image-to-video': '/home/happy-horse/v1-1-image-to-video',
+  'v1-1-reference-to-video': '/home/happy-horse/v1-1-reference-to-video'
 }
 const pathToMode = Object.fromEntries(Object.entries(modeTabToPath).map(([k, v]) => [v, k]))
+
+// HappyHorse 1.1 家族：与 v1 生成模式契约一致，差异为宽高比档更全、厂商不接受 seed、引用模式字段名为 referenceImage
+const HH_V11_MODES = ['v1-1-text-to-video', 'v1-1-image-to-video', 'v1-1-reference-to-video']
+const isV11Mode = (m) => HH_V11_MODES.includes(m)
+const HH_V1_ASPECT_RATIOS = ['16:9', '9:16', '1:1', '4:3', '3:4']
+const HH_V11_ASPECT_RATIOS = ['16:9', '9:16', '1:1', '4:3', '3:4', '4:5', '5:4', '9:21', '21:9']
 
 const mode = ref('v1-text-to-video')
 const formData = reactive({
@@ -285,9 +303,11 @@ const sourceVideoDurationSec = ref(0)
 
 const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
-const requiresPrompt = computed(() => mode.value !== 'v1-image-to-video')
-const supportsAspectRatio = computed(() => mode.value === 'v1-text-to-video' || mode.value === 'v1-reference-to-video')
+const isV11Active = computed(() => isV11Mode(mode.value))
+const requiresPrompt = computed(() => mode.value !== 'v1-image-to-video' && mode.value !== 'v1-1-image-to-video')
+const supportsAspectRatio = computed(() => ['v1-text-to-video', 'v1-reference-to-video', 'v1-1-text-to-video', 'v1-1-reference-to-video'].includes(mode.value))
 const supportsDuration = computed(() => mode.value !== 'v1-video-edit')
+const aspectRatioOptions = computed(() => isV11Active.value ? HH_V11_ASPECT_RATIOS : HH_V1_ASPECT_RATIOS)
 
 onMounted(() => { fetchPrices() })
 
@@ -295,6 +315,9 @@ function pricingModelKeyForMode(m) {
   if (m === 'v1-text-to-video') return 'happyhorse-text-to-video'
   if (m === 'v1-image-to-video') return 'happyhorse-image-to-video'
   if (m === 'v1-reference-to-video') return 'happyhorse-reference-to-video'
+  if (m === 'v1-1-text-to-video') return 'happyhorse-1-1-text-to-video'
+  if (m === 'v1-1-image-to-video') return 'happyhorse-1-1-image-to-video'
+  if (m === 'v1-1-reference-to-video') return 'happyhorse-1-1-reference-to-video'
   return 'happyhorse-video-edit'
 }
 
@@ -324,6 +347,13 @@ watch(() => route.path, (path) => {
   if (m && mode.value !== m) mode.value = m
 }, { immediate: true })
 
+// 切换 mode 时，若当前宽高比不在目标模式档位列表中，归一到 16:9
+watch(mode, () => {
+  if (supportsAspectRatio.value && !aspectRatioOptions.value.includes(formData.aspectRatio)) {
+    formData.aspectRatio = '16:9'
+  }
+})
+
 function goToTab(m) {
   mode.value = m
   router.push(modeTabToPath[m] || modeTabToPath['v1-text-to-video'])
@@ -340,8 +370,8 @@ const canGenerate = computed(() => {
   const promptLen = (formData.prompt || '').trim().length
   if (requiresPrompt.value && (promptLen < 1 || promptLen > 5000)) return false
   if (!requiresPrompt.value && promptLen > 5000) return false
-  if (mode.value === 'v1-image-to-video' && formData.imageUrls.length !== 1) return false
-  if (mode.value === 'v1-reference-to-video' && (formData.imageUrls.length < 1 || formData.imageUrls.length > 9)) return false
+  if ((mode.value === 'v1-image-to-video' || mode.value === 'v1-1-image-to-video') && formData.imageUrls.length !== 1) return false
+  if ((mode.value === 'v1-reference-to-video' || mode.value === 'v1-1-reference-to-video') && (formData.imageUrls.length < 1 || formData.imageUrls.length > 9)) return false
   if (mode.value === 'v1-video-edit' && !formData.videoUrl) return false
   if (mode.value === 'v1-video-edit' && Number(sourceVideoDurationSec.value) <= 0) return false
   if (mode.value !== 'v1-video-edit') {
@@ -467,6 +497,9 @@ function modelNameForMode(m) {
   if (m === 'v1-text-to-video') return 'happyhorse-text-to-video'
   if (m === 'v1-image-to-video') return 'happyhorse-image-to-video'
   if (m === 'v1-reference-to-video') return 'happyhorse-reference-to-video'
+  if (m === 'v1-1-text-to-video') return 'happyhorse-1-1-text-to-video'
+  if (m === 'v1-1-image-to-video') return 'happyhorse-1-1-image-to-video'
+  if (m === 'v1-1-reference-to-video') return 'happyhorse-1-1-reference-to-video'
   return 'happyhorse-video-edit'
 }
 
@@ -563,18 +596,22 @@ async function generate() {
       resolution: formData.resolution
     }
     if ((formData.prompt || '').trim()) body.prompt = formData.prompt.trim()
-    if (supportsAspectRatio.value) body.aspectRatio = formData.aspectRatio
+    if (supportsAspectRatio.value && aspectRatioOptions.value.includes(formData.aspectRatio)) body.aspectRatio = formData.aspectRatio
     if (supportsDuration.value) {
       const durationNum = Math.max(3, Math.min(15, Number(formData.duration) || 5))
-      body.duration = (m === 'v1-reference-to-video' || m === 'v1-image-to-video' || m === 'v1-text-to-video')
-        ? String(durationNum)
-        : durationNum
+      body.duration = (m !== 'v1-video-edit') ? String(durationNum) : durationNum
     }
-    const seed = parseIntegerSeed(formData.seed)
-    if (seed !== undefined) body.seed = seed
+    // 厂商 v1.1 不接受 seed，仅 v1 透传
+    if (!isV11Mode(m)) {
+      const seed = parseIntegerSeed(formData.seed)
+      if (seed !== undefined) body.seed = seed
+    }
 
-    if (m === 'v1-image-to-video' || m === 'v1-reference-to-video') {
+    if (m === 'v1-image-to-video' || m === 'v1-reference-to-video' || m === 'v1-1-image-to-video') {
       body.imageUrls = [...formData.imageUrls]
+    }
+    if (m === 'v1-1-reference-to-video') {
+      body.referenceImage = [...formData.imageUrls]
     }
     if (m === 'v1-video-edit') {
       body.videoUrl = formData.videoUrl

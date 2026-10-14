@@ -90,6 +90,67 @@
       </div>
     </section>
 
+    <section class="info-section" aria-labelledby="compare-30-heading">
+      <h2 id="compare-30-heading" class="section-title">🆚 Wan 2.6 vs Wan 3.0</h2>
+      <p class="section-lead">
+        Wan 2.6 stays the fast pick for multi-shot social clips. Wan 3.0 is a
+        <strong>unified entry</strong> with five input modes, longer duration, and finer control.
+      </p>
+      <div class="compare-table-wrap">
+        <table class="compare-table" aria-label="Wan 2.6 vs Wan 3.0 parameters">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Wan 2.6</th>
+              <th>Wan 3.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Entry</td>
+              <td>3 separate tabs (T2V / I2V / V2V)</td>
+              <td><strong>One tab, five input modes</strong> (text / frame / reference / file / link)</td>
+            </tr>
+            <tr>
+              <td>Prompt</td>
+              <td>1–5000 chars</td>
+              <td><strong>Up to 20000</strong> chars</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>5 / 10 / 15s (V2V 5/10s)</td>
+              <td><strong>2–30s</strong></td>
+            </tr>
+            <tr>
+              <td>Resolution</td>
+              <td>720p / 1080p</td>
+              <td><strong>480p / 720p / 1080p</strong></td>
+            </tr>
+            <tr>
+              <td>References</td>
+              <td>Source image/video only</td>
+              <td><strong>≤10 images + ≤5 videos + ≤5 audio</strong> (Image1/Video1/Audio1)</td>
+            </tr>
+            <tr>
+              <td>File / link input</td>
+              <td>—</td>
+              <td><strong>Yes</strong> (1 file or 1 public link)</td>
+            </tr>
+            <tr>
+              <td>Multi-shot</td>
+              <td><strong>Yes</strong> (single/multi-shot toggle)</td>
+              <td>Adaptive aspect ratio instead of a shot toggle</td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>Per generation</td>
+              <td><strong>Per second × resolution</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="info-section" aria-labelledby="faq-heading">
       <h2 id="faq-heading" class="section-title">❓ FAQ (Wan 2.6)</h2>
       <div class="faq-list">
@@ -217,6 +278,21 @@
         @click.prevent="navigateToToolTop('/home/wan/v2-7-text-to-video')"
       >Wan 2.7 →</a>
       —natural-language video edit, up to 5 references (R2V), and finer prompt controls.
+    </div>
+
+    <div class="upgrade-tip">
+      ⚡ Step up to the <strong>Wan 3.0 unified entry</strong>—text, first/last frame, reference, file, and link in one form; prompts to 20000 chars, <strong>2–30s</strong> at 480p/720p/1080p.
+      <a
+        href="/home/wan/v3-0-video"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v3-0-video')"
+      >Wan 3.0 →</a>
+      or the faster
+      <a
+        href="/home/wan/v3-0-video-prime"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v3-0-video-prime')"
+      >Wan 3.0 Prime →</a>
     </div>
   </div>
 </template>

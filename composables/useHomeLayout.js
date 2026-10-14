@@ -523,6 +523,9 @@ export const useHomeLayout = () => {
     'happyhorse-image-to-video': '/home/happy-horse/v1-image-to-video',
     'happyhorse-reference-to-video': '/home/happy-horse/v1-reference-to-video',
     'happyhorse-video-edit': '/home/happy-horse/v1-video-edit',
+    'happyhorse-1-1-text-to-video': '/home/happy-horse/v1-1-text-to-video',
+    'happyhorse-1-1-image-to-video': '/home/happy-horse/v1-1-image-to-video',
+    'happyhorse-1-1-reference-to-video': '/home/happy-horse/v1-1-reference-to-video',
     // Wan
     'wan-2-6-text-to-video': '/home/wan/text-to-video',
     'wan-2-6-image-to-video': '/home/wan/image-to-video',
@@ -532,6 +535,8 @@ export const useHomeLayout = () => {
     'wan-2-7-video-edit': '/home/wan/v2-7-video-edit',
     'wan-2-7-videoedit': '/home/wan/v2-7-video-edit',
     'wan-2-7-r2v': '/home/wan/v2-7-r2v',
+    'wan-3-0-video': '/home/wan/v3-0-video',
+    'wan-3-0-video-prime': '/home/wan/v3-0-video-prime',
     'wan-2-7-image': '/home/wan/2-7-image',
     'wan-2-7-image-pro': '/home/wan/2-7-image-pro',
     // Seedance（v1 系列）

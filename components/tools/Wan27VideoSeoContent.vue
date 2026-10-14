@@ -95,6 +95,67 @@
       </div>
     </section>
 
+    <section class="info-section" aria-labelledby="compare-30-heading">
+      <h2 id="compare-30-heading" class="section-title">🆚 Wan 2.7 vs Wan 3.0</h2>
+      <p class="section-lead">
+        Both bill per second by resolution and live in the same tool. Wan 3.0 adds a
+        <strong>unified entry</strong>, longer duration, more references, and file/link inputs.
+      </p>
+      <div class="compare-table-wrap">
+        <table class="compare-table" aria-label="Wan 2.7 vs Wan 3.0 parameters">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Wan 2.7 video</th>
+              <th>Wan 3.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Entry</td>
+              <td>4 tabs (T2V / I2V / Edit / R2V)</td>
+              <td><strong>One tab, five input modes</strong> (text / frame / reference / file / link)</td>
+            </tr>
+            <tr>
+              <td>Prompt</td>
+              <td>3–5000 chars</td>
+              <td><strong>Up to 20000</strong> chars</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>2–15s (edit 0–10, R2V 2–10)</td>
+              <td><strong>2–30s</strong> (input video + duration ≤ 30s)</td>
+            </tr>
+            <tr>
+              <td>Resolution</td>
+              <td>720p / 1080p</td>
+              <td><strong>480p / 720p / 1080p</strong></td>
+            </tr>
+            <tr>
+              <td>Aspect ratio</td>
+              <td>16:9, 9:16, 1:1, 4:3, 3:4</td>
+              <td><strong>adaptive</strong> + 16:9, 4:3, 1:1, 3:4, 9:16</td>
+            </tr>
+            <tr>
+              <td>References (R2V)</td>
+              <td>Up to 5 images/videos</td>
+              <td><strong>≤10 images + ≤5 videos + ≤5 audio</strong> (Image1/Video1/Audio1)</td>
+            </tr>
+            <tr>
+              <td>File / link input</td>
+              <td>—</td>
+              <td><strong>Yes</strong> (1 file or 1 public link)</td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>Per second × resolution</td>
+              <td>Per second × resolution (<code>audio</code> does not change the rate)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="info-section" aria-labelledby="faq-heading">
       <h2 id="faq-heading" class="section-title">❓ FAQ (Wan 2.7)</h2>
       <div class="faq-list">
@@ -228,6 +289,21 @@
         @click.prevent="navigateToToolTop('/home/wan/text-to-video')"
       >Wan 2.6 workflows</a>
       remain available for lightweight generation.
+    </div>
+
+    <div class="upgrade-tip">
+      ⚡ Ready for more? The <strong>Wan 3.0 unified entry</strong> folds text, first/last frame, reference (≤10 images), file, and link into one form—<strong>2–30s</strong> at 480p/720p/1080p.
+      <a
+        href="/home/wan/v3-0-video"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v3-0-video')"
+      >Wan 3.0 →</a>
+      or the faster
+      <a
+        href="/home/wan/v3-0-video-prime"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v3-0-video-prime')"
+      >Wan 3.0 Prime →</a>
     </div>
   </div>
 </template>

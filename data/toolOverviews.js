@@ -1075,7 +1075,7 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
     category: 'Image & Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Wan on FuseAITools is Alibaba\'s multimodal suite for image and video. Use Wan 2.6 for text, image, and video-to-video clips (5–15s, multi-shot, 720p/1080p), or Wan 2.7 for director-style text-to-video, frame-controlled image-to-video, natural-language Video Edit, and R2V with up to five references—plus Wan 2.7 Image and Image Pro. New users receive 20 free credits on sign-up.',
+    intro: 'Wan on FuseAITools is Alibaba\'s multimodal suite for image and video. Use Wan 2.6 for text, image, and video-to-video clips (5–15s, multi-shot, 720p/1080p), Wan 2.7 for director-style text-to-video, frame-controlled image-to-video, natural-language Video Edit, and R2V with up to five references—plus Wan 2.7 Image and Image Pro. Wan 3.0 unifies text, first/last frame, all-capability reference, file, and link into one entry with 2–30s clips at 480p/720p/1080p and per-second pricing. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Wan 2.7 Image', path: '/home/wan/2-7-image', description: 'Text-to-image and image editing—optional up to 9 reference images, aspect ratios when generating from prompt only, batch n, 1K/2K, sequential mode, and advanced controls.' },
       { name: 'Wan 2.7 Image Pro', path: '/home/wan/2-7-image-pro', description: 'Same as Wan 2.7 Image with 4K output when no input image and sequential mode is off—built for hero assets and print-ready creatives.' },
@@ -1085,7 +1085,9 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
       { name: 'Wan 2.7 Text to Video', path: '/home/wan/v2-7-text-to-video', description: 'Director-grade generation: 3–5000 char prompt, 2–15s, aspect ratios, optional audio and negative prompt.' },
       { name: 'Wan 2.7 Image to Video', path: '/home/wan/v2-7-image-to-video', description: 'First/last frame, reference clip, or driving audio with 2–15s output at 720p/1080p.' },
       { name: 'Wan 2.7 Video Edit', path: '/home/wan/v2-7-video-edit', description: 'Edit uploaded video with natural language—duration 0 (auto) or 2–10s, optional reference image.' },
-      { name: 'Wan 2.7 R2V', path: '/home/wan/v2-7-r2v', description: 'Up to 5 combined reference images/videos, 2–10s clips—ensemble scenes with optional voice lock.' }
+      { name: 'Wan 2.7 R2V', path: '/home/wan/v2-7-r2v', description: 'Up to 5 combined reference images/videos, 2–10s clips—ensemble scenes with optional voice lock.' },
+      { name: 'Wan 3.0 Video', path: '/home/wan/v3-0-video', description: 'Unified entry: text, first/last frame, all-capability reference (Image1/Video1/Audio1), file, and link—2–30s at 480p/720p/1080p with per-second pricing.' },
+      { name: 'Wan 3.0 Prime Video', path: '/home/wan/v3-0-video-prime', description: 'High-speed tier of the Wan 3.0 unified entry—same five input modes and per-second pricing, distinct model key wan-3-0-video-prime.' }
     ],
     sections: [
       {
@@ -1106,7 +1108,11 @@ Wan 2.7 Image to Video (wan-2-7-image-to-video): Prompt 3–5000; at least one o
 
 Wan 2.7 Video Edit (wan-2-7-videoedit): Video URL + prompt 3–5000. Duration 0 or 2–10s. Resolution 720p/1080p. Optional reference image; audio setting auto or origin.
 
-Wan 2.7 R2V (wan-2-7-r2v): Prompt 3–5000; up to 5 reference images/videos combined. Duration 2–10s. Optional first frame and reference voice; aspect ratio omitted when first frame is set.`
+Wan 2.7 R2V (wan-2-7-r2v): Prompt 3–5000; up to 5 reference images/videos combined. Duration 2–10s. Optional first frame and reference voice; aspect ratio omitted when first frame is set.
+
+Wan 3.0 Video (wan-3-0-video): Unified entry with five input modes—text (prompt required, ≤20000 chars), first/last frame, all-capability reference (≤10 images + ≤5 videos + ≤5 audio, cited as Image1/Video1/Audio1; input video total + duration ≤ 30s), file (≤1), and link (≤1, public page). Frames/references/file/link are mutually exclusive. Resolution 480p/720p/1080p; aspect ratio adaptive/16:9/4:3/1:1/3:4/9:16; duration 2–30s; optional audio track, NSFW checker, and seed (0–2147483647). Billed per second × resolution.
+
+Wan 3.0 Prime Video (wan-3-0-video-prime): High-speed tier with the identical input contract and pricing logic as wan-3-0-video—only the model key differs.`
       },
       {
         title: 'Workflow',
@@ -1117,6 +1123,8 @@ Image: Open Wan 2.7 Image or Image Pro → write prompt → (optional) upload re
 Wan 2.6 video: Pick Text to Video, Image to Video, or Video to Video → provide prompt and media → set duration, resolution, multi-shot → submit → download from history.
 
 Wan 2.7 video: Pick Text to Video, Image to Video, Video Edit, or R2V → match required inputs (frames, footage, or references) → set duration and quality → submit → iterate with refined prompts.
+
+Wan 3.0 video: One tab, five input modes—switch Text / First-Last Frame / Reference / File / Link in the form → cite materials as Image1/Video1/Audio1 in reference mode → set resolution, aspect ratio, and 2–30s duration → submit with per-second credit pricing.
 
 All workflows run in the browser on FuseAITools with credit-based pricing—no local GPU required.`
       },
@@ -1131,12 +1139,15 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'HappyHorse v1 on FuseAITools delivers native audio-video generation across four workflows: text-to-video, image-to-video, reference-to-video (1–9 images), and video edit. Clips run 3–15s at 720p/1080p with credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'HappyHorse on FuseAITools delivers native audio-video generation across the v1 and v1.1 lines. v1 covers four workflows—text-to-video, image-to-video, reference-to-video (1–9 images), and video edit. v1.1 streamlines text, image, and reference generation with nine aspect ratios (adds 4:5, 5:4, 9:21, 21:9) and no seed. Clips run 3–15s at 720p/1080p with credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'HappyHorse v1 Text to Video', path: '/home/happy-horse/v1-text-to-video', description: 'Prompt-only generation with native audio-video sync—3–15s, 720p/1080p, aspect ratios 16:9 through 3:4.' },
       { name: 'HappyHorse v1 Image to Video', path: '/home/happy-horse/v1-image-to-video', description: 'Animate one still image with optional prompt—3–15s at 720p/1080p.' },
       { name: 'HappyHorse v1 Reference to Video', path: '/home/happy-horse/v1-reference-to-video', description: '1–9 reference images with character1/2/3 placeholders in the prompt for consistent casts.' },
-      { name: 'HappyHorse v1 Video Edit', path: '/home/happy-horse/v1-video-edit', description: 'Upload MP4/MOV and edit with natural language—0–5 optional references, audio auto or origin.' }
+      { name: 'HappyHorse v1 Video Edit', path: '/home/happy-horse/v1-video-edit', description: 'Upload MP4/MOV and edit with natural language—0–5 optional references, audio auto or origin.' },
+      { name: 'HappyHorse v1.1 Text to Video', path: '/home/happy-horse/v1-1-text-to-video', description: 'Prompt-only generation with native audio-video sync—3–15s, 720p/1080p, nine aspect ratios 16:9 through 21:9.' },
+      { name: 'HappyHorse v1.1 Image to Video', path: '/home/happy-horse/v1-1-image-to-video', description: 'Animate one still image with optional prompt—3–15s at 720p/1080p, output follows the input ratio.' },
+      { name: 'HappyHorse v1.1 Reference to Video', path: '/home/happy-horse/v1-1-reference-to-video', description: '1–9 reference images cited as [Image 1], [Image 2]… in the prompt, nine aspect ratios, no seed.' }
     ],
     sections: [
       {
@@ -1147,7 +1158,15 @@ Image to Video (happyhorse-image-to-video): Exactly one image URL required. Opti
 
 Reference to Video (happyhorse-reference-to-video): Required prompt plus 1–9 ordered reference images. Use character1, character2… in the prompt. Duration 3–15s. Resolution 720p/1080p. Aspect ratios same as text-to-video.
 
-Video Edit (happyhorse-video-edit): Required video URL (MP4/MOV) and prompt. Optional 0–5 reference images. Resolution 720p/1080p. Audio setting auto or origin. Billing duration from source video (ceil seconds, API clamp 3–60s). Optional seed.`
+Video Edit (happyhorse-video-edit): Required video URL (MP4/MOV) and prompt. Optional 0–5 reference images. Resolution 720p/1080p. Audio setting auto or origin. Billing duration from source video (ceil seconds, API clamp 3–60s). Optional seed.
+
+HappyHorse v1.1
+
+Text to Video (happyhorse-1-1-text-to-video): Required prompt (1–5000 chars). Duration 3–15s. Resolution 720p/1080p. Aspect ratio 16:9, 9:16, 1:1, 4:3, 3:4, 4:5, 5:4, 9:21, 21:9. No seed (vendor rejects it).
+
+Image to Video (happyhorse-1-1-image-to-video): Exactly one image URL required (field imageUrls). Optional prompt (max 5000). Duration 3–15s. Resolution 720p/1080p. No aspect ratio—output keeps the input frame ratio. No seed.
+
+Reference to Video (happyhorse-1-1-reference-to-video): Required prompt plus 1–9 ordered reference images (field referenceImage). Cite them as [Image 1], [Image 2]… in the prompt. Duration 3–15s. Resolution 720p/1080p. Nine aspect ratios as text-to-video. No seed.`
       },
       {
         title: 'Workflow',

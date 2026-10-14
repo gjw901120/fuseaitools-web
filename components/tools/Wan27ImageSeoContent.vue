@@ -98,6 +98,52 @@
       </div>
     </section>
 
+    <section class="info-section" aria-labelledby="compare-30-heading">
+      <h2 id="compare-30-heading" class="section-title">🆚 From Wan 2.7 Image to Wan 3.0 Video</h2>
+      <p class="section-lead">
+        Stills made here drop straight into the <strong>Wan 3.0 unified entry</strong>—as first/last
+        frames or among up to 10 reference images. Key parameters side by side:
+      </p>
+      <div class="compare-table-wrap">
+        <table class="compare-table" aria-label="Wan 2.7 Image vs Wan 3.0 parameters">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Wan 2.7 Image / Pro</th>
+              <th>Wan 3.0 Video</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Output</td>
+              <td>Stills: <strong>1K / 2K</strong> (Pro adds <strong>4K</strong>)</td>
+              <td>Video: <strong>480p / 720p / 1080p</strong>, <strong>2–30s</strong></td>
+            </tr>
+            <tr>
+              <td>Prompt</td>
+              <td>1–5000 chars</td>
+              <td><strong>Up to 20000</strong> chars</td>
+            </tr>
+            <tr>
+              <td>Media role</td>
+              <td>Produces the frames / references</td>
+              <td>Consumes them as <strong>first/last frame</strong> or ≤10 <strong>reference images</strong></td>
+            </tr>
+            <tr>
+              <td>References</td>
+              <td>Up to <strong>9</strong> input images (editing)</td>
+              <td>Up to <strong>10</strong> images + 5 videos + 5 audio (Image1/Video1/Audio1)</td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>Per generation</td>
+              <td><strong>Per second × resolution</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="info-section" aria-labelledby="faq-heading">
       <h2 id="faq-heading" class="section-title">❓ FAQ (Wan 2.7 Image)</h2>
       <div class="faq-list">
@@ -218,6 +264,21 @@
         class="seo-inline-link"
         @click.prevent="navigateToToolTop('/home/wan/v2-7-text-to-video')"
       >Wan 2.7 video workflows →</a>
+    </div>
+
+    <div class="upgrade-tip">
+      🎬 Animate these stills in the
+      <a
+        href="/home/wan/v3-0-video"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v3-0-video')"
+      >Wan 3.0 unified entry</a>
+      —use them as first/last frames or up to 10 reference images (2–30s, 480p–1080p), or try the faster
+      <a
+        href="/home/wan/v3-0-video-prime"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/wan/v3-0-video-prime')"
+      >Wan 3.0 Prime →</a>
     </div>
   </div>
 </template>

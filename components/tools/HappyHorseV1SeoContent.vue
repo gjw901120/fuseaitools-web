@@ -91,6 +91,29 @@
       </div>
     </section>
 
+    <section v-if="currentSameTypeCompare" class="info-section" aria-labelledby="compare-v11-heading">
+      <h2 id="compare-v11-heading" class="section-title">{{ currentSameTypeCompare.title }}</h2>
+      <p class="section-lead" v-html="currentSameTypeCompare.lead" />
+      <div class="compare-table-wrap">
+        <table class="compare-table" :aria-label="currentSameTypeCompare.ariaLabel">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>HappyHorse v1</th>
+              <th>HappyHorse v1.1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, i) in currentSameTypeCompare.rows" :key="i">
+              <td>{{ row.dim }}</td>
+              <td v-html="row.v1" />
+              <td v-html="row.v11" />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="info-section" aria-labelledby="faq-heading">
       <h2 id="faq-heading" class="section-title">❓ FAQ (HappyHorse v1)</h2>
       <div class="faq-list">
@@ -208,12 +231,83 @@
       >Explore Wan 2.7 →</a>
       for frame control, natural-language edit, and R2V with up to five references.
     </div>
+
+    <div v-if="currentSameTypeCompare" class="upgrade-tip">
+      ⚡ Same workflow, newer engine—open the matching
+      <a
+        :href="currentV11Link"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop(currentV11Link)"
+      >{{ currentSameTypeCompare.linkLabel }}</a>
+      {{ currentSameTypeCompare.linkHint }}
+    </div>
   </div>
 </template>
 
 <script setup>
 const route = useRoute()
 const { navigateToToolTop, handleModeClick, watchRouteScroll } = useToolSeoPageScroll()
+
+// 同类型（t2v / i2v / r2v）v1 vs v1.1 对比 + 指向对应 v1.1 页面的内链；video-edit 无 v1.1 对应，故不显示
+const sameTypeCompareMap = {
+  '/home/happy-horse/v1-text-to-video': {
+    title: '🆚 HappyHorse v1 vs v1.1 · Text to Video',
+    lead: 'Same required prompt, duration, resolution, and native audio—the differences are <strong>framing breadth</strong> and the <strong>seed</strong> knob.',
+    ariaLabel: 'HappyHorse v1 vs v1.1 text-to-video parameters',
+    linkPath: '/home/happy-horse/v1-1-text-to-video',
+    linkLabel: 'HappyHorse v1.1 Text to Video →',
+    linkHint: 'for nine aspect ratios (adds 4:5, 5:4, 9:21, 21:9); note it drops the seed.',
+    rows: [
+      { dim: 'Model', v1: '<code>happyhorse-text-to-video</code>', v11: '<code>happyhorse-1-1-text-to-video</code>' },
+      { dim: 'Prompt', v1: 'Required, 1–5000 chars', v11: 'Required, 1–5000 chars' },
+      { dim: 'Aspect ratios', v1: '16:9, 9:16, 1:1, 4:3, 3:4', v11: '<strong>Nine</strong>—adds 4:5, 5:4, 9:21, 21:9' },
+      { dim: 'Duration', v1: '3–15s', v11: '3–15s' },
+      { dim: 'Resolution', v1: '720p / 1080p', v11: '720p / 1080p' },
+      { dim: 'Seed', v1: '<strong>Optional seed accepted</strong>', v11: 'Vendor rejects seed' },
+      { dim: 'Pricing', v1: 'Per second × resolution', v11: 'Per second × resolution' }
+    ]
+  },
+  '/home/happy-horse/v1-image-to-video': {
+    title: '🆚 HappyHorse v1 vs v1.1 · Image to Video',
+    lead: 'Both animate one still with an optional prompt and follow the input frame’s ratio—the split is the <strong>seed</strong>.',
+    ariaLabel: 'HappyHorse v1 vs v1.1 image-to-video parameters',
+    linkPath: '/home/happy-horse/v1-1-image-to-video',
+    linkLabel: 'HappyHorse v1.1 Image to Video →',
+    linkHint: 'for the v1.1 engine—identical one-image flow, just without a seed field.',
+    rows: [
+      { dim: 'Model', v1: '<code>happyhorse-image-to-video</code>', v11: '<code>happyhorse-1-1-image-to-video</code>' },
+      { dim: 'Input', v1: 'Exactly 1 image URL', v11: 'Exactly 1 image URL' },
+      { dim: 'Prompt', v1: 'Optional, max 5000 chars', v11: 'Optional, max 5000 chars' },
+      { dim: 'Aspect ratio', v1: 'Follows input frame', v11: 'Follows input frame' },
+      { dim: 'Duration', v1: '3–15s', v11: '3–15s' },
+      { dim: 'Resolution', v1: '720p / 1080p', v11: '720p / 1080p' },
+      { dim: 'Seed', v1: '<strong>Optional seed accepted</strong>', v11: 'Vendor rejects seed' },
+      { dim: 'Pricing', v1: 'Per second × resolution', v11: 'Per second × resolution' }
+    ]
+  },
+  '/home/happy-horse/v1-reference-to-video': {
+    title: '🆚 HappyHorse v1 vs v1.1 · Reference to Video',
+    lead: 'Both take a prompt plus 1–9 images—the differences are <strong>citation syntax</strong>, the request <strong>field name</strong>, framing breadth, and the seed.',
+    ariaLabel: 'HappyHorse v1 vs v1.1 reference-to-video parameters',
+    linkPath: '/home/happy-horse/v1-1-reference-to-video',
+    linkLabel: 'HappyHorse v1.1 Reference to Video →',
+    linkHint: 'to cite assets as [Image 1], [Image 2]… with nine aspect ratios; note it drops the seed.',
+    rows: [
+      { dim: 'Model', v1: '<code>happyhorse-reference-to-video</code>', v11: '<code>happyhorse-1-1-reference-to-video</code>' },
+      { dim: 'Prompt', v1: 'Required + 1–9 images', v11: 'Required + 1–9 images' },
+      { dim: 'Citation', v1: 'character1, character2…', v11: '<strong>[Image 1], [Image 2]…</strong>' },
+      { dim: 'Request field', v1: '<code>imageUrls</code>', v11: '<code>referenceImage</code>' },
+      { dim: 'Aspect ratios', v1: 'Same five as T2V', v11: '<strong>Nine</strong>—adds 4:5, 5:4, 9:21, 21:9' },
+      { dim: 'Duration', v1: '3–15s', v11: '3–15s' },
+      { dim: 'Resolution', v1: '720p / 1080p', v11: '720p / 1080p' },
+      { dim: 'Seed', v1: '<strong>Optional seed accepted</strong>', v11: 'Vendor rejects seed' },
+      { dim: 'Pricing', v1: 'Per second × resolution', v11: 'Per second × resolution' }
+    ]
+  }
+}
+
+const currentSameTypeCompare = computed(() => sameTypeCompareMap[route.path.replace(/\/$/, '')] || null)
+const currentV11Link = computed(() => currentSameTypeCompare.value?.linkPath || '')
 
 const videoWorkflows = [
   {

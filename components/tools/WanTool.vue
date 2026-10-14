@@ -421,6 +421,176 @@
               </div>
             </div>
 
+            <!-- ═══ Wan 3.0 统一入口 ═══ -->
+            <template v-if="isWan30Mode">
+              <div class="form-group">
+                <label class="form-label">Input Mode</label>
+                <div class="tab-group wan30-mode-group">
+                  <button type="button" class="tab-option" :class="{ active: formData.wan30InputMode === 'text' }" @click="setWan30InputMode('text')"><i class="fas fa-font"></i> Text</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.wan30InputMode === 'frame' }" @click="setWan30InputMode('frame')"><i class="fas fa-image"></i> First/Last Frame</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.wan30InputMode === 'reference' }" @click="setWan30InputMode('reference')"><i class="fas fa-layer-group"></i> Reference</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.wan30InputMode === 'file' }" @click="setWan30InputMode('file')"><i class="fas fa-file"></i> File</button>
+                  <button type="button" class="tab-option" :class="{ active: formData.wan30InputMode === 'link' }" @click="setWan30InputMode('link')"><i class="fas fa-link"></i> Link</button>
+                </div>
+                <div class="form-hint">One entry, five mutually-exclusive inputs. Switch to reveal the matching fields.</div>
+              </div>
+
+              <!-- 首尾帧 -->
+              <template v-if="formData.wan30InputMode === 'frame'">
+                <div class="form-group">
+                  <label class="form-label">First Frame <span class="required">*</span></label>
+                  <UploadImage :readonly="isDetailView"
+                    input-id="wan30-first-frame-upload"
+                    label="" upload-text="Click to upload first frame"
+                    upload-hint="JPEG, PNG, WebP; strictly the first frame"
+                    :max-files="1" :max-file-size="20 * 1024 * 1024"
+                    accept="image/jpeg,image/png,image/webp" :multiple="false"
+                    @update:files="handleWan27FirstFrameFile"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Frame (optional)</label>
+                  <UploadImage :readonly="isDetailView"
+                    input-id="wan30-last-frame-upload"
+                    label="" upload-text="Click to upload last frame"
+                    upload-hint="Must be used together with first frame"
+                    :max-files="1" :max-file-size="20 * 1024 * 1024"
+                    accept="image/jpeg,image/png,image/webp" :multiple="false"
+                    @update:files="handleWan27LastFrameFile"
+                  />
+                </div>
+              </template>
+
+              <!-- 全能力参考 -->
+              <template v-if="formData.wan30InputMode === 'reference'">
+                <div class="form-group">
+                  <label class="form-label">Reference Images (max 10)</label>
+                  <UploadImage :readonly="isDetailView"
+                    ref="wan30RefImageUploadRef"
+                    input-id="wan30-ref-image-upload"
+                    label="" upload-text="Click to upload reference images"
+                    upload-hint="Mapped to Image1, Image2… in prompt; max 20MB each"
+                    :max-files="10" :max-file-size="20 * 1024 * 1024"
+                    accept="image/jpeg,image/png,image/webp" :multiple="true"
+                    @update:files="handleWan30RefImages"
+                  />
+                  <div v-if="formData.wan30RefImages.length" class="wan30-ref-count">{{ formData.wan30RefImages.length }}/10 images</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Reference Videos (max 5)</label>
+                  <input ref="wan30RefVideoInputRef" type="file" accept="video/mp4,video/quicktime" class="wan-video-input" multiple @change="handleWan30RefVideos" />
+                  <div class="wan-video-upload wan-video-upload--stack" @click="!isUploadingWan30Videos && !formData.wan30RefVideos.length && triggerWan30RefVideoInput()">
+                    <div v-if="isUploadingWan30Videos" class="wan-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
+                    <template v-else-if="formData.wan30RefVideos.length">
+                      <div class="wan-ref-videos-block" @click.stop>
+                        <div class="wan-ref-videos-list">
+                          <div v-for="(url, idx) in formData.wan30RefVideos" :key="'wan30-v-' + idx" class="wan-video-preview-wrap wan-ref-video-tile">
+                            <video :src="url" class="wan-video-preview" controls playsinline></video>
+                            <button type="button" class="wan-video-remove" title="Remove" @click.stop="removeWan30RefVideoAt(idx)">×</button>
+                          </div>
+                        </div>
+                        <div class="wan-ref-videos-actions"><button type="button" class="action-btn" @click.stop="triggerWan30RefVideoInput">Replace all</button><span class="form-hint wan-ref-videos-hint">Each 1–15s, total ≤ 15s; input video total + duration ≤ 30s.</span></div>
+                      </div>
+                    </template>
+                    <div v-else class="wan-video-placeholder"><i class="fas fa-cloud-upload-alt"></i><span>Click to upload reference videos</span></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Reference Audio (max 5)</label>
+                  <input ref="wan30RefAudioInputRef" type="file" accept="audio/wav,audio/mpeg,audio/mp3" class="wan-video-input" multiple @change="handleWan30RefAudios" />
+                  <div class="wan-video-upload wan-video-upload--stack" @click="!isUploadingWan30Audios && !formData.wan30RefAudios.length && triggerWan30RefAudioInput()">
+                    <div v-if="isUploadingWan30Audios" class="wan-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
+                    <template v-else-if="formData.wan30RefAudios.length">
+                      <div class="wan-ref-videos-block" @click.stop>
+                        <div class="wan30-audio-list">
+                          <div v-for="(url, idx) in formData.wan30RefAudios" :key="'wan30-a-' + idx" class="wan-audio-preview-wrap">
+                            <audio :src="url" class="wan-audio-preview" controls playsinline></audio>
+                            <button type="button" class="wan-video-remove" title="Remove" @click.stop="removeWan30RefAudioAt(idx)">×</button>
+                          </div>
+                        </div>
+                        <div class="wan-ref-videos-actions"><button type="button" class="action-btn" @click.stop="triggerWan30RefAudioInput">Replace all</button><span class="form-hint wan-ref-videos-hint">Each 1–15s, total ≤ 15s; mapped to Audio1, Audio2…</span></div>
+                      </div>
+                    </template>
+                    <div v-else class="wan-video-placeholder"><i class="fas fa-cloud-upload-alt"></i><span>Click to upload reference audio</span></div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- 文件生视频 -->
+              <template v-if="formData.wan30InputMode === 'file'">
+                <div class="form-group">
+                  <label class="form-label">Reference File (max 1)</label>
+                  <input ref="wan30RefFileInputRef" type="file" class="wan-video-input" @change="handleWan30RefFile" />
+                  <div class="wan-video-upload wan-video-upload--stack" @click="!isUploadingWan30File && !formData.wan30RefFile && triggerWan30RefFileInput()">
+                    <div v-if="isUploadingWan30File" class="wan-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
+                    <template v-else-if="formData.wan30RefFile">
+                      <div class="wan-ref-videos-actions" @click.stop>
+                        <a :href="formData.wan30RefFile" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Uploaded file</a>
+                        <button type="button" class="action-btn" @click.stop="clearWan30RefFile">Remove</button>
+                      </div>
+                    </template>
+                    <div v-else class="wan-video-placeholder"><i class="fas fa-cloud-upload-alt"></i><span>Click to upload one file</span></div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- 链接生视频 -->
+              <template v-if="formData.wan30InputMode === 'link'">
+                <div class="form-group">
+                  <label class="form-label">Reference Link (max 1)</label>
+                  <input v-model="formData.wan30RefLink" type="url" class="form-input" placeholder="https://publicly accessible web page" />
+                  <div class="form-hint">Must be login-free and publicly accessible.</div>
+                </div>
+              </template>
+
+              <!-- Resolution -->
+              <div class="form-group">
+                <label class="form-label">Resolution</label>
+                <div class="tab-group">
+                  <button v-for="r in wan30Resolutions" :key="'wan30-res-'+r" type="button" class="tab-option" :class="{ active: formData.resolution === r }" @click="formData.resolution = r">{{ r }}</button>
+                </div>
+              </div>
+
+              <!-- Aspect Ratio -->
+              <div class="form-group">
+                <label class="form-label">Aspect Ratio</label>
+                <div class="tab-group">
+                  <button v-for="ratio in wan30AspectRatios" :key="'wan30-ar-'+ratio" type="button" class="tab-option" :class="{ active: formData.aspectRatio === ratio }" @click="formData.aspectRatio = ratio">{{ ratio }}</button>
+                </div>
+              </div>
+
+              <!-- Duration -->
+              <div class="form-group">
+                <label class="form-label">Duration</label>
+                <input v-model.number="formData.durationNum" type="range" class="duration-range" min="2" max="30" step="1" />
+                <div class="form-hint">{{ formData.durationNum }}s (2–30s). With reference video: input total + duration ≤ 30s.</div>
+              </div>
+
+              <!-- Audio track toggle -->
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input v-model="formData.wan30Audio" type="checkbox" />
+                  <span>Include audio track</span>
+                </label>
+                <div class="form-hint">Does not affect price; billed per second by resolution.</div>
+              </div>
+
+              <!-- NSFW checker -->
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input v-model="formData.wan30Nsfw" type="checkbox" />
+                  <span>NSFW content checker</span>
+                </label>
+              </div>
+
+              <!-- Seed -->
+              <div class="form-group">
+                <label class="form-label">Seed (optional)</label>
+                <input v-model.number="formData.seed" type="number" class="form-input" min="0" max="2147483647" />
+                <div class="form-hint">0 = random per vendor.</div>
+              </div>
+            </template>
+
             <div v-if="isWanImageMode && !hasImageInput" class="form-group">
               <label class="form-label">Aspect Ratio</label>
               <div class="tab-group">
@@ -442,7 +612,7 @@
               <div class="form-hint">Range: {{ nMin }} - {{ nMax }}.</div>
             </div>
 
-            <div v-if="!isWanImageMode && !isWan27VideoMode" class="form-group">
+            <div v-if="!isWanImageMode && !isWan27VideoMode && !isWan30Mode" class="form-group">
               <label class="form-label">Duration</label>
               <div class="tab-group">
                 <button type="button" class="tab-option" :class="{ active: formData.duration === '5' }" @click="formData.duration = '5'">5s</button>
@@ -451,7 +621,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div v-if="!isWan30Mode" class="form-group">
               <label class="form-label">Resolution</label>
               <div class="tab-group">
                 <template v-if="isWanImageMode">
@@ -479,7 +649,7 @@
               <div class="form-hint">{{ formData.durationNum }}s</div>
             </div>
 
-            <div v-if="!isWanImageMode && !isWan27VideoMode" class="form-group">
+            <div v-if="!isWanImageMode && !isWan27VideoMode && !isWan30Mode" class="form-group">
               <label class="checkbox-label">
                 <input v-model="formData.multiShots" type="checkbox" />
                 <span>Multi shots (multiple shots with transitions)</span>
@@ -725,6 +895,8 @@ const modeTabToPath = {
   'v2-7-image-to-video': '/home/wan/v2-7-image-to-video',
   'v2-7-video-edit': '/home/wan/v2-7-video-edit',
   'v2-7-r2v': '/home/wan/v2-7-r2v',
+  'v3-0-video': '/home/wan/v3-0-video',
+  'v3-0-video-prime': '/home/wan/v3-0-video-prime',
   '2-7-image': '/home/wan/2-7-image',
   '2-7-image-pro': '/home/wan/2-7-image-pro'
 }
@@ -737,6 +909,8 @@ const pathToMode = {
   '/home/wan/v2-7-video-edit': 'v2-7-video-edit',
   '/home/wan/v2-7-videoedit': 'v2-7-video-edit',
   '/home/wan/v2-7-r2v': 'v2-7-r2v',
+  '/home/wan/v3-0-video': 'v3-0-video',
+  '/home/wan/v3-0-video-prime': 'v3-0-video-prime',
   '/home/wan/2-7-image': '2-7-image',
   '/home/wan/2-7-image-pro': '2-7-image-pro'
 }
@@ -751,6 +925,8 @@ const modeTabs = [
   { key: 'v2-7-image-to-video', label: 'v2.7 Image to Video', icon: 'fas fa-images', group: 'video' },
   { key: 'v2-7-video-edit', label: 'v2.7 Video Edit', icon: 'fas fa-edit', group: 'video' },
   { key: 'v2-7-r2v', label: 'v2.7 R2V', icon: 'fas fa-layer-group', group: 'video' },
+  { key: 'v3-0-video', label: 'Wan 3.0', icon: 'fas fa-wand-magic-sparkles', group: 'video' },
+  { key: 'v3-0-video-prime', label: 'Wan 3.0 Prime', icon: 'fas fa-bolt', group: 'video' },
   { key: '2-7-image', label: '2.7 Image', icon: 'fas fa-image', group: 'image' },
   { key: '2-7-image-pro', label: '2.7 Image Pro', icon: 'fas fa-images', group: 'image' }
 ]
@@ -803,7 +979,16 @@ const formData = reactive({
   /** 与 input_urls 下标对齐；每项为该图上的框 [x1,y1,x2,y2]（原图像素），每图最多 2 个 */
   bboxPerImage: [],
   watermark: false,
-  seed: 0
+  seed: 0,
+  /* —— Wan 3.0 统一入口专属字段 —— */
+  wan30InputMode: 'text', // text | frame | reference | file | link
+  wan30RefImages: [],
+  wan30RefVideos: [],
+  wan30RefAudios: [],
+  wan30RefFile: '',
+  wan30RefLink: '',
+  wan30Audio: true,
+  wan30Nsfw: false
 })
 
 const imageUploadRef = ref(null)
@@ -819,6 +1004,13 @@ const wan27R2vVoiceInputRef = ref(null)
 const wan27TextAudioInputRef = ref(null)
 const wan27FirstClipInputRef = ref(null)
 const wan27DrivingAudioInputRef = ref(null)
+const wan30RefImageUploadRef = ref(null)
+const wan30RefVideoInputRef = ref(null)
+const wan30RefAudioInputRef = ref(null)
+const wan30RefFileInputRef = ref(null)
+const isUploadingWan30Videos = ref(false)
+const isUploadingWan30Audios = ref(false)
+const isUploadingWan30File = ref(false)
 const isUploadingImages = ref(false)
 const isUploadingVideo = ref(false)
 const isUploadingWan27EditVideo = ref(false)
@@ -838,6 +1030,14 @@ const wanImageAspectRatios = ['1:1', '16:9', '4:3', '21:9', '3:4', '9:16', '8:1'
 const isWanImageMode = computed(() => mode.value === '2-7-image' || mode.value === '2-7-image-pro')
 const isWan27VideoMode = computed(() => ['v2-7-text-to-video', 'v2-7-image-to-video', 'v2-7-video-edit', 'v2-7-r2v'].includes(mode.value))
 const isWan27TextToVideoMode = computed(() => mode.value === 'v2-7-text-to-video')
+const WAN30_FAMILY_MODES = ['v3-0-video', 'v3-0-video-prime']
+const isWan30Family = (m) => WAN30_FAMILY_MODES.includes(m)
+const isWan30Mode = computed(() => isWan30Family(mode.value))
+// 统一入口五输入模式契约一致，仅 model / 代理路径 / 价格 key 区分标准版与高速版
+const wan30ModelByMode = { 'v3-0-video': 'wan-3-0-video', 'v3-0-video-prime': 'wan-3-0-video-prime' }
+const wan30ApiPathByMode = { 'v3-0-video': '/api/video/wan/v30-video', 'v3-0-video-prime': '/api/video/wan/v30-video-prime' }
+const wan30AspectRatios = ['adaptive', '16:9', '4:3', '1:1', '3:4', '9:16']
+const wan30Resolutions = ['480p', '720p', '1080p']
 /** 与后端一致：prompt @NotBlank + @Size(min=3,max=5000) */
 const isWan27StrictPromptModes = computed(() =>
   ['v2-7-text-to-video', 'v2-7-image-to-video', 'v2-7-video-edit', 'v2-7-r2v'].includes(mode.value)
@@ -1182,6 +1382,27 @@ function fillFormFromOriginalData(o) {
   else if (Array.isArray(o.bboxList)) applyBboxListFromApi(o.bboxList)
   if (Array.isArray(o.videoUrls)) formData.videoUrls = [...o.videoUrls]
   else if (Array.isArray(o.video_urls)) formData.videoUrls = [...o.video_urls]
+  /* —— Wan 3.0 回填 —— */
+  if (isWan30Mode.value) {
+    if (Array.isArray(o.referenceImageUrls)) formData.wan30RefImages = [...o.referenceImageUrls]
+    else if (Array.isArray(o.reference_image_urls)) formData.wan30RefImages = [...o.reference_image_urls]
+    if (Array.isArray(o.referenceVideoUrls)) formData.wan30RefVideos = [...o.referenceVideoUrls]
+    else if (Array.isArray(o.reference_video_urls)) formData.wan30RefVideos = [...o.reference_video_urls]
+    if (Array.isArray(o.referenceAudioUrls)) formData.wan30RefAudios = [...o.referenceAudioUrls]
+    else if (Array.isArray(o.reference_audio_urls)) formData.wan30RefAudios = [...o.reference_audio_urls]
+    if (Array.isArray(o.referenceFileUrls) && o.referenceFileUrls.length) formData.wan30RefFile = String(o.referenceFileUrls[0])
+    else if (Array.isArray(o.reference_file_urls) && o.reference_file_urls.length) formData.wan30RefFile = String(o.reference_file_urls[0])
+    if (Array.isArray(o.referenceLinkUrls) && o.referenceLinkUrls.length) formData.wan30RefLink = String(o.referenceLinkUrls[0])
+    else if (Array.isArray(o.reference_link_urls) && o.reference_link_urls.length) formData.wan30RefLink = String(o.reference_link_urls[0])
+    if ('audio' in o) formData.wan30Audio = !!o.audio
+    if ('nsfwChecker' in o) formData.wan30Nsfw = !!o.nsfwChecker
+    else if ('nsfw_checker' in o) formData.wan30Nsfw = !!o.nsfw_checker
+    if (formData.wan30RefFile) formData.wan30InputMode = 'file'
+    else if (formData.wan30RefLink) formData.wan30InputMode = 'link'
+    else if (formData.wan30RefImages.length || formData.wan30RefVideos.length || formData.wan30RefAudios.length) formData.wan30InputMode = 'reference'
+    else if (formData.firstFrameUrl || formData.lastFrameUrl) formData.wan30InputMode = 'frame'
+    else formData.wan30InputMode = 'text'
+  }
 }
 
 function pickDetailVideoUrl(d) {
@@ -1258,12 +1479,24 @@ const wanPriceModelKeyMap = {
   'v2-7-image-to-video': 'wan-2-7-image-to-video',
   'v2-7-video-edit': 'wan-2-7-video-edit',
   'v2-7-r2v': 'wan-2-7-r2v',
+  'v3-0-video': 'wan-3-0-video',
+  'v3-0-video-prime': 'wan-3-0-video-prime',
   '2-7-image': 'wan-2-7-image',
   '2-7-image-pro': 'wan-2-7-image-pro'
 }
 const wanPriceText = computed(() => {
   const modelKey = wanPriceModelKeyMap[mode.value]
   if (!modelKey) return ''
+
+  if (isWan30Mode.value) {
+    const quality = wan30Resolutions.includes(formData.resolution) ? formData.resolution : '1080p'
+    const perSecond = getPrice(modelKey, { duration: 1, quality })
+    if (perSecond == null) return ''
+    const billSec = Math.max(2, Math.min(30, Number(formData.durationNum) || 5))
+    const str = formatCredits(perSecond * billSec)
+    if (!str) return ''
+    return `· ${str} credits${discountText.value}`
+  }
 
   if (mode.value === 'v2-7-text-to-video' || mode.value === 'v2-7-image-to-video' || mode.value === 'v2-7-video-edit' || mode.value === 'v2-7-r2v') {
     const quality = formData.resolution === '720p' ? '720p' : '1080p'
@@ -1549,6 +1782,43 @@ async function handleWan27R2vReferenceVoice(e) {
     e.target.value = ''
   }
 }
+function triggerWan30RefVideoInput() { wan30RefVideoInputRef.value?.click() }
+function triggerWan30RefAudioInput() { wan30RefAudioInputRef.value?.click() }
+function triggerWan30RefFileInput() { wan30RefFileInputRef.value?.click() }
+function setWan30InputMode(m) { formData.wan30InputMode = m }
+async function handleWan30RefImages(files) {
+  const list = Array.isArray(files) ? files.slice(0, 10) : (files ? [files] : [])
+  if (!list.length) { formData.wan30RefImages = []; return }
+  formData.wan30RefImages = await getUrlsForFiles(list, uploadFilesToUrls)
+}
+function removeWan30RefImageAt(idx) { formData.wan30RefImages.splice(idx, 1) }
+async function handleWan30RefVideos(e) {
+  const files = Array.from(e.target.files || []).slice(0, 5)
+  if (!files.length) return
+  isUploadingWan30Videos.value = true
+  try { formData.wan30RefVideos = await uploadFilesToUrls(files) }
+  catch (err) { showError(err?.message || 'Upload failed'); formData.wan30RefVideos = [] }
+  finally { isUploadingWan30Videos.value = false; e.target.value = '' }
+}
+function removeWan30RefVideoAt(idx) { formData.wan30RefVideos.splice(idx, 1) }
+async function handleWan30RefAudios(e) {
+  const files = Array.from(e.target.files || []).slice(0, 5)
+  if (!files.length) return
+  isUploadingWan30Audios.value = true
+  try { formData.wan30RefAudios = await uploadFilesToUrls(files) }
+  catch (err) { showError(err?.message || 'Upload failed'); formData.wan30RefAudios = [] }
+  finally { isUploadingWan30Audios.value = false; e.target.value = '' }
+}
+function removeWan30RefAudioAt(idx) { formData.wan30RefAudios.splice(idx, 1) }
+async function handleWan30RefFile(e) {
+  const file = e.target.files?.[0]
+  if (!file) return
+  isUploadingWan30File.value = true
+  try { formData.wan30RefFile = (await uploadFilesToUrls([file]))[0] || '' }
+  catch (err) { showError(err?.message || 'Upload failed'); formData.wan30RefFile = '' }
+  finally { isUploadingWan30File.value = false; e.target.value = '' }
+}
+function clearWan30RefFile() { formData.wan30RefFile = ''; if (wan30RefFileInputRef.value) wan30RefFileInputRef.value.value = '' }
 async function handleWan27TextAudioFile(e) {
   const file = e.target.files?.[0]
   if (!file) return
@@ -1719,8 +1989,12 @@ function onPaletteRatioBlur(row) {
   row.ratioInput = formatRatioPercent(normalized)
 }
 
-const promptMaxLength = computed(() => 5000)
+const promptMaxLength = computed(() => (isWan30Mode.value ? 20000 : 5000))
 const promptPlaceholder = computed(() => {
+  if (isWan30Mode.value) {
+    if (formData.wan30InputMode === 'text') return 'Describe the video you want (required for text-to-video, up to 20000 characters).'
+    return 'Optional. In reference mode use Image1 / Video1 / Audio1 to refer to uploaded media (up to 20000 characters).'
+  }
   if (mode.value === 'text-to-video') return 'Describe the video you want (1–5000 characters, Chinese or English).'
   if (isWan27StrictPromptModes.value) {
     return 'Describe expected elements and visual style (3–5000 characters, Chinese or English).'
@@ -1730,6 +2004,11 @@ const promptPlaceholder = computed(() => {
   return 'Describe how to animate or transform the media (2–5000 characters).'
 })
 const promptHint = computed(() => {
+  if (isWan30Mode.value) {
+    return formData.wan30InputMode === 'text'
+      ? 'Required for text-to-video. Max 20000 characters, Chinese or English.'
+      : 'Optional with media input. Max 20000 characters. Reference mode: cite materials as Image1/Video1/Audio1.'
+  }
   if (mode.value === 'text-to-video') return 'Min 1 character, max 5000. Supports Chinese and English.'
   if (isWan27StrictPromptModes.value) {
     return 'Required: 3–5000 characters (Chinese or English). Use negative prompt to suppress unwanted artifacts.'
@@ -1758,6 +2037,19 @@ const canGenerate = computed(() => {
       const total = (formData.referenceImages?.length || 0) + (formData.referenceVideos?.length || 0)
       return p.length >= 3 && p.length <= 5000 && total > 0 && total <= 5
     }
+  }
+  if (isWan30Mode.value) {
+    if (p.length > 20000) return false
+    const im = formData.wan30InputMode
+    if (im === 'text') return p.length >= 1
+    if (im === 'frame') return !!formData.firstFrameUrl
+    if (im === 'reference') {
+      const total = formData.wan30RefImages.length + formData.wan30RefVideos.length + formData.wan30RefAudios.length
+      return total > 0 && total <= 20
+    }
+    if (im === 'file') return !!formData.wan30RefFile
+    if (im === 'link') return !!String(formData.wan30RefLink || '').trim()
+    return false
   }
   if (mode.value === 'text-to-video') return p.length >= 1 && p.length <= 5000
   if (mode.value === 'image-to-video') return p.length >= 2 && p.length <= 5000 && formData.imageUrls.length > 0
@@ -1928,6 +2220,34 @@ async function generate() {
         watermark: !!formData.watermark,
         seed: String(seedNum)
       }
+    } else if (isWan30Family(modeVal)) {
+      apiPath = wan30ApiPathByMode[modeVal]
+      const dur = Math.max(2, Math.min(30, Number(formData.durationNum) || 5))
+      const seedNum = Math.max(0, Math.min(2147483647, Number(formData.seed) || 0))
+      const im = formData.wan30InputMode
+      body = {
+        model: wan30ModelByMode[modeVal],
+        prompt: p || undefined,
+        resolution: wan30Resolutions.includes(formData.resolution) ? formData.resolution : '1080p',
+        aspectRatio: formData.aspectRatio || 'adaptive',
+        duration: dur,
+        audio: !!formData.wan30Audio,
+        nsfwChecker: !!formData.wan30Nsfw,
+        seed: seedNum > 0 ? seedNum : undefined
+      }
+      if (im === 'frame') {
+        body.firstFrameUrl = formData.firstFrameUrl || undefined
+        body.lastFrameUrl = formData.lastFrameUrl || undefined
+      } else if (im === 'reference') {
+        if (formData.wan30RefImages.length) body.referenceImageUrls = formData.wan30RefImages.slice(0, 10)
+        if (formData.wan30RefVideos.length) body.referenceVideoUrls = formData.wan30RefVideos.slice(0, 5)
+        if (formData.wan30RefAudios.length) body.referenceAudioUrls = formData.wan30RefAudios.slice(0, 5)
+      } else if (im === 'file') {
+        if (formData.wan30RefFile) body.referenceFileUrls = [formData.wan30RefFile]
+      } else if (im === 'link') {
+        const link = String(formData.wan30RefLink || '').trim()
+        if (link) body.referenceLinkUrls = [link]
+      }
     }
 
     const data = await post(apiPath, body)
@@ -1981,6 +2301,21 @@ watch(mode, (m) => {
     formData.promptExtend = true
     formData.audioSetting = 'auto'
     formData.negativePrompt = ''
+  }
+  if (isWan30Family(m)) {
+    formData.wan30InputMode = 'text'
+    if (!wan30Resolutions.includes(formData.resolution)) formData.resolution = '1080p'
+    formData.aspectRatio = 'adaptive'
+    formData.durationNum = Math.max(2, Math.min(30, Number(formData.durationNum) || 5))
+    formData.wan30Audio = true
+    formData.wan30Nsfw = false
+    formData.firstFrameUrl = ''
+    formData.lastFrameUrl = ''
+    formData.wan30RefImages = []
+    formData.wan30RefVideos = []
+    formData.wan30RefAudios = []
+    formData.wan30RefFile = ''
+    formData.wan30RefLink = ''
   }
   if (m === '2-7-image') {
     // 进入该 Tab 不沿用其它模式的 Resolution，默认 1K
@@ -2162,6 +2497,11 @@ watch(() => formData.enableSequential, (enabled) => {
   margin: 0;
   accent-color: #3b82f6;
 }
+/* Wan 3.0 统一入口 */
+.wan30-mode-group .tab-option i { margin-right: 6px; }
+.wan30-ref-count { margin-top: 6px; font-size: 12px; color: var(--flux-muted); }
+.wan30-audio-list { display: flex; flex-direction: column; gap: 10px; }
+.wan30-audio-list .wan-audio-preview-wrap { position: relative; display: flex; align-items: center; gap: 8px; }
 .btn-primary {
   width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
   border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;

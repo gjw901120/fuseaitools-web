@@ -260,6 +260,8 @@
 | v2-7-image-to-video | `wan-2-7-image-to-video` | RULE | 同上 |
 | v2-7-video-edit | `wan-2-7-video-edit` | RULE | 同上；计费秒：输出时长为 0 时按源视频可读时长（2–10），否则按所选秒数 clamp 到 2–10；无视频时展示用 2s、仅有 URL 无元数据用 5s 估算 |
 | v2-7-r2v | `wan-2-7-r2v` | RULE | 同上；计费秒 = clamp(`durationNum`, 2, 10) |
+| v3-0-video | `wan-3-0-video` | RULE | **`duration: 1` = 每秒单价**：`getPrice(modelKey, { duration: 1, quality })`（quality 为小写 `480p`/`720p`/`1080p`，来自 Resolution；厂商枚举大写由后端 service 转），再 × 计费秒数 = clamp(`durationNum`, 2, 30)；`audio`（音轨开关）不影响单价，仅按分辨率计价。统一入口：内部 text/first-last frame/reference/file/link 五种输入模式共用同一 modelKey |
+| v3-0-video-prime | `wan-3-0-video-prime` | RULE | 高速版，入参契约与计价逻辑与 `wan-3-0-video` 完全一致，仅 modelKey 不同：`getPrice(modelKey, { duration: 1, quality })`（quality 小写 480p/720p/1080p）× clamp(`durationNum`, 2, 30) |
 | 2-7-image | `wan-2-7-image` | RULE | `quality`（分辨率档位）、`batchSize`（`n`）；不传 `scene` |
 | 2-7-image-pro | `wan-2-7-image-pro` | RULE | 同上 |
 
@@ -362,6 +364,23 @@
 
 ---
 
+### 21. HappyHorse
+
+| 前端模式（mode） | modelKey | 类型 | 说明 |
+|--------------------|----------|------|------|
+| v1-text-to-video | `happyhorse-text-to-video` | RULE | **`duration: 1` = 每秒单价**：`getPrice(modelKey, { duration: 1, quality, scene: 'generate' })`（quality 小写 `720p`/`1080p`），再乘计费秒 = clamp(时长, 3, 15) |
+| v1-image-to-video | `happyhorse-image-to-video` | RULE | 同上 |
+| v1-reference-to-video | `happyhorse-reference-to-video` | RULE | 同上 |
+| v1-video-edit | `happyhorse-video-edit` | RULE | 每秒单价 × 源视频 ceil 秒数（clamp 3–60） |
+| v1-1-text-to-video | `happyhorse-1-1-text-to-video` | RULE | 高速版同 v1 每秒计价，仅 modelKey 不同；宽高比九档、厂商不接受 seed（不影响计价） |
+| v1-1-image-to-video | `happyhorse-1-1-image-to-video` | RULE | 同上 |
+| v1-1-reference-to-video | `happyhorse-1-1-reference-to-video` | RULE | 同上（字段 referenceImage，≤9 张） |
+
+- **组件**：`components/tools/HappyHorseTool.vue`
+- **计价一致**：v1 与 v1.1 生成类模式均 `getPrice(modelKey, { duration: 1, quality, scene: 'generate' })` 取每秒单价，再乘 clamp(3, 15) 计费秒。
+
+---
+
 ## 三、RULE 匹配字段速查
 
 | modelKey                    | 参与匹配的表单字段说明 |
@@ -376,6 +395,8 @@
 | `wan-2-6-text-to-video` / `wan-2-6-image-to-video` / `wan-2-6-video-to-video` | duration、quality（720p/1080p） |
 | `wan-2-7-text-to-video` / `wan-2-7-image-to-video` / `wan-2-7-video-edit` / `wan-2-7-r2v` | 展示价：`duration: 1` + quality 取**每秒单价**，再乘计费秒（见上文「### 15. Wan」） |
 | `wan-2-7-image` / `wan-2-7-image-pro` | quality、batchSize |
+| `wan-3-0-video` | 展示价：`duration: 1`（每秒单价）+ quality（480p/720p/1080p，小写），再乘 2–30s 秒数 |
+| `wan-3-0-video-prime` | 同 `wan-3-0-video`（高速版，仅 key 不同） |
 | `seedance-v1-*`             | duration、quality（480p/720p/1080p） |
 | `seedance-1.5-pro`          | duration、quality、scene（with_sound/without_sound） |
 | `seedance-2-fast` / `seedance-2` | 展示价：`duration: 1` + quality（480p/720p）+ scene（with_video/without_video），再乘秒数（见上文「### 16. Seedance」） |
@@ -395,6 +416,9 @@
 | `sora-2-pro-storyboard`     | duration（Frames）、scene |
 | `sora-2-pro-text-to-video` | duration（Frames）、size（standard/high） |
 | `sora-2-pro-image-to-video`| duration（Frames）、size（standard/high） |
+| `happyhorse-text-to-video` / `happyhorse-image-to-video` / `happyhorse-reference-to-video` | 展示价：`duration: 1`（每秒单价）+ quality（720p/1080p，小写）+ scene（`generate`），再乘 3–15s 秒数 |
+| `happyhorse-video-edit` | 每秒单价 × 源视频 ceil 秒数（3–60） |
+| `happyhorse-1-1-text-to-video` / `happyhorse-1-1-image-to-video` / `happyhorse-1-1-reference-to-video` | 同 v1 生成类（`duration: 1` 每秒单价 + quality 小写 + scene:generate），仅 key 不同 |
 
 ---
 
