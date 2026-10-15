@@ -239,6 +239,25 @@
       <a href="/home/kling/v3-0-motion-control" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v3-0-motion-control')">3.0 Motion Control</a>
       for std/pro motion transfer with background source control.
     </div>
+
+    <div class="upgrade-tip">
+      ⚡ Want a streamlined fast lane with a 3–15s slider and 720p/1080p?
+      <a href="/home/kling/v3-turbo-text-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v3-turbo-text-to-video')">Try Kling V3 Turbo Text to Video →</a>
+      or
+      <a href="/home/kling/v3-turbo-image-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v3-turbo-image-to-video')">V3 Turbo Image to Video</a>
+      for per-second billing and continuous duration control (no sound or motion transfer).
+    </div>
+
+    <div class="upgrade-tip">
+      🌐 Want the flagship Kling 3.0 Omni family—4K, native audio, smart/custom multi-shot and reusable subject elements?
+      <a href="/home/kling/3-0-omni-text-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-text-to-video')">Omni Text to Video</a>,
+      <a href="/home/kling/3-0-omni-image-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-image-to-video')">Image</a>
+      /
+      <a href="/home/kling/3-0-omni-reference-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-reference-to-video')">Reference</a>
+      (billed per second), or
+      <a href="/home/kling/3-0-omni-transformation" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-transformation')">Video Transformation</a>
+      to restyle a clip you already have.
+    </div>
   </div>
 </template>
 

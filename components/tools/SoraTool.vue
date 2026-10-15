@@ -58,8 +58,23 @@
           <h4 class="panel-title">Sora Configuration</h4>
         </div>
 
+        <!-- 服务暂停醒目提示（置于表单顶部，最醒目位置） -->
+        <div v-if="serviceSuspended" class="sora-suspended-notice" role="alert">
+          <div class="sora-suspended-icon"><i class="fas fa-ban"></i></div>
+          <div class="sora-suspended-body">
+            <p class="sora-suspended-title">Sora 服务已暂停</p>
+            <p class="sora-suspended-text">
+              由于 <strong>OpenAI 官方已暂停 Sora 服务</strong>，本站 Sora 相关生成功能已同步下线，暂时无法提交新的生成任务。
+            </p>
+            <p class="sora-suspended-text">
+              你<strong>此前已成功生成的视频</strong>不受影响，可前往<strong>历史记录</strong>正常查询与查看。
+            </p>
+            <p class="sora-suspended-foot">由此带来的不便，敬请谅解，感谢你的理解与支持。</p>
+          </div>
+        </div>
+
         <!-- 模式选择已移动至顶部 -->
-        <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
+        <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView || serviceSuspended">
 
         <!-- Prompt (hidden for watermark-remover & pro-storyboard) -->
         <div class="form-group" v-if="!['watermark-remover','pro-storyboard'].includes(form.model)">
@@ -311,11 +326,12 @@
 
         <!-- 提交 -->
         <div class="form-actions">
-          <button class="btn-primary" :disabled="!canSubmit || isGenerating" @click.prevent="onSubmit">
-            <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+          <button class="btn-primary" :disabled="!canSubmit || isGenerating || serviceSuspended" @click.prevent="onSubmit">
+            <i v-if="serviceSuspended" class="fas fa-ban"></i>
+            <i v-else-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else class="fas fa-play"></i>
-            {{ isGenerating ? 'Submitting...' : 'Start Generation' }}
-            <span v-if="soraPriceText" class="price-tag">{{ soraPriceText }}</span>
+            {{ serviceSuspended ? '服务已暂停，无法提交' : (isGenerating ? 'Submitting...' : 'Start Generation') }}
+            <span v-if="soraPriceText && !serviceSuspended" class="price-tag">{{ soraPriceText }}</span>
           </button>
         </div>
         </fieldset>
@@ -588,6 +604,8 @@ const remainingDuration = computed(() => {
   return rem > 0 ? rem : 0
 })
 const isGenerating = ref(false)
+// 因 OpenAI 官方已暂停 Sora 服务，本站同步下线生成功能；历史生成的记录仍可在历史记录中查询。
+const serviceSuspended = true
 const results = ref([])
 const shotsJson = ref('')
 
@@ -765,6 +783,10 @@ const removeScene = (idx) => {
 }
 
 const onSubmit = async () => {
+  if (serviceSuspended) {
+    showError('Sora 服务已暂停，暂时无法提交新的生成任务；历史生成记录仍可在历史记录中查询。')
+    return
+  }
   if (!canSubmit.value) return
   const promptTrim = form.input.prompt?.trim()
   if (!['watermark-remover', 'pro-storyboard'].includes(form.model) && (!promptTrim || promptTrim.length > 10000)) {
@@ -885,6 +907,38 @@ const onSubmit = async () => {
 .config-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--flux-foreground); }
 .config-form { flex: 1; overflow-y: auto; }
 .config-fieldset { border: none; margin: 0; padding: 0; }
+
+/* 服务暂停醒目提示 */
+.sora-suspended-notice {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  border: 2px solid #dc2626;
+  border-left: 6px solid #dc2626;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 100%);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.14);
+}
+.sora-suspended-icon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dc2626;
+  color: #fff;
+  font-size: 20px;
+}
+.sora-suspended-body { flex: 1; min-width: 0; }
+.sora-suspended-title { margin: 0 0 8px; font-size: 16px; font-weight: 700; color: #b91c1c; letter-spacing: .3px; }
+.sora-suspended-text { margin: 0 0 6px; font-size: 13.5px; line-height: 1.6; color: #7f1d1d; }
+.sora-suspended-text strong { color: #b91c1c; }
+.sora-suspended-foot { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9a3412; }
+.sora-suspended-notice + .config-fieldset { opacity: .6; }
 
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; font-size: 14px; font-weight: 500; color: var(--flux-muted); margin-bottom: 8px; }

@@ -201,7 +201,8 @@
     <div class="upgrade-tip">
       🎬 Need cinematic scene B-roll to cut with your avatar?
       <a href="/home/kling/v3-0-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v3-0-video')">Use Kling 3.0 Video →</a>
-      for multi-shot 3–15s scene generation—Avatar for the presenter, 3.0 for the story visuals.
+      for multi-shot 3–15s scene generation—Avatar for the presenter, 3.0 for the story visuals. To restyle a clip you already have, try
+      <a href="/home/kling/3-0-omni-transformation" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-transformation')">Kling 3.0 Omni Video Transformation</a>.
     </div>
   </div>
 </template>

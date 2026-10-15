@@ -134,6 +134,35 @@
               </div>
             </template>
 
+            <!-- V3 Turbo text/image to video: image (image only), aspect (text only), resolution, duration slider 3-15 -->
+            <template v-if="mode === 'v3-turbo-text-to-video' || mode === 'v3-turbo-image-to-video'">
+              <div class="form-group" v-if="mode === 'v3-turbo-image-to-video'">
+                <label class="form-label">Image <span class="required">*</span></label>
+                <UploadImage :readonly="isDetailView" ref="v3tboImageRef" input-id="kling-v3tbo-i2v" label="" upload-text="Click to upload image" upload-hint="JPEG, PNG; max 10MB" :max-files="1" :max-file-size="10*1024*1024" accept="image/jpeg,image/png" :multiple="false" @update:files="handleV3tboImage" />
+                <span v-if="isUploadingV3tboImage" class="form-hint">Uploading...</span>
+              </div>
+              <div class="form-group" v-if="mode === 'v3-turbo-text-to-video'">
+                <label class="form-label">Aspect ratio</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="aspectRatio1_1Class" @click="setAspectRatio(ASPECT_1_1)">1:1</button>
+                  <button type="button" class="tab-option" :class="aspectRatio16_9Class" @click="setAspectRatio(ASPECT_16_9)">16:9</button>
+                  <button type="button" class="tab-option" :class="aspectRatio9_16Class" @click="setAspectRatio(ASPECT_9_16)">9:16</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Resolution</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="v3tboRes720Class()" @click="formData.v3tbo_resolution = '720p'">720p</button>
+                  <button type="button" class="tab-option" :class="v3tboRes1080Class()" @click="formData.v3tbo_resolution = '1080p'">1080p</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration: {{ formData.v3tbo_duration }}s</label>
+                <input v-model="formData.v3tbo_duration" type="range" min="3" max="15" step="1" class="duration-range" />
+                <span class="form-hint">3–15 seconds, billed per second at the selected resolution.</span>
+              </div>
+            </template>
+
             <!-- motion-control: input_urls (image), video_urls, character_orientation, mode -->
             <template v-if="mode === 'v2-6-motion-control' || mode === 'v3-0-motion-control'">
               <div class="form-group">
@@ -223,7 +252,9 @@
                 <div class="tab-group">
                   <button type="button" class="tab-option" :class="klingModeStdClass()" @click="formData.kling_mode = 'std'">std</button>
                   <button type="button" class="tab-option" :class="klingModeProClass()" @click="formData.kling_mode = 'pro'">pro</button>
+                  <button type="button" class="tab-option" :class="klingMode4kClass()" @click="formData.kling_mode = '4k'">4k</button>
                 </div>
+                <p class="form-hint">std: standard quality. pro: professional quality. 4k: ultra-high-definition 4K output. Higher tiers cost more per second.</p>
               </div>
               <div class="form-group">
                 <label class="form-label">Multi-shot</label>
@@ -309,6 +340,172 @@
                     <button type="button" class="tab-option" :class="v3SoundOnClass" @click="setV3SoundOn">On</button>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <!-- 3.0 Omni text/image/reference to video -->
+            <div v-if="isOmniMode">
+              <div class="form-group" v-if="mode === '3-0-omni-image-to-video'">
+                <label class="form-label">First frame image <span class="required">*</span></label>
+                <UploadImage :readonly="isDetailView" ref="omniImageRef" input-id="kling-omni-i2v" label="" upload-text="Click to upload image" upload-hint="JPG/JPEG/PNG, max 50MB, min 300px" :max-files="1" :max-file-size="50*1024*1024" accept="image/jpeg,image/jpg,image/png" :multiple="false" @update:files="handleOmniImage" />
+                <span v-if="isUploadingOmniImage" class="form-hint">Uploading...</span>
+              </div>
+              <div class="form-group" v-if="mode === '3-0-omni-reference-to-video'">
+                <label class="form-label">Reference images (optional)</label>
+                <UploadImage :readonly="isDetailView" ref="omniRefImageRef" input-id="kling-omni-r2v-img" label="" upload-text="Click to upload images" upload-hint="Up to 7 images" :max-files="7" :max-file-size="10*1024*1024" accept="image/jpeg,image/jpg,image/png" :multiple="true" @update:files="handleOmniRefImages" />
+                <span v-if="isUploadingOmniRefImage" class="form-hint">Uploading...</span>
+              </div>
+              <div class="form-group" v-if="mode === '3-0-omni-reference-to-video'">
+                <label class="form-label">Reference videos (optional)</label>
+                <div class="kling-video-upload">
+                  <div class="kling-video-trigger" :class="{ 'has-video': formData.omni_ref_video_urls.length }">
+                    <input ref="omniRefVideoInput" type="file" accept="video/mp4,video/quicktime,video/x-matroska" class="kling-video-file-input" @change="handleOmniRefVideo" />
+                    <div class="kling-video-trigger-inner" @click="omniRefVideoInput && omniRefVideoInput.click()">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Click to upload videos</span>
+                      <small>Up to 3 character videos (MP4/MOV/MKV)</small>
+                    </div>
+                  </div>
+                  <div v-if="isUploadingOmniRefVideo" class="kling-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading video...</div>
+                  <div v-if="formData.omni_ref_video_urls.length && !isUploadingOmniRefVideo" class="kling-video-display">
+                    <div v-for="(u, i) in formData.omni_ref_video_urls" :key="'omni-rv-' + i" class="kling-video-preview-wrap">
+                      <video :src="u" class="kling-video-preview" controls></video>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Shot mode</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="omniShotClass('single')" @click="setOmniShotMode('single')">Single</button>
+                  <button type="button" class="tab-option" :class="omniShotClass('smart')" @click="setOmniShotMode('smart')">Smart</button>
+                  <button type="button" class="tab-option" :class="omniShotClass('custom')" @click="setOmniShotMode('custom')">Custom</button>
+                </div>
+                <p class="form-hint">Single: one prompt. Smart: auto shot-splitting. Custom: define 1–6 shots (each 1–12s, total ≤15s).</p>
+              </div>
+              <div class="form-group" v-if="formData.omni_shot_mode === 'custom'">
+                <label class="form-label">Shots</label>
+                <div class="shots-list">
+                  <div class="shot-card" v-for="(shot, idx) in formData.omni_multi_prompt" :key="'omni-shot-' + idx">
+                    <div class="shot-title">Shot {{ idx + 1 }}</div>
+                    <textarea class="shot-text" v-model="shot.prompt" rows="3" placeholder="Describe this shot..." maxlength="3072"></textarea>
+                    <div class="shot-footer">
+                      <div class="duration-input">
+                        <select v-model.number="shot.duration" class="duration-field duration-select">
+                          <option v-for="d in 12" :key="d" :value="d">{{ d }}</option>
+                        </select>
+                        <span class="duration-s">s</span>
+                      </div>
+                      <button v-if="formData.omni_multi_prompt.length > 1" type="button" class="shot-delete" @click="removeOmniShot(idx)" title="Delete shot"><i class="fas fa-trash"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <button v-if="formData.omni_multi_prompt.length < 6" type="button" class="add-shot" @click="addOmniShot"><i class="fas fa-plus"></i> Add shot</button>
+                <p class="form-hint">Total: {{ omniShotTotalDuration }}s (must be 3–15s).</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject elements (optional)</label>
+                <p class="form-hint">Reusable subjects referenced as @name in prompts.</p>
+                <div class="shots-list">
+                  <div class="shot-card" v-for="(el, idx) in formData.omni_elements" :key="'omni-el-' + idx">
+                    <div class="shot-title">Element {{ idx + 1 }}</div>
+                    <input v-model="el.name" type="text" class="form-input" placeholder="Name (e.g. dog)" />
+                    <textarea v-model="el.description" class="shot-text" rows="2" placeholder="Description"></textarea>
+                    <UploadImage :readonly="isDetailView" :ref="(x) => setOmniElementRef(idx, x)" :input-id="'kling-omni-el-' + idx" label="" upload-text="Upload subject media" upload-hint="Images or video" :max-files="8" :max-file-size="10*1024*1024" accept="image/jpeg,image/jpg,image/png,video/mp4,video/quicktime" :multiple="true" @update:files="(files) => handleOmniElementImages(idx, files)" />
+                    <button type="button" class="btn-secondary" @click="removeOmniElement(idx)">Remove element</button>
+                  </div>
+                </div>
+                <button v-if="formData.omni_elements.length < 7" type="button" class="add-shot" @click="addOmniElement"><i class="fas fa-plus"></i> Add element</button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Resolution</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="omniRes720Class()" @click="formData.omni_resolution = '720p'">720p</button>
+                  <button type="button" class="tab-option" :class="omniRes1080Class()" @click="formData.omni_resolution = '1080p'">1080p</button>
+                  <button type="button" class="tab-option" :class="omniRes4kClass()" @click="formData.omni_resolution = '4k'">4k</button>
+                </div>
+              </div>
+              <div class="form-group" v-if="mode === '3-0-omni-text-to-video' || mode === '3-0-omni-reference-to-video' || (mode === '3-0-omni-image-to-video' && formData.omni_shot_mode === 'custom')">
+                <label class="form-label">Aspect ratio</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="omniAspect169Class" @click="setOmniAspect('16:9')">16:9</button>
+                  <button type="button" class="tab-option" :class="omniAspect916Class" @click="setOmniAspect('9:16')">9:16</button>
+                  <button type="button" class="tab-option" :class="omniAspect11Class" @click="setOmniAspect('1:1')">1:1</button>
+                </div>
+                <p v-if="mode === '3-0-omni-reference-to-video'" class="form-hint">Aspect ratio applies only when no reference video is used.</p>
+              </div>
+              <div class="form-group" v-if="mode !== '3-0-omni-reference-to-video' || !formData.omni_ref_video_urls.length">
+                <label class="form-label">Audio</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="omniAudioOffClass" @click="formData.omni_audio = false">Off</button>
+                  <button type="button" class="tab-option" :class="omniAudioOnClass" @click="formData.omni_audio = true">On</button>
+                </div>
+                <p class="form-hint">Native audio raises the per-second rate (with_audio).</p>
+              </div>
+              <div class="form-group" v-if="formData.omni_shot_mode !== 'custom'">
+                <label class="form-label">Duration: {{ formData.omni_duration }}s</label>
+                <input v-model.number="formData.omni_duration" type="range" min="3" max="15" step="1" class="duration-range" />
+                <span class="form-hint">3–15 seconds, billed per second at the selected resolution.</span>
+              </div>
+            </div>
+
+            <!-- 3.0 Omni Transformation: source video (billed by real length) + optional reference images + resolution + element -->
+            <div v-if="isOmniTransformMode">
+              <div class="form-group">
+                <label class="form-label">Source video <span class="required">*</span></label>
+                <div class="kling-video-upload">
+                  <div class="kling-video-trigger" :class="{ 'has-video': formData.omni_trans_video_urls.length }">
+                    <input ref="omniTransVideoInput" type="file" accept="video/mp4,video/quicktime" class="kling-video-file-input" @change="handleOmniTransformVideo" />
+                    <div class="kling-video-trigger-inner" @click="omniTransVideoInput && omniTransVideoInput.click()">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Click to upload source video</span>
+                      <small>MP4/MOV, max 200MB, 3–15.5s</small>
+                    </div>
+                  </div>
+                  <div v-if="isUploadingOmniTransform" class="kling-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading video...</div>
+                  <div v-if="formData.omni_trans_video_urls.length && !isUploadingOmniTransform" class="kling-video-display">
+                    <div class="kling-video-preview-wrap">
+                      <video :src="formData.omni_trans_video_urls[0]" class="kling-video-preview" controls></video>
+                    </div>
+                  </div>
+                </div>
+                <p class="form-hint">Billing uses the actual uploaded video length (rounded up); there is no duration selector. <span v-if="omniTransVideoDurationSec > 0">Detected: {{ omniTransBillSec }}s.</span><span v-else>Showing the 5s example price until a video is uploaded.</span></p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reference images (optional)</label>
+                <UploadImage :readonly="isDetailView" ref="omniTransImageRef" input-id="kling-omni-trans-img" label="" upload-text="Click to upload images" upload-hint="Up to 4 images (JPG/JPEG/PNG)" :max-files="4" :max-file-size="50*1024*1024" accept="image/jpeg,image/jpg,image/png" :multiple="true" @update:files="handleOmniTransformImages" />
+                <span v-if="isUploadingOmniTransImage" class="form-hint">Uploading...</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Resolution</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="omniRes720Class()" @click="formData.omni_resolution = '720p'">720p</button>
+                  <button type="button" class="tab-option" :class="omniRes1080Class()" @click="formData.omni_resolution = '1080p'">1080p</button>
+                  <button type="button" class="tab-option" :class="omniRes4kClass()" @click="formData.omni_resolution = '4k'">4k</button>
+                </div>
+              </div>
+              <div class="form-group" v-if="formData.omni_trans_image_urls.length">
+                <label class="form-label">Aspect ratio</label>
+                <div class="tab-group">
+                  <button type="button" class="tab-option" :class="omniAspect169Class" @click="setOmniAspect('16:9')">16:9</button>
+                  <button type="button" class="tab-option" :class="omniAspect916Class" @click="setOmniAspect('9:16')">9:16</button>
+                  <button type="button" class="tab-option" :class="omniAspect11Class" @click="setOmniAspect('1:1')">1:1</button>
+                </div>
+                <p class="form-hint">Aspect ratio is only configurable in the video+image variant; a video-only upload uses auto.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject elements (optional)</label>
+                <p class="form-hint">Reusable subjects referenced as @name in prompts.</p>
+                <div class="shots-list">
+                  <div class="shot-card" v-for="(el, idx) in formData.omni_elements" :key="'omni-trans-el-' + idx">
+                    <div class="shot-title">Element {{ idx + 1 }}</div>
+                    <input v-model="el.name" type="text" class="form-input" placeholder="Name (e.g. dog)" />
+                    <textarea v-model="el.description" class="shot-text" rows="2" placeholder="Description"></textarea>
+                    <UploadImage :readonly="isDetailView" :ref="(x) => setOmniElementRef(idx, x)" :input-id="'kling-omni-trans-el-' + idx" label="" upload-text="Upload subject media" upload-hint="Images or video" :max-files="8" :max-file-size="10*1024*1024" accept="image/jpeg,image/jpg,image/png,video/mp4,video/quicktime" :multiple="true" @update:files="(files) => handleOmniElementImages(idx, files)" />
+                    <button type="button" class="btn-secondary" @click="removeOmniElement(idx)">Remove element</button>
+                  </div>
+                </div>
+                <button v-if="formData.omni_elements.length < 7" type="button" class="add-shot" @click="addOmniElement"><i class="fas fa-plus"></i> Add element</button>
               </div>
             </div>
 
@@ -412,25 +609,37 @@ const { getUrlsForFiles } = useFileUploadUrlCache()
 const modeList = [
   { id: 'v2-5-turbo-image-to-video-pro', label: 'v2.5 Turbo I2V Pro', icon: 'fas fa-image' },
   { id: 'v2-5-turbo-text-to-video-pro', label: 'v2.5 Turbo T2V Pro', icon: 'fas fa-keyboard' },
+  { id: 'v3-turbo-text-to-video', label: 'V3 Turbo T2V', icon: 'fas fa-bolt' },
+  { id: 'v3-turbo-image-to-video', label: 'V3 Turbo I2V', icon: 'fas fa-bolt' },
   { id: 'v2-6-text-to-video', label: '2.6 Text to Video', icon: 'fas fa-font' },
   { id: 'v2-6-image-to-video', label: '2.6 Image to Video', icon: 'fas fa-image' },
   { id: 'v2-6-motion-control', label: '2.6 Motion Control', icon: 'fas fa-route' },
   { id: 'v3-0-motion-control', label: '3.0 Motion Control', icon: 'fas fa-bezier-curve' },
   { id: 'ai-avatar-standard', label: 'AI Avatar Standard', icon: 'fas fa-user' },
   { id: 'ai-avatar-pro', label: 'AI Avatar Pro', icon: 'fas fa-user-tie' },
-  { id: 'v3-0-video', label: '3.0 Video', icon: 'fas fa-film' }
+  { id: 'v3-0-video', label: '3.0 Video', icon: 'fas fa-film' },
+  { id: '3-0-omni-text-to-video', label: '3.0 Omni T2V', icon: 'fas fa-wand-magic-sparkles' },
+  { id: '3-0-omni-image-to-video', label: '3.0 Omni I2V', icon: 'fas fa-wand-magic-sparkles' },
+  { id: '3-0-omni-reference-to-video', label: '3.0 Omni R2V', icon: 'fas fa-wand-magic-sparkles' },
+  { id: '3-0-omni-transformation', label: '3.0 Omni Transform', icon: 'fas fa-random' }
 ]
 
 const modeTabToPath = {
   'v2-5-turbo-image-to-video-pro': '/home/kling/v2-5-turbo-image-to-video-pro',
   'v2-5-turbo-text-to-video-pro': '/home/kling/v2-5-turbo-text-to-video-pro',
+  'v3-turbo-text-to-video': '/home/kling/v3-turbo-text-to-video',
+  'v3-turbo-image-to-video': '/home/kling/v3-turbo-image-to-video',
   'v2-6-text-to-video': '/home/kling/v2-6-text-to-video',
   'v2-6-image-to-video': '/home/kling/v2-6-image-to-video',
   'v2-6-motion-control': '/home/kling/v2-6-motion-control',
   'v3-0-motion-control': '/home/kling/v3-0-motion-control',
   'ai-avatar-standard': '/home/kling/ai-avatar-standard',
   'ai-avatar-pro': '/home/kling/ai-avatar-pro',
-  'v3-0-video': '/home/kling/v3-0-video'
+  'v3-0-video': '/home/kling/v3-0-video',
+  '3-0-omni-text-to-video': '/home/kling/3-0-omni-text-to-video',
+  '3-0-omni-image-to-video': '/home/kling/3-0-omni-image-to-video',
+  '3-0-omni-reference-to-video': '/home/kling/3-0-omni-reference-to-video',
+  '3-0-omni-transformation': '/home/kling/3-0-omni-transformation'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -465,7 +674,23 @@ const formData = reactive({
   v3_multi_shots: false,
   v3_multi_prompt: [{ prompt: '', duration: 3, element: null }],
   v3_aspect_ratio: '1:1',
-  kling_elements: []
+  kling_elements: [],
+  v3tbo_duration: '5',
+  v3tbo_resolution: '1080p',
+  // Kling 3.0 Omni (text / image / reference)
+  omni_duration: 5,
+  omni_resolution: '1080p',
+  omni_aspect_ratio: '16:9',
+  omni_audio: false,
+  omni_shot_mode: 'single',
+  omni_multi_prompt: [{ prompt: '', duration: 3 }],
+  omni_elements: [],
+  omni_image_urls: [],
+  omni_ref_image_urls: [],
+  omni_ref_video_urls: [],
+  // Kling 3.0 Omni Transformation (video-to-video)
+  omni_trans_video_urls: [],
+  omni_trans_image_urls: []
 })
 
 onMounted(() => { fetchPrices() })
@@ -479,6 +704,13 @@ const avatarImageRef = ref(null)
 const avatarAudioInput = ref(null)
 const kling30ImageRef = ref(null)
 const kling30EndImageRef = ref(null)
+const v3tboImageRef = ref(null)
+const omniImageRef = ref(null)
+const omniRefImageRef = ref(null)
+const omniRefVideoInput = ref(null)
+const omniElementUploadRefs = ref({})
+const omniTransVideoInput = ref(null)
+const omniTransImageRef = ref(null)
 const klingElementUploadRefs = ref({})
 const klingShotElementUploadRefs = ref({})
 
@@ -490,6 +722,14 @@ const isUploadingAvatarImage = ref(false)
 const isUploadingAvatarAudio = ref(false)
 const isUploadingKling30Image = ref(false)
 const isUploadingKling30EndImage = ref(false)
+const isUploadingV3tboImage = ref(false)
+const isUploadingOmniImage = ref(false)
+const isUploadingOmniRefImage = ref(false)
+const isUploadingOmniRefVideo = ref(false)
+const isUploadingOmniElement = ref(false)
+const isUploadingOmniTransform = ref(false)
+const isUploadingOmniTransImage = ref(false)
+const omniTransVideoDurationSec = ref(0)
 const isUploadingKlingElement = ref(false)
 
 const result = ref(null)
@@ -511,7 +751,7 @@ const discountText = computed(() => {
 // - v2.5 Turbo T2V/I2V Pro：按 Duration 匹配 RULE（scene 固定 generate）
 // - 2.6 Text/Image to Video：按 Duration + Sound 匹配 RULE（sound=false -> without_sound；true -> with_sound）
 // - 2.6 / 3.0 Motion Control：RULE duration=1 为每秒单价 × 参考视频时长（pricing：kling-2.6-motion-control / kling-3.0-motion-control）
-// - 3.0 Video：RULE duration=1 为每秒单价 × 成片总时长（单镜头时长或多镜头各 shot 之和）；size=std|pro，scene=with_sound|without_sound（kling-3.0-video）
+// - 3.0 Video：RULE duration=1 为每秒单价 × 成片总时长（单镜头时长或多镜头各 shot 之和）；size=std|pro|4k，scene=with_sound|without_sound（kling-3.0-video）
 const klingPriceText = computed(() => {
   let modelKey = ''
   const durationNum = Number(formData.duration) || 0
@@ -545,7 +785,7 @@ const klingPriceText = computed(() => {
   }
   if (m === 'v3-0-video') {
     modelKey = 'kling-3.0-video'
-    const size = formData.kling_mode === 'pro' ? 'pro' : 'std'
+    const size = ['std', 'pro', '4k'].includes(formData.kling_mode) ? formData.kling_mode : 'std'
     let totalDuration = 0
     if (formData.v3_multi_shots) {
       totalDuration = v3MultiShotTotalDuration.value || 0
@@ -564,6 +804,39 @@ const klingPriceText = computed(() => {
     const billSec = Math.ceil(totalDuration)
     const totalCredits = perSecond * billSec
     const str = formatCredits(totalCredits)
+    return str ? `· ${str} credits${discountText.value}` : ''
+  }
+  if (m === 'v3-turbo-text-to-video' || m === 'v3-turbo-image-to-video') {
+    modelKey = m === 'v3-turbo-text-to-video' ? 'kling-v3-turbo-text-to-video' : 'kling-v3-turbo-image-to-video'
+    const dur = Math.max(3, Math.min(15, Number(formData.v3tbo_duration) || 0))
+    if (!dur) return ''
+    const perSecond = getPrice(modelKey, { duration: 1, quality: formData.v3tbo_resolution })
+    if (perSecond == null) return ''
+    const totalCredits = perSecond * dur
+    const str = formatCredits(totalCredits)
+    return str ? `· ${str} credits${discountText.value}` : ''
+  }
+  if (m === '3-0-omni-text-to-video' || m === '3-0-omni-image-to-video' || m === '3-0-omni-reference-to-video') {
+    modelKey = omniModelKeyByMode[m]
+    const scene = (m === '3-0-omni-reference-to-video' && (formData.omni_ref_video_urls || []).length > 0)
+      ? 'with_video'
+      : (formData.omni_audio ? 'with_audio' : 'no_audio')
+    const rawSec = formData.omni_shot_mode === 'custom'
+      ? omniShotTotalDuration.value
+      : (Number(formData.omni_duration) || 0)
+    const billSec = Math.max(0, Math.min(15, Math.round(rawSec)))
+    if (!billSec) return ''
+    const perSecond = getPrice(modelKey, { duration: 1, quality: formData.omni_resolution, scene })
+    if (perSecond == null) return ''
+    const totalCredits = perSecond * billSec
+    const str = formatCredits(totalCredits)
+    return str ? `· ${str} credits${discountText.value}` : ''
+  }
+  if (m === '3-0-omni-transformation') {
+    modelKey = 'kling-3.0-omni-transformation'
+    const credits = getPrice(modelKey, { duration: omniTransBillSec.value, quality: formData.omni_resolution })
+    if (credits == null) return ''
+    const str = formatCredits(credits)
     return str ? `· ${str} credits${discountText.value}` : ''
   }
   if (m === 'v2-6-motion-control') {
@@ -615,10 +888,12 @@ const klingPriceText = computed(() => {
   return ''
 })
 
-const showPrompt = computed(() => ['v2-5-turbo-image-to-video-pro', 'v2-5-turbo-text-to-video-pro', 'v2-6-text-to-video', 'v2-6-image-to-video', 'v2-6-motion-control', 'v3-0-motion-control', 'ai-avatar-standard', 'ai-avatar-pro'].includes(mode.value))
+const showPrompt = computed(() => ['v2-5-turbo-image-to-video-pro', 'v2-5-turbo-text-to-video-pro', 'v3-turbo-text-to-video', 'v3-turbo-image-to-video', '3-0-omni-text-to-video', '3-0-omni-image-to-video', '3-0-omni-reference-to-video', '3-0-omni-transformation', 'v2-6-text-to-video', 'v2-6-image-to-video', 'v2-6-motion-control', 'v3-0-motion-control', 'ai-avatar-standard', 'ai-avatar-pro'].includes(mode.value))
 const modeAvatar = computed(() => mode.value === 'ai-avatar-standard' || mode.value === 'ai-avatar-pro')
-const promptMaxLength = computed(() => modeAvatar.value ? 5000 : 2500)
-const promptPlaceholder = computed(() => modeAvatar.value ? 'Prompt for video generation (max 5000)' : 'Text description for the video (max 2500)')
+const isOmniMode = computed(() => ['3-0-omni-text-to-video', '3-0-omni-image-to-video', '3-0-omni-reference-to-video'].includes(mode.value))
+const isOmniTransformMode = computed(() => mode.value === '3-0-omni-transformation')
+const promptMaxLength = computed(() => modeAvatar.value ? 5000 : ((isOmniMode.value || isOmniTransformMode.value) ? 3072 : 2500))
+const promptPlaceholder = computed(() => modeAvatar.value ? 'Prompt for video generation (max 5000)' : ((isOmniMode.value || isOmniTransformMode.value) ? 'Text description for the video (max 3072)' : 'Text description for the video (max 2500)'))
 const ASPECT_16_9 = '16:9'
 const ASPECT_9_16 = '9:16'
 const ASPECT_1_1 = '1:1'
@@ -656,8 +931,46 @@ function orientationImageClass() { return { active: formData.character_orientati
 function orientationVideoClass() { return { active: formData.character_orientation === 'video' } }
 function mode720Class() { return { active: formData.mode === '720p' } }
 function mode1080Class() { return { active: formData.mode === '1080p' } }
+function v3tboRes720Class() { return { active: formData.v3tbo_resolution === '720p' } }
+function v3tboRes1080Class() { return { active: formData.v3tbo_resolution === '1080p' } }
 function klingModeStdClass() { return { active: formData.kling_mode === 'std' } }
 function klingModeProClass() { return { active: formData.kling_mode === 'pro' } }
+function klingMode4kClass() { return { active: formData.kling_mode === '4k' } }
+
+// Kling 3.0 Omni controls
+const OMNI_SINGLE = 'single'
+const OMNI_SMART = 'smart'
+const OMNI_CUSTOM = 'custom'
+function omniRes720Class() { return { active: formData.omni_resolution === '720p' } }
+function omniRes1080Class() { return { active: formData.omni_resolution === '1080p' } }
+function omniRes4kClass() { return { active: formData.omni_resolution === '4k' } }
+function setOmniAspect(r) { formData.omni_aspect_ratio = r }
+const omniAspect169Class = computed(() => ({ active: formData.omni_aspect_ratio === '16:9' })) 
+const omniAspect916Class = computed(() => ({ active: formData.omni_aspect_ratio === '9:16' }))
+const omniAspect11Class = computed(() => ({ active: formData.omni_aspect_ratio === '1:1' }))
+const omniAudioOffClass = computed(() => ({ active: formData.omni_audio === false }))
+const omniAudioOnClass = computed(() => ({ active: formData.omni_audio === true }))
+function setOmniShotMode(v) {
+  formData.omni_shot_mode = v
+  if (v === OMNI_CUSTOM && (formData.omni_multi_prompt || []).length === 0) formData.omni_multi_prompt = [{ prompt: '', duration: 3 }]
+}
+function omniShotClass(v) { return { active: formData.omni_shot_mode === v } }
+function addOmniShot() {
+  if ((formData.omni_multi_prompt || []).length >= 6) return
+  formData.omni_multi_prompt.push({ prompt: '', duration: 3 })
+}
+function removeOmniShot(idx) {
+  formData.omni_multi_prompt.splice(idx, 1)
+  if (formData.omni_multi_prompt.length === 0) formData.omni_multi_prompt.push({ prompt: '', duration: 3 })
+}
+function addOmniElement() {
+  if ((formData.omni_elements || []).length >= 7) return
+  formData.omni_elements.push({ name: '', description: '', element_input_urls: [] })
+}
+function removeOmniElement(idx) {
+  formData.omni_elements.splice(idx, 1)
+}
+function setOmniElementRef(i, el) { if (el) omniElementUploadRefs.value[i] = el }
 
 async function uploadOneFile(file, isVideo = false) {
   const form = new FormData()
@@ -814,6 +1127,119 @@ async function handleKling30EndImage(files) {
     kling30EndImageRef.value?.clearFiles?.()
   } finally { isUploadingKling30EndImage.value = false }
 }
+async function handleV3tboImage(files) {
+  if (!files?.length) { formData.image_urls = []; return }
+  isUploadingV3tboImage.value = true
+  try {
+    const url = await uploadOneFile(Array.isArray(files) ? files[0] : files)
+    formData.image_urls = url ? [url] : []
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.image_urls = []
+    v3tboImageRef.value?.clearFiles?.()
+  } finally { isUploadingV3tboImage.value = false }
+}
+// Kling 3.0 Omni uploads
+async function handleOmniImage(files) {
+  if (!files?.length) { formData.omni_image_urls = []; return }
+  isUploadingOmniImage.value = true
+  try {
+    const url = await uploadOneFile(Array.isArray(files) ? files[0] : files)
+    formData.omni_image_urls = url ? [url] : []
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.omni_image_urls = []
+    omniImageRef.value?.clearFiles?.()
+  } finally { isUploadingOmniImage.value = false }
+}
+async function handleOmniRefImages(files) {
+  if (!files?.length) { formData.omni_ref_image_urls = []; return }
+  isUploadingOmniRefImage.value = true
+  try {
+    const fileList = Array.isArray(files) ? files : [files]
+    if (fileList.length > 7) { showError('Max 7 reference images'); return }
+    const urls = await getUrlsForFiles(fileList, async (need) => {
+      const out = []
+      for (const f of need) out.push(await uploadOneFile(f))
+      return out
+    })
+    formData.omni_ref_image_urls = urls.filter(Boolean)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.omni_ref_image_urls = []
+    omniRefImageRef.value?.clearFiles?.()
+  } finally { isUploadingOmniRefImage.value = false }
+}
+async function handleOmniRefVideo(e) {
+  const files = e.target?.files
+  const fileList = files ? Array.from(files) : []
+  if (!fileList.length) { formData.omni_ref_video_urls = []; return }
+  if (fileList.length > 3) { showError('Max 3 reference videos'); e.target.value = ''; return }
+  isUploadingOmniRefVideo.value = true
+  try {
+    const out = []
+    for (const f of fileList) out.push(await uploadOneFile(f, true))
+    formData.omni_ref_video_urls = out.filter(Boolean)
+  } catch (err) {
+    showError(err?.message || 'Upload failed')
+    formData.omni_ref_video_urls = []
+  } finally { isUploadingOmniRefVideo.value = false; e.target.value = '' }
+}
+async function handleOmniElementImages(idx, files) {
+  const el = formData.omni_elements[idx]
+  if (!el) return
+  if (!files?.length) { el.element_input_urls = []; return }
+  isUploadingOmniElement.value = true
+  try {
+    const fileList = Array.isArray(files) ? files : [files]
+    const urls = await getUrlsForFiles(fileList, async (need) => {
+      const out = []
+      for (const f of need) out.push(await uploadOneFile(f))
+      return out
+    })
+    el.element_input_urls = urls.filter(Boolean)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    el.element_input_urls = []
+    const ref = omniElementUploadRefs.value[idx]
+    if (ref?.clearFiles) ref.clearFiles()
+  } finally { isUploadingOmniElement.value = false }
+}
+// Kling 3.0 Omni Transformation uploads (source video + optional reference images)
+async function handleOmniTransformVideo(e) {
+  const file = e.target?.files?.[0]
+  if (!file) { formData.omni_trans_video_urls = []; omniTransVideoDurationSec.value = 0; return }
+  if (file.size > 200 * 1024 * 1024) { showError('Video max 200MB'); e.target.value = ''; return }
+  isUploadingOmniTransform.value = true
+  try {
+    const secs = await getVideoDurationSeconds(file)
+    omniTransVideoDurationSec.value = secs > 0 ? secs : 0
+    const url = await uploadOneFile(file, true)
+    formData.omni_trans_video_urls = url ? [url] : []
+  } catch (err) {
+    showError(err?.message || 'Upload failed')
+    formData.omni_trans_video_urls = []
+    omniTransVideoDurationSec.value = 0
+  } finally { isUploadingOmniTransform.value = false; e.target.value = '' }
+}
+async function handleOmniTransformImages(files) {
+  if (!files?.length) { formData.omni_trans_image_urls = []; return }
+  isUploadingOmniTransImage.value = true
+  try {
+    const fileList = Array.isArray(files) ? files : [files]
+    if (fileList.length > 4) { showError('Max 4 reference images'); return }
+    const urls = await getUrlsForFiles(fileList, async (need) => {
+      const out = []
+      for (const f of need) out.push(await uploadOneFile(f))
+      return out
+    })
+    formData.omni_trans_image_urls = urls.filter(Boolean)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.omni_trans_image_urls = []
+    omniTransImageRef.value?.clearFiles?.()
+  } finally { isUploadingOmniTransImage.value = false }
+}
 function addV3Shot() {
   if (formData.v3_multi_prompt.length >= 5) return
   formData.v3_multi_prompt.push({ prompt: '', duration: 3, element: null })
@@ -837,6 +1263,15 @@ watch(() => formData.v3_multi_shots, (multi) => {
 }, { flush: 'sync' })
 const v3MultiShotTotalDuration = computed(() => {
   return formData.v3_multi_prompt.reduce((sum, s) => sum + (Number(s.duration) || 0), 0)
+})
+const omniShotTotalDuration = computed(() => {
+  return (formData.omni_multi_prompt || []).reduce((sum, s) => sum + (Number(s.duration) || 0), 0)
+})
+// Kling 3.0 Omni Transformation：计费时长 = 上传源视频实际时长向上取整（未上传时默认 5s）
+const omniTransBillSec = computed(() => {
+  const raw = Math.ceil(Number(omniTransVideoDurationSec.value) || 0)
+  if (raw <= 0) return 5
+  return Math.max(3, Math.min(15, raw))
 })
 function addKlingElement() {
   formData.kling_elements = [{ name: '', description: '', element_input_urls: [] }]
@@ -909,6 +1344,8 @@ const canGenerate = computed(() => {
     const motionDuration = Number(formData.duration)
     return p.length <= 2500 && formData.input_urls.length > 0 && formData.video_urls.length > 0 && Number.isFinite(motionDuration) && motionDuration > 0
   }
+  if (m === 'v3-turbo-text-to-video') return p.length >= 1 && p.length <= 2500
+  if (m === 'v3-turbo-image-to-video') return p.length >= 1 && p.length <= 2500 && (formData.image_urls || []).length === 1
   if (m === 'ai-avatar-standard' || m === 'ai-avatar-pro') return !!formData.image_url && !!formData.audio_url && p.length <= 5000
   if (m === 'v3-0-video') {
     const shots = formData.v3_multi_prompt || []
@@ -938,6 +1375,37 @@ const canGenerate = computed(() => {
     if (!sh.element) return base
     const urls = sh.element.element_input_urls || []
     return base && (sh.element.name || '').trim() && (sh.element.description || '').trim() && (urls.length === 0 || (urls.length >= 2 && urls.length <= 50))
+  }
+  if (isOmniMode.value) {
+    if (p.length < 1 || p.length > 3072) return false
+    const elementsOk = (formData.omni_elements || []).every(el => (el.name || '').trim() && (el.description || '').trim())
+    if (!elementsOk) return false
+    if (m === '3-0-omni-image-to-video' && (formData.omni_image_urls || []).length !== 1) return false
+    if (m === '3-0-omni-reference-to-video') {
+      if ((formData.omni_ref_image_urls || []).length > 7) return false
+      if ((formData.omni_ref_video_urls || []).length > 3) return false
+    }
+    if (formData.omni_shot_mode === 'custom') {
+      const shots = formData.omni_multi_prompt || []
+      if (shots.length < 1 || shots.length > 6) return false
+      const total = shots.reduce((s, x) => s + (Number(x.duration) || 0), 0)
+      const shotsOk = shots.every(sh => {
+        const sp = (sh.prompt || '').trim()
+        const d = Number(sh.duration) || 0
+        return sp.length >= 1 && sp.length <= 3072 && d >= 1 && d <= 12
+      })
+      if (!shotsOk || total < 3 || total > 15) return false
+    }
+    return true
+  }
+  if (m === '3-0-omni-transformation') {
+    if (p.length < 1 || p.length > 3072) return false
+    if ((formData.omni_trans_video_urls || []).length !== 1) return false
+    if (!(Number(omniTransVideoDurationSec.value) > 0)) return false
+    if ((formData.omni_trans_image_urls || []).length > 4) return false
+    const elementsValid = (formData.omni_elements || []).every(el => (el.name || '').trim() && (el.description || '').trim())
+    if (!elementsValid) return false
+    return true
   }
   return false
 })
@@ -985,7 +1453,9 @@ function fillFormFromOriginalData(originalData) {
     ['v3MultiShots', 'v3_multi_shots'],
     ['v3MultiPrompt', 'v3_multi_prompt'],
     ['v3AspectRatio', 'v3_aspect_ratio'],
-    ['klingElements', 'kling_elements']
+    ['klingElements', 'kling_elements'],
+    ['v3tboDuration', 'v3tbo_duration'],
+    ['v3tboResolution', 'v3tbo_resolution']
   ]
   for (const [camel, snake] of camelMap) {
     if (o[camel] !== undefined && merged[snake] === undefined) merged[snake] = o[camel]
@@ -1022,6 +1492,60 @@ function fillFormFromOriginalData(originalData) {
     if (merged[k] !== undefined) apply(k, merged[k])
   }
   if (merged.prompt != null) formData.prompt = String(merged.prompt)
+
+  // V3 Turbo：history 里 duration/resolution 为通用字段，回填到专属控件（通用 apply 会写 formData.duration，不影响本模式）
+  if (mode.value === 'v3-turbo-text-to-video' || mode.value === 'v3-turbo-image-to-video') {
+    if (merged.duration != null && merged.duration !== '') formData.v3tbo_duration = String(merged.duration)
+    if (o.resolution != null) formData.v3tbo_resolution = String(o.resolution)
+    else if (merged.resolution != null) formData.v3tbo_resolution = String(merged.resolution)
+  }
+
+  // Kling 3.0 Omni：history 使用 DTO 驼峰字段（duration/resolution/audio/customizeMultiShots/preferMultiShots/multiPrompt/elements/imageUrls/videoUrls/aspectRatio），回填到 omni_* 专属控件
+  if (isOmniMode.value) {
+    const d = o.duration != null ? o.duration : merged.duration
+    if (d != null && d !== '') formData.omni_duration = Number(d) || 5
+    if (o.resolution != null) formData.omni_resolution = String(o.resolution)
+    if (o.audio != null) formData.omni_audio = !!o.audio
+    if (o.customizeMultiShots) formData.omni_shot_mode = 'custom'
+    else if (o.preferMultiShots) formData.omni_shot_mode = 'smart'
+    else formData.omni_shot_mode = 'single'
+    if (o.aspectRatio != null) formData.omni_aspect_ratio = String(o.aspectRatio)
+    const shots = o.multiPrompt
+    if (Array.isArray(shots) && shots.length) {
+      formData.omni_multi_prompt = cloneJsonSafe(shots).map(s => ({ prompt: s.prompt || '', duration: Number(s.duration) || 3 }))
+    }
+    const els = o.elements
+    if (Array.isArray(els) && els.length) {
+      formData.omni_elements = els.map(e => ({
+        name: e.name || '',
+        description: e.description || '',
+        element_input_urls: Array.isArray(e.elementInputUrls) ? e.elementInputUrls : (Array.isArray(e.element_input_urls) ? e.element_input_urls : [])
+      }))
+    }
+    const imgs = normUrlList(o.imageUrls)
+    if (mode.value === '3-0-omni-image-to-video') formData.omni_image_urls = imgs
+    else if (mode.value === '3-0-omni-reference-to-video') formData.omni_ref_image_urls = imgs
+    if (mode.value === '3-0-omni-reference-to-video') formData.omni_ref_video_urls = normUrlList(o.videoUrls)
+  }
+
+  // Kling 3.0 Omni Transformation：videoUrls(源视频)/imageUrls(参考图)/duration(实际时长)/resolution/aspectRatio/elements 回填
+  if (mode.value === '3-0-omni-transformation') {
+    if (o.resolution != null) formData.omni_resolution = String(o.resolution)
+    const srcVid = normUrlList(o.videoUrls)
+    if (srcVid.length) formData.omni_trans_video_urls = srcVid.slice(0, 1)
+    formData.omni_trans_image_urls = normUrlList(o.imageUrls)
+    if (o.aspectRatio != null && o.aspectRatio !== 'auto') formData.omni_aspect_ratio = String(o.aspectRatio)
+    const d = o.duration != null ? o.duration : merged.duration
+    if (d != null && d !== '') omniTransVideoDurationSec.value = Number(d) || 0
+    const els = o.elements
+    if (Array.isArray(els) && els.length) {
+      formData.omni_elements = els.map(e => ({
+        name: e.name || '',
+        description: e.description || '',
+        element_input_urls: Array.isArray(e.elementInputUrls) ? e.elementInputUrls : (Array.isArray(e.element_input_urls) ? e.element_input_urls : [])
+      }))
+    }
+  }
 }
 
 const displayResult = computed(() => {
@@ -1052,6 +1576,14 @@ const detailKlingImageUrls = computed(() => {
   } else if (m === 'v3-0-video') {
     ;(formData.kling_image_urls || []).forEach((u, i) => urls.push({ label: `Frame ${i + 1}`, url: u }))
     if (formData.kling_end_frame_url) urls.push({ label: 'End frame', url: formData.kling_end_frame_url })
+  } else if (m === 'v3-turbo-image-to-video') {
+    ;(formData.image_urls || []).forEach((u, i) => urls.push({ label: `Image ${i + 1}`, url: u }))
+  } else if (m === '3-0-omni-image-to-video') {
+    ;(formData.omni_image_urls || []).forEach((u, i) => urls.push({ label: `Frame ${i + 1}`, url: u }))
+  } else if (m === '3-0-omni-reference-to-video') {
+    ;(formData.omni_ref_image_urls || []).forEach((u, i) => urls.push({ label: `Reference image ${i + 1}`, url: u }))
+  } else if (m === '3-0-omni-transformation') {
+    ;(formData.omni_trans_image_urls || []).forEach((u, i) => urls.push({ label: `Reference image ${i + 1}`, url: u }))
   }
   return urls.filter(x => x.url)
 })
@@ -1061,6 +1593,12 @@ const detailKlingVideoUrls = computed(() => {
   if (m === 'v2-6-motion-control' || m === 'v3-0-motion-control') {
     return (formData.video_urls || []).filter(Boolean)
   }
+  if (m === '3-0-omni-reference-to-video') {
+    return (formData.omni_ref_video_urls || []).filter(Boolean)
+  }
+  if (m === '3-0-omni-transformation') {
+    return (formData.omni_trans_video_urls || []).filter(Boolean)
+  }
   return []
 })
 const detailKlingAudioUrls = computed(() => {
@@ -1069,16 +1607,28 @@ const detailKlingAudioUrls = computed(() => {
   return []
 })
 
+const omniModelKeyByMode = {
+  '3-0-omni-text-to-video': 'kling-3.0-omni-text-to-video',
+  '3-0-omni-image-to-video': 'kling-3.0-omni-image-to-video',
+  '3-0-omni-reference-to-video': 'kling-3.0-omni-reference-to-video'
+}
+
 const apiPathByMode = {
   'v2-5-turbo-image-to-video-pro': '/api/video/kling/turbo-image-to-video-pro',
   'v2-5-turbo-text-to-video-pro': '/api/video/kling/turbo-text-to-video-pro',
+  'v3-turbo-text-to-video': '/api/video/kling/v3-turbo-text-to-video',
+  'v3-turbo-image-to-video': '/api/video/kling/v3-turbo-image-to-video',
   'v2-6-text-to-video': '/api/video/kling/2-6-text-to-video',
   'v2-6-image-to-video': '/api/video/kling/2-6-image-to-video',
   'v2-6-motion-control': '/api/video/kling/2-6-motion-control',
   'v3-0-motion-control': '/api/video/kling/3-0-motion-control',
   'ai-avatar-standard': '/api/video/kling/ai-avatar-standard',
   'ai-avatar-pro': '/api/video/kling/ai-avatar-pro',
-  'v3-0-video': '/api/video/kling/3-0-video'
+  'v3-0-video': '/api/video/kling/3-0-video',
+  '3-0-omni-text-to-video': '/api/video/kling/3-0-omni-text-to-video',
+  '3-0-omni-image-to-video': '/api/video/kling/3-0-omni-image-to-video',
+  '3-0-omni-reference-to-video': '/api/video/kling/3-0-omni-reference-to-video',
+  '3-0-omni-transformation': '/api/video/kling/3-0-omni-transformation',
 }
 
 async function loadDetailByRecordId(recordId) {
@@ -1157,6 +1707,22 @@ async function generate() {
         imageUrls: formData.image_urls,
         sound: !!formData.sound,
         duration: formData.duration
+      }
+    } else if (m === 'v3-turbo-text-to-video') {
+      body = {
+        model: 'kling-v3-turbo-text-to-video',
+        prompt: (formData.prompt || '').trim(),
+        duration: String(formData.v3tbo_duration || '5'),
+        aspectRatio: formData.aspect_ratio,
+        resolution: formData.v3tbo_resolution
+      }
+    } else if (m === 'v3-turbo-image-to-video') {
+      body = {
+        model: 'kling-v3-turbo-image-to-video',
+        prompt: (formData.prompt || '').trim(),
+        imageUrls: [...(formData.image_urls || [])],
+        duration: String(formData.v3tbo_duration || '5'),
+        resolution: formData.v3tbo_resolution
       }
     } else if (m === 'v2-6-motion-control') {
       body = {
@@ -1243,6 +1809,68 @@ async function generate() {
           }]
         }
       }
+    } else if (m === '3-0-omni-transformation') {
+      const srcVideo = (formData.omni_trans_video_urls || [])[0]
+      const hasImages = (formData.omni_trans_image_urls || []).length > 0
+      body = {
+        model: 'kling-3.0-omni-transformation',
+        prompt: (formData.prompt || '').trim(),
+        videoUrls: srcVideo ? [srcVideo] : [],
+        duration: String(omniTransBillSec.value),
+        resolution: formData.omni_resolution,
+        audio: false
+      }
+      if (hasImages) {
+        body.imageUrls = [...formData.omni_trans_image_urls]
+        body.aspectRatio = formData.omni_aspect_ratio
+      } else {
+        body.aspectRatio = 'auto'
+      }
+      const transValidElements = (formData.omni_elements || []).filter(el => (el.name || '').trim() && (el.description || '').trim())
+      if (transValidElements.length) {
+        body.elements = transValidElements.map(el => ({
+          name: (el.name || '').trim(),
+          description: (el.description || '').trim(),
+          elementInputUrls: (el.element_input_urls || []).filter(Boolean)
+        }))
+      }
+    } else if (isOmniMode.value) {
+      const customizeMultiShots = formData.omni_shot_mode === OMNI_CUSTOM
+      const preferMultiShots = formData.omni_shot_mode === OMNI_SMART
+      const hasRefVideo = m === '3-0-omni-reference-to-video' && (formData.omni_ref_video_urls || []).length > 0
+      body = {
+        model: omniModelKeyByMode[m],
+        prompt: (formData.prompt || '').trim(),
+        duration: Number(formData.omni_duration) || 5,
+        resolution: formData.omni_resolution,
+        audio: !!formData.omni_audio,
+        customizeMultiShots,
+        preferMultiShots
+      }
+      if (m === '3-0-omni-text-to-video') {
+        body.aspectRatio = formData.omni_aspect_ratio
+      } else if (m === '3-0-omni-image-to-video') {
+        body.imageUrls = [...(formData.omni_image_urls || [])]
+        body.aspectRatio = customizeMultiShots ? formData.omni_aspect_ratio : 'auto'
+      } else if (m === '3-0-omni-reference-to-video') {
+        if ((formData.omni_ref_image_urls || []).length) body.imageUrls = [...formData.omni_ref_image_urls]
+        if ((formData.omni_ref_video_urls || []).length) body.videoUrls = [...formData.omni_ref_video_urls]
+        if (!hasRefVideo) body.aspectRatio = formData.omni_aspect_ratio
+      }
+      if (customizeMultiShots) {
+        body.multiPrompt = (formData.omni_multi_prompt || []).map(sh => ({
+          prompt: (sh.prompt || '').trim(),
+          duration: Number(sh.duration) || 1
+        })).filter(sh => sh.prompt.length > 0)
+      }
+      const omniValidElements = (formData.omni_elements || []).filter(el => (el.name || '').trim() && (el.description || '').trim())
+      if (omniValidElements.length) {
+        body.elements = omniValidElements.map(el => ({
+          name: (el.name || '').trim(),
+          description: (el.description || '').trim(),
+          elementInputUrls: (el.element_input_urls || []).filter(Boolean)
+        }))
+      }
     }
     const data = await post(apiPath, body)
     const rid = data?.recordId ?? data?.data?.recordId ?? data?.data?.id ?? data?.id
@@ -1313,6 +1941,7 @@ watch(mode, (m) => {
 .required { color: #ef4444; }
 .form-input { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
 .form-input:focus { outline: none; border-color: #3b82f6; }
+.duration-range { width: 100%; accent-color: var(--flux-primary); cursor: pointer; }
 .form-hint { font-size: 12px; color: #6b7280; }
 .char-count { font-size: 12px; color: #6b7280; text-align: right; }
 .tab-group { display: flex; gap: 8px; flex-wrap: wrap; }

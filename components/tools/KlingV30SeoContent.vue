@@ -10,10 +10,10 @@
     <meta itemprop="operatingSystem" content="Web" />
     <meta
       itemprop="description"
-      content="Kling 3.0 Video and Motion Control on FuseAITools—multi-shot director mode, 3–15s clips, std/pro quality, and advanced motion transfer."
+      content="Kling 3.0 Video and Motion Control on FuseAITools—multi-shot director mode, 3–15s clips, std/pro/4K quality, and advanced motion transfer."
     />
 
-    <div class="version-badge">🎬 Kling 3.0 · Director Mode · Multi-Shot · std/pro</div>
+    <div class="version-badge">🎬 Kling 3.0 · Director Mode · Multi-Shot · std/pro/4K</div>
 
     <section v-if="workflowIntro" class="info-section workflow-intro" aria-labelledby="workflow-intro-heading">
       <h2 id="workflow-intro-heading" class="section-title">{{ workflowIntro.title }}</h2>
@@ -30,7 +30,7 @@
       <p class="tool-sub">
         Kling <strong>3.0</strong> is Kuaishou's top scene-generation tier on
         <a href="/" class="seo-inline-link">FuseAITools</a>—<strong>3.0 Video</strong> for single- or
-        multi-shot storytelling (3–15s, std/pro) and <strong>3.0 Motion Control</strong> for advanced pose
+        multi-shot storytelling (3–15s, std/pro/4K) and <strong>3.0 Motion Control</strong> for advanced pose
         transfer with background source control. Compared to
         <a href="/home/kling/v2-6-text-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v2-6-text-to-video')">Kling 2.6</a>,
         3.0 adds longer flexible duration, multi-shot editing, and per-shot elements. New users receive
@@ -76,7 +76,7 @@
             </tr>
             <tr>
               <td><strong>Quality</strong></td>
-              <td>std / pro</td>
+              <td>std / pro / 4K</td>
               <td>std (720p) / pro (1080p)</td>
             </tr>
             <tr>
@@ -119,7 +119,7 @@
               <td><strong>3.0 Video</strong></td>
               <td><code>kling-3.0-video</code></td>
               <td>Shot prompt(s)</td>
-              <td>Single/multi-shot; 3–15s; std/pro; sound; optional frames/elements</td>
+              <td>Single/multi-shot; 3–15s; std/pro/4K; sound; optional frames/elements</td>
             </tr>
             <tr>
               <td><strong>3.0 Motion Control</strong></td>
@@ -168,6 +168,24 @@
       <a href="/home/elevenlabs/multilingual-v2" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/elevenlabs/multilingual-v2')">ElevenLabs TTS</a>
       to generate narration first.
     </div>
+
+    <div class="upgrade-tip">
+      ⚡ Just need a fast, affordable clip without multi-shot or sound?
+      <a href="/home/kling/v3-turbo-text-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v3-turbo-text-to-video')">Try Kling V3 Turbo Text to Video →</a>
+      or
+      <a href="/home/kling/v3-turbo-image-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/v3-turbo-image-to-video')">V3 Turbo Image to Video</a>
+      for the streamlined 3.x fast lane—3–15s at 720p/1080p, billed per second.
+    </div>
+
+    <div class="upgrade-tip">
+      🌐 Want 4K, native audio, smart/custom multi-shot and reusable subject elements?
+      <a href="/home/kling/3-0-omni-text-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-text-to-video')">Kling 3.0 Omni Text</a>,
+      <a href="/home/kling/3-0-omni-image-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-image-to-video')">Image</a>
+      or
+      <a href="/home/kling/3-0-omni-reference-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-reference-to-video')">Reference</a>
+      —up to 7 images + 3 role videos, billed per second. To restyle footage you already have, try
+      <a href="/home/kling/3-0-omni-transformation" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/kling/3-0-omni-transformation')">Omni Video Transformation</a>.
+    </div>
   </div>
 </template>
 
@@ -176,14 +194,14 @@ const route = useRoute()
 const { navigateToToolTop, handleModeClick, watchRouteScroll } = useToolSeoPageScroll()
 
 const videoWorkflows = [
-  { name: 'Kling 3.0 Video', title: '3.0 Video', description: 'Single/multi-shot, 3–15s, std/pro, elements.', path: '/home/kling/v3-0-video', icon: 'fas fa-film' },
+  { name: 'Kling 3.0 Video', title: '3.0 Video', description: 'Single/multi-shot, 3–15s, std/pro/4K, elements.', path: '/home/kling/v3-0-video', icon: 'fas fa-film' },
   { name: 'Kling 3.0 Motion Control', title: '3.0 Motion Control', description: 'std/pro motion transfer + background source.', path: '/home/kling/v3-0-motion-control', icon: 'fas fa-bezier-curve' }
 ]
 
 const workflowIntroMap = {
   '/home/kling/v3-0-video': {
     title: '🎬 Kling 3.0 Video',
-    lead: '<strong>std/pro</strong> director mode. <strong>Single shot</strong>: one prompt (3–15s), optional start/end frames, aspect ratio, sound. <strong>Multi-shot</strong>: ≤<strong>5 shots</strong> (1–12s each, total 3–15s)—sound required; optional per-shot elements (2–50 images).'
+    lead: '<strong>std/pro/4K</strong> director mode. <strong>Single shot</strong>: one prompt (3–15s), optional start/end frames, aspect ratio, sound. <strong>Multi-shot</strong>: ≤<strong>5 shots</strong> (1–12s each, total 3–15s)—sound required; optional per-shot elements (2–50 images).'
   },
   '/home/kling/v3-0-motion-control': {
     title: '🎭 Kling 3.0 Motion Control',
@@ -194,7 +212,7 @@ const workflowIntroMap = {
 const workflowDefinitionMap = {
   '/home/kling/v3-0-video': {
     title: 'What is Kling 3.0 Video?',
-    body: '<strong>Kling 3.0 Video</strong> (<code>kling-3.0-video</code>)—single-shot (3–15s) or multi-shot (≤5 shots, total 3–15s). std/pro; optional start/end frames and per-shot elements. Per-second pricing on total duration.'
+    body: '<strong>Kling 3.0 Video</strong> (<code>kling-3.0-video</code>)—single-shot (3–15s) or multi-shot (≤5 shots, total 3–15s). std/pro/4K quality tiers; optional start/end frames and per-shot elements. Per-second pricing on total duration.'
   },
   '/home/kling/v3-0-motion-control': {
     title: 'What is Kling 3.0 Motion Control?',
@@ -205,7 +223,8 @@ const workflowDefinitionMap = {
 const workflowFaqMap = {
   '/home/kling/v3-0-video': [
     { question: 'What is multi-shot mode on Kling 3.0 Video?', answer: 'Up to <strong>5 shots</strong>, 1–12s each (total 3–15s). Each shot prompt max 500 chars (2500 total). Sound must be <strong>On</strong>.' },
-    { question: 'What duration can Kling 3.0 Video generate?', answer: 'Single shot: <strong>3–15s</strong>. Multi-shot: sum of shots must stay 3–15s. std/pro and sound affect per-second rate.' }
+    { question: 'What duration can Kling 3.0 Video generate?', answer: 'Single shot: <strong>3–15s</strong>. Multi-shot: sum of shots must stay 3–15s. std/pro/4K and sound affect per-second rate.' },
+    { question: 'What does 4K mode do on Kling 3.0 Video?', answer: '<strong>4K</strong> is the top generation-mode tier (alongside <strong>std</strong> and <strong>pro</strong>), producing ultra-high-definition output. It bills per output second at the highest rate—pick it when maximum resolution matters.' }
   ],
   '/home/kling/v3-0-motion-control': [
     { question: 'What is background source on Kling 3.0 Motion Control?', answer: 'Background follows <strong>input video</strong> or <strong>input image</strong>. Combine with character orientation for pose control.' },

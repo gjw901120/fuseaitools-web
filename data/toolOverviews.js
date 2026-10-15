@@ -1218,17 +1218,23 @@ Both tiers are **image-to-video only**—for text-to-video use Seedance or Wan.`
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation.',
+    intro: 'Kling is the latest AI video generation model from Kuaishou Kling, designed for text-to-video and image-to-video creation. Compared to earlier versions, it features better prompt adherence, more fluid motion, consistent artistic styles, and realistic physics simulation. A fast Kling V3 Turbo tier delivers 3–15s text/image-to-video at 720p/1080p with simple per-second pricing, while Kling 3.0 Omni adds text/image/reference-to-video with up to 4K, native audio, smart/custom multi-shot, and reusable subject elements. Kling 3.0 Omni Video Transformation restyles one uploaded source clip, billed by its actual length.',
     features: [
       { name: 'v2.5 Turbo I2V Pro', path: '/home/kling/v2-5-turbo-image-to-video-pro', description: 'Image-to-video with tail frame option, duration 5/10s, negative prompt, CFG scale. Max prompt 2500 characters.' },
       { name: 'v2.5 Turbo T2V Pro', path: '/home/kling/v2-5-turbo-text-to-video-pro', description: 'Text-to-video with aspect ratio 16:9, 9:16, 1:1; duration 5/10s; negative prompt and CFG scale.' },
+      { name: 'V3 Turbo Text to Video', path: '/home/kling/v3-turbo-text-to-video', description: 'Fast text-to-video—prompt up to 2500 chars, 3–15s slider, aspect 1:1/16:9/9:16, 720p/1080p, per-second pricing.' },
+      { name: 'V3 Turbo Image to Video', path: '/home/kling/v3-turbo-image-to-video', description: 'Animate one image (≤10MB) with a prompt—3–15s, 720p/1080p, output follows the input frame, per-second pricing.' },
       { name: '2.6 Text to Video', path: '/home/kling/v2-6-text-to-video', description: 'Text-to-video with sound on/off, aspect ratio 1:1/16:9/9:16, duration 5/10s.' },
       { name: '2.6 Image to Video', path: '/home/kling/v2-6-image-to-video', description: 'Image-to-video with sound, duration 5/10s. Single image input.' },
       { name: '2.6 Motion Control', path: '/home/kling/v2-6-motion-control', description: 'Reference image + reference video; character orientation (image/video); 720p/1080p.' },
       { name: '3.0 Motion Control', path: '/home/kling/v3-0-motion-control', description: 'Reference image + reference video; optional prompt; std/pro mode; character orientation and background source.' },
       { name: 'AI Avatar Standard', path: '/home/kling/ai-avatar-standard', description: 'Avatar image + audio to talking-head video. Prompt max 5000 characters.' },
       { name: 'AI Avatar Pro', path: '/home/kling/ai-avatar-pro', description: 'High-quality avatar image + audio to talking-head video. Prompt max 5000 characters.' },
-      { name: '3.0 Video', path: '/home/kling/v3-0-video', description: 'Single shot or multi-shot; image refs; duration 3–15s; sound. std/pro mode.' }
+      { name: '3.0 Video', path: '/home/kling/v3-0-video', description: 'Single shot or multi-shot; image refs; duration 3–15s; sound. std/pro/4K mode.' },
+      { name: '3.0 Omni Text to Video', path: '/home/kling/3-0-omni-text-to-video', description: 'Prompt up to 3072 chars; 3–15s; 720p/1080p/4K; native audio; smart or custom multi-shot; subject elements. Per-second pricing.' },
+      { name: '3.0 Omni Image to Video', path: '/home/kling/3-0-omni-image-to-video', description: 'One first-frame image + prompt; 3–15s at up to 4K; auto aspect unless custom shots; audio; elements.' },
+      { name: '3.0 Omni Reference to Video', path: '/home/kling/3-0-omni-reference-to-video', description: 'Up to 7 reference images + 3 character videos + prompt; with-video pricing when a video is used; up to 4K.' },
+      { name: '3.0 Omni Video Transformation', path: '/home/kling/3-0-omni-transformation', description: 'Transform one uploaded source clip (3–15.5s) with a prompt; optional up to 4 reference images; billed by the actual video length (rounded up); 720p/1080p/4K.' }
     ],
     sections: [
       {
@@ -1259,7 +1265,23 @@ Standard and Pro: Upload avatar image and audio; generate talking-head video. Pr
 
 3.0 Video
 
-Single shot or multi-shot; image references; duration 3–15 seconds; optional sound; standard or pro mode.`
+Single shot or multi-shot; image references; duration 3–15 seconds; optional sound; standard, pro, or 4K mode.
+
+Kling V3 Turbo
+
+Text to Video (kling-v3-turbo-text-to-video): prompt up to 2500 characters; duration 3–15s slider; aspect ratio 1:1/16:9/9:16; resolution 720p/1080p; billed per second.
+
+Image to Video (kling-v3-turbo-image-to-video): one reference image (JPEG/PNG, ≤10MB) plus prompt; duration 3–15s; resolution 720p/1080p; output follows the input frame; billed per second.
+
+Kling 3.0 Omni
+
+Text to Video (kling-3.0-omni-text-to-video): prompt up to 3072 characters; duration 3–15s; aspect 16:9/9:16/1:1; resolution 720p/1080p/4K; optional native audio; smart (preferMultiShots) or custom (customizeMultiShots, 1–6 shots, each 1–12s, total ≤15s) multi-shot; reusable subject elements referenced as @name.
+
+Image to Video (kling-3.0-omni-image-to-video): exactly one first-frame image (JPG/PNG, ≤50MB, min 300px) plus prompt; aspect is auto unless custom shots; otherwise same controls as Omni T2V.
+
+Reference to Video (kling-3.0-omni-reference-to-video): up to 7 reference images and up to 3 character videos plus prompt; when a reference video is used pricing switches to the with-video scene and audio is disabled.
+
+Video Transformation (kling-3.0-omni-transformation): video-to-video—exactly one source clip (MP4/MOV, 3–15.5s) plus prompt; optional up to 4 reference images. There is no duration selector: billing uses the actual uploaded video length rounded up, matched against resolution (720p/1080p/4k), with no scene dimension. Aspect is auto for video-only, or 16:9/9:16/1:1 when reference images are attached; audio stays off.`
       },
       {
         title: 'Use cases',
@@ -1275,19 +1297,19 @@ Advertising and marketing: Animate product shots and concept art with v2.5 Turbo
       },
       {
         title: 'Technical performance',
-        content: `Prompt length: Up to 2500 characters (v2.5 Turbo); up to 5000 characters (AI Avatar, others as per mode).
+        content: `Prompt length: Up to 2500 characters (v2.5 Turbo); up to 3072 characters (3.0 Omni); up to 5000 characters (AI Avatar, others as per mode).
 
 Input: Image(s) JPEG/PNG/WebP; video for motion control; audio for AI Avatar. Size and format limits follow each mode.
 
-Duration: 5s or 10s (v2.5, 2.6); 3–15s (3.0 Video).
+Duration: 5s or 10s (v2.5, 2.6); 3–15s (3.0 Video, V3 Turbo and 3.0 Omni).
 
-Resolution: 720p or 1080p where applicable (e.g. motion control, 2.6); aspect ratios 1:1, 16:9, 9:16 (and 21:9 for some modes).
+Resolution: 720p or 1080p where applicable (e.g. motion control, 2.6); 3.0 Video offers std/pro/4K generation-mode tiers; 3.0 Omni outputs at 720p/1080p/4K; aspect ratios 1:1, 16:9, 9:16 (and 21:9 for some modes).
 
 Output: Video via URL or download; optional sound where supported.`
       },
       {
         title: 'Workflow',
-        content: `Choose mode: Pick the Kling mode that matches your goal—v2.5 Turbo I2V/T2V, 2.6 text/image/motion, AI Avatar Standard/Pro, or 3.0 Video.
+        content: `Choose mode: Pick the Kling mode that matches your goal—v2.5 Turbo I2V/T2V, Kling V3 Turbo text/image, 2.6 text/image/motion, AI Avatar Standard/Pro, 3.0 Video, 3.0 Omni text/image/reference, or 3.0 Omni Video Transformation (restyle an uploaded clip).
 
 Upload assets: Provide image(s), and for motion control add reference video; for AI Avatar add audio.
 

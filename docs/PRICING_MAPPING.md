@@ -309,21 +309,30 @@
 |----------------------------------|-----------------------------------------|-------|------|
 | v2-5-turbo-image-to-video-pro    | `kling-v2-5-turbo-image-to-video-pro`   | RULE  | 按 duration、scene: generate 匹配 |
 | v2-5-turbo-text-to-video-pro     | `kling-v2-5-turbo-text-to-video-pro`    | RULE  | 同上 |
+| v3-turbo-text-to-video            | `kling-v3-turbo-text-to-video`          | RULE  | **`duration: 1` = 每秒单价**：`getPrice(modelKey, { duration: 1, quality })`（quality 720p/1080p）再乘 3–15s 秒数 |
+| v3-turbo-image-to-video           | `kling-v3-turbo-image-to-video`         | RULE  | 同上；1 张参考图，输出跟随输入帧 |
 | v2-6-text-to-video               | `kling-2.6-text-to-video`              | RULE  | 按 duration、scene(with_sound/without_sound) 匹配 |
 | v2-6-image-to-video              | `kling-2.6-image-to-video`              | RULE  | 同上 |
 | v2-6-motion-control              | `kling-2.6-motion-control`              | RULE  | 按 duration、quality(720p/1080p)、scene: generate 匹配 |
 | v3-0-motion-control              | `kling-3.0-motion-control`              | RULE  | 按 duration(上传视频时长)、quality(720p/1080p)、scene: generate 匹配；std→720p，pro→1080p |
 | ai-avatar-standard               | `kling-ai-avatar-standard`              | ONCE  | |
 | ai-avatar-pro                    | `kling-ai-avatar-pro`                   | ONCE  | |
-| v3-0-video                       | `kling-3.0-video`                       | RULE  | 按 duration、size(std/pro)、scene 匹配；多镜头为 shots duration 之和 |
+| v3-0-video                       | `kling-3.0-video`                       | RULE  | 按 duration、size(std/pro/4k)、scene 匹配；多镜头为 shots duration 之和 |
+| 3-0-omni-text-to-video            | `kling-3.0-omni-text-to-video`          | RULE  | **`duration: 1` = 每秒单价**：`getPrice(modelKey, { duration: 1, quality, scene })`（quality 720p/1080p/4k；scene no_audio/with_audio）再乘计费秒 |
+| 3-0-omni-image-to-video           | `kling-3.0-omni-image-to-video`         | RULE  | 同上；1 张首帧图，单/智能镜头 aspect=auto |
+| 3-0-omni-reference-to-video       | `kling-3.0-omni-reference-to-video`     | RULE  | 同上；scene 额外支持 `with_video`（存在参考视频时，此时 audio 不生效） |
+| 3-0-omni-transformation           | `kling-3.0-omni-transformation`         | RULE  | **按实际时长匹配（非每秒）**：`getPrice(modelKey, { duration: 向上取整的上传视频秒数, quality })`；无 scene；未上传视频时按 5s 展示 |
 
 - **组件**：`components/tools/KlingTool.vue`
 - **v2.5 Turbo**：`formFields` 为 `{ duration: formData.duration, scene: 'generate' }`。
+- **V3 Turbo（每秒）**：`formFields` 为 `{ duration: 1, quality: formData.v3tbo_resolution }`（`720p`/`1080p`）取每秒单价，再乘 clamp(3,15) 计费秒；text 模式带 `aspectRatio`，image 模式无 `aspectRatio`（跟随输入帧）。
 - **2.6 Text/Image to Video**：`scene` 由 `formData.sound` 得 `with_sound` 或 `without_sound`；`formFields` 含 `duration`、`scene`。
 - **2.6 Motion Control**：`formFields` 为 `{ duration, quality: formData.mode }`（如 720p）、`scene: 'generate'`。
 - **3.0 Motion Control**：`formFields` 为 `{ duration, quality, scene: 'generate' }`，其中 `duration` 取上传视频时长，`quality` 由 `mode` 映射（`std -> 720p`，`pro -> 1080p`）。
 - **AI Avatar**：ONCE，无需 formFields。
-- **3.0 Video**：`formFields` 含 `duration`（单镜头为第一条 prompt 的 duration，多镜头为各 shot duration 之和）、`size: formData.kling_mode`（std/pro）、`scene`。
+- **3.0 Video**：`formFields` 含 `duration`（单镜头为第一条 prompt 的 duration，多镜头为各 shot duration 之和）、`size: formData.kling_mode`（std/pro/4k，直接透传生成模式档位）、`scene`。
+- **3.0 Omni（每秒，三变体 text/image/reference）**：`formFields` 为 `{ duration: 1, quality: formData.omni_resolution, scene }`；`quality` 小写 `720p`/`1080p`/`4k`；`scene` 由 audio 与参考视频映射：reference 且 `omni_ref_video_urls` 非空 → `with_video`，否则 `omni_audio ? 'with_audio' : 'no_audio'`。计费秒 = 自定义多镜头（`omni_shot_mode==='custom'`）时各 shot 之和，否则 `omni_duration`，clamp(3,15)。
+- **3.0 Omni Video Transformation（按实际时长，非每秒）**：`formFields` 为 `{ duration: omniTransBillSec, quality: formData.omni_resolution }`，**无 scene**。`omniTransBillSec` = 上传源视频实际时长的 `Math.ceil`，clamp(3,15)；未读取到时长（未上传）时默认 5 用于展示。表单不显示 duration 选择器。
 
 ---
 
@@ -408,7 +417,10 @@
 | `kling-2.6-text-to-video` / `kling-2.6-image-to-video` | duration、scene（with_sound/without_sound） |
 | `kling-2.6-motion-control`  | duration、quality（720p/1080p）、scene |
 | `kling-3.0-motion-control`  | duration（上传视频时长）、quality（720p/1080p，std/pro 映射）、scene |
-| `kling-3.0-video`           | duration、size（std/pro）、scene |
+| `kling-3.0-video`           | duration、size（std/pro/4k）、scene |
+| `kling-v3-turbo-text-to-video` / `kling-v3-turbo-image-to-video` | 展示价：`duration: 1`（每秒单价）+ quality（720p/1080p），再乘 3–15s 秒数 |
+| `kling-3.0-omni-text-to-video` / `kling-3.0-omni-image-to-video` / `kling-3.0-omni-reference-to-video` | 展示价：`duration: 1`（每秒单价）+ quality（720p/1080p/4k）+ scene（no_audio/with_audio，reference 额外 with_video），再乘 3–15s 秒数 |
+| `kling-3.0-omni-transformation` | duration（**上传视频实际时长向上取整**，非每秒单价、无 scene）、quality（720p/1080p/4k）；未上传时按 5s 展示 |
 | `runway_generate`           | duration、quality（如 720p）、scene |
 | `qwen-text-to-image` / `qwen-image-edit` | imageSize；`qwen-image-edit` 另 numImages |
 | `qwen-z-image`              | aspectRatio |
