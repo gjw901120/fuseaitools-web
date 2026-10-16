@@ -62,14 +62,14 @@
         <div v-if="serviceSuspended" class="sora-suspended-notice" role="alert">
           <div class="sora-suspended-icon"><i class="fas fa-ban"></i></div>
           <div class="sora-suspended-body">
-            <p class="sora-suspended-title">Sora 服务已暂停</p>
+            <p class="sora-suspended-title">Sora service has been suspended</p>
             <p class="sora-suspended-text">
-              由于 <strong>OpenAI 官方已暂停 Sora 服务</strong>，本站 Sora 相关生成功能已同步下线，暂时无法提交新的生成任务。
+              Since <strong>OpenAI has officially suspended the Sora service</strong>, the Sora-related generation features on this site have been taken offline accordingly, and new generation tasks cannot be submitted for the time being.
             </p>
             <p class="sora-suspended-text">
-              你<strong>此前已成功生成的视频</strong>不受影响，可前往<strong>历史记录</strong>正常查询与查看。
+              <strong>Videos you successfully generated previously</strong> are not affected. You can go to <strong>History</strong> to view and access them as usual.
             </p>
-            <p class="sora-suspended-foot">由此带来的不便，敬请谅解，感谢你的理解与支持。</p>
+            <p class="sora-suspended-foot">We apologize for the inconvenience and appreciate your understanding and support.</p>
           </div>
         </div>
 
@@ -330,7 +330,7 @@
             <i v-if="serviceSuspended" class="fas fa-ban"></i>
             <i v-else-if="isGenerating" class="fas fa-spinner fa-spin"></i>
             <i v-else class="fas fa-play"></i>
-            {{ serviceSuspended ? '服务已暂停，无法提交' : (isGenerating ? 'Submitting...' : 'Start Generation') }}
+            {{ serviceSuspended ? 'Service paused, submission unavailable' : (isGenerating ? 'Submitting...' : 'Start Generation') }}
             <span v-if="soraPriceText && !serviceSuspended" class="price-tag">{{ soraPriceText }}</span>
           </button>
         </div>
@@ -784,7 +784,7 @@ const removeScene = (idx) => {
 
 const onSubmit = async () => {
   if (serviceSuspended) {
-    showError('Sora 服务已暂停，暂时无法提交新的生成任务；历史生成记录仍可在历史记录中查询。')
+    showError('Sora service is suspended. New generation tasks are temporarily unavailable; past generations can still be found in History.')
     return
   }
   if (!canSubmit.value) return
