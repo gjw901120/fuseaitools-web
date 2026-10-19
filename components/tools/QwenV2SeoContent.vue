@@ -141,6 +141,83 @@
       </div>
     </section>
 
+    <section class="info-section" aria-labelledby="compare-heading">
+      <h2 id="compare-heading" class="section-title">📊 Qwen Generations Compared: v1 · v2 · v2.1 · v3 · v3 Pro</h2>
+      <div class="compare-table-wrap">
+        <table class="compare-table" aria-label="Qwen v2 compared across all model generations">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>v1 Classic</th>
+              <th>v2</th>
+              <th>v2.1</th>
+              <th>v3</th>
+              <th>v3 Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Positioning</strong></td>
+              <td>Full-parameter control</td>
+              <td><strong>Minimal fast lane</strong></td>
+              <td>Long prompts + alpha output</td>
+              <td>Smart rewriting flagship</td>
+              <td>Premium quality tier</td>
+            </tr>
+            <tr>
+              <td><strong>Prompt limit</strong></td>
+              <td>5000 (edit 2000)</td>
+              <td><strong>800</strong></td>
+              <td>5000</td>
+              <td>5000</td>
+              <td>5000</td>
+            </tr>
+            <tr>
+              <td><strong>Signature controls</strong></td>
+              <td>Steps, guidance, acceleration</td>
+              <td>Seed only—simplest</td>
+              <td>enhancePrompt, background, mask</td>
+              <td>promptExtend + negative (≤5000)</td>
+              <td>promptExtend + negative (≤5000)</td>
+            </tr>
+            <tr>
+              <td><strong>Sizes / aspects</strong></td>
+              <td>6 presets</td>
+              <td>5 / <strong>8 incl. 21:9</strong> (edit)</td>
+              <td>9 (+auto)</td>
+              <td>8</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <td><strong>Reference images</strong></td>
+              <td>1 (I2I / edit)</td>
+              <td>1 (edit)</td>
+              <td>up to 10 + mask</td>
+              <td>up to 3</td>
+              <td>up to 3</td>
+            </tr>
+            <tr>
+              <td><strong>Resolution / billing</strong></td>
+              <td>Per image</td>
+              <td>Per image</td>
+              <td>1K / 2K</td>
+              <td>1K / 2K</td>
+              <td>1K / 2K premium</td>
+            </tr>
+            <tr>
+              <td><strong>Best for</strong></td>
+              <td>Pixel-level iteration</td>
+              <td><strong>Quick social graphics</strong></td>
+              <td>Cutouts, remixes, inpainting</td>
+              <td>Prompt-assisted production</td>
+              <td>Hero assets &amp; final delivery</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta-note">v2 stays the lightest option—<strong>800-char prompts and seed-only controls</strong>. Move up when you need long prompts (v2.1), transparent output, or smart prompt rewriting with negative prompts (v3 / v3 Pro).</p>
+    </section>
+
     <div class="upgrade-tip pricing-tip">
       💳 New users get <strong>20 free credits</strong> on sign-up.
       <a href="/pricing" class="seo-pricing-link">View pricing</a>
@@ -162,6 +239,47 @@
         @click.prevent="navigateToToolTop('/home/wan/2-7-image-pro')"
       >Wan 2.7 Image Pro (4K)</a>
       for ultra-high-fidelity hero assets.
+    </div>
+
+    <div class="upgrade-tip">
+      🌟 Upgraded Qwen image families are here.
+      <a
+        href="/home/qwen/v21-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v21-text-to-image')"
+      >Qwen v2.1</a>
+      lifts prompts to 5000 chars with 9 aspect ratios, transparent backgrounds and PNG/WebP/JPEG output—plus
+      <a
+        href="/home/qwen/v21-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v21-image-to-image')"
+      >1–10 image references with mask-based local edits</a>. For smart prompt rewriting and a negative prompt, use
+      <a
+        href="/home/qwen/v3-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-text-to-image')"
+      >Qwen v3</a> or
+      <a
+        href="/home/qwen/v3-pro-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-pro-image-to-image')"
+      >v3 Pro Image to Image</a>.
+    </div>
+
+    <div class="upgrade-tip">
+      👑 Ready for the premium tier? Go straight to
+      <a
+        href="/home/qwen/v3-pro-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-pro-text-to-image')"
+      >Qwen v3 Pro Text to Image</a>
+      or
+      <a
+        href="/home/qwen/v3-pro-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-pro-image-to-image')"
+      >v3 Pro Image to Image</a>
+      —the highest-fidelity Qwen image models, with smart prompt rewriting and a 5000-char negative prompt at 1K/2K resolution billing.
     </div>
   </div>
 </template>

@@ -6,27 +6,21 @@
       </div>
       <div class="tool-details">
         <h3>Seedream</h3>
-        <p class="tool-description">Seedream 5 Lite is ByteDance's multimodal image model on FuseAITools—text-to-image and image-to-image at 2K/3K. Pair with <strong>Seedance</strong> to turn stills into video clips.</p>
+        <p class="tool-description">Seedream on FuseAITools is ByteDance's image suite: 5 Lite at 2K/3K, plus new <strong>5 Pro</strong> (1K/2K) and <strong>5 Flash</strong> (1K/1.5K/2K) with up to 10 reference images and <strong>layer decomposition</strong> that splits artwork into editable PNG layers. Pair with <strong>Seedance</strong> to turn stills into video clips.</p>
       </div>
     </div>
 
     <div class="mode-tabs-wrap">
       <div class="mode-tabs">
         <div
+          v-for="tab in modeList"
+          :key="tab.id"
           class="mode-tab"
-          :class="{ active: mode === '5-lite-text-to-image' }"
-          @click="goToTab('5-lite-text-to-image')"
+          :class="{ active: mode === tab.id }"
+          @click="goToTab(tab.id)"
         >
-          <i class="fas fa-font"></i>
-          <span>5 Lite Text to Image</span>
-        </div>
-        <div
-          class="mode-tab"
-          :class="{ active: mode === '5-lite-image-to-image' }"
-          @click="goToTab('5-lite-image-to-image')"
-        >
-          <i class="fas fa-image"></i>
-          <span>5 Lite Image to Image</span>
+          <i :class="tab.icon"></i>
+          <span>{{ tab.label }}</span>
         </div>
       </div>
     </div>
@@ -40,23 +34,24 @@
           <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
             <div class="form-group">
               <label for="seedream-prompt" class="form-label">
-                Prompt <span class="required">*</span>
+                Prompt <span v-if="!isLayerMode" class="required">*</span>
               </label>
               <textarea
                 id="seedream-prompt"
                 v-model="formData.prompt"
                 class="form-input"
                 rows="4"
-                placeholder="A text description of the image you want to generate"
-                :maxlength="mode === '5-lite-image-to-image' ? 2996 : 2995"
-                required
+                :placeholder="isLayerMode ? 'Optional — describe which elements to extract; leave empty for auto detection. Supports <bbox>x1 y1 x2 y2</bbox> (0-1000) to target regions.' : 'A text description of the image you want to generate'"
+                :maxlength="maxPromptLen"
+                :required="!isLayerMode"
               ></textarea>
               <div class="char-count" v-if="formData.prompt">
-                {{ formData.prompt.length }}/{{ mode === '5-lite-image-to-image' ? 2996 : 2995 }}
+                {{ formData.prompt.length }}/{{ maxPromptLen }}
               </div>
+              <div v-if="isLayerMode" class="form-hint">Optional hint for the decomposition—omit to let the model detect main elements automatically.</div>
             </div>
 
-            <div v-if="mode === '5-lite-image-to-image'" class="form-group">
+            <div v-if="mode === '5-lite-image-to-image' || isNewImageToImageMode" class="form-group">
               <label class="form-label">
                 Image(s) <span class="required">*</span>
               </label>
@@ -65,15 +60,17 @@
                 input-id="seedream-image-upload"
                 label=""
                 upload-text="Click to upload image(s)"
-                upload-hint="JPEG, PNG, WebP; max 10MB each"
-                :max-files="5"
-                :max-file-size="10 * 1024 * 1024"
+                :upload-hint="isNewImageToImageMode
+                  ? 'Up to 10 images; JPEG, PNG, WebP; max 30MB each'
+                  : 'JPEG, PNG, WebP; max 10MB each'"
+                :max-files="isNewImageToImageMode ? 10 : 5"
+                :max-file-size="(isNewImageToImageMode ? 30 : 10) * 1024 * 1024"
                 accept="image/jpeg,image/png,image/webp"
                 :multiple="true"
                 @update:files="handleImageFiles"
               />
               <span v-if="isUploadingImages" class="form-hint">Uploading...</span>
-              <div v-if="isDetailView && mode === '5-lite-image-to-image' && formData.imageUrls?.length" class="detail-ref-urls">
+              <div v-if="isDetailView && formData.imageUrls?.length" class="detail-ref-urls">
                 <span class="form-label">Input images (this task)</span>
                 <div class="detail-ref-urls-links">
                   <a
@@ -88,7 +85,33 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- 5 Pro / 5 Flash 图层拆解：恰好 1 张源图 -->
+            <div v-if="isLayerMode" class="form-group">
+              <label class="form-label">
+                Source Image <span class="required">*</span>
+              </label>
+              <UploadImage :readonly="isDetailView"
+                ref="layerUploadRef"
+                input-id="seedream-layer-upload"
+                label=""
+                upload-text="Click to upload source image"
+                upload-hint="Exactly 1 image; PNG/JPEG ≤30MB; total pixels 262K–36M; aspect 1:16–16:1"
+                :max-files="1"
+                :max-file-size="30 * 1024 * 1024"
+                accept="image/png,image/jpeg"
+                :multiple="false"
+                @update:files="handleLayerFile"
+              />
+              <span v-if="isUploadingLayer" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.layerImageUrl" class="detail-ref-urls">
+                <span class="form-label">Source image (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a :href="formData.layerImageUrl" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Source image</a>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="!isLayerMode" class="form-group">
               <label class="form-label">Aspect Ratio <span class="required">*</span></label>
               <div class="tab-group">
                 <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '1:1' }" @click="formData.aspectRatio = '1:1'"><span>1:1</span></button>
@@ -102,13 +125,32 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div v-if="isLiteMode" class="form-group">
               <label class="form-label">Quality <span class="required">*</span></label>
               <div class="tab-group">
                 <button type="button" class="tab-option" :class="{ active: formData.quality === 'basic' }" @click="formData.quality = 'basic'">Basic (2K)</button>
                 <button type="button" class="tab-option" :class="{ active: formData.quality === 'high' }" @click="formData.quality = 'high'">High (3K)</button>
               </div>
               <div class="form-hint">Basic outputs 2K; High outputs 3K.</div>
+            </div>
+
+            <!-- 5 Pro / 5 Flash: Resolution（计费维度） -->
+            <div v-if="isNewSeedreamMode" class="form-group">
+              <label class="form-label">Resolution <span class="required">*</span></label>
+              <div class="tab-group">
+                <button v-for="r in resolutionOptions" :key="r" type="button" class="tab-option" :class="{ active: formData.resolution === r }" @click="formData.resolution = r">{{ r }}</button>
+              </div>
+              <div class="form-hint">{{ resolutionHint }}</div>
+            </div>
+
+            <!-- 5 Pro / 5 Flash: Output Format -->
+            <div v-if="isNewSeedreamMode" class="form-group">
+              <label class="form-label">Output Format</label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: formData.outputFormat === '' }" @click="formData.outputFormat = ''">Default</button>
+                <button v-for="fmt in outputFormatOptions" :key="fmt" type="button" class="tab-option" :class="{ active: formData.outputFormat === fmt }" @click="formData.outputFormat = fmt">{{ fmt.toUpperCase() }}</button>
+              </div>
+              <div class="form-hint">{{ isLayerMode ? 'Base image format; decomposed layers are always PNG.' : 'Leave Default to let the provider choose (PNG).' }}</div>
             </div>
 
             <div class="form-actions">
@@ -148,6 +190,21 @@
             <div v-else-if="isDetailView && (!detailData || [0, 1].includes(Number(detailData.status)))" class="detail-loading-state">
               <i class="fas fa-spinner fa-spin detail-spinner"></i>
               <p>Generating...</p>
+            </div>
+            <div v-else-if="multiResultImages.length" class="result-display">
+              <div class="image-result">
+                <p class="form-label">Decomposed layers ({{ multiResultImages.length }} images)</p>
+                <div class="result-image-grid">
+                  <a v-for="(u, idx) in multiResultImages" :key="idx" :href="u" target="_blank" rel="noopener noreferrer" class="grid-image-link">
+                    <img :src="u" :alt="`Generated image ${idx + 1}`" class="result-image grid-image" />
+                  </a>
+                </div>
+                <div class="image-actions">
+                  <button v-for="(u, idx) in multiResultImages" :key="'dl-' + idx" @click="downloadUrl(u, idx)" class="action-btn">
+                    <i class="fas fa-download"></i> Download {{ idx + 1 }}
+                  </button>
+                </div>
+              </div>
             </div>
             <div v-else-if="!displayResult" class="empty-state">
               <h4>No image generated yet</h4>
@@ -193,13 +250,36 @@ onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
 const { getUrlsForFiles } = useFileUploadUrlCache()
 
+const modeList = [
+  { id: '5-lite-text-to-image', label: '5 Lite Text to Image', icon: 'fas fa-font' },
+  { id: '5-lite-image-to-image', label: '5 Lite Image to Image', icon: 'fas fa-image' },
+  { id: '5-pro-text-to-image', label: '5 Pro Text to Image', icon: 'fas fa-crown' },
+  { id: '5-pro-image-to-image', label: '5 Pro Image to Image', icon: 'fas fa-photo-film' },
+  { id: '5-pro-layer-decomposition', label: '5 Pro Layer Decomposition', icon: 'fas fa-layer-group' },
+  { id: '5-flash-text-to-image', label: '5 Flash Text to Image', icon: 'fas fa-bolt' },
+  { id: '5-flash-image-to-image', label: '5 Flash Image to Image', icon: 'fas fa-wand-magic-sparkles' },
+  { id: '5-flash-layer-decomposition', label: '5 Flash Layer Decomposition', icon: 'fas fa-clone' }
+]
+
 const modeTabToPath = {
   '5-lite-text-to-image': '/home/seedream/5-lite-text-to-image',
-  '5-lite-image-to-image': '/home/seedream/5-lite-image-to-image'
+  '5-lite-image-to-image': '/home/seedream/5-lite-image-to-image',
+  '5-pro-text-to-image': '/home/seedream/5-pro-text-to-image',
+  '5-pro-image-to-image': '/home/seedream/5-pro-image-to-image',
+  '5-pro-layer-decomposition': '/home/seedream/5-pro-layer-decomposition',
+  '5-flash-text-to-image': '/home/seedream/5-flash-text-to-image',
+  '5-flash-image-to-image': '/home/seedream/5-flash-image-to-image',
+  '5-flash-layer-decomposition': '/home/seedream/5-flash-layer-decomposition'
 }
 const pathToMode = {
   '/home/seedream/5-lite-text-to-image': '5-lite-text-to-image',
   '/home/seedream/5-lite-image-to-image': '5-lite-image-to-image',
+  '/home/seedream/5-pro-text-to-image': '5-pro-text-to-image',
+  '/home/seedream/5-pro-image-to-image': '5-pro-image-to-image',
+  '/home/seedream/5-pro-layer-decomposition': '5-pro-layer-decomposition',
+  '/home/seedream/5-flash-text-to-image': '5-flash-text-to-image',
+  '/home/seedream/5-flash-image-to-image': '5-flash-image-to-image',
+  '/home/seedream/5-flash-layer-decomposition': '5-flash-layer-decomposition',
   // 旧 URL（若未触发 Nitro 301，仍同步 tab）
   '/home/seedream/1-5-lite-text-to-image': '5-lite-text-to-image',
   '/home/seedream/2-5-lite-image-to-image': '5-lite-image-to-image'
@@ -220,8 +300,30 @@ const formData = reactive({
   prompt: '',
   imageUrls: [],
   aspectRatio: '1:1',
-  quality: 'basic'
+  quality: 'basic',
+  // 5 Pro / 5 Flash 专用
+  resolution: '1K',
+  outputFormat: '',
+  layerImageUrl: ''
 })
+
+// ===== 5 Pro / 5 Flash 新家族 =====
+const isLiteMode = computed(() => mode.value === '5-lite-text-to-image' || mode.value === '5-lite-image-to-image')
+const isProMode = computed(() => mode.value.startsWith('5-pro-'))
+const isFlashMode = computed(() => mode.value.startsWith('5-flash-'))
+const isNewSeedreamMode = computed(() => isProMode.value || isFlashMode.value)
+const isLayerMode = computed(() => mode.value === '5-pro-layer-decomposition' || mode.value === '5-flash-layer-decomposition')
+const isNewImageToImageMode = computed(() => mode.value === '5-pro-image-to-image' || mode.value === '5-flash-image-to-image')
+// Pro 文生图/图生图仅 1K/2K；Pro 图层拆解与 Flash 全系支持 1K/1.5K/2K（Flash 三档同价）
+const resolutionOptions = computed(() =>
+  (isProMode.value && !isLayerMode.value) ? ['1K', '2K'] : ['1K', '1.5K', '2K']
+)
+const resolutionHint = computed(() => {
+  if (isProMode.value && !isLayerMode.value) return '1K / 2K — pricing is matched by resolution.'
+  if (isProMode.value) return '1K / 1.5K / 2K — pricing is matched by resolution.'
+  return '1K / 1.5K / 2K — all three tiers share the same price.'
+})
+const outputFormatOptions = ['png', 'jpeg']
 
 // 折扣文本
 const discountText = computed(() => {
@@ -234,15 +336,24 @@ const discountText = computed(() => {
 // 价格：按 mode 取 modelKey，可选按 aspectRatio + quality 匹配 RULE
 const seedreamPriceModelKeyMap = {
   '5-lite-text-to-image': 'seedream-5-lite-text-to-image',
-  '5-lite-image-to-image': 'seedream-5-lite-image-to-image'
+  '5-lite-image-to-image': 'seedream-5-lite-image-to-image',
+  '5-pro-text-to-image': 'seedream-5-pro-text-to-image',
+  '5-pro-image-to-image': 'seedream-5-pro-image-to-image',
+  '5-pro-layer-decomposition': 'seedream-5-pro-layer-decomposition',
+  '5-flash-text-to-image': 'seedream-5-flash-text-to-image',
+  '5-flash-image-to-image': 'seedream-5-flash-image-to-image',
+  '5-flash-layer-decomposition': 'seedream-5-flash-layer-decomposition'
 }
 const seedreamPriceText = computed(() => {
   const modelKey = seedreamPriceModelKeyMap[mode.value]
   if (!modelKey) return ''
-  const credits = getPrice(modelKey, {
-    aspectRatio: formData.aspectRatio,
-    quality: formData.quality
-  })
+  // 新家族：计价维度 = resolution → quality（与 Qwen 新家族同款）
+  const credits = isNewSeedreamMode.value
+    ? getPrice(modelKey, { quality: formData.resolution })
+    : getPrice(modelKey, {
+        aspectRatio: formData.aspectRatio,
+        quality: formData.quality
+      })
   const str = formatCredits(credits)
   if (!str) return ''
   return `· ${str} credits${discountText.value}`
@@ -250,6 +361,8 @@ const seedreamPriceText = computed(() => {
 
 const imageUploadRef = ref(null)
 const isUploadingImages = ref(false)
+const layerUploadRef = ref(null)
+const isUploadingLayer = ref(false)
 const result = ref(null)
 const isGenerating = ref(false)
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -301,9 +414,43 @@ async function handleImageFiles(files) {
   }
 }
 
-const maxPromptLen = computed(() => mode.value === '5-lite-image-to-image' ? 2996 : 2995)
+// 图层拆解：恰好 1 张源图
+async function handleLayerFile(files) {
+  const list = Array.isArray(files) ? files : (files ? [files] : [])
+  if (!list.length) {
+    formData.layerImageUrl = ''
+    return
+  }
+  isUploadingLayer.value = true
+  try {
+    const urls = await getUrlsForFiles([list[0]], uploadFilesToUrls)
+    formData.layerImageUrl = urls[0] || ''
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.layerImageUrl = ''
+    layerUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingLayer.value = false
+  }
+}
+
+const maxPromptLen = computed(() => isNewSeedreamMode.value ? 5000 : (mode.value === '5-lite-image-to-image' ? 2996 : 2995))
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
+  if (isNewSeedreamMode.value) {
+    if (p.length > 5000) return false
+    if (isLayerMode.value) {
+      // prompt 可选；传入时需 ≥4 字符
+      if (p.length && p.length < 4) return false
+      return !!formData.layerImageUrl
+    }
+    if (p.length < 4) return false
+    if (isNewImageToImageMode.value) {
+      const n = formData.imageUrls.filter(Boolean).length
+      return n >= 1 && n <= 10
+    }
+    return true
+  }
   if (!p || p.length > maxPromptLen.value) return false
   if (mode.value === '5-lite-image-to-image') return formData.imageUrls.length > 0
   return true
@@ -316,6 +463,10 @@ function fillFormFromOriginalData(o) {
   if (o.quality) formData.quality = String(o.quality)
   if (Array.isArray(o.imageUrls)) formData.imageUrls = [...o.imageUrls]
   else if (Array.isArray(o.image_urls)) formData.imageUrls = [...o.image_urls]
+  // 5 Pro / 5 Flash 字段回填
+  if (o.resolution) formData.resolution = String(o.resolution)
+  if (o.outputFormat) formData.outputFormat = String(o.outputFormat)
+  if (o.imageUrl) formData.layerImageUrl = String(o.imageUrl)
 }
 
 function pickDetailImageUrl(d) {
@@ -338,6 +489,25 @@ const displayResult = computed(() => {
   }
   return result.value
 })
+
+// 图层拆解等多图输出：汇总所有可展示 URL
+function extractImageUrls(d) {
+  if (!d || typeof d !== 'object') return []
+  const arr = d.outputUrls || d.output_urls || d.layerUrls || d.imageUrls
+  if (Array.isArray(arr)) {
+    return arr.map(u => (typeof u === 'string' ? u : u?.url || '')).filter(Boolean)
+  }
+  const single = d.outputUrl || d.imageUrl
+  return single ? [typeof single === 'string' ? single : single?.url || ''] : []
+}
+const detailResultUrls = computed(() => {
+  if (isDetailView.value) {
+    if (detailData.value && Number(detailData.value.status) === 2) return extractImageUrls(detailData.value)
+    return []
+  }
+  return extractImageUrls(result.value)
+})
+const multiResultImages = computed(() => (detailResultUrls.value.length > 1 ? detailResultUrls.value : []))
 
 async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
@@ -367,17 +537,35 @@ async function generate() {
   const p = (formData.prompt || '').trim()
   isGenerating.value = true
   try {
-    const isTextMode = mode.value === '5-lite-text-to-image'
-    const apiPath = isTextMode
-      ? '/api/image/seedream/lite-text-to-image'
-      : '/api/image/seedream/lite-image-to-image'
-    const body = {
-      model: isTextMode ? 'seedream-5-lite-text-to-image' : 'seedream-5-lite-image-to-image',
-      prompt: p,
-      aspectRatio: formData.aspectRatio,
-      quality: formData.quality
+    let apiPath
+    let body
+    const m = mode.value
+    if (isNewSeedreamMode.value) {
+      // 接口路径用 mode（如 5-pro-text-to-image），body.model 需为完整 modelKey（seedream-5-pro-text-to-image）
+      apiPath = `/api/image/seedream/${m}`
+      body = { model: seedreamPriceModelKeyMap[m], resolution: formData.resolution }
+      if (p) body.prompt = p
+      if (formData.outputFormat) body.outputFormat = formData.outputFormat
+      if (isLayerMode.value) {
+        body.imageUrl = formData.layerImageUrl
+      } else {
+        body.aspectRatio = formData.aspectRatio
+        if (m.endsWith('image-to-image')) body.imageUrls = formData.imageUrls.filter(Boolean)
+        if (m.includes('text-to-image') || m.includes('image-to-image')) body.nsfwChecker = false
+      }
+    } else {
+      const isTextMode = m === '5-lite-text-to-image'
+      apiPath = isTextMode
+        ? '/api/image/seedream/lite-text-to-image'
+        : '/api/image/seedream/lite-image-to-image'
+      body = {
+        model: isTextMode ? 'seedream-5-lite-text-to-image' : 'seedream-5-lite-image-to-image',
+        prompt: p,
+        aspectRatio: formData.aspectRatio,
+        quality: formData.quality
+      }
+      if (!isTextMode) body.imageUrls = formData.imageUrls
     }
-    if (!isTextMode) body.imageUrls = formData.imageUrls
 
     const data = await post(apiPath, body)
     const rid = data?.recordId ?? data?.data?.recordId
@@ -396,16 +584,31 @@ async function generate() {
 
 function downloadImage() {
   if (displayResult.value?.imageUrl) {
-    const a = document.createElement('a')
-    a.href = displayResult.value.imageUrl
-    a.download = `seedream-${Date.now()}.png`
-    a.click()
+    downloadUrl(displayResult.value.imageUrl, 0)
   }
+}
+
+function downloadUrl(url, idx = 0) {
+  if (!url) return
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `seedream-${Date.now()}-${idx}.png`
+  a.click()
 }
 
 watch(mode, (m) => {
   const path = modeTabToPath[m]
   if (path && route.path !== path) router.replace(path)
+  // 切换模式时清理新家族专属状态，避免跨模式残留
+  formData.imageUrls = []
+  formData.layerImageUrl = ''
+  imageUploadRef.value?.clearFiles?.()
+  layerUploadRef.value?.clearFiles?.()
+  if (isProMode.value && m !== '5-pro-layer-decomposition') {
+    if (!['1K', '2K'].includes(formData.resolution)) formData.resolution = '1K'
+  } else if (isProMode.value || isFlashMode.value) {
+    if (!['1K', '1.5K', '2K'].includes(formData.resolution)) formData.resolution = '1K'
+  }
 })
 </script>
 
@@ -656,6 +859,9 @@ watch(mode, (m) => {
 .empty-state h4 { margin: 0; font-size: 18px; color: var(--flux-foreground); }
 .image-result { display: flex; flex-direction: column; gap: 16px; }
 .result-image { max-width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid var(--flux-border); }
+.result-image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.grid-image-link { display: block; border-radius: 8px; overflow: hidden; border: 1px solid var(--flux-border); }
+.grid-image { width: 100%; height: 160px; object-fit: cover; border: none; border-radius: 0; }
 .image-placeholder {
   display: flex;
   flex-direction: column;

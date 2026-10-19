@@ -554,10 +554,16 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedream 5 Lite on FuseAITools is ByteDance\'s multimodal image line—text-to-image and image-to-image at Basic (2K) or High (3K), with nine aspect ratios from 1:1 to 21:9. Pair with Seedance for ByteDance video workflows. Credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Seedream on FuseAITools is ByteDance\'s image suite with eight workflows: 5 Lite for text-to-image and image-to-image at Basic (2K) or High (3K), the premium 5 Pro tier with 5000-char prompts and 1K/2K resolution billing, and the speed-first 5 Flash tier where 1K, 1.5K and 2K cost the same. Both new families accept up to 10 reference images and add layer decomposition that splits one artwork into editable PNG layers. Pair with Seedance for ByteDance video workflows. Credits shown before each run. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Seedream 5 Lite Text to Image', path: '/home/seedream/5-lite-text-to-image', description: 'Generate from text—prompt up to 2995 chars, Basic 2K or High 3K, aspect ratios 1:1 through 21:9.' },
-      { name: 'Seedream 5 Lite Image to Image', path: '/home/seedream/5-lite-image-to-image', description: 'Edit 1–5 images with natural-language prompts—lighting, style transfer, or frame prep for Seedance video.' }
+      { name: 'Seedream 5 Lite Image to Image', path: '/home/seedream/5-lite-image-to-image', description: 'Edit 1–5 images with natural-language prompts—lighting, style transfer, or frame prep for Seedance video.' },
+      { name: 'Seedream 5 Pro Text to Image', path: '/home/seedream/5-pro-text-to-image', description: 'Premium tier—prompts 4–5000 chars, 8 aspect ratios, 1K/2K resolution billed by resolution, PNG/JPEG output.' },
+      { name: 'Seedream 5 Pro Image to Image', path: '/home/seedream/5-pro-image-to-image', description: 'Composite or restyle 1–10 reference images (JPEG/PNG/WebP, each ≤30MB) with a 5000-char prompt at 1K/2K.' },
+      { name: 'Seedream 5 Pro Layer Decomposition', path: '/home/seedream/5-pro-layer-decomposition', description: 'Split exactly one source image into editable PNG layers; optional prompt with <bbox> coordinates, 1K/1.5K/2K.' },
+      { name: 'Seedream 5 Flash Text to Image', path: '/home/seedream/5-flash-text-to-image', description: 'Speed lane—prompts 4–5000 chars, 8 aspect ratios, and 1K/1.5K/2K billed at one flat credit price.' },
+      { name: 'Seedream 5 Flash Image to Image', path: '/home/seedream/5-flash-image-to-image', description: 'Fast edits across 1–10 references (each ≤30MB) with a 5000-char prompt; resolution required but priced identically.' },
+      { name: 'Seedream 5 Flash Layer Decomposition', path: '/home/seedream/5-flash-layer-decomposition', description: 'Quick layer extraction from one image into PNG layers; auto-detect elements or target regions with <bbox> coordinates.' }
     ],
     sections: [
       {
@@ -566,7 +572,11 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
 
 Image to Image (seedream-5-lite-image-to-image): Required 1–5 image URLs (JPEG/PNG/WebP, max 10MB each) + prompt (max 2996 chars). Same aspect ratios and quality tiers as text-to-image.
 
-Both workflows run on FuseAITools with credit-based pricing keyed to aspect ratio and quality.`
+Both workflows run on FuseAITools with credit-based pricing keyed to aspect ratio and quality.
+
+5 Pro (three workflows): Text to Image and Image to Image require a prompt (4–5000 chars), aspectRatio (1:1, 4:3, 3:4, 16:9, 9:16, 2:3, 3:2, 21:9) and resolution (1K / 2K)—resolution is the billing dimension mapped to the pricing rule. Image to Image accepts 1–10 images (JPEG/PNG/WebP, each ≤30MB). Layer Decomposition takes exactly one PNG/JPEG source (≤30MB, 262,144–36,000,000 total pixels, aspect 1:16–16:1) with an optional prompt supporting <bbox>x1 y1 x2 y2</bbox> coordinates, and returns a base image plus PNG layers at 1K / 1.5K / 2K.
+
+5 Flash (three workflows): identical control surface to 5 Pro—4–5000 char prompts, 8 aspect ratios, 1–10 references, layer decomposition—but 1K, 1.5K and 2K share one credit price, so resolution can be raised without a cost penalty. The field remains mandatory (no implicit default).`,
       },
       {
         title: 'Workflow',
@@ -576,11 +586,15 @@ Image to image: upload 1–5 images → describe the edit (lighting, style, deta
 
 ByteDance creative pipeline: create or refine stills in Seedream, then animate in Seedance (v1 Lite I2V, 1.5 Pro, or Seedance 2 first/last frame modes).
 
+5 Pro / 5 Flash: write a prompt (4–5000) → choose one of 8 aspect ratios → set resolution (1K/2K on Pro, 1K/1.5K/2K on Flash) and optional PNG/JPEG output → generate. For image-to-image upload 1–10 references first. For layer decomposition upload exactly one source image, optionally describing or boxing the elements to extract, then download the base plus each PNG layer from the result grid.
+
+When to pick which: 5 Lite for 3K output and ratio-based pricing, 5 Pro for maximum fidelity plus layers, 5 Flash for high-volume drafting at a flat resolution price.
+
 All workflows run in the browser—no local GPU required.`
       },
       {
         title: 'Try Seedream on FuseAITools',
-        content: `Seedream 5 Lite on FuseAITools delivers flexible 2K/3K image generation and editing—whether you need social covers, sticker art, or frames for Seedance video. Open either workflow above and start creating. New users receive 20 free credits on sign-up.`
+        content: `Seedream on FuseAITools spans three tiers—5 Lite for flexible 2K/3K generation and editing, 5 Pro for premium hero assets with 10-image references and editable layer decomposition, and 5 Flash for bulk drafting where 1K, 1.5K and 2K cost the same credits. Open any workflow above and start creating. New users receive 20 free credits on sign-up.`
       }
     ]
   },
@@ -589,14 +603,20 @@ All workflows run in the browser—no local GPU required.`
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Qwen on FuseAITools is Alibaba\'s image generation and editing suite: v1 Classic with full parameter control (steps, guidance, acceleration) across three workflows, Z-Image for fast aspect-ratio T2I, and v2 for streamlined generation with modern quality. Six workflows cover text-to-image, image-to-image, and image editing. New users receive 20 free credits on sign-up.',
+    intro: 'Qwen on FuseAITools is Alibaba\'s image generation and editing suite: v1 Classic with full parameter control (steps, guidance, acceleration) across three workflows, Z-Image for fast aspect-ratio T2I, v2 for streamlined generation, v2.1 with transparent backgrounds and multi-image references, and v3 / v3 Pro with smart prompt rewriting. Twelve workflows cover text-to-image, image-to-image, and image editing. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Qwen v1 · Text to Image', path: '/home/qwen/text-to-image', description: 'Generate from prompts up to 5000 chars—6 size presets, steps 2–250, guidance 0–20, acceleration, negative prompt, seed, PNG/JPEG.' },
       { name: 'Qwen v1 · Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with denoising strength 0–1 and full parameter control—steps, guidance, seed, acceleration, safety checker.' },
       { name: 'Qwen v1 · Image Edit', path: '/home/qwen/image-edit', description: 'Edit image elements via natural language—prompts up to 2000 chars, 1–4 outputs, steps 2–49, sync mode, guidance, safety checker.' },
       { name: 'Qwen · Z-Image', path: '/home/qwen/z-image', description: 'Fast text-to-image with 5 aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16). Prompts up to 1000 chars; 3–15s generation—no advanced parameters.' },
       { name: 'Qwen v2 · Text to Image', path: '/home/qwen/v2-text-to-image', description: 'Streamlined T2I with 5 aspect ratios (1:1–16:9), prompt up to 800 chars, seed control, PNG/JPEG output.' },
-      { name: 'Qwen v2 · Image Edit', path: '/home/qwen/v2-image-edit', description: 'Upload a reference image and edit with prompts up to 800 chars—8 aspect ratios including 21:9 ultra-wide.' }
+      { name: 'Qwen v2 · Image Edit', path: '/home/qwen/v2-image-edit', description: 'Upload a reference image and edit with prompts up to 800 chars—8 aspect ratios including 21:9 ultra-wide.' },
+      { name: 'Qwen v2.1 · Text to Image', path: '/home/qwen/v21-text-to-image', description: 'Prompts up to 5000 chars, 9 aspect ratios (up to 9:21), 1K/2K resolution, real transparent background, PNG/WebP/JPEG output—billed by resolution.' },
+      { name: 'Qwen v2.1 · Image to Image', path: '/home/qwen/v21-image-to-image', description: 'Upload 1–10 reference images plus a prompt; optional black/white mask for local repaint. Auto aspect follows the first image; 1K/2K billed by resolution.' },
+      { name: 'Qwen v3 · Text to Image', path: '/home/qwen/v3-text-to-image', description: 'Smart prompt rewriting (promptExtend), negative prompt up to 5000 chars, 8 image sizes, 1K/2K resolution, PNG/JPEG—billed by resolution.' },
+      { name: 'Qwen v3 · Image to Image', path: '/home/qwen/v3-image-to-image', description: 'Up to 3 input images (≤10MB each) with prompt-led transformation, smart rewriting, negative prompt, and 1K/2K resolution.' },
+      { name: 'Qwen v3 Pro · Text to Image', path: '/home/qwen/v3-pro-text-to-image', description: 'Premium v3 tier for text-driven generation—same 5000-char prompt control, 8 sizes, 1K/2K resolution, and promptExtend rewriting.' },
+      { name: 'Qwen v3 Pro · Image to Image', path: '/home/qwen/v3-pro-image-to-image', description: 'Premium v3 tier for image-driven editing—1–3 reference images, negative prompt, seed control, and PNG/JPEG output.' }
     ],
     sections: [
       {
@@ -605,7 +625,11 @@ All workflows run in the browser—no local GPU required.`
 
 Z-Image: Fast T2I with 5 aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16), prompts ≤1000 chars, simplified workflow with no advanced parameters. Generation 3–15 seconds.
 
-v2 (two workflows): Text to Image with 5 aspect ratios (1:1, 3:4, 4:3, 9:16, 16:9), prompts ≤800 chars, seed control. Image Edit with 8 aspect ratios including 21:9, prompts ≤800 chars plus one image URL.`
+v2 (two workflows): Text to Image with 5 aspect ratios (1:1, 3:4, 4:3, 9:16, 16:9), prompts ≤800 chars, seed control. Image Edit with 8 aspect ratios including 21:9, prompts ≤800 chars plus one image URL.
+
+v2.1 (two workflows): Text to Image with 9 aspect ratios (1:1 through 9:21), 5000-char prompts, 1K/2K resolution (billed by resolution), opaque/transparent background, PNG/WebP/JPEG output, enhancePrompt toggle and seed. Image to Image accepts 1–10 reference images (order = prompt references) plus an optional black/white mask for local-edit repaints; aspect supports auto.
+
+v3 / v3 Pro (four workflows): 5000-char prompts with promptExtend smart rewriting, optional negative prompt (≤5000), 8 image sizes (1:1–21:9, default 16:9), 1K/2K resolution, PNG/JPEG output, seed 0–2147483647. Text to Image generates from prompts; Image to Image accepts 1–3 input images (≤10MB each). Pro is the premium tier with the same control surface.`,
       },
       {
         title: 'Workflow',
@@ -615,11 +639,15 @@ Z-Image: Write prompt → pick aspect ratio → generate in 3–15s.
 
 v2: Write prompt (≤800 chars) → choose aspect ratio → generate. For v2 edit: upload image + prompt → set ratio → generate.
 
-When to pick which: Use v1 Classic for full creative control and long prompts; Z-Image for rapid ideation with format compliance; v2 for streamlined generation with modern quality and more aspect ratio options.`
+v2.1: Write prompt (≤5000) → pick aspect ratio (9 options) → choose 1K/2K resolution and background/format. For image-to-image: upload 1–10 references (optionally one mask for local repaint) → prompt → auto or fixed ratio → generate.
+
+v3 / v3 Pro: Write prompt (≤5000) → keep promptExtend on for smart rewriting → optional negative prompt → pick image size and 1K/2K → generate. For image-to-image: upload 1–3 images first.
+
+When to pick which: Use v1 Classic for full creative control and long prompts; Z-Image for rapid ideation with format compliance; v2 for streamlined generation with modern quality; v2.1 when you need transparent backgrounds, WebP output, multi-image references or masked local edits; v3 / v3 Pro for prompt rewriting plus negative-prompt control.`,
       },
       {
         title: 'Try Qwen on FuseAITools',
-        content: 'Qwen on FuseAITools delivers image generation and editing across three tiers—v1 Classic for power users, Z-Image for speed, and v2 for modern streamlined quality. Open any workflow above and start creating. New users receive 20 free credits on sign-up.'
+        content: 'Qwen on FuseAITools delivers image generation and editing across four tiers—v1 Classic for power users, Z-Image for speed, v2/v2.1 for transparent backgrounds and multi-image references, and v3 / v3 Pro for smart prompt rewriting with negative-prompt control. Open any workflow above and start creating. New users receive 20 free credits on sign-up.'
       }
     ]
   },

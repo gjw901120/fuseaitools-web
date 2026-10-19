@@ -110,10 +110,17 @@
 |--------------------------|------------------------------------|-------|------|
 | 5 Lite Text to Image     | `seedream-5-lite-text-to-image`   | ONCE  | 文生图 |
 | 5 Lite Image to Image    | `seedream-5-lite-image-to-image`   | ONCE  | 图生图（若接口改为 RULE，则按 aspectRatio、quality 匹配） |
+| 5 Pro Text to Image      | `seedream-5-pro-text-to-image`     | RULE  | 文生图：`quality`（1K/2K，来自 Resolution） |
+| 5 Pro Image to Image     | `seedream-5-pro-image-to-image`    | RULE  | 同上；1–10 参考图（每张 ≤30MB） |
+| 5 Pro Layer Decomposition | `seedream-5-pro-layer-decomposition` | RULE | 图层拆解：`quality`（1K/1.5K/2K） |
+| 5 Flash Text to Image    | `seedream-5-flash-text-to-image`   | RULE  | 文生图：`quality`（1K/1.5K/2K，三档同价） |
+| 5 Flash Image to Image   | `seedream-5-flash-image-to-image`  | RULE  | 同上；1–10 参考图 |
+| 5 Flash Layer Decomposition | `seedream-5-flash-layer-decomposition` | RULE | 图层拆解：`quality`（1K/1.5K/2K，三档同价） |
 
 - **组件**：`components/tools/SeedreamTool.vue`
 - **映射**：`seedreamPriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields**：当前组件统一传 `{ aspectRatio: formData.aspectRatio, quality: formData.quality }`；接口为 ONCE 时忽略，为 RULE 时与 rules 匹配。
+- **formFields**：Lite 两个 mode 传 `{ aspectRatio: formData.aspectRatio, quality: formData.quality }`；接口为 ONCE 时忽略，为 RULE 时与 rules 匹配。
+- **新家族（5 Pro / 5 Flash，共 6 mode）**：计价统一 **`resolution → quality`**：`getPrice(modelKey, { quality: formData.resolution })`，与 Qwen 新家族同款。取值与后端 DTO `@Pattern` 一致：Pro 文生图/图生图为 `1K|2K`，Pro 图层拆解与 Flash 全系为 `1K|1.5K|2K`（Flash 三档同价，但字段必传，不做隐式兜底）。字段差异：t2i/i2i 必填 `aspectRatio`（8 档，无 auto）+ 可选 `outputFormat`（png/jpeg）+ `nsfwChecker`；i2i 传 `imageUrls`（1–10）；图层拆解传 `imageUrl`（恰好 1 张）+ 可选 `prompt`（Pro ≤5000、Flash 4–5000，支持 `<bbox>` 坐标），拆解图层固定 PNG。
 
 ---
 
@@ -127,10 +134,17 @@
 | z-image           | `qwen-z-image`        | ONCE / RULE | Z-Image |
 | qwen2-text-to-image | `qwen2-text-to-image` | ONCE / RULE | Qwen2 文生图 |
 | qwen2-image-edit  | `qwen2-image-edit`    | ONCE / RULE | Qwen2 图像编辑 |
+| qwen21-text-to-image | `qwen2-1-text-to-image` | RULE | Qwen2.1 文生图：`quality`（1K/2K，来自 Resolution） |
+| qwen21-image-to-image | `qwen2-1-image-to-image` | RULE | 同上；1–10 参考图 + 可选 mask（local-edit） |
+| qwen3-text-to-image | `qwen3-text-to-image` | RULE | Qwen3 文生图：`quality`（1K/2K） |
+| qwen3-image-to-image | `qwen3-image-to-image` | RULE | 同上；1–3 输入图 |
+| qwen3-pro-text-to-image | `qwen3-pro-text-to-image` | RULE | 同 `qwen3-text-to-image`，仅 key 不同 |
+| qwen3-pro-image-to-image | `qwen3-pro-image-to-image` | RULE | 同 `qwen3-image-to-image`，仅 key 不同 |
 
 - **组件**：`components/tools/QwenTool.vue`
 - **映射**：`qwenPriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields（RULE 时）**：`text-to-image` / `image-edit` 传 `imageSize`；`image-edit` 另传 `numImages`；`z-image` 传 `aspectRatio`。其余 mode 传空对象，以接口 rules 为准。
+- **formFields（RULE 时）**：`text-to-image` / `image-edit` 传 `imageSize`；`image-edit` 另传 `numImages`；`z-image` 传 `aspectRatio`。其余旧 mode 传空对象，以接口 rules 为准。
+- **新家族（v2.1 / v3 / v3 Pro，共 6 mode）**：计价统一 **`resolution → quality`**：`getPrice(modelKey, { quality: formData.resolution })`，`quality` 取值为 `1K` / `2K`（大写，与后端 DTO `@Pattern(regexp="1K|2K")` 一致；4K 厂商拒单）。字段差异：v2.1 用 `aspectRatio`（含 auto，仅 i2i）+ `enhancePrompt` + `background`（opaque/transparent）+ `outputFormat`（png/webp/jpeg）；v3 / v3 Pro 用 `imageSize`（8 档，缺省 16:9）+ `promptExtend` + `negativePrompt`（≤5000）+ `outputFormat`（png/jpeg）。
 
 ---
 
@@ -399,6 +413,7 @@
 | `midjourney_imagine`        | speed（relaxed/fast/turbo）、duration、quality、size、batchSize、scene |
 | `flux-2-*` / `flux-2-pro-*` | quality（1K/2K）、scene |
 | `seedream-5-lite-text-to-image` / `seedream-5-lite-image-to-image` | aspectRatio、quality（接口为 ONCE 时仍可传，多余字段不参与匹配） |
+| `seedream-5-pro-*` / `seedream-5-flash-*` | quality（1K/1.5K/2K，来自表单 Resolution） |
 | `ideogram-v3-*` / `ideogram-character*` | speed（TURBO/BALANCED/QUALITY）、scene |
 | `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | size（medium/high，对应 Quality） |
 | `wan-2-6-text-to-video` / `wan-2-6-image-to-video` / `wan-2-6-video-to-video` | duration、quality（720p/1080p） |
@@ -425,6 +440,7 @@
 | `qwen-text-to-image` / `qwen-image-edit` | imageSize；`qwen-image-edit` 另 numImages |
 | `qwen-z-image`              | aspectRatio |
 | `qwen2-text-to-image` / `qwen2-image-edit` | 以接口 rules 为准；无匹配字段时传 `{}` |
+| `qwen2-1-text-to-image` / `qwen2-1-image-to-image` / `qwen3-text-to-image` / `qwen3-image-to-image` / `qwen3-pro-text-to-image` / `qwen3-pro-image-to-image` | quality（1K/2K，来自表单 Resolution） |
 | `sora-2-pro-storyboard`     | duration（Frames）、scene |
 | `sora-2-pro-text-to-video` | duration（Frames）、size（standard/high） |
 | `sora-2-pro-image-to-video`| duration（Frames）、size（standard/high） |

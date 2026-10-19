@@ -511,6 +511,12 @@ export const useHomeLayout = () => {
     // Seedream（与 PRICING / 后端 model 一致）
     'seedream-5-lite-text-to-image': '/home/seedream/5-lite-text-to-image',
     'seedream-5-lite-image-to-image': '/home/seedream/5-lite-image-to-image',
+    'seedream-5-pro-text-to-image': '/home/seedream/5-pro-text-to-image',
+    'seedream-5-pro-image-to-image': '/home/seedream/5-pro-image-to-image',
+    'seedream-5-pro-layer-decomposition': '/home/seedream/5-pro-layer-decomposition',
+    'seedream-5-flash-text-to-image': '/home/seedream/5-flash-text-to-image',
+    'seedream-5-flash-image-to-image': '/home/seedream/5-flash-image-to-image',
+    'seedream-5-flash-layer-decomposition': '/home/seedream/5-flash-layer-decomposition',
     // Kling：定价与 KlingTool 使用 kling- 前缀，与上表短 key 并存
     'kling-v2-5-turbo-image-to-video-pro': '/home/kling/v2-5-turbo-image-to-video-pro',
     'kling-v2-5-turbo-text-to-video-pro': '/home/kling/v2-5-turbo-text-to-video-pro',
@@ -568,6 +574,12 @@ export const useHomeLayout = () => {
     'qwen-z-image': '/home/qwen/z-image',
     'qwen2-text-to-image': '/home/qwen/v2-text-to-image',
     'qwen2-image-edit': '/home/qwen/v2-image-edit',
+    'qwen2-1-text-to-image': '/home/qwen/v21-text-to-image',
+    'qwen2-1-image-to-image': '/home/qwen/v21-image-to-image',
+    'qwen3-text-to-image': '/home/qwen/v3-text-to-image',
+    'qwen3-image-to-image': '/home/qwen/v3-image-to-image',
+    'qwen3-pro-text-to-image': '/home/qwen/v3-pro-text-to-image',
+    'qwen3-pro-image-to-image': '/home/qwen/v3-pro-image-to-image',
     // Ideogram
     'ideogram-v3-text-to-image': '/home/ideogram/v3-text-to-image',
     'ideogram-v3-edit': '/home/ideogram/v3-edit',

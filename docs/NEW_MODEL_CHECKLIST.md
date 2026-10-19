@@ -405,6 +405,33 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 
 ---
 
+## 6.7 路由 SEO 登记三处（⚠️ 历史高频遗漏）
+
+新页面建好后，必须同步这三张「路由登记表」，否则页面能跑但 SEO 侧不完整：
+
+| 文件 | 作用 | 漏登记的后果 |
+|---|---|---|
+| `server/routes/sitemap.xml.js` | 动态生成 `/sitemap.xml`，`staticPages` 数组手工列工具页（父页 priority 0.85 / 功能页 0.8） | 页面不在站点地图里，爬虫发现与收录变慢——**影响最大** |
+| `utils/toolBreadcrumbs.js` | `CHILD_LABEL_OVERRIDES_BY_ROUTE` 提供面包屑短标签；被 `useToolSEO.js`（JSON-LD `BreadcrumbList`）和 `HomeLayout.vue`（可见 `<Breadcrumb>` + `<h1 class="sr-only">{{ pageH1Text }}</h1>`）共用 | 不报错，走降级：`currentLabel` 回退成页面 SEO `name`，H1 变成「Seedream - Seedream 5 Pro Text to Image」这种父子重复 |
+| `nuxt.config.js` → `nitro.prerender.routes` | 构建期预渲染清单（配 `crawlLinks: true` / `failOnError: false`） | Docker 走 `NITRO_PRESET=node-server`（`Dockerfile`）时按需 SSR，无风险；一旦改回默认 `preset: 'static'`，未登记且未被爬虫发现的路由会 404 |
+
+插入约定：三处都按**同工具族紧邻排列**（如 seedream 新行接在 `5-lite-image-to-image` 之后），标签命名对齐既有风格（`V3.0 Video`、`Seedance 2.5`、`5 Pro Layer Decomposition`）。
+
+同工具的新 tab 一般**不需要**动 `routeRules`（旧路由 301 表）和 `constants/footerNav.js`；父页 `/home/{tool}` 也无需重复加（通常已在册）。
+
+自检脚本（列出所有 `pages/home/**.vue` 路由与三张登记表的差集）：
+
+```bash
+node scripts/check-route-registry.mjs
+```
+
+差集里允许保留的只有两类：
+
+- 孤儿旧别名页——`/home/gpt-image/generate`、`/home/ideogram/generate`（全站无入链，故意不进 sitemap）
+- chat 工具页——`/home/{gpt,claude,deepseek,gemini}/generate`（`TOOL_PARENT_LABEL_BY_SLUG` 本就不含 chat，按设计回退成 SEO name）
+
+---
+
 ## 7. 完成检查清单
 
 | # | 检查项 | 文件 |
@@ -437,6 +464,9 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 | 23d | 弹窗一律用 `BaseModal`，标题用 `panel-title` | 含弹窗的组件 |
 | 23e | z-index 只取 `:root` 刻度（`--z-*`），无硬编码数值 | 含层级样式的组件 |
 | 23f | 工具面板优先用 `ToolResultPanel` / `ToolConfigPanel` 壳 | `{ParentTool}.vue` |
+| 23g | sitemap 新增各新页面 `loc` 条目 | `server/routes/sitemap.xml.js` |
+| 23h | 面包屑短标签新增各新页面路由 | `utils/toolBreadcrumbs.js` |
+| 23i | prerender 清单新增各新页面路由（父页缺失时一并补） | `nuxt.config.js` |
 | 24 | 后端价格接口已有 `{priceModelKey}` 定价规则 | 后端（非前端） |
 | 25 | 后端 API 已部署 `{backendPath}` 接口 | 后端（非前端） |
 

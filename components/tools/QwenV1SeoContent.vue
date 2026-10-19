@@ -147,50 +147,88 @@
     </section>
 
     <section class="info-section" aria-labelledby="compare-heading">
-      <h2 id="compare-heading" class="section-title">📊 Qwen v1 Classic vs Qwen v2</h2>
+      <h2 id="compare-heading" class="section-title">📊 Qwen Generations Compared: v1 · v2 · v2.1 · v3 · v3 Pro</h2>
       <div class="compare-table-wrap">
-        <table class="compare-table" aria-label="Qwen v1 Classic vs Qwen v2">
+        <table class="compare-table" aria-label="Qwen v1 Classic compared across all model generations">
           <thead>
             <tr>
               <th>Dimension</th>
-              <th>Qwen v1 Classic</th>
-              <th>Qwen v2</th>
+              <th>v1 Classic</th>
+              <th>v2</th>
+              <th>v2.1</th>
+              <th>v3</th>
+              <th>v3 Pro</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Positioning</td>
+              <td><strong>Positioning</strong></td>
               <td>Full-parameter control for power users</td>
-              <td>Streamlined generation with modern quality</td>
+              <td>Minimal fast lane</td>
+              <td>Long prompts + alpha output</td>
+              <td>Smart rewriting flagship</td>
+              <td><strong>Premium quality tier</strong></td>
             </tr>
             <tr>
-              <td>Workflows</td>
-              <td><strong>Three</strong>—T2I, I2I, Image Edit</td>
-              <td><strong>Two</strong>—T2I, Image Edit</td>
+              <td><strong>Prompt limit</strong></td>
+              <td>T2I/I2I <strong>5000</strong>; Edit 2000</td>
+              <td>800</td>
+              <td>5000</td>
+              <td>5000</td>
+              <td>5000</td>
             </tr>
             <tr>
-              <td>Prompt limit</td>
-              <td>T2I/I2I <strong>5000</strong>; Edit <strong>2000</strong></td>
-              <td><strong>800</strong> for both workflows</td>
+              <td><strong>Signature controls</strong></td>
+              <td>Steps, guidance, acceleration, seed</td>
+              <td>Seed only—simplified</td>
+              <td>enhancePrompt, background, mask</td>
+              <td>promptExtend + negative (≤5000)</td>
+              <td>promptExtend + negative (≤5000)</td>
             </tr>
             <tr>
-              <td>Controls</td>
-              <td>Steps, guidance, acceleration, seed, negative prompt, safety checker</td>
-              <td>Seed, image size, output format—<strong>simplified</strong></td>
+              <td><strong>Sizes / aspects</strong></td>
+              <td>6 presets</td>
+              <td>5 / 8 (edit)</td>
+              <td>9 (+auto)</td>
+              <td>8</td>
+              <td>8</td>
             </tr>
             <tr>
-              <td>Image size</td>
-              <td>6 presets (square, square_hd, portrait, landscape)</td>
-              <td>5–8 aspect ratios including 21:9</td>
+              <td><strong>Reference images</strong></td>
+              <td>1 (I2I / edit)</td>
+              <td>1 (edit)</td>
+              <td><strong>up to 10 + mask</strong></td>
+              <td>up to 3</td>
+              <td>up to 3</td>
             </tr>
             <tr>
-              <td>Best for</td>
-              <td>Fine-tuned creative control and iterative refinement</td>
-              <td>Quick high-quality generation with modern quality</td>
+              <td><strong>Resolution / billing</strong></td>
+              <td>Per image</td>
+              <td>Per image</td>
+              <td>1K / 2K</td>
+              <td>1K / 2K</td>
+              <td><strong>1K / 2K premium</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Output formats</strong></td>
+              <td>PNG / JPEG</td>
+              <td>PNG / JPEG</td>
+              <td><strong>PNG / WebP / JPEG</strong></td>
+              <td>PNG / JPEG</td>
+              <td>PNG / JPEG</td>
+            </tr>
+            <tr>
+              <td><strong>Best for</strong></td>
+              <td>Fine-tuned iterative control</td>
+              <td>Quick social graphics</td>
+              <td>Cutouts, remixes, inpainting</td>
+              <td>Prompt-assisted production</td>
+              <td>Hero assets &amp; final delivery</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p class="meta-note">v1 Classic remains the only tier with <strong>inference steps, guidance scale and acceleration tiers</strong>—use it when pixel-level control matters; newer generations trade those knobs for resolution-billed quality.</p>
     </section>
 
     <div class="upgrade-tip pricing-tip">
@@ -213,6 +251,43 @@
         @click.prevent="navigateToToolTop('/home/qwen/v2-image-edit')"
       >Qwen v2 Image Edit</a>
       for reference-based editing with up to 21:9 support.
+    </div>
+
+    <div class="upgrade-tip">
+      🌟 Want the newest Qwen image families?
+      <a
+        href="/home/qwen/v21-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v21-text-to-image')"
+      >Qwen v2.1</a>
+      adds transparent backgrounds, PNG/WebP/JPEG output and 1–10 image references with optional mask edits, while
+      <a
+        href="/home/qwen/v3-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-text-to-image')"
+      >Qwen v3</a> and
+      <a
+        href="/home/qwen/v3-pro-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-pro-text-to-image')"
+      >v3 Pro</a>
+      bring smart prompt rewriting plus a 5000-character negative prompt—all billed by 1K/2K resolution.
+    </div>
+
+    <div class="upgrade-tip">
+      👑 Ready for the premium tier? Go straight to
+      <a
+        href="/home/qwen/v3-pro-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-pro-text-to-image')"
+      >Qwen v3 Pro Text to Image</a>
+      or
+      <a
+        href="/home/qwen/v3-pro-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/qwen/v3-pro-image-to-image')"
+      >v3 Pro Image to Image</a>
+      —the highest-fidelity Qwen image models, with smart prompt rewriting and a 5000-char negative prompt at 1K/2K resolution billing.
     </div>
   </div>
 </template>

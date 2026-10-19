@@ -96,6 +96,74 @@
       </div>
     </section>
 
+    <section class="info-section" aria-labelledby="generations-heading">
+      <h2 id="generations-heading" class="section-title">📊 Seedream Generations Compared: 5 Lite · 5 Pro · 5 Flash</h2>
+      <div class="compare-table-wrap">
+        <table class="compare-table" aria-label="Seedream 5 Lite compared across all model generations">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>5 Lite</th>
+              <th>5 Pro</th>
+              <th>5 Flash</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Positioning</strong></td>
+              <td><strong>Multimodal workhorse</strong></td>
+              <td>Premium quality</td>
+              <td>Speed-first lane</td>
+            </tr>
+            <tr>
+              <td><strong>Prompt limit</strong></td>
+              <td><strong>2995 / 2996</strong></td>
+              <td>4–5000</td>
+              <td>4–5000</td>
+            </tr>
+            <tr>
+              <td><strong>Resolution / billing</strong></td>
+              <td><strong>Basic 2K / High 3K</strong>, by ratio + quality</td>
+              <td>1K / 2K (layers: 1K / 1.5K / 2K)</td>
+              <td>1K / 1.5K / 2K at one price</td>
+            </tr>
+            <tr>
+              <td><strong>Reference images</strong></td>
+              <td>1–5, each ≤10MB</td>
+              <td><strong>1–10, each ≤30MB</strong></td>
+              <td><strong>1–10, each ≤30MB</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Layer decomposition</strong></td>
+              <td>—</td>
+              <td><strong>Yes</strong></td>
+              <td><strong>Yes</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Aspect ratios</strong></td>
+              <td>8 (1:1 → 21:9)</td>
+              <td>8 (1:1 → 21:9)</td>
+              <td>8 (1:1 → 21:9)</td>
+            </tr>
+            <tr>
+              <td><strong>Output formats</strong></td>
+              <td>PNG</td>
+              <td>PNG / JPEG</td>
+              <td>PNG / JPEG</td>
+            </tr>
+            <tr>
+              <td><strong>Best for</strong></td>
+              <td>Routine 2K/3K stills, frame prep for video</td>
+              <td>Hero art, dense references, editable layers</td>
+              <td>Bulk drafts at flat resolution pricing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta-note">5 Lite is the only tier billed by <strong>aspect ratio + quality</strong> rather than resolution—
+        pick it for 3K output, or move to 5 Pro / 5 Flash when you need 5000-char prompts, 30MB references or layer splitting.</p>
+    </section>
+
     <section class="info-section" aria-labelledby="faq-heading">
       <h2 id="faq-heading" class="section-title">❓ FAQ (Seedream 5 Lite)</h2>
       <div class="faq-list">
@@ -210,6 +278,48 @@
         class="seo-inline-link"
         @click.prevent="navigateToToolTop('/home/seedance')"
       >Seedance suite →</a>
+    </div>
+
+    <div class="upgrade-tip">
+      👑 Want ByteDance’s premium image tier? Upgrade to
+      <a
+        href="/home/seedream/5-pro-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-pro-text-to-image')"
+      >Seedream 5 Pro Text to Image</a>
+      or
+      <a
+        href="/home/seedream/5-pro-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-pro-image-to-image')"
+      >5 Pro Image to Image</a>
+      —5000-character prompts, up to 10 references at 30MB each, and 1K/2K resolution billing.
+    </div>
+
+    <div class="upgrade-tip">
+      ✂️ Need editable layers? Both
+      <a
+        href="/home/seedream/5-pro-layer-decomposition"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-pro-layer-decomposition')"
+      >5 Pro Layer Decomposition</a>
+      and
+      <a
+        href="/home/seedream/5-flash-layer-decomposition"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-flash-layer-decomposition')"
+      >5 Flash Layer Decomposition</a>
+      split one artwork into PNG layers.
+    </div>
+
+    <div class="upgrade-tip">
+      ⚡ Optimising for volume? The
+      <a
+        href="/home/seedream/5-flash-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/seedream/5-flash-text-to-image')"
+      >Seedream 5 Flash</a>
+      line charges the same credits for 1K, 1.5K and 2K.
     </div>
   </div>
 </template>

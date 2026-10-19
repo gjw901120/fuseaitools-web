@@ -90,8 +90,8 @@
               <div class="form-hint">0 = preserve original, 1 = fully remake.</div>
             </div>
 
-            <!-- text-to-image & image-edit: imageSize -->
-            <div v-if="mode === 'text-to-image' || mode === 'image-edit' || mode === 'qwen2-text-to-image' || mode === 'qwen2-image-edit'" class="form-group">
+            <!-- text-to-image & image-edit & qwen3: imageSize -->
+            <div v-if="mode === 'text-to-image' || mode === 'image-edit' || mode === 'qwen2-text-to-image' || mode === 'qwen2-image-edit' || isQwen3FamilyMode" class="form-group">
               <label class="form-label">Image Size</label>
               <div class="tab-group">
                 <button
@@ -115,6 +115,82 @@
                 <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '16:9' }" @click="formData.aspectRatio = '16:9'">16:9</button>
                 <button type="button" class="tab-option" :class="{ active: formData.aspectRatio === '9:16' }" @click="formData.aspectRatio = '9:16'">9:16</button>
               </div>
+            </div>
+
+            <!-- Qwen 2.1 / 3 / 3 Pro: multi-image upload + mask -->
+            <div v-if="isMultiImageMode" class="form-group">
+              <label class="form-label">Images <span class="required">*</span></label>
+              <UploadImage :readonly="isDetailView"
+                ref="imageMultiUploadRef"
+                input-id="qwen-multi-image-upload"
+                label=""
+                upload-text="Click to upload images"
+                :upload-hint="`Up to ${imageMaxFiles} images; JPEG/PNG/WebP`"
+                :max-files="imageMaxFiles"
+                :max-file-size="imageMaxFileSize"
+                accept="image/jpeg,image/png,image/webp"
+                :multiple="true"
+                @update:files="handleImageFiles"
+              />
+              <span v-if="isUploadingImages" class="form-hint">Uploading...</span>
+              <div v-if="isDetailView && formData.imageUrls.length" class="detail-ref-urls">
+                <span class="form-label">Input images (this task)</span>
+                <div class="detail-ref-urls-links">
+                  <a v-for="(u, i) in formData.imageUrls.filter(Boolean)" :key="i" :href="u" target="_blank" rel="noopener noreferrer" class="detail-ref-link">Image {{ i + 1 }}</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- qwen2.1 image-to-image: optional local-edit mask -->
+            <div v-if="isQwen21ImageToImage" class="form-group">
+              <label class="form-label">Mask (optional — local edit)</label>
+              <UploadImage :readonly="isDetailView"
+                ref="maskUploadRef"
+                input-id="qwen-mask-upload"
+                label=""
+                upload-text="Upload black/white mask"
+                upload-hint="White = repaint, Black = keep. Needs exactly 1 image; ignores aspect ratio."
+                :max-files="1"
+                :max-file-size="10 * 1024 * 1024"
+                accept="image/jpeg,image/png,image/webp"
+                :multiple="false"
+                @update:files="handleMaskFile"
+              />
+              <span v-if="isUploadingMask" class="form-hint">Uploading...</span>
+            </div>
+
+            <!-- Qwen 2.1 / 3 / 3 Pro: resolution (billing dimension) -->
+            <div v-if="isNewQwenMode" class="form-group">
+              <label class="form-label">Resolution <span class="required">*</span></label>
+              <div class="tab-group">
+                <button v-for="r in resolutionOptions" :key="r" type="button" class="tab-option" :class="{ active: formData.resolution === r }" @click="formData.resolution = r">{{ r }}</button>
+              </div>
+              <div class="form-hint">1K / 2K — 4K is not supported and pricing is matched by resolution.</div>
+            </div>
+
+            <!-- Qwen 2.1: aspect ratio (auto for image-to-image) -->
+            <div v-if="isQwen21Mode" class="form-group">
+              <label class="form-label">Aspect Ratio</label>
+              <div class="tab-group">
+                <button v-for="a in currentAspectRatioOptions" :key="a" type="button" class="tab-option" :class="{ active: formData.aspectRatio === a }" @click="formData.aspectRatio = a">{{ a }}</button>
+              </div>
+            </div>
+
+            <!-- Qwen 2.1: background -->
+            <div v-if="isQwen21Mode" class="form-group">
+              <label class="form-label">Background</label>
+              <div class="tab-group">
+                <button v-for="b in backgroundOptions" :key="b" type="button" class="tab-option" :class="{ active: formData.background === b }" @click="formData.background = b">{{ b }}</button>
+              </div>
+              <div class="form-hint">transparent outputs a real alpha channel (not with JPEG).</div>
+            </div>
+
+            <!-- Qwen 2.1 / 3 / 3 Pro: enhance / extend prompt toggle -->
+            <div v-if="isNewQwenMode" class="form-group">
+              <label class="checkbox-label">
+                <input v-model="enhancePromptModel" type="checkbox" />
+                <span>Enhance prompt {{ isQwen21Mode ? '(enhancePrompt)' : '(promptExtend)' }}</span>
+              </label>
             </div>
 
             <!-- numInferenceSteps: text-to-image, image-to-image, image-edit -->
@@ -174,8 +250,7 @@
             <div v-if="mode !== 'z-image'" class="form-group">
               <label class="form-label">Output Format</label>
               <div class="tab-group">
-                <button type="button" class="tab-option" :class="{ active: formData.outputFormat === 'png' }" @click="formData.outputFormat = 'png'">PNG</button>
-                <button type="button" class="tab-option" :class="{ active: formData.outputFormat === 'jpeg' }" @click="formData.outputFormat = 'jpeg'">JPEG</button>
+                <button v-for="fmt in outputFormatOptions" :key="fmt" type="button" class="tab-option" :class="{ active: formData.outputFormat === fmt }" @click="formData.outputFormat = fmt">{{ fmt.toUpperCase() }}</button>
               </div>
             </div>
             <div v-if="isClassicQwenMode" class="form-group">
@@ -187,7 +262,7 @@
               </div>
               <div class="form-hint">Higher = faster. High recommended for images without text.</div>
             </div>
-            <div v-if="isClassicQwenMode" class="form-group">
+            <div v-if="isClassicQwenMode || isQwen3FamilyMode" class="form-group">
               <label for="qwen-negative" class="form-label">Negative Prompt</label>
               <input
                 id="qwen-negative"
@@ -195,9 +270,9 @@
                 type="text"
                 class="form-input"
                 placeholder="e.g. blurry, ugly"
-                maxlength="500"
+                :maxlength="negativePromptMaxLength"
               />
-              <div class="char-count" v-if="formData.negativePrompt">{{ formData.negativePrompt.length }}/500</div>
+              <div class="char-count" v-if="formData.negativePrompt">{{ formData.negativePrompt.length }}/{{ negativePromptMaxLength }}</div>
             </div>
             <div v-if="isClassicQwenMode" class="form-group">
               <label class="checkbox-label">
@@ -274,6 +349,7 @@ const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 const { fetchPrices, getPrice, formatCredits, discount } = useModelPrice()
 onMounted(() => { fetchPrices() })
 const batchUploadUrl = useBatchUploadUrl()
+const { getUrlsForFiles } = useFileUploadUrlCache()
 
 const modeList = [
   { id: 'text-to-image', label: 'Text to Image', icon: 'fas fa-font' },
@@ -281,7 +357,13 @@ const modeList = [
   { id: 'image-edit', label: 'Image Edit', icon: 'fas fa-edit' },
   { id: 'z-image', label: 'Z-Image', icon: 'fas fa-square' },
   { id: 'qwen2-text-to-image', label: 'V2 Text to Image', icon: 'fas fa-wand-magic-sparkles' },
-  { id: 'qwen2-image-edit', label: 'V2 Image Edit', icon: 'fas fa-scissors' }
+  { id: 'qwen2-image-edit', label: 'V2 Image Edit', icon: 'fas fa-scissors' },
+  { id: 'qwen21-text-to-image', label: 'V2.1 Text to Image', icon: 'fas fa-font' },
+  { id: 'qwen21-image-to-image', label: 'V2.1 Image to Image', icon: 'fas fa-photo-film' },
+  { id: 'qwen3-text-to-image', label: 'V3 Text to Image', icon: 'fas fa-star' },
+  { id: 'qwen3-image-to-image', label: 'V3 Image to Image', icon: 'fas fa-layer-group' },
+  { id: 'qwen3-pro-text-to-image', label: 'V3 Pro Text to Image', icon: 'fas fa-crown' },
+  { id: 'qwen3-pro-image-to-image', label: 'V3 Pro Image to Image', icon: 'fas fa-gem' }
 ]
 
 const modeTabToPath = {
@@ -290,7 +372,13 @@ const modeTabToPath = {
   'image-edit': '/home/qwen/image-edit',
   'z-image': '/home/qwen/z-image',
   'qwen2-text-to-image': '/home/qwen/v2-text-to-image',
-  'qwen2-image-edit': '/home/qwen/v2-image-edit'
+  'qwen2-image-edit': '/home/qwen/v2-image-edit',
+  'qwen21-text-to-image': '/home/qwen/v21-text-to-image',
+  'qwen21-image-to-image': '/home/qwen/v21-image-to-image',
+  'qwen3-text-to-image': '/home/qwen/v3-text-to-image',
+  'qwen3-image-to-image': '/home/qwen/v3-image-to-image',
+  'qwen3-pro-text-to-image': '/home/qwen/v3-pro-text-to-image',
+  'qwen3-pro-image-to-image': '/home/qwen/v3-pro-image-to-image'
 }
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
@@ -320,7 +408,14 @@ const formData = reactive({
   acceleration: 'none',
   enableSafetyChecker: true,
   numImages: '1',
-  syncMode: false
+  syncMode: false,
+  // Qwen 2.1 / 3 / 3 Pro（新增家族）
+  resolution: '1K',
+  background: 'opaque',
+  enhancePrompt: true,
+  promptExtend: true,
+  maskUrl: '',
+  imageUrls: []
 })
 
 // 折扣文本
@@ -338,7 +433,13 @@ const qwenPriceModelKeyMap = {
   'image-edit': 'qwen-image-edit',
   'z-image': 'qwen-z-image',
   'qwen2-text-to-image': 'qwen2-text-to-image',
-  'qwen2-image-edit': 'qwen2-image-edit'
+  'qwen2-image-edit': 'qwen2-image-edit',
+  'qwen21-text-to-image': 'qwen2-1-text-to-image',
+  'qwen21-image-to-image': 'qwen2-1-image-to-image',
+  'qwen3-text-to-image': 'qwen3-text-to-image',
+  'qwen3-image-to-image': 'qwen3-image-to-image',
+  'qwen3-pro-text-to-image': 'qwen3-pro-text-to-image',
+  'qwen3-pro-image-to-image': 'qwen3-pro-image-to-image'
 }
 const qwenPriceText = computed(() => {
   const modelKey = qwenPriceModelKeyMap[mode.value]
@@ -347,6 +448,7 @@ const qwenPriceText = computed(() => {
   if (mode.value === 'text-to-image' || mode.value === 'image-edit') formFields.imageSize = formData.imageSize
   if (mode.value === 'image-edit') formFields.numImages = formData.numImages
   if (mode.value === 'z-image') formFields.aspectRatio = formData.aspectRatio
+  if (isNewQwenMode.value) formFields.quality = formData.resolution
   const credits = getPrice(modelKey, formFields)
   const str = formatCredits(credits)
   if (!str) return ''
@@ -370,11 +472,51 @@ const promptMaxLength = computed(() => {
 
 const isClassicQwenMode = computed(() => ['text-to-image', 'image-to-image', 'image-edit'].includes(mode.value))
 
+// ===== Qwen 2.1 / 3 / 3 Pro 新家族 =====
+const isQwen21Mode = computed(() => ['qwen21-text-to-image', 'qwen21-image-to-image'].includes(mode.value))
+const isQwen3FamilyMode = computed(() => ['qwen3-text-to-image', 'qwen3-image-to-image', 'qwen3-pro-text-to-image', 'qwen3-pro-image-to-image'].includes(mode.value))
+const isNewQwenMode = computed(() => isQwen21Mode.value || isQwen3FamilyMode.value)
+const isQwen21ImageToImage = computed(() => mode.value === 'qwen21-image-to-image')
+// 多图模式：v2.1 i2i（≤10 + mask）与 v3 / v3 Pro i2i（≤3）
+const isMultiImageMode = computed(() => ['qwen21-image-to-image', 'qwen3-image-to-image', 'qwen3-pro-image-to-image'].includes(mode.value))
+const imageMaxFiles = computed(() => (mode.value === 'qwen21-image-to-image' ? 10 : 3))
+const imageMaxFileSize = computed(() => (mode.value === 'qwen21-image-to-image' ? 30 * 1024 * 1024 : 10 * 1024 * 1024))
+const negativePromptMaxLength = computed(() => (isQwen3FamilyMode.value ? 5000 : 500))
+
+const resolutionOptions = ['1K', '2K']
+const backgroundOptions = ['opaque', 'transparent']
+const qwen3ImageSizeOptions = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9']
+const qwen21AspectOptions = ['1:1', '4:3', '3:4', '3:2', '2:3', '16:9', '9:16', '21:9', '9:21']
+const currentAspectRatioOptions = computed(() =>
+  isQwen21ImageToImage.value ? ['auto', ...qwen21AspectOptions] : qwen21AspectOptions
+)
+const outputFormatOptions = computed(() => {
+  if (isQwen21Mode.value) return ['png', 'webp', 'jpeg']
+  return ['png', 'jpeg']
+})
+// enhance：v2.1 用 enhancePrompt，v3 系列用 promptExtend
+const enhancePromptModel = computed({
+  get: () => (isQwen21Mode.value ? !!formData.enhancePrompt : !!formData.promptExtend),
+  set: (v) => {
+    if (isQwen21Mode.value) formData.enhancePrompt = v
+    else formData.promptExtend = v
+  }
+})
+
+const imageMultiUploadRef = ref(null)
+const maskUploadRef = ref(null)
+const isUploadingImages = ref(false)
+const isUploadingMask = ref(false)
+
 const imageSizeOptionsByMode = {
   'text-to-image': ['square', 'square_hd', 'portrait_4_3', 'portrait_16_9', 'landscape_4_3', 'landscape_16_9'],
   'image-edit': ['square', 'square_hd', 'portrait_4_3', 'portrait_16_9', 'landscape_4_3', 'landscape_16_9'],
   'qwen2-text-to-image': ['1:1', '3:4', '4:3', '9:16', '16:9'],
-  'qwen2-image-edit': ['1:1', '2:3', '3:2', '3:4', '4:3', '9:16', '16:9', '21:9']
+  'qwen2-image-edit': ['1:1', '2:3', '3:2', '3:4', '4:3', '9:16', '16:9', '21:9'],
+  'qwen3-text-to-image': qwen3ImageSizeOptions,
+  'qwen3-image-to-image': qwen3ImageSizeOptions,
+  'qwen3-pro-text-to-image': qwen3ImageSizeOptions,
+  'qwen3-pro-image-to-image': qwen3ImageSizeOptions
 }
 
 const imageSizeLabelMap = {
@@ -442,9 +584,64 @@ async function handleImageFile(files) {
   }
 }
 
+// 批量上传多个文件 → URL 数组（v2.1 / v3 图生图）
+async function uploadFilesToUrls(files) {
+  if (!files?.length) return []
+  const form = new FormData()
+  files.forEach(f => form.append('file', f))
+  const headers = { Accept: 'application/json' }
+  const token = getAuthToken()
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  const res = await fetch(batchUploadUrl, { method: 'POST', headers, body: form, credentials: 'include' })
+  const data = await parseBatchUploadFetchResponse(res)
+  const urls = data?.data?.urls || data?.fileUrls || (Array.isArray(data?.data) ? data.data : [])
+  return Array.isArray(urls) ? urls : []
+}
+
+async function handleImageFiles(files) {
+  if (!files?.length) {
+    formData.imageUrls = []
+    return
+  }
+  const list = Array.isArray(files) ? files : [files]
+  isUploadingImages.value = true
+  try {
+    formData.imageUrls = await getUrlsForFiles(list, uploadFilesToUrls)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.imageUrls = []
+    imageMultiUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingImages.value = false
+  }
+}
+
+async function handleMaskFile(files) {
+  if (!files?.length) {
+    formData.maskUrl = ''
+    return
+  }
+  const file = Array.isArray(files) ? files[0] : files
+  isUploadingMask.value = true
+  try {
+    formData.maskUrl = await uploadFileToUrl(file)
+  } catch (e) {
+    showError(e?.message || 'Upload failed')
+    formData.maskUrl = ''
+    maskUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingMask.value = false
+  }
+}
+
 const canGenerate = computed(() => {
   const p = (formData.prompt || '').trim()
   if (!p || p.length > promptMaxLength.value) return false
+  if (isMultiImageMode.value) {
+    const n = formData.imageUrls.filter(Boolean).length
+    return n >= 1 && n <= imageMaxFiles.value
+  }
+  if (isNewQwenMode.value) return !!formData.resolution
   if (mode.value === 'image-to-image' || mode.value === 'image-edit' || mode.value === 'qwen2-image-edit') return !!formData.imageUrl
   return true
 })
@@ -479,6 +676,13 @@ function fillFormFromOriginalData(o) {
   if ('enableSafetyChecker' in o) formData.enableSafetyChecker = !!o.enableSafetyChecker
   if (o.numImages != null) formData.numImages = String(o.numImages)
   if ('syncMode' in o) formData.syncMode = !!o.syncMode
+  // Qwen 2.1 / 3 / 3 Pro
+  if (o.resolution) formData.resolution = String(o.resolution)
+  if (o.background) formData.background = String(o.background)
+  if ('enhancePrompt' in o) formData.enhancePrompt = !!o.enhancePrompt
+  if ('promptExtend' in o) formData.promptExtend = !!o.promptExtend
+  if (o.maskUrl) formData.maskUrl = String(o.maskUrl)
+  if (Array.isArray(o.imageUrls)) formData.imageUrls = [...o.imageUrls]
 }
 
 function pickDetailImageUrl(d) {
@@ -598,6 +802,61 @@ async function generate() {
         seed: toNum(formData.seed),
         outputFormat: formData.outputFormat || 'png'
       }
+    } else if (modeVal === 'qwen21-text-to-image') {
+      apiPath = '/api/image/qwen/v21-text-to-image'
+      body = {
+        model: 'qwen2-1-text-to-image',
+        prompt: p,
+        aspectRatio: formData.aspectRatio || '1:1',
+        resolution: formData.resolution,
+        background: formData.background,
+        outputFormat: formData.outputFormat || 'png',
+        enhancePrompt: !!formData.enhancePrompt,
+        seed: toNum(formData.seed),
+        nsfwChecker: false
+      }
+    } else if (modeVal === 'qwen21-image-to-image') {
+      apiPath = '/api/image/qwen/v21-image-to-image'
+      body = {
+        model: 'qwen2-1-image-to-image',
+        imageUrls: formData.imageUrls.filter(Boolean),
+        prompt: p,
+        resolution: formData.resolution,
+        aspectRatio: formData.aspectRatio || 'auto',
+        background: formData.background,
+        outputFormat: formData.outputFormat || 'png',
+        enhancePrompt: !!formData.enhancePrompt,
+        seed: toNum(formData.seed),
+        nsfwChecker: false
+      }
+      if (formData.maskUrl) body.maskUrl = formData.maskUrl
+    } else if (modeVal === 'qwen3-text-to-image' || modeVal === 'qwen3-pro-text-to-image') {
+      apiPath = modeVal === 'qwen3-pro-text-to-image' ? '/api/image/qwen/v3-pro-text-to-image' : '/api/image/qwen/v3-text-to-image'
+      body = {
+        model: modeVal === 'qwen3-pro-text-to-image' ? 'qwen3-pro-text-to-image' : 'qwen3-text-to-image',
+        prompt: p,
+        resolution: formData.resolution,
+        imageSize: formData.imageSize || '16:9',
+        outputFormat: formData.outputFormat || 'png',
+        promptExtend: !!formData.promptExtend,
+        negativePrompt: (formData.negativePrompt || '').trim() || undefined,
+        seed: toNum(formData.seed),
+        nsfwChecker: false
+      }
+    } else if (modeVal === 'qwen3-image-to-image' || modeVal === 'qwen3-pro-image-to-image') {
+      apiPath = modeVal === 'qwen3-pro-image-to-image' ? '/api/image/qwen/v3-pro-image-to-image' : '/api/image/qwen/v3-image-to-image'
+      body = {
+        model: modeVal === 'qwen3-pro-image-to-image' ? 'qwen3-pro-image-to-image' : 'qwen3-image-to-image',
+        imageUrls: formData.imageUrls.filter(Boolean),
+        prompt: p,
+        resolution: formData.resolution,
+        imageSize: formData.imageSize || '16:9',
+        outputFormat: formData.outputFormat || 'png',
+        promptExtend: !!formData.promptExtend,
+        negativePrompt: (formData.negativePrompt || '').trim() || undefined,
+        seed: toNum(formData.seed),
+        nsfwChecker: false
+      }
     } else {
       apiPath = '/api/image/qwen/z-image'
       body = {
@@ -641,6 +900,17 @@ watch(mode, (m) => {
   if (m === 'qwen2-text-to-image' || m === 'qwen2-image-edit') {
     formData.imageSize = '16:9'
     formData.outputFormat = 'png'
+  }
+  if (m === 'qwen3-text-to-image' || m === 'qwen3-image-to-image' || m === 'qwen3-pro-text-to-image' || m === 'qwen3-pro-image-to-image') {
+    formData.imageSize = '16:9'
+    formData.outputFormat = 'png'
+    formData.resolution = '1K'
+  }
+  if (m === 'qwen21-text-to-image' || m === 'qwen21-image-to-image') {
+    formData.outputFormat = 'png'
+    formData.resolution = '1K'
+    formData.background = 'opaque'
+    formData.aspectRatio = m === 'qwen21-image-to-image' ? 'auto' : '1:1'
   }
   const path = modeTabToPath[m]
   if (path && route.path !== path) router.replace(path)
