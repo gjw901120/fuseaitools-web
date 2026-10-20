@@ -223,6 +223,12 @@
     </div>
 
     <div class="upgrade-tip">
+      ⚡ Want 4K and batch output? Try
+      <a :href="kleinPath" class="seo-inline-link" @click.prevent="navigateToToolTop(kleinPath)">Flux 3 Klein {{ isTextToImageRoute ? 'Text to Image' : 'Edit Image' }} →</a>
+      for 1K/2K/4K with 1–4 images per run on the same Flux family.
+    </div>
+
+    <div class="upgrade-tip">
       🎬 Turn Flux 2 stills into video with
       <a href="/home/seedance/v1-lite-image-to-video" class="seo-inline-link" @click.prevent="navigateToToolTop('/home/seedance/v1-lite-image-to-video')">Seedance Image to Video →</a>
       or browse multimodal
@@ -395,6 +401,12 @@ const proUpgradePath = computed(() =>
 
 const proUpgradeLabel = computed(() =>
   isTextToImageRoute.value ? 'Flux 2 Pro Text to Image' : 'Flux 2 Pro Image to Image'
+)
+
+const kleinPath = computed(() =>
+  isTextToImageRoute.value
+    ? '/home/flux-kontext/flux-3-klein-text-to-image'
+    : '/home/flux-kontext/flux-3-klein-edit-image'
 )
 
 const coreFeatures = [

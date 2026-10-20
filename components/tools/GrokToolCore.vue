@@ -32,7 +32,7 @@
               <div v-if="form.prompt" class="char-count">{{ form.prompt.length }}/{{ promptMaxLength }}</div>
             </div>
 
-            <div v-if="mode === 'upscale' || mode === 'extend'" class="form-group">
+            <div v-if="mode === 'upscale' || mode === 'extend' || mode === 'image-2-0-segment-edit'" class="form-group">
               <label class="form-label">Original Task <span class="required">*</span></label>
               <div class="select-with-arrow">
                 <select v-model="form.taskId" class="form-input">
@@ -44,16 +44,23 @@
               <div v-if="!loadingExtendList && extendList.length === 0" class="form-hint">No available tasks.</div>
             </div>
 
-            <div v-if="mode === 'image-to-image' || mode === 'image-to-video' || mode === 'video-1-5-preview'" class="form-group">
+            <!-- segment-edit 专属：可选的分块编号（逗号分隔的非负整数，留空则编辑全图） -->
+            <div v-if="mode === 'image-2-0-segment-edit'" class="form-group">
+              <label class="form-label">Mask Indexes</label>
+              <input v-model="form.maskIndexs" type="text" class="form-input" placeholder="e.g. 0, 2, 3" />
+              <div class="form-hint">Optional. Comma-separated segment indexes (0-based) from the source task. Leave empty to edit the whole image.</div>
+            </div>
+
+            <div v-if="mode === 'image-to-image' || mode === 'image-to-video' || mode === 'video-1-5-preview' || mode === 'image-2-0-image-edit'" class="form-group">
               <label class="form-label">
-                Image URL(s) <span v-if="mode === 'image-to-image'" class="required">*</span>
+                Image URL(s) <span v-if="mode === 'image-to-image' || mode === 'image-2-0-image-edit'" class="required">*</span>
               </label>
               <UploadImage :readonly="isDetailView"
                 input-id="grok-upload"
                 label=""
                 upload-text="Click to upload image(s)"
                 upload-hint="JPEG, PNG, WEBP; max 10MB each"
-                :max-files="mode === 'image-to-image' ? 5 : 7"
+                :max-files="(mode === 'image-to-image' || mode === 'image-2-0-image-edit') ? 5 : 7"
                 :multiple="true"
                 :max-file-size="10 * 1024 * 1024"
                 accept="image/jpeg,image/png,image/webp"
@@ -71,6 +78,19 @@
                     class="detail-ref-link"
                   >Image {{ idx + 1 }}</a>
                 </div>
+              </div>
+            </div>
+
+            <!-- Image 2.0（t2i / image-edit）专属宽高比选择：t2i 五档无 auto，edit 额外支持 auto -->
+            <div v-if="mode === 'image-2-0-text-to-image' || mode === 'image-2-0-image-edit'" class="form-group">
+              <label class="form-label">Aspect Ratio <span class="required">*</span></label>
+              <div class="tab-group">
+                <button type="button" class="tab-option" :class="{ active: form.aspectRatio === '1:1' }" @click="form.aspectRatio = '1:1'">1:1</button>
+                <button type="button" class="tab-option" :class="{ active: form.aspectRatio === '2:3' }" @click="form.aspectRatio = '2:3'">2:3</button>
+                <button type="button" class="tab-option" :class="{ active: form.aspectRatio === '3:2' }" @click="form.aspectRatio = '3:2'">3:2</button>
+                <button type="button" class="tab-option" :class="{ active: form.aspectRatio === '16:9' }" @click="form.aspectRatio = '16:9'">16:9</button>
+                <button type="button" class="tab-option" :class="{ active: form.aspectRatio === '9:16' }" @click="form.aspectRatio = '9:16'">9:16</button>
+                <button v-if="mode === 'image-2-0-image-edit'" type="button" class="tab-option" :class="{ active: form.aspectRatio === 'auto' }" @click="form.aspectRatio = 'auto'">Auto</button>
               </div>
             </div>
 
@@ -289,6 +309,11 @@ const getAuthToken = () => {
 const imageDesc = 'Grok Imagine image on FuseAITools—xAI text-to-image and image-to-image. Generate from a prompt or transform one uploaded image; credits shown before Generate.'
 const videoDesc = 'Grok Imagine video on FuseAITools—xAI text-to-video and image-to-video with a 6-30s duration slider and 480p/720p/1080p resolution, a unified Video 1.5 Preview entry (text or up to 7 images at 480p/720p, 1-15s), plus upscale and extend from prior task IDs. Credits are billed per second and update when duration or resolution changes.'
 const EXTEND_LIST_MODEL = 'grok-extend'
+// segment-edit 的 taskId 取自文生图历史任务（extend-list 以该 model 拉取）
+const SEGMENT_EDIT_EXTEND_MODEL = 'grok-imagine-image-2-0-text-to-image'
+const isTaskIdMode = (m) => m === 'upscale' || m === 'extend' || m === 'image-2-0-segment-edit'
+// 按当前模式解析 extend-list 请求的 model（缓存与请求共用同一 key）
+const resolveExtendListModel = () => (mode.value === 'image-2-0-segment-edit' ? SEGMENT_EDIT_EXTEND_MODEL : EXTEND_LIST_MODEL)
 const extendList = ref([])
 const loadingExtendList = ref(false)
 const hasLoadedExtendList = ref(false)
@@ -297,8 +322,9 @@ const getSharedExtendListCache = () => {
   const key = '__fuseExtendListCache__'
   const root = globalThis
   root[key] = root[key] || {}
-  root[key][EXTEND_LIST_MODEL] = root[key][EXTEND_LIST_MODEL] || { data: null, promise: null }
-  return root[key][EXTEND_LIST_MODEL]
+  const model = resolveExtendListModel()
+  root[key][model] = root[key][model] || { data: null, promise: null }
+  return root[key][model]
 }
 const fetchExtendList = async (force = false) => {
   if (!import.meta.client) return
@@ -317,7 +343,7 @@ const fetchExtendList = async (force = false) => {
       await shared.promise
       extendList.value = Array.isArray(shared.data) ? shared.data : []
     } else {
-      const request = get(`/api/records/extend-list?model=${encodeURIComponent(EXTEND_LIST_MODEL)}`)
+      const request = get(`/api/records/extend-list?model=${encodeURIComponent(resolveExtendListModel())}`)
       if (shared) shared.promise = request
       const data = await request
       const list = Array.isArray(data) ? data : []
@@ -333,13 +359,16 @@ const fetchExtendList = async (force = false) => {
   }
 }
 
-const imageModes = ['text-to-image', 'image-to-image']
+const imageModes = ['text-to-image', 'image-to-image', 'image-2-0-text-to-image', 'image-2-0-image-edit', 'image-2-0-segment-edit']
 const videoModes = ['text-to-video', 'image-to-video', 'video-1-5-preview', 'upscale', 'extend']
 
 const tabsByCtx = {
   image: [
     { key: 'text-to-image', label: 'Text to Image', icon: 'fas fa-font' },
-    { key: 'image-to-image', label: 'Image to Image', icon: 'fas fa-image' }
+    { key: 'image-to-image', label: 'Image to Image', icon: 'fas fa-image' },
+    { key: 'image-2-0-text-to-image', label: 'Image 2.0 Text to Image', icon: 'fas fa-wand-magic-sparkles' },
+    { key: 'image-2-0-image-edit', label: 'Image 2.0 Edit', icon: 'fas fa-pen-ruler' },
+    { key: 'image-2-0-segment-edit', label: 'Image 2.0 Segment Edit', icon: 'fas fa-object-group' }
   ],
   video: [
     { key: 'text-to-video', label: 'Text to Video', icon: 'fas fa-font' },
@@ -357,7 +386,10 @@ const pathToMode = {
   '/home/grok/image-to-video': 'image-to-video',
   '/home/grok/upscale': 'upscale',
   '/home/grok/extend': 'extend',
-  '/home/grok/video-1-5-preview': 'video-1-5-preview'
+  '/home/grok/video-1-5-preview': 'video-1-5-preview',
+  '/home/grok/image-2-0-text-to-image': 'image-2-0-text-to-image',
+  '/home/grok/image-2-0-image-edit': 'image-2-0-image-edit',
+  '/home/grok/image-2-0-segment-edit': 'image-2-0-segment-edit'
 }
 const modeToPath = Object.fromEntries(Object.entries(pathToMode).map(([k, v]) => [v, k]))
 
@@ -366,7 +398,7 @@ watch(() => route.path, (p) => {
   if (pathToMode[p]) mode.value = pathToMode[p]
 }, { immediate: true })
 watch(mode, (m) => {
-  if (m === 'upscale' || m === 'extend') fetchExtendList(true)
+  if (isTaskIdMode(m)) fetchExtendList(true)
 }, { immediate: true })
 
 watch(isAuthenticated, (authed) => {
@@ -379,7 +411,7 @@ watch(isAuthenticated, (authed) => {
     }
     return
   }
-  if (mode.value === 'upscale' || mode.value === 'extend') {
+  if (isTaskIdMode(mode.value)) {
     hasLoadedExtendList.value = false
     if (shared) shared.data = null
     fetchExtendList(true)
@@ -389,11 +421,19 @@ watch(isAuthenticated, (authed) => {
 const isVideoContext = computed(() => videoModes.includes(mode.value))
 const tabs = computed(() => tabsByCtx[isVideoContext.value ? 'video' : 'image'])
 const placeholder = computed(() => isVideoContext.value ? 'Describe motion, camera movement, and timing...' : 'Describe the desired image in detail...')
-const isPromptRequired = computed(() => ['text-to-image', 'text-to-video', 'extend'].includes(mode.value))
-const promptMaxLength = computed(() => (mode.value === 'video-1-5-preview' ? 4096 : 5000))
+const isPromptRequired = computed(() => ['text-to-image', 'text-to-video', 'extend', 'image-2-0-text-to-image', 'image-2-0-segment-edit'].includes(mode.value))
+const promptMaxLength = computed(() => {
+  if (mode.value === 'image-2-0-segment-edit') return 65000
+  if (['image-2-0-text-to-image', 'image-2-0-image-edit'].includes(mode.value)) return 8000
+  if (mode.value === 'video-1-5-preview') return 4096
+  return 5000
+})
 const grokPriceModelKeyMap = {
   'text-to-image': 'grok-imagine-text-to-image',
   'image-to-image': 'grok-imagine-image-to-image',
+  'image-2-0-text-to-image': 'grok-imagine-image-2-0-text-to-image',
+  'image-2-0-image-edit': 'grok-imagine-image-2-0-image-edit',
+  'image-2-0-segment-edit': 'grok-imagine-image-2-0-segment-edit',
   'text-to-video': 'grok-imagine-text-to-video',
   'image-to-video': 'grok-imagine-image-to-video',
   upscale: 'grok-imagine-upscale',
@@ -465,6 +505,9 @@ const canGenerate = computed(() => {
 
   if (mode.value === 'text-to-image') return !!prompt
   if (mode.value === 'image-to-image') return form.imageUrls.length > 0
+  if (mode.value === 'image-2-0-text-to-image') return !!prompt
+  if (mode.value === 'image-2-0-image-edit') return form.imageUrls.length >= 1 && form.imageUrls.length <= 5
+  if (mode.value === 'image-2-0-segment-edit') return !!prompt && !!taskId
   if (mode.value === 'text-to-video') return !!prompt
   if (mode.value === 'image-to-video') return !!prompt || form.imageUrls.length > 0
   if (mode.value === 'video-1-5-preview') return !!prompt || form.imageUrls.length > 0
@@ -477,6 +520,7 @@ const form = reactive({
   prompt: '',
   taskId: '',
   imageUrls: [],
+  maskIndexs: '',
   aspectRatio: '2:3',
   motionMode: 'normal',
   duration: 6,
@@ -496,6 +540,11 @@ watch(mode, (m) => {
     form.aspectRatio = 'auto'
     form.resolution = form.resolution === '720p' ? '720p' : '480p'
     form.duration = Math.max(1, Math.min(15, Number(form.duration) || 6))
+  } else if (m === 'image-2-0-text-to-image') {
+    // 五档无 auto；auto 或旧值非法时归一为 1:1
+    if (!['1:1', '2:3', '3:2', '16:9', '9:16'].includes(form.aspectRatio)) form.aspectRatio = '1:1'
+  } else if (m === 'image-2-0-image-edit') {
+    if (!['1:1', '2:3', '3:2', '16:9', '9:16', 'auto'].includes(form.aspectRatio)) form.aspectRatio = '1:1'
   }
 })
 const loading = ref(false)
@@ -509,6 +558,9 @@ const loadingRecordId = ref(null)
 const MODEL_TO_MODE = {
   'grok-imagine-text-to-image': 'text-to-image',
   'grok-imagine-image-to-image': 'image-to-image',
+  'grok-imagine-image-2-0-text-to-image': 'image-2-0-text-to-image',
+  'grok-imagine-image-2-0-image-edit': 'image-2-0-image-edit',
+  'grok-imagine-image-2-0-segment-edit': 'image-2-0-segment-edit',
   'grok-imagine-text-to-video': 'text-to-video',
   'grok-imagine-image-to-video': 'image-to-video',
   'grok-imagine-upscale': 'upscale',
@@ -521,6 +573,8 @@ function fillFormFromOriginalData(o) {
   if (o.prompt != null) form.prompt = String(o.prompt)
   if (o.taskId != null) form.taskId = String(o.taskId)
   if (Array.isArray(o.imageUrls)) form.imageUrls = [...o.imageUrls]
+  if (Array.isArray(o.maskIndexs)) form.maskIndexs = o.maskIndexs.join(', ')
+  else if (typeof o.maskIndexs === 'string') form.maskIndexs = o.maskIndexs
   if (o.aspectRatio) form.aspectRatio = String(o.aspectRatio)
   if (o.mode) form.motionMode = String(o.mode)
   if (o.motionMode) form.motionMode = String(o.motionMode)
@@ -637,6 +691,20 @@ async function generate() {
     } else if (mode.value === 'image-to-image') {
       api = '/api/image/grok/image-to-image'
       body = { model: 'grok-imagine-image-to-image', prompt: form.prompt.trim() || undefined, imageUrls: form.imageUrls }
+    } else if (mode.value === 'image-2-0-text-to-image') {
+      api = '/api/image/grok/image-2-0-text-to-image'
+      body = { model: 'grok-imagine-image-2-0-text-to-image', prompt: form.prompt.trim(), aspectRatio: form.aspectRatio }
+    } else if (mode.value === 'image-2-0-image-edit') {
+      api = '/api/image/grok/image-2-0-image-edit'
+      body = { model: 'grok-imagine-image-2-0-image-edit', prompt: form.prompt.trim() || undefined, aspectRatio: form.aspectRatio, imageUrls: form.imageUrls }
+    } else if (mode.value === 'image-2-0-segment-edit') {
+      api = '/api/image/grok/image-2-0-segment-edit'
+      const maskIndexs = String(form.maskIndexs || '')
+        .split(',')
+        .map((v) => parseInt(v.trim(), 10))
+        .filter((v) => Number.isInteger(v) && v >= 0)
+      body = { model: 'grok-imagine-image-2-0-segment-edit', prompt: form.prompt.trim(), taskId: form.taskId.trim() }
+      if (maskIndexs.length >= 1) body.maskIndexs = maskIndexs
     } else if (mode.value === 'text-to-video') {
       api = '/api/video/grok/text-to-video'
       body = {

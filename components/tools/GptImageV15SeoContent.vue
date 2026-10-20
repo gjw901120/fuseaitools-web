@@ -216,6 +216,33 @@
       >GPT Image v2 Image to Image</a>
       for multi-reference editing with up to 16 images.
     </div>
+
+    <div class="upgrade-tip">
+      ⚡ Want the widest framing options?
+      <a
+        href="/home/gpt-image/v2-5-flare-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/gpt-image/v2-5-flare-text-to-image')"
+      >Try GPT Image 2.5 Flare Text to Image →</a>
+      and
+      <a
+        href="/home/gpt-image/v2-5-sunburst-text-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/gpt-image/v2-5-sunburst-text-to-image')"
+      >2.5 Sunburst Text to Image</a>
+      for <strong>13 aspect ratios</strong> plus <strong>background control at 1K</strong>, with matching
+      <a
+        href="/home/gpt-image/v2-5-flare-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/gpt-image/v2-5-flare-image-to-image')"
+      >Flare</a> /
+      <a
+        href="/home/gpt-image/v2-5-sunburst-image-to-image"
+        class="seo-inline-link"
+        @click.prevent="navigateToToolTop('/home/gpt-image/v2-5-sunburst-image-to-image')"
+      >Sunburst image-to-image</a>
+      variants.
+    </div>
   </div>
 </template>
 

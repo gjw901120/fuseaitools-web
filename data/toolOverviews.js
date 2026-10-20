@@ -226,14 +226,30 @@ Tool use: Search—real-time web, fact-check, multi-language. Maps—location, l
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'GPT Image is OpenAI\'s image generation and editing model family. It supports both classic 1.5 workflows and new v2 generation/editing modes, with strong instruction following, text rendering, style consistency, and flexible aspect ratio and resolution controls.',
+    intro: 'GPT Image is OpenAI\'s image generation and editing model family. It supports classic 1.5 and v2 workflows plus the new 2.5 Flare / Sunburst generations and edits, with strong instruction following, text rendering, style consistency, 13 aspect ratios, 1K/2K/4K resolution tiers, and 1K background control.',
     features: [
       { name: 'Text to Image', path: '/home/gpt-image/text-to-image', description: 'Classic GPT Image 1.5 text-to-image generation with prompt-driven creation and quality controls.' },
       { name: 'Image to Image', path: '/home/gpt-image/image-to-image', description: 'Classic GPT Image 1.5 image editing with reference images and prompt-based transformations.' },
       { name: 'v2 Text to Image', path: '/home/gpt-image/v2-text-to-image', description: 'Generate with model gpt-image-2-text-to-image, supporting up to 20000 prompt characters plus aspect ratio and 1K/2K/4K resolution settings.' },
-      { name: 'v2 Image to Image', path: '/home/gpt-image/v2-image-to-image', description: 'Edit with model gpt-image-2-image-to-image using reference image + prompt, with v2 aspect ratio and resolution options.' }
+      { name: 'v2 Image to Image', path: '/home/gpt-image/v2-image-to-image', description: 'Edit with model gpt-image-2-image-to-image using reference image + prompt, with v2 aspect ratio and resolution options.' },
+      { name: '2.5 Flare Text to Image', path: '/home/gpt-image/v2-5-flare-text-to-image', description: 'Model gpt-image-2-5-flare-text-to-image: required prompt up to 20000 characters, 13 aspect ratios, required 1K/2K/4K resolution (billing tier), optional background at 1K.' },
+      { name: '2.5 Flare Image to Image', path: '/home/gpt-image/v2-5-flare-image-to-image', description: 'Model gpt-image-2-5-flare-image-to-image: prompt up to 20000 characters plus up to 16 optional reference URLs, with 13 ratios, resolution billing and 1K background control.' },
+      { name: '2.5 Sunburst Text to Image', path: '/home/gpt-image/v2-5-sunburst-text-to-image', description: 'Model gpt-image-2-5-sunburst-text-to-image: bright, detail-dense generation from a required prompt, 13 aspect ratios and 1K/2K/4K resolution tiers.' },
+      { name: '2.5 Sunburst Image to Image', path: '/home/gpt-image/v2-5-sunburst-image-to-image', description: 'Model gpt-image-2-5-sunburst-image-to-image: restyle or composite up to 16 optional references under the same ratio, resolution and background rules.' }
     ],
     sections: [
+      {
+        title: 'GPT Image 2.5 Flare & Sunburst Workflows',
+        content: `2.5 Flare Text to Image (gpt-image-2-5-flare-text-to-image): prompt is required and capped at 20000 characters; aspectRatio accepts auto, 1:1, 3:2, 2:3, 4:3, 3:4, 16:9, 9:16, 21:9, 27:16, 16:27, 9:8, 8:9 (default auto); resolution is required and is the billing dimension (1K / 2K / 4K); background is optional (transparent / opaque / auto) and only supported at 1K.
+
+2.5 Flare Image to Image (gpt-image-2-5-flare-image-to-image): same prompt, ratio and resolution rules, plus inputUrls—an optional list of up to 16 reference image URLs for editing and multi-reference composition.
+
+2.5 Sunburst Text to Image (gpt-image-2-5-sunburst-text-to-image): the Sunburst variant of the 2.5 family with the identical parameter surface—required prompt ≤20000 characters, 13 aspect ratios, required 1K/2K/4K resolution, 1K-only background.
+
+2.5 Sunburst Image to Image (gpt-image-2-5-sunburst-image-to-image): required prompt plus up to 16 optional reference URLs, billed by the selected resolution tier.
+
+Constraint note: the extreme ratios 27:16, 16:27, 9:8, 8:9 and the background parameter are only valid at 1K, so the form disables them and clears any selection when you switch to 2K or 4K.`
+      },
       {
         title: 'Platform Strengths & Technical Highlights',
         content: `Deep Understanding & Precise Control
@@ -401,7 +417,9 @@ Unified: Context and style consistency across the chat; full history and rollbac
       { name: 'Flux 2 Text to Image', path: '/home/flux-kontext/flux-2-text-to-image', description: 'Prompt-based image generation with aspect ratio and 1K/2K resolution.' },
       { name: 'Flux 2 Image to Image', path: '/home/flux-kontext/flux-2-image-to-image', description: 'Reference-based image editing with 1-8 input images, prompt, aspect ratio, and resolution.' },
       { name: 'Flux 2 Pro Text to Image', path: '/home/flux-kontext/flux-2-pro-text-to-image', description: 'Higher-fidelity text-to-image generation with Flux 2 Pro settings.' },
-      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'Higher-fidelity image-to-image generation with 1-8 input images and prompt control.' }
+      { name: 'Flux 2 Pro Image to Image', path: '/home/flux-kontext/flux-2-pro-image-to-image', description: 'Higher-fidelity image-to-image generation with 1-8 input images and prompt control.' },
+      { name: 'Flux 3 Klein Text to Image', path: '/home/flux-kontext/flux-3-klein-text-to-image', description: 'Prompt-only generation up to 4K—nine aspect ratios, 1-4 images per run, PNG/JPEG/WebP output. Credits scale by resolution and image count.' },
+      { name: 'Flux 3 Klein Edit Image', path: '/home/flux-kontext/flux-3-klein-edit-image', description: 'Edit from 1-10 reference images plus prompt—1K/2K/4K, nine ratios with auto, 1-4 outputs.' }
     ],
     sections: [
       {
@@ -453,12 +471,14 @@ Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techni
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Nano Banana on FuseAITools is Google\'s Gemini Flash Image suite in two generations: v1 (Text to Image, Image to Image, Pro Generate) and v2 (Nano Banana 2 with 20k prompts and optional 0–14 images). Credits shown before each run. Pair with Seedream for ByteDance image workflows. New users receive 20 free credits on sign-up.',
+    intro: 'Nano Banana on FuseAITools is Google\'s Gemini Flash Image suite across two generations: v1 (Text to Image, Image to Image, Pro Generate) and the v2 family (Nano Banana 2, 2 Lite, and 2.1) with 20k prompts and optional reference images. Nano Banana 2 Lite unifies text-to-image and image-to-image at a single flat price; 2.1 adds 1K/2K/4K resolution billing. Credits shown before each run. Pair with Seedream for ByteDance image workflows. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Nano Banana v1 · Text to Image', path: '/home/nano-banana/generate', description: 'Generate from text—prompt up to 5000 chars, eleven aspect ratios including auto, PNG or JPEG output.' },
       { name: 'Nano Banana v1 · Image to Image', path: '/home/nano-banana/edit', description: 'Edit 1–10 images with natural-language prompts—style transfer, detail polish, or batch look unification.' },
       { name: 'Nano Banana v1 · Pro Generate', path: '/home/nano-banana/pro-generate', description: '1–10 reference images plus prompt—1K, 2K, or 4K resolution for production-ready assets.' },
-      { name: 'Nano Banana 2 (v2)', path: '/home/nano-banana/nano-banana-2', description: 'Prompts up to 20,000 chars, optional 0–14 image inputs, fifteen aspect ratios, 1K/2K/4K, JPG or PNG output.' }
+      { name: 'Nano Banana 2 (v2)', path: '/home/nano-banana/nano-banana-2', description: 'Prompts up to 20,000 chars, optional 0–14 image inputs, fifteen aspect ratios, 1K/2K/4K, JPG or PNG output.' },
+      { name: 'Nano Banana 2 Lite', path: '/home/nano-banana/nano-banana-2-lite', description: 'Unified text-to-image and image-to-image in one mode—20,000-char prompts, optional 0–10 references, fifteen aspect ratios, single flat credit price (no resolution tier).' },
+      { name: 'Nano Banana 2.1', path: '/home/nano-banana/nano-banana-2-1', description: 'High-resolution v2 tier—20,000-char prompts, optional 0–10 references, fifteen aspect ratios, 1K/2K/4K output billed by resolution, JPG or PNG.' }
     ],
     sections: [
       {
@@ -469,7 +489,11 @@ v1 — Image to Image (nano-banana-edit): Required 1–10 image URLs (JPEG/PNG/W
 
 v1 — Pro Generate (nano-banana-pro): Required 1–10 image URLs + prompt (max 5000 chars). Resolution 1K, 2K, or 4K; eleven aspect ratios. Credit cost follows resolution tier.
 
-v2 — Nano Banana 2 (nano-banana-2): Required prompt (max 20,000 chars); optional 0–14 image inputs. Resolution 1K/2K/4K; fifteen aspect ratios; JPG or PNG output.`
+v2 — Nano Banana 2 (nano-banana-2): Required prompt (max 20,000 chars); optional 0–14 image inputs. Resolution 1K/2K/4K; fifteen aspect ratios; JPG or PNG output.
+
+v2 — Nano Banana 2 Lite (nano-banana-2-lite): Unified text-to-image and image-to-image in a single mode. Required prompt (max 20,000 chars) and aspectRatio (fifteen options including auto); optional 0–10 reference images. Single flat credit price with no resolution tier.
+
+v2 — Nano Banana 2.1 (nano-banana-2-1): Required prompt (max 20,000 chars) and resolution (1K/2K/4K, the billing dimension); optional 0–10 image inputs, fifteen aspect ratios including auto, JPG or PNG output.`
       },
       {
         title: 'Workflow',
@@ -660,6 +684,9 @@ When to pick which: Use v1 Classic for full creative control and long prompts; Z
     features: [
       { name: 'Text to Image', path: '/home/grok/text-to-image', description: 'Model fixed to grok-imagine-text-to-image. Prompt required (max 5000). Aspect ratio options: 2:3, 3:2, 1:1, 16:9, 9:16.' },
       { name: 'Image to Image', path: '/home/grok/image-to-image', description: 'Model fixed to grok-imagine-image-to-image. image_urls required (upload first), supports JPEG/PNG/WEBP with max 10MB per image. Prompt optional.' },
+      { name: 'Image 2.0 Text to Image', path: '/home/grok/image-2-0-text-to-image', description: 'Model fixed to grok-imagine-image-2-0-text-to-image. xAI newest still-image model. Prompt required (max 8000); aspect ratio required (1:1, 2:3, 3:2, 16:9, 9:16). Flat per-image credits.' },
+      { name: 'Image 2.0 Edit', path: '/home/grok/image-2-0-image-edit', description: 'Model fixed to grok-imagine-image-2-0-image-edit. Restyle 1-5 reference images; imageUrls required (max 5). Prompt optional (max 8000); aspect ratio required (1:1, 2:3, 3:2, 16:9, 9:16, auto).' },
+      { name: 'Image 2.0 Segment Edit', path: '/home/grok/image-2-0-segment-edit', description: 'Model fixed to grok-imagine-image-2-0-segment-edit. Refines a prior Image 2.0 text-to-image task. taskId required (from your history via extend-list); prompt required (max 65000); maskIndexs optional (0-based segment indexes).' },
       { name: 'Text to Video', path: '/home/grok/text-to-video', description: 'Model fixed to grok-imagine-text-to-video. Prompt required (max 5000). Configure aspect ratio, mode, duration (6-30s slider), and resolution (480p/720p/1080p); billed per second.' },
       { name: 'Image to Video', path: '/home/grok/image-to-video', description: 'Model fixed to grok-imagine-image-to-video. Supports optional prompt and image_urls (up to 7). Configure mode, duration, resolution, and aspect ratio.' },
       { name: 'Video 1.5 Preview', path: '/home/grok/video-1-5-preview', description: 'Model fixed to grok-imagine-video-1-5-preview. Unified entry: no image_urls = text-to-video, image_urls (up to 7) = image-to-video. Prompt optional (max 4096); aspect ratio includes auto (ignored on a single image); duration 1-15s; resolution 480p/720p billed per second; NSFW toggle.' },
@@ -688,6 +715,29 @@ Model: grok-imagine-image-to-image (fixed)
 Prompt: Optional
 image_urls: Required; JPEG/PNG/WEBP, max 10MB each
 Use cases: Style transfer, visual iteration, brand-consistent variations.
+
+Image 2.0 Text to Image
+
+Model: grok-imagine-image-2-0-text-to-image (fixed)
+Prompt: Required, up to 8000 characters
+Aspect ratio: Required (1:1, 2:3, 3:2, 16:9, 9:16)
+Use cases: Highest-fidelity xAI stills with flexible framing; hero visuals and detailed scenes.
+
+Image 2.0 Edit
+
+Model: grok-imagine-image-2-0-image-edit (fixed)
+imageUrls: Required, 1-5 reference images
+Prompt: Optional, up to 8000 characters
+Aspect ratio: Required (1:1, 2:3, 3:2, 16:9, 9:16, auto)
+Use cases: Multi-reference restyling and compositing with auto or explicit framing.
+
+Image 2.0 Segment Edit
+
+Model: grok-imagine-image-2-0-segment-edit (fixed)
+taskId: Required, chosen from your grok-imagine-image-2-0-text-to-image history (via extend-list)
+Prompt: Required, up to 65000 characters
+maskIndexs: Optional, 0-based segment indexes to target specific regions (omit to edit the whole image)
+Use cases: Region-precise refinement of a prior generation without starting over.
 
 Text to Video
 
@@ -1425,10 +1475,10 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Imagen 4 on FuseAITools is Google\'s text-to-image suite—Generate for balanced quality, Fast for 1–4 images per prompt, and Ultra for flagship fidelity. All tiers support prompts up to 5000 characters, optional negative prompts, five aspect ratios, and seed controls. New users receive 20 free credits on sign-up.',
+    intro: 'Imagen 4 on FuseAITools is Google\'s text-to-image suite—Generate for balanced quality, Fast for speed-first single-image drafts, and Ultra for flagship fidelity. All tiers support prompts up to 5000 characters, optional negative prompts, five aspect ratios, and seed controls. New users receive 20 free credits on sign-up.',
     features: [
       { name: 'Imagen 4 Generate', path: '/home/imagen4/imagen4-generate', description: 'Balanced text-to-image—one image per run, string seed (≤500 chars), five aspect ratios (default 1:1).' },
-      { name: 'Imagen 4 Fast', path: '/home/imagen4/imagen4-fast', description: 'Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).' },
+      { name: 'Imagen 4 Fast', path: '/home/imagen4/imagen4-fast', description: 'Speed tier—one fast image per request, integer seed, five aspect ratios (default 16:9).' },
       { name: 'Imagen 4 Ultra', path: '/home/imagen4/imagen4-ultra', description: 'Flagship fidelity—one high-quality image per run, string seed, five aspect ratios (default 1:1).' }
     ],
     sections: [
@@ -1436,7 +1486,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
         title: 'Core capabilities',
         content: `Generate (imagen4-generate): Required prompt (max 5000 chars). Optional negative prompt (max 5000 chars), aspect ratio 1:1 / 16:9 / 9:16 / 3:4 / 4:3 (default 1:1), seed string (≤500 chars). One image per request.
 
-Fast (imagen4-fast): Same prompt and negative-prompt limits. Output 1–4 images per request; integer seed; five aspect ratios (default 16:9).
+Fast (imagen4-fast): Same prompt and negative-prompt limits. One speed-first image per request; integer seed; five aspect ratios (default 16:9).
 
 Ultra (imagen4-ultra): Same prompt and ratio options as Generate with flagship quality priority; one image per request; seed string (≤500 chars); default aspect 1:1.
 
@@ -1446,7 +1496,7 @@ All tiers are text-to-image only—no image upload. Credits shown on Generate be
         title: 'Workflow',
         content: `Everyday stills: write a detailed prompt → pick Generate → set aspect ratio and optional negative prompt → generate → download.
 
-Batch ideation: use Fast with num images 2–4 → compare variants from one prompt → lock direction with integer seed.
+Rapid drafts: use Fast for speed-first single-image iteration → re-run variations from one prompt → lock direction with integer seed.
 
 Final delivery: switch to Ultra for hero assets → optional seed string for reproducible composition → pair stills with Veo 3.1 video (first/last frames) when you need motion.
 

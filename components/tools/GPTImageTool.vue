@@ -12,36 +12,14 @@
 
     <div class="mode-tabs">
       <div
+        v-for="t in modeTabs"
+        :key="t.key"
         class="mode-tab"
-        :class="{ active: mode === 'text-to-image' }"
-        @click="goToTab('text-to-image')"
+        :class="{ active: mode === t.key }"
+        @click="goToTab(t.key)"
       >
-        <i class="fas fa-keyboard"></i>
-        <span>text-to-image</span>
-      </div>
-      <div
-        class="mode-tab"
-        :class="{ active: mode === 'image-to-image' }"
-        @click="goToTab('image-to-image')"
-      >
-        <i class="fas fa-image"></i>
-        <span>image-to-image</span>
-      </div>
-      <div
-        class="mode-tab"
-        :class="{ active: mode === 'v2-text-to-image' }"
-        @click="goToTab('v2-text-to-image')"
-      >
-        <i class="fas fa-wand-magic-sparkles"></i>
-        <span>v2-text-to-image</span>
-      </div>
-      <div
-        class="mode-tab"
-        :class="{ active: mode === 'v2-image-to-image' }"
-        @click="goToTab('v2-image-to-image')"
-      >
-        <i class="fas fa-pen-to-square"></i>
-        <span>v2-image-to-image</span>
+        <i :class="t.icon"></i>
+        <span>{{ t.label }}</span>
       </div>
     </div>
 
@@ -63,12 +41,12 @@
                 label=""
                 upload-icon="fas fa-cloud-upload-alt"
                 upload-text="Click to upload image"
-                :upload-hint="isV2Mode ? 'JPG, PNG, WEBP. Max 10MB each. Up to 16 images.' : 'JPG, PNG, WEBP. Max 10MB.'"
+                :upload-hint="usesResolutionMode ? 'JPG, PNG, WEBP. Max 10MB each. Up to 16 images.' : 'JPG, PNG, WEBP. Max 10MB.'"
                 theme-color="#3b82f6"
-                :max-files="isV2Mode ? 16 : 1"
+                :max-files="usesResolutionMode ? 16 : 1"
                 :max-file-size="10 * 1024 * 1024"
                 accept="image/jpeg,image/png,image/webp"
-                :multiple="isV2Mode"
+                :multiple="usesResolutionMode"
                 @update:files="handleImageUpdate"
               />
               <div v-if="isDetailView && isImageToImageMode && form.input_urls?.length" class="detail-ref-urls">
@@ -108,16 +86,18 @@
                   :key="ratio"
                   type="button"
                   class="tab-option"
-                  :class="{ active: form.aspect_ratio === ratio }"
+                  :class="{ active: form.aspect_ratio === ratio, disabled: is25Mode && ASPECTS_1K_ONLY.includes(ratio) && form.resolution !== '1K' }"
+                  :disabled="is25Mode && ASPECTS_1K_ONLY.includes(ratio) && form.resolution !== '1K'"
                   @click="form.aspect_ratio = ratio"
                 >
                   {{ ratio }}
                 </button>
               </div>
+              <div v-if="is25Mode" class="form-help">27:16 / 16:27 / 9:8 / 8:9 are only available at 1K resolution.</div>
             </div>
 
             <!-- Quality + Credits -->
-            <div v-if="!isV2Mode" class="form-group">
+            <div v-if="!usesResolutionMode" class="form-group">
               <label>Quality *</label>
               <div class="tab-group">
                 <button
@@ -145,8 +125,8 @@
               </div>
             </div>
 
-            <div v-if="isV2Mode" class="form-group">
-              <label>Resolution</label>
+            <div v-if="usesResolutionMode" class="form-group">
+              <label>Resolution *</label>
               <div class="tab-group">
                 <button
                   v-for="res in ['1K', '2K', '4K']"
@@ -159,7 +139,32 @@
                   {{ res }}
                 </button>
               </div>
-              <div class="form-help">1:1 does not support 4K. With auto ratio, only 1K is allowed.</div>
+              <div class="form-help">
+                <span v-if="isV2Mode">1:1 does not support 4K. With auto ratio, only 1K is allowed.</span>
+                <span v-else>Resolution is the billing tier. Ratios 27:16, 16:27, 9:8, 8:9 and background are only supported at 1K.</span>
+                <span v-if="currentCredits !== null" style="margin-left: 8px; font-weight: 500;">
+                  · {{ currentCredits }} credits<span v-if="discountText">{{ discountText }}</span> / job
+                </span>
+              </div>
+            </div>
+
+            <!-- 2.5 专属：Background（可选，仅 1K 支持；再次点击已选中项可取消） -->
+            <div v-if="is25Mode" class="form-group">
+              <label>Background</label>
+              <div class="tab-group">
+                <button
+                  v-for="bg in ['auto', 'opaque', 'transparent']"
+                  :key="bg"
+                  type="button"
+                  class="tab-option"
+                  :class="{ active: form.background === bg, disabled: form.resolution !== '1K' }"
+                  :disabled="form.resolution !== '1K'"
+                  @click="form.background = form.background === bg ? '' : bg"
+                >
+                  {{ bg }}
+                </button>
+              </div>
+              <div class="form-help">{{ form.resolution === '1K' ? 'Optional. Click again to unset (server default).' : 'Only available at 1K resolution.' }}</div>
             </div>
 
             <div class="form-actions">
@@ -232,7 +237,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useToast } from '~/composables/useToast'
@@ -249,7 +254,8 @@ const { getUrlsForFiles } = useFileUploadUrlCache()
 const router = useRouter()
 const route = useRoute()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
-const { discount } = useModelPrice()
+const { fetchPrices, getPrice, discount } = useModelPrice()
+onMounted(() => { fetchPrices() })
 
 const routeRecordId = computed(() => route.query['record-id'] || '')
 const isDetailView = computed(() => !!routeRecordId.value)
@@ -277,6 +283,7 @@ function fillFormFromOriginalData(o) {
   if (o.aspect_ratio) form.aspect_ratio = String(o.aspect_ratio)
   if (o.quality) form.quality = String(o.quality)
   if (o.resolution) form.resolution = String(o.resolution)
+  if (o.background) form.background = String(o.background)
   if (Array.isArray(o.inputUrls)) form.input_urls = [...o.inputUrls]
   else if (Array.isArray(o.input_urls)) form.input_urls = [...o.input_urls]
 }
@@ -310,8 +317,22 @@ const modeTabToPath = {
   'text-to-image': '/home/gpt-image/text-to-image',
   'image-to-image': '/home/gpt-image/image-to-image',
   'v2-text-to-image': '/home/gpt-image/v2-text-to-image',
-  'v2-image-to-image': '/home/gpt-image/v2-image-to-image'
+  'v2-image-to-image': '/home/gpt-image/v2-image-to-image',
+  'v2-5-flare-text-to-image': '/home/gpt-image/v2-5-flare-text-to-image',
+  'v2-5-flare-image-to-image': '/home/gpt-image/v2-5-flare-image-to-image',
+  'v2-5-sunburst-text-to-image': '/home/gpt-image/v2-5-sunburst-text-to-image',
+  'v2-5-sunburst-image-to-image': '/home/gpt-image/v2-5-sunburst-image-to-image'
 }
+const modeTabs = [
+  { key: 'text-to-image', label: 'text-to-image', icon: 'fas fa-keyboard' },
+  { key: 'image-to-image', label: 'image-to-image', icon: 'fas fa-image' },
+  { key: 'v2-text-to-image', label: 'v2-text-to-image', icon: 'fas fa-wand-magic-sparkles' },
+  { key: 'v2-image-to-image', label: 'v2-image-to-image', icon: 'fas fa-pen-to-square' },
+  { key: 'v2-5-flare-text-to-image', label: '2.5 Flare T2I', icon: 'fas fa-bolt' },
+  { key: 'v2-5-flare-image-to-image', label: '2.5 Flare I2I', icon: 'fas fa-fire' },
+  { key: 'v2-5-sunburst-text-to-image', label: '2.5 Sunburst T2I', icon: 'fas fa-sun' },
+  { key: 'v2-5-sunburst-image-to-image', label: '2.5 Sunburst I2I', icon: 'fas fa-cloud-sun' }
+]
 const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
 
@@ -326,9 +347,14 @@ watch(() => route.path, (path) => {
   if (m && mode.value !== m) mode.value = m
 }, { immediate: true })
 
+// v2 / 2.5 宽高比集合：2.5 为 13 档（含 auto），其中四档仅 1K 支持
+const ASPECTS_V2 = ['auto', '1:1', '9:16', '16:9', '4:3', '3:4']
+const ASPECTS_V25 = ['auto', '1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '27:16', '16:27', '9:8', '8:9']
+const ASPECTS_1K_ONLY = ['27:16', '16:27', '9:8', '8:9']
+
 watch(mode, (m) => {
   if (m === 'v2-text-to-image' || m === 'v2-image-to-image') {
-    if (!['auto', '1:1', '9:16', '16:9', '4:3', '3:4'].includes(form.aspect_ratio)) {
+    if (!ASPECTS_V2.includes(form.aspect_ratio)) {
       form.aspect_ratio = 'auto'
     }
     if (!['1K', '2K', '4K'].includes(form.resolution)) {
@@ -339,8 +365,33 @@ watch(mode, (m) => {
       form.aspect_ratio = 'auto'
       if (form.resolution !== '1K') form.resolution = '1K'
     }
-  } else if (!['1:1', '2:3', '3:2'].includes(form.aspect_ratio)) {
-    form.aspect_ratio = '1:1'
+  } else if (m.startsWith('v2-5-')) {
+    if (!isDetailView.value) {
+      // DTO 对齐：2.5 模式默认 aspectRatio=auto、resolution=1K（计费维度必传）
+      form.aspect_ratio = 'auto'
+      form.resolution = '1K'
+      form.background = ''
+    } else {
+      if (!ASPECTS_V25.includes(form.aspect_ratio)) form.aspect_ratio = 'auto'
+      if (!['1K', '2K', '4K'].includes(form.resolution)) form.resolution = '1K'
+      if (form.resolution !== '1K') {
+        if (ASPECTS_1K_ONLY.includes(form.aspect_ratio)) form.aspect_ratio = 'auto'
+        form.background = ''
+      }
+    }
+  } else {
+    if (!['1:1', '2:3', '3:2'].includes(form.aspect_ratio)) {
+      form.aspect_ratio = '1:1'
+    }
+    form.background = ''
+  }
+})
+// 2.5：Resolution 离开 1K 时自动清理 background 与仅 1K 宽高比
+watch([() => form.resolution, () => form.aspect_ratio], () => {
+  if (!mode.value.startsWith('v2-5-')) return
+  if (form.resolution !== '1K') {
+    if (form.background) form.background = ''
+    if (ASPECTS_1K_ONLY.includes(form.aspect_ratio)) form.aspect_ratio = 'auto'
   }
 })
 const form = reactive({
@@ -348,26 +399,34 @@ const form = reactive({
   aspect_ratio: '1:1',
   quality: 'medium',
   resolution: '1K',
+  background: '',
   input_urls: []
 })
 
 const isV2Mode = computed(() => mode.value === 'v2-text-to-image' || mode.value === 'v2-image-to-image')
-const isImageToImageMode = computed(() => mode.value === 'image-to-image' || mode.value === 'v2-image-to-image')
-const promptMaxLength = computed(() => (isV2Mode.value ? 20000 : 3000))
+const is25Mode = computed(() => mode.value.startsWith('v2-5-'))
+// v2 与 2.5 共用：Resolution 控件 + 多图为上传 + 20000 字符 prompt
+const usesResolutionMode = computed(() => isV2Mode.value || is25Mode.value)
+const isImageToImageMode = computed(() => ['image-to-image', 'v2-image-to-image', 'v2-5-flare-image-to-image', 'v2-5-sunburst-image-to-image'].includes(mode.value))
+const promptMaxLength = computed(() => (usesResolutionMode.value ? 20000 : 3000))
 const promptPlaceholder = computed(() => {
-  if (mode.value === 'text-to-image' || mode.value === 'v2-text-to-image') return 'Describe the image you want to generate...'
-  return 'Describe the edit you want (e.g. change clothing, style)...'
+  if (mode.value.endsWith('image-to-image')) return 'Describe the edit you want (e.g. change clothing, style)...'
+  return 'Describe the image you want to generate...'
 })
 const modeTitle = computed(() => {
   if (mode.value === 'v2-text-to-image') return 'V2 Text to Image'
   if (mode.value === 'v2-image-to-image') return 'V2 Image to Image'
+  if (mode.value === 'v2-5-flare-text-to-image') return 'GPT Image 2.5 Flare · Text to Image'
+  if (mode.value === 'v2-5-flare-image-to-image') return 'GPT Image 2.5 Flare · Image to Image'
+  if (mode.value === 'v2-5-sunburst-text-to-image') return 'GPT Image 2.5 Sunburst · Text to Image'
+  if (mode.value === 'v2-5-sunburst-image-to-image') return 'GPT Image 2.5 Sunburst · Image to Image'
   return mode.value === 'text-to-image' ? 'Text to Image' : 'Image to Image'
 })
-const aspectRatioOptions = computed(() => (
-  isV2Mode.value
-    ? ['auto', '1:1', '9:16', '16:9', '4:3', '3:4']
-    : ['1:1', '2:3', '3:2']
-))
+const aspectRatioOptions = computed(() => {
+  if (is25Mode.value) return ASPECTS_V25
+  if (isV2Mode.value) return ASPECTS_V2
+  return ['1:1', '2:3', '3:2']
+})
 
 // 折扣文本
 const discountText = computed(() => {
@@ -377,7 +436,19 @@ const discountText = computed(() => {
   return ` · ${percent}%`
 })
 
-// 模型价格配置（按 size 匹配 Quality，仅使用 credits）
+// tab key → 后端 model 值 / server proxy 路径（计费维度：1.5 为 quality，v2 与 2.5 为 resolution）
+const MODE_CONFIG = {
+  'text-to-image': { model: 'gpt-image-1.5-text-to-image', api: '/api/image/gpt-image/text-to-image' },
+  'image-to-image': { model: 'gpt-image-1.5-image-to-image', api: '/api/image/gpt-image/image-to-image' },
+  'v2-text-to-image': { model: 'gpt-image-2-text-to-image', api: '/api/image/gpt-image/v2-text-to-image' },
+  'v2-image-to-image': { model: 'gpt-image-2-image-to-image', api: '/api/image/gpt-image/v2-image-to-image' },
+  'v2-5-flare-text-to-image': { model: 'gpt-image-2-5-flare-text-to-image', api: '/api/image/gpt-image/v2-5-flare-text-to-image' },
+  'v2-5-flare-image-to-image': { model: 'gpt-image-2-5-flare-image-to-image', api: '/api/image/gpt-image/v2-5-flare-image-to-image' },
+  'v2-5-sunburst-text-to-image': { model: 'gpt-image-2-5-sunburst-text-to-image', api: '/api/image/gpt-image/v2-5-sunburst-text-to-image' },
+  'v2-5-sunburst-image-to-image': { model: 'gpt-image-2-5-sunburst-image-to-image', api: '/api/image/gpt-image/v2-5-sunburst-image-to-image' }
+}
+
+// 模型价格配置（本地兜底表：接口价格未就绪时使用；1.5 按 size 匹配 quality，v2/2.5 按 quality 字段匹配 resolution）
 const modelPricing = reactive({
   'gpt-image-1.5-image-to-image': {
     type: 'RULE',
@@ -408,24 +479,60 @@ const modelPricing = reactive({
       { quality: '2K', credits: 9 },
       { quality: '4K', credits: 12 }
     ]
+  },
+  'gpt-image-2-5-flare-text-to-image': {
+    type: 'RULE',
+    rules: [
+      { quality: '1K', credits: 6 },
+      { quality: '2K', credits: 9 },
+      { quality: '4K', credits: 12 }
+    ]
+  },
+  'gpt-image-2-5-flare-image-to-image': {
+    type: 'RULE',
+    rules: [
+      { quality: '1K', credits: 6 },
+      { quality: '2K', credits: 9 },
+      { quality: '4K', credits: 12 }
+    ]
+  },
+  'gpt-image-2-5-sunburst-text-to-image': {
+    type: 'RULE',
+    rules: [
+      { quality: '1K', credits: 6 },
+      { quality: '2K', credits: 9 },
+      { quality: '4K', credits: 12 }
+    ]
+  },
+  'gpt-image-2-5-sunburst-image-to-image': {
+    type: 'RULE',
+    rules: [
+      { quality: '1K', credits: 6 },
+      { quality: '2K', credits: 9 },
+      { quality: '4K', credits: 12 }
+    ]
   }
 })
 
-const currentModelKey = computed(() =>
-  mode.value === 'text-to-image'
-    ? 'gpt-image-1.5-text-to-image'
-    : mode.value === 'image-to-image'
-      ? 'gpt-image-1.5-image-to-image'
-      : mode.value === 'v2-text-to-image'
-        ? 'gpt-image-2-text-to-image'
-        : 'gpt-image-2-image-to-image'
-)
+const currentModelKey = computed(() => (MODE_CONFIG[mode.value] || MODE_CONFIG['text-to-image']).model)
 
 const currentCredits = computed(() => {
   const key = currentModelKey.value
+  // 2.5：优先取接口价格（RULE 按 resolution，接口 rules 口径为 quality），未就绪时回落本地表
+  if (is25Mode.value) {
+    const credits = getPrice(key, {
+      quality: form.resolution,
+      duration: 0,
+      size: '',
+      batchSize: 1,
+      speed: 'none',
+      scene: 'generate'
+    })
+    if (credits !== null && credits !== undefined) return credits
+  }
   const cfg = modelPricing[key]
   if (!cfg || !Array.isArray(cfg.rules)) return null
-  const rule = isV2Mode.value
+  const rule = usesResolutionMode.value
     ? cfg.rules.find(r => String(r.quality || '').toLowerCase() === String(form.resolution || '').toLowerCase())
     : cfg.rules.find(r => r.size === form.quality)
   return rule ? rule.credits : null
@@ -476,7 +583,7 @@ const handleImageUpdate = async (files) => {
   isUploadingImage.value = true
   try {
     const urls = await getUrlsForFiles(list, uploadFilesToUrls)
-    form.input_urls = isV2Mode.value ? urls.slice(0, 16) : urls.slice(0, 1)
+    form.input_urls = usesResolutionMode.value ? urls.slice(0, 16) : urls.slice(0, 1)
   } catch (e) {
     showError(e.message || 'Failed to upload image')
     form.input_urls = []
@@ -488,6 +595,12 @@ const handleImageUpdate = async (files) => {
 
 const canSubmit = computed(() => {
   if (!form.prompt || !form.prompt.trim()) return false
+  if (is25Mode.value) {
+    if (!['1K', '2K', '4K'].includes(form.resolution)) return false
+    if (form.resolution !== '1K' && ASPECTS_1K_ONLY.includes(form.aspect_ratio)) return false
+    if (form.background && form.resolution !== '1K') return false
+    if (form.input_urls?.length > 16) return false
+  }
   if (isImageToImageMode.value) {
     return Array.isArray(form.input_urls) && form.input_urls.length > 0
   }
@@ -515,33 +628,44 @@ const onSubmit = async () => {
     }
   }
 
+  if (is25Mode.value) {
+    if (!['1K', '2K', '4K'].includes(form.resolution)) {
+      showError('Resolution must be one of: 1K, 2K, 4K')
+      return
+    }
+    if (form.resolution !== '1K' && ASPECTS_1K_ONLY.includes(form.aspect_ratio)) {
+      showError(`Aspect ratio ${form.aspect_ratio} is only supported at 1K resolution`)
+      return
+    }
+    if (form.background && form.resolution !== '1K') {
+      showError('Background is only supported at 1K resolution')
+      return
+    }
+    if (form.input_urls?.length > 16) {
+      showError('Input URLs cannot exceed 16 items')
+      return
+    }
+  }
+
   isGenerating.value = true
   try {
     const modeVal = mode.value
-    const apiPath = modeVal === 'text-to-image'
-      ? '/api/image/gpt-image/text-to-image'
-      : modeVal === 'image-to-image'
-        ? '/api/image/gpt-image/image-to-image'
-        : modeVal === 'v2-text-to-image'
-          ? '/api/image/gpt-image/v2-text-to-image'
-          : '/api/image/gpt-image/v2-image-to-image'
+    const cfg = MODE_CONFIG[modeVal] || MODE_CONFIG['text-to-image']
+    const apiPath = cfg.api
     const body = {
-      model: modeVal === 'text-to-image'
-        ? 'gpt-image-1.5-text-to-image'
-        : modeVal === 'image-to-image'
-          ? 'gpt-image-1.5-image-to-image'
-          : modeVal === 'v2-text-to-image'
-            ? 'gpt-image-2-text-to-image'
-            : 'gpt-image-2-image-to-image',
+      model: cfg.model,
       prompt: form.prompt.trim(),
       aspectRatio: form.aspect_ratio
     }
-    if (!isV2Mode.value) {
+    if (is25Mode.value) {
+      body.resolution = form.resolution
+      if (form.background && form.resolution === '1K') body.background = form.background
+    } else if (!usesResolutionMode.value) {
       body.quality = form.quality
     } else {
       body.resolution = form.resolution
     }
-    if ((modeVal === 'image-to-image' || modeVal === 'v2-image-to-image') && form.input_urls?.length) {
+    if (isImageToImageMode.value && form.input_urls?.length) {
       body.inputUrls = form.input_urls
     }
 
@@ -591,7 +715,7 @@ const clearResults = () => {
 .tool-details h3 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .tool-details .tool-description { margin: 0; font-size: 14px; color: #6b7280; }
 
-.mode-tabs { display: flex; gap: 8px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
+.mode-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
 .mode-tab { padding: 10px 16px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
 .mode-tab:hover { border-color: #3b82f6; color: #3b82f6; }
 .mode-tab.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
@@ -614,6 +738,8 @@ const clearResults = () => {
 .tab-option { flex: 1; min-width: 60px; padding: 10px 14px; border: 1px solid #e5e7eb; background: #fff; color: #64748b; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
 .tab-option:hover { border-color: #3b82f6; color: #3b82f6; }
 .tab-option.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+.tab-option:disabled, .tab-option.disabled { opacity: .45; cursor: not-allowed; }
+.tab-option:disabled:hover, .tab-option.disabled:hover { border-color: #e5e7eb; color: #64748b; }
 
 .detail-ref-urls {
   margin-top: 10px;

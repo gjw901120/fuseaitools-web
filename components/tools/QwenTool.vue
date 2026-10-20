@@ -427,6 +427,7 @@ const discountText = computed(() => {
 })
 
 // 价格：按 mode 取 modelKey，可选按 imageSize / aspectRatio / numImages 等匹配 RULE
+// image-edit 为多图模式：底部价格 = 单张价（numImages=1）× 张数，逻辑与 wan-image / ideogram 一致
 const qwenPriceModelKeyMap = {
   'text-to-image': 'qwen-text-to-image',
   'image-to-image': 'qwen-image-to-image',
@@ -446,10 +447,17 @@ const qwenPriceText = computed(() => {
   if (!modelKey) return ''
   const formFields = {}
   if (mode.value === 'text-to-image' || mode.value === 'image-edit') formFields.imageSize = formData.imageSize
-  if (mode.value === 'image-edit') formFields.numImages = formData.numImages
   if (mode.value === 'z-image') formFields.aspectRatio = formData.aspectRatio
   if (isNewQwenMode.value) formFields.quality = formData.resolution
-  const credits = getPrice(modelKey, formFields)
+  let credits = null
+  if (mode.value === 'image-edit') {
+    // 先取单张价：优先命中 numImages=1 的规则，若后端未配 numImages 维度则回退仅按 imageSize 匹配
+    const perImage = getPrice(modelKey, { ...formFields, numImages: '1' }) ?? getPrice(modelKey, formFields)
+    const numImages = Math.max(1, Math.min(4, Number(formData.numImages) || 1))
+    credits = perImage == null ? null : perImage * numImages
+  } else {
+    credits = getPrice(modelKey, formFields)
+  }
   const str = formatCredits(credits)
   if (!str) return ''
   return `· ${str} credits${discountText.value}`

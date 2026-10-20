@@ -228,6 +228,20 @@
               <td>1K / 2K / 4K; auto, 1:1, 1:4, 16:9, 1:8, 21:9, 2:3, 3:2, 3:4, 4:1, 4:3, 4:5, 5:4, 8:1, 9:16</td>
               <td>JPG / PNG</td>
             </tr>
+            <tr>
+              <td><strong>Nano Banana 2 Lite</strong></td>
+              <td>Prompt (+ 0–10 optional images)</td>
+              <td>Max 20,000 chars</td>
+              <td>Fifteen aspect ratios (incl. auto); single flat price, no resolution tier</td>
+              <td>Single output</td>
+            </tr>
+            <tr>
+              <td><strong>Nano Banana 2.1</strong></td>
+              <td>Prompt (+ 0–10 optional images)</td>
+              <td>Max 20,000 chars</td>
+              <td>1K / 2K / 4K (billing tier); fifteen aspect ratios (incl. auto)</td>
+              <td>JPG / PNG</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -355,10 +369,11 @@ const v1Workflows = [
 ]
 
 const V2_PATH = '/home/nano-banana/nano-banana-2'
+const GEN2_PATHS = [V2_PATH, '/home/nano-banana/nano-banana-2-lite', '/home/nano-banana/nano-banana-2-1']
 
 const isV2Page = computed(() => {
   const path = route.path.replace(/\/$/, '')
-  return path === V2_PATH
+  return GEN2_PATHS.includes(path)
 })
 
 const workflowIntroMap = {
@@ -381,6 +396,16 @@ const workflowIntroMap = {
     title: '🧊 Nano Banana 2',
     lead:
       'Write prompts up to <strong>20,000 characters</strong> and optionally attach <strong>0–14 images</strong>. Pick from <strong>fifteen aspect ratios</strong> and <strong>1K/2K/4K</strong> resolution with <strong>JPG or PNG</strong> output.'
+  },
+  '/home/nano-banana/nano-banana-2-lite': {
+    title: '🪶 Nano Banana 2 Lite',
+    lead:
+      '<strong>Text-to-image and image-to-image in one mode</strong>—write prompts up to <strong>20,000 characters</strong> and optionally attach <strong>0–10 reference images</strong>. Choose from <strong>fifteen aspect ratios</strong> (including <strong>auto</strong>) with a <strong>single flat credit price</strong>—the most affordable entry in the Nano Banana 2 family.'
+  },
+  '/home/nano-banana/nano-banana-2-1': {
+    title: '💎 Nano Banana 2.1',
+    lead:
+      'High-resolution generation with <strong>1K, 2K, or 4K</strong> output. Prompts up to <strong>20,000 characters</strong>, optional <strong>0–10 reference images</strong>, and <strong>fifteen aspect ratios</strong> (including <strong>auto</strong>). Credits follow the resolution tier shown on Generate.'
   }
 }
 
@@ -404,6 +429,16 @@ const workflowDefinitionMap = {
     title: 'What is Nano Banana 2?',
     body:
       '<strong>Nano Banana 2</strong> on FuseAITools (<code>nano-banana-2</code>) accepts prompts up to <strong>20,000 characters</strong> with <strong>optional 0–14 image inputs</strong>. Choose <strong>1K, 2K, or 4K</strong> resolution, fifteen aspect ratios (including <strong>auto</strong>), and <strong>JPG or PNG</strong> output. Ideal when you need long creative briefs or multi-reference generation without Pro\'s required image set.'
+  },
+  '/home/nano-banana/nano-banana-2-lite': {
+    title: 'What is Nano Banana 2 Lite?',
+    body:
+      '<strong>Nano Banana 2 Lite</strong> on FuseAITools (<code>nano-banana-2-lite</code>) unifies <strong>text-to-image and image-to-image</strong> in one mode. Required: <strong>prompt</strong> (max 20,000 chars) and <strong>aspect ratio</strong> (fifteen options including <strong>auto</strong>); optionally attach <strong>0–10 reference images</strong>. It uses a <strong>single flat credit price</strong>—no resolution tier—making it the simplest, most cost-predictable Nano Banana 2 workflow.'
+  },
+  '/home/nano-banana/nano-banana-2-1': {
+    title: 'What is Nano Banana 2.1?',
+    body:
+      '<strong>Nano Banana 2.1</strong> on FuseAITools (<code>nano-banana-2-1</code>) is the high-resolution member of the Nano Banana 2 family. Prompts up to <strong>20,000 characters</strong> with <strong>optional 0–10 image inputs</strong>, fifteen aspect ratios (including <strong>auto</strong>), and mandatory <strong>1K / 2K / 4K resolution</strong> as the billing dimension. Export as <strong>JPG or PNG</strong>; credits scale with the resolution tier shown on Generate.'
   }
 }
 
@@ -454,6 +489,30 @@ const workflowFaqMap = {
       question: 'Does Nano Banana 2 support 4K output?',
       answer:
         'Yes—choose <strong>1K, 2K, or 4K</strong> resolution and export as <strong>JPG or PNG</strong>. Fifteen aspect ratios include <strong>auto</strong> for flexible framing.'
+    }
+  ],
+  '/home/nano-banana/nano-banana-2-lite': [
+    {
+      question: 'What makes Nano Banana 2 Lite different from Nano Banana 2?',
+      answer:
+        '<strong>2 Lite</strong> (<code>nano-banana-2-lite</code>) unifies text-to-image and image-to-image with <strong>optional 0–10 images</strong> and prompts up to <strong>20,000</strong> chars at a <strong>single flat credit price</strong>—no resolution option. <strong>Nano Banana 2</strong> adds <strong>1K/2K/4K</strong> resolution tiers and accepts up to <strong>0–14</strong> images. Pick 2 Lite for predictable, budget-friendly output.'
+    },
+    {
+      question: 'Can Nano Banana 2 Lite do image-to-image?',
+      answer:
+        'Yes—attach <strong>0–10 reference images</strong> to guide the result, or omit them for pure text-to-image. Both live in one workflow; you only always provide a prompt and an <strong>aspect ratio</strong>.'
+    }
+  ],
+  '/home/nano-banana/nano-banana-2-1': [
+    {
+      question: 'How is Nano Banana 2.1 priced?',
+      answer:
+        'Credits scale with the <strong>resolution</strong> tier you select—<strong>1K, 2K, or 4K</strong>. The exact cost appears on the Generate button before you submit. Prompts reach <strong>20,000</strong> chars with <strong>optional 0–10 reference images</strong>.'
+    },
+    {
+      question: 'When should I choose Nano Banana 2.1 over 2 Lite?',
+      answer:
+        'Use <strong>2.1</strong> when you need <strong>high-resolution 1K/2K/4K</strong> output and are fine paying per resolution tier. Choose <strong>2 Lite</strong> for a single fixed price and simpler, cost-predictable generation. Both share the same twenty-thousand-character prompt cap and fifteen aspect ratios.'
     }
   ]
 }

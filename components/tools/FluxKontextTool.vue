@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Flux Kontext</h3>
-        <p class="tool-description">Flux on FuseAITools—Kontext (v1) for governed generate/edit with Pro/Max, and Flux 2 (v2) for 1K/2K T2I and multi-reference I2I including Pro finals.</p>
+        <p class="tool-description">Flux on FuseAITools—Kontext (v1) for governed generate/edit with Pro/Max, Flux 2 (v2) for 1K/2K T2I and multi-reference I2I including Pro finals, and Flux 3 Klein for 1K/2K/4K text-to-image and image editing with batch output.</p>
       </div>
     </div>
 
@@ -264,10 +264,89 @@
               class="form-input"
               placeholder="your-watermark-id"
             />
-            <div class="form-hint">
+             <div class="form-hint">
               Optional, if provided will add a watermark to the output image
             </div>
           </div>
+          </template>
+
+          <template v-else-if="isFlux3Klein">
+            <div class="form-group">
+              <label class="form-label">Prompt <span class="required">*</span></label>
+              <textarea v-model="flux3KleinForm.prompt" class="form-input" rows="4" maxlength="5000" placeholder="Describe the image to generate or the edit to apply (1-5000 characters)" required></textarea>
+            </div>
+            <div class="form-group" v-if="isFlux3KleinEdit">
+              <UploadImage :readonly="isDetailView"
+                ref="flux3KleinInputImagesUploadRef"
+                input-id="flux3-klein-input-images"
+                label="Input Image(s) *"
+                upload-icon="fas fa-cloud-upload-alt"
+                upload-text="Click to upload image(s)"
+                upload-hint="Supports .jpg, .jpeg, .png, .webp; max 30MB each"
+                :multiple="true"
+                :max-files="10"
+                :max-file-size="30 * 1024 * 1024"
+                additional-hint="Upload 1-10 reference images to edit"
+                theme-color="#667eea"
+                @update:files="handleFlux3KleinInputImages"
+              />
+              <div v-if="isUploadingFlux2Images" class="uploading-hint">
+                <i class="fas fa-spinner fa-spin"></i> Uploading image(s)...
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Aspect Ratio *</label>
+              <div class="tab-group">
+                <div class="tab-options">
+                  <button v-for="ratio in flux3KleinAspectRatioOptions" :key="ratio" type="button" class="tab-option" :class="{ active: flux3KleinForm.aspectRatio === ratio }" @click="flux3KleinForm.aspectRatio = ratio">
+                    <span>{{ ratio }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Resolution * <span class="required">(pricing tier)</span></label>
+              <div class="tab-group">
+                <div class="tab-options">
+                  <button v-for="res in flux3KleinResolutions" :key="res" type="button" class="tab-option" :class="{ active: flux3KleinForm.resolution === res }" @click="flux3KleinForm.resolution = res">
+                    <span>{{ res }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Number of Images * <span class="required">(pricing multiplier)</span></label>
+              <div class="tab-group">
+                <div class="tab-options">
+                  <button v-for="n in ['1','2','3','4']" :key="n" type="button" class="tab-option" :class="{ active: flux3KleinForm.numImages === n }" @click="flux3KleinForm.numImages = n">
+                    <span>{{ n }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Output Format</label>
+              <div class="tab-group">
+                <div class="tab-options">
+                  <button v-for="fmt in ['png','jpeg','webp']" :key="fmt" type="button" class="tab-option" :class="{ active: flux3KleinForm.outputFormat === fmt }" @click="flux3KleinForm.outputFormat = fmt">
+                    <span>{{ fmt.toUpperCase() }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Seed (optional)</label>
+              <input v-model="flux3KleinForm.seed" type="number" min="0" max="2147483647" class="form-input" placeholder="0 - 2147483647" />
+              <div class="form-hint">Set a fixed seed to reproduce results</div>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label" for="flux3-klein-enhance">
+                <input id="flux3-klein-enhance" type="checkbox" v-model="flux3KleinForm.enhancePrompt" />
+                <span class="checkmark"></span>
+                Prompt Enhancement
+              </label>
+              <div class="form-hint">Rewrite the prompt for richer detail (default on)</div>
+            </div>
           </template>
 
           <template v-else>
@@ -458,14 +537,18 @@ const tabList = [
   { id: 'flux-2-text-to-image', label: 'Flux 2 T2I', icon: 'fas fa-font' },
   { id: 'flux-2-image-to-image', label: 'Flux 2 I2I', icon: 'fas fa-image' },
   { id: 'flux-2-pro-text-to-image', label: 'Flux 2 Pro T2I', icon: 'fas fa-pen-ruler' },
-  { id: 'flux-2-pro-image-to-image', label: 'Flux 2 Pro I2I', icon: 'fas fa-layer-group' }
+  { id: 'flux-2-pro-image-to-image', label: 'Flux 2 Pro I2I', icon: 'fas fa-layer-group' },
+  { id: 'flux-3-klein-text-to-image', label: 'Flux 3 Klein T2I', icon: 'fas fa-bolt' },
+  { id: 'flux-3-klein-edit-image', label: 'Flux 3 Klein Edit', icon: 'fas fa-pen' }
 ]
 const tabToPath = {
   generate: '/home/flux-kontext/generate',
   'flux-2-text-to-image': '/home/flux-kontext/flux-2-text-to-image',
   'flux-2-image-to-image': '/home/flux-kontext/flux-2-image-to-image',
   'flux-2-pro-text-to-image': '/home/flux-kontext/flux-2-pro-text-to-image',
-  'flux-2-pro-image-to-image': '/home/flux-kontext/flux-2-pro-image-to-image'
+  'flux-2-pro-image-to-image': '/home/flux-kontext/flux-2-pro-image-to-image',
+  'flux-3-klein-text-to-image': '/home/flux-kontext/flux-3-klein-text-to-image',
+  'flux-3-klein-edit-image': '/home/flux-kontext/flux-3-klein-edit-image'
 }
 const pathToTab = {}
 Object.keys(tabToPath).forEach(k => { pathToTab[tabToPath[k]] = k })
@@ -485,6 +568,17 @@ const discountText = computed(() => {
 
 // 价格：modelKey 以 PRICING_MAPPING 为准（下划线）；表单值为连字符，此处映射后再查价
 const fluxKontextPriceText = computed(() => {
+  if (isFlux3Klein.value) {
+    // 计费 = 单张价（按分辨率档位）× 张数，同 Wan/Ideogram 批量价口径
+    const modelKey = activeTab.value
+    const perImage = getPrice(modelKey, { quality: flux3KleinForm.resolution, numImages: '1', scene: 'generate' })
+      ?? getPrice(modelKey, { quality: flux3KleinForm.resolution, scene: 'generate' })
+    const numImages = Math.max(1, Math.min(4, Number(flux3KleinForm.numImages) || 1))
+    const credits = perImage == null ? null : perImage * numImages
+    const str = formatCredits(credits)
+    if (!str) return ''
+    return `· ${str} credits${discountText.value}`
+  }
   if (activeTab.value !== 'generate') {
     const modelKey = activeTab.value
     const credits = getPrice(modelKey, {
@@ -525,6 +619,25 @@ const flux2Form = reactive({
 })
 const flux2AspectRatios = ['1:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3', 'auto']
 
+// Flux 3 Klein（文本生成图 / 图像编辑）：分辨率 1K/2K/4K + 张数 1-4 为计费维度
+const flux3KleinForm = reactive({
+  prompt: '',
+  inputUrls: [],
+  aspectRatio: '1:1',
+  resolution: '1K',
+  outputFormat: 'png',
+  numImages: '1',
+  seed: '',
+  enhancePrompt: true
+})
+const flux3KleinAspectRatios = ['1:1', '4:3', '3:4', '3:2', '2:3', '16:9', '9:16', '21:9', '9:21']
+// 编辑模式额外支持 auto（跟随首张输入图比例）
+const flux3KleinEditAspectRatios = [...flux3KleinAspectRatios, 'auto']
+const flux3KleinResolutions = ['1K', '2K', '4K']
+const isFlux3Klein = computed(() => ['flux-3-klein-text-to-image', 'flux-3-klein-edit-image'].includes(activeTab.value))
+const isFlux3KleinEdit = computed(() => activeTab.value === 'flux-3-klein-edit-image')
+const flux3KleinAspectRatioOptions = computed(() => isFlux3KleinEdit.value ? flux3KleinEditAspectRatios : flux3KleinAspectRatios)
+
 // 状态管理
 const mode = ref('generate') // 'generate' 或 'edit'
 const isGenerating = ref(false)
@@ -533,6 +646,7 @@ const isUploadingFlux2Images = ref(false)
 const generatedImages = ref([])
 const inputImageUploadRef = ref(null)
 const flux2InputImagesUploadRef = ref(null)
+const flux3KleinInputImagesUploadRef = ref(null)
 
 // 详情页：仅从 URL 读取 record-id
 const routeRecordId = computed(() => route.query['record-id'] || '')
@@ -717,8 +831,34 @@ const handleFlux2InputImages = async (files) => {
   }
 }
 
+// Flux 3 Klein 编辑模式：上传 1-10 张参考图
+const handleFlux3KleinInputImages = async (files) => {
+  if (!files || files.length === 0) {
+    flux3KleinForm.inputUrls = []
+    return
+  }
+  isUploadingFlux2Images.value = true
+  try {
+    const selected = (Array.isArray(files) ? files : [files]).slice(0, 10)
+    const urls = await getUrlsForFiles(selected, uploadFilesAndGetUrls)
+    flux3KleinForm.inputUrls = urls
+  } catch (error) {
+    showError(error.message || 'Failed to upload image(s)', 5000)
+    flux3KleinForm.inputUrls = []
+    flux3KleinInputImagesUploadRef.value?.clearFiles?.()
+  } finally {
+    isUploadingFlux2Images.value = false
+  }
+}
+
 // 计算属性
 const canGenerate = computed(() => {
+  if (isFlux3Klein.value) {
+    const p = (flux3KleinForm.prompt || '').trim()
+    if (p.length < 1 || p.length > 5000) return false
+    if (isFlux3KleinEdit.value) return flux3KleinForm.inputUrls.length >= 1 && flux3KleinForm.inputUrls.length <= 10
+    return true
+  }
   if (activeTab.value !== 'generate') {
     const p = (flux2Form.prompt || '').trim()
     if (p.length < 3 || p.length > 5000) return false
@@ -749,7 +889,13 @@ const flux2ApiPathByTab = {
   'flux-2-pro-image-to-image': '/api/image/flux-2-pro/image-to-image'
 }
 
+const flux3KleinApiPathByTab = {
+  'flux-3-klein-text-to-image': '/api/image/flux-3-klein/text-to-image',
+  'flux-3-klein-edit-image': '/api/image/flux-3-klein/edit-image'
+}
+
 const onSubmit = async () => {
+  if (isFlux3Klein.value) return generateFlux3Klein()
   if (activeTab.value === 'generate') return generateImage()
   return generateFlux2()
 }
@@ -795,6 +941,61 @@ const generateFlux2 = async () => {
     })
   } catch (error) {
     console.error('Flux2 image generation failed:', error)
+    if (!error?.__fromApi) showError(error.message || 'Image generation failed, please try again')
+  } finally {
+    isGenerating.value = false
+  }
+}
+
+// Flux 3 Klein 生成（文生图 / 图像编辑）：body 传 resolution + numImages（均为计费维度）
+const generateFlux3Klein = async () => {
+  if (!canGenerate.value) return
+  const tab = activeTab.value
+  const apiPath = flux3KleinApiPathByTab[tab]
+  if (!apiPath) return
+  isGenerating.value = true
+  try {
+    const body = {
+      model: tab,
+      prompt: (flux3KleinForm.prompt || '').trim(),
+      aspectRatio: flux3KleinForm.aspectRatio,
+      resolution: flux3KleinForm.resolution,
+      outputFormat: flux3KleinForm.outputFormat,
+      numImages: String(flux3KleinForm.numImages),
+      enhancePrompt: !!flux3KleinForm.enhancePrompt
+    }
+    if (isFlux3KleinEdit.value) body.imageUrls = flux3KleinForm.inputUrls
+    const seedStr = String(flux3KleinForm.seed ?? '').trim()
+    if (seedStr !== '') {
+      const seedNum = Number(seedStr)
+      if (Number.isInteger(seedNum) && seedNum >= 0 && seedNum <= 2147483647) body.seed = seedNum
+    }
+    const data = await post(apiPath, body)
+    const recordId = data?.recordId ?? data?.data?.recordId
+    if (recordId) {
+      router.push(`${tabToPath[tab] || tabToPath.generate}?record-id=${encodeURIComponent(recordId)}`)
+      return
+    }
+    let urls = data?.outputUrls
+    if (!Array.isArray(urls) || urls.length === 0) {
+      const single = data?.url ?? data?.imageUrl
+      if (single) urls = [single]
+    }
+    const url = Array.isArray(urls) && urls[0] ? (typeof urls[0] === 'string' ? urls[0] : urls[0]?.url ?? urls[0]?.imageUrl) : null
+    if (!url || typeof url !== 'string') {
+      showError('No image URL in response')
+      return
+    }
+    generatedImages.value.unshift({
+      url,
+      prompt: flux3KleinForm.prompt,
+      aspectRatio: flux3KleinForm.aspectRatio,
+      format: flux3KleinForm.outputFormat,
+      model: tab,
+      timestamp: new Date()
+    })
+  } catch (error) {
+    console.error('Flux 3 Klein image generation failed:', error)
     if (!error?.__fromApi) showError(error.message || 'Image generation failed, please try again')
   } finally {
     isGenerating.value = false

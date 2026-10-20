@@ -139,14 +139,32 @@
               <td>Optional, ≤5000 chars</td>
               <td>JPEG/PNG/WebP, max 10MB</td>
             </tr>
+            <tr>
+              <td><strong>Image 2.0 Text to Image</strong></td>
+              <td>Prompt + aspect ratio</td>
+              <td>≤8000 chars</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Image 2.0 Edit</strong></td>
+              <td>1–5 image URLs + aspect</td>
+              <td>Optional, ≤8000 chars</td>
+              <td>1–5 reference images</td>
+            </tr>
+            <tr>
+              <td><strong>Image 2.0 Segment Edit</strong></td>
+              <td>Task ID + prompt</td>
+              <td>≤65000 chars</td>
+              <td>Optional mask indexes</td>
+            </tr>
           </tbody>
         </table>
       </div>
-      <p class="meta-note">Pricing: per-generation credits by modelKey—shown on Generate (<code>grok-imagine-text-to-image</code> / <code>grok-imagine-image-to-image</code>).</p>
+      <p class="meta-note">Pricing: per-generation credits by modelKey—shown on Generate (<code>grok-imagine-text-to-image</code> / <code>grok-imagine-image-to-image</code> / <code>grok-imagine-image-2-0-text-to-image</code> / <code>grok-imagine-image-2-0-image-edit</code> / <code>grok-imagine-image-2-0-segment-edit</code>).</p>
     </section>
 
     <section class="info-section" aria-labelledby="workflows-heading">
-      <h2 id="workflows-heading" class="section-title">Grok Imagine — Two Image Workflows</h2>
+      <h2 id="workflows-heading" class="section-title">Grok Imagine — Image Workflows</h2>
       <div class="model-modes-grid">
         <NuxtLink
           v-for="item in imageWorkflows"
@@ -199,6 +217,27 @@ const imageWorkflows = [
     description: 'One reference image + optional prompt for variations.',
     path: '/home/grok/image-to-image',
     icon: 'fas fa-image'
+  },
+  {
+    name: 'Grok Image 2.0 · Text to Image',
+    title: 'Image 2.0 Text to Image',
+    description: 'Newest xAI image model—prompts up to 8000 chars with 1:1, 2:3, 3:2, 16:9 or 9:16 aspect ratios.',
+    path: '/home/grok/image-2-0-text-to-image',
+    icon: 'fas fa-wand-magic-sparkles'
+  },
+  {
+    name: 'Grok Image 2.0 · Edit',
+    title: 'Image 2.0 Edit',
+    description: 'Restyle 1–5 reference images with an optional prompt and auto or fixed aspect ratios.',
+    path: '/home/grok/image-2-0-image-edit',
+    icon: 'fas fa-pen-ruler'
+  },
+  {
+    name: 'Grok Image 2.0 · Segment Edit',
+    title: 'Image 2.0 Segment Edit',
+    description: 'Refine a prior Image 2.0 task by prompt (≤65000 chars) and optional 0-based segment indexes.',
+    path: '/home/grok/image-2-0-segment-edit',
+    icon: 'fas fa-object-group'
   }
 ]
 
@@ -209,7 +248,19 @@ const workflowIntroMap = {
   },
   '/home/grok/image-to-image': {
     title: '🖼️ Grok Image to Image',
-    lead: 'Upload <strong>one image</strong> (JPEG/PNG/WebP, max 10MB) and optionally add a prompt (≤5000 chars) to guide style or edits through <code>grok-imagine-image-to-image</code>.'
+    lead: 'Upload <strong>one image</strong> (JPEG/PNG/WebP, max 10MB) and optionally add a prompt (≤5000 chars) to guide style or edits through <code>grok-imagine-image-to-image</code>'
+  },
+  '/home/grok/image-2-0-text-to-image': {
+    title: '✨ Grok Image 2.0 Text to Image',
+    lead: 'The newest xAI image model—describe your scene in a <strong>prompt up to 8000 characters</strong> and pick from <strong>five aspect ratios</strong> (<strong>1:1, 2:3, 3:2, 16:9, 9:16</strong>) via <code>grok-imagine-image-2-0-text-to-image</code>.'
+  },
+  '/home/grok/image-2-0-image-edit': {
+    title: '🖋️ Grok Image 2.0 Edit',
+    lead: 'Upload <strong>1–5 reference images</strong> and optionally guide the result with a prompt (≤8000 chars). Choose <strong>five aspect ratios plus auto</strong> through <code>grok-imagine-image-2-0-image-edit</code>.'
+  },
+  '/home/grok/image-2-0-segment-edit': {
+    title: '🧩 Grok Image 2.0 Segment Edit',
+    lead: 'Pick a prior <strong>Image 2.0 text-to-image task</strong> and refine it with a <strong>prompt up to 65000 characters</strong>—optionally targeting specific <strong>segment indexes</strong>—via <code>grok-imagine-image-2-0-segment-edit</code>.'
   }
 }
 
@@ -221,6 +272,18 @@ const workflowDefinitionMap = {
   '/home/grok/image-to-image': {
     title: 'What is Grok Image to Image?',
     body: '<strong>Grok Image to Image</strong> (<code>grok-imagine-image-to-image</code>) transforms one uploaded image. Required: <strong>exactly one image URL</strong>. Prompt is optional (max 5000 chars).'
+  },
+  '/home/grok/image-2-0-text-to-image': {
+    title: 'What is Grok Image 2.0 Text to Image?',
+    body: '<strong>Grok Image 2.0 Text to Image</strong> (<code>grok-imagine-image-2-0-text-to-image</code>) on FuseAITools is xAI\'s newest still-image generator. Required: <strong>prompt</strong> (max 8000) and <strong>aspect ratio</strong> (1:1, 2:3, 3:2, 16:9, 9:16). Credits are a flat per-image price shown on Generate.'
+  },
+  '/home/grok/image-2-0-image-edit': {
+    title: 'What is Grok Image 2.0 Edit?',
+    body: '<strong>Grok Image 2.0 Edit</strong> (<code>grok-imagine-image-2-0-image-edit</code>) restyles or transforms <strong>1–5 reference images</strong>. Required: <strong>imageUrls</strong> (1–5) and <strong>aspect ratio</strong> (five fixed ratios plus <strong>auto</strong>); the prompt is optional (max 8000 chars).'
+  },
+  '/home/grok/image-2-0-segment-edit': {
+    title: 'What is Grok Image 2.0 Segment Edit?',
+    body: '<strong>Grok Image 2.0 Segment Edit</strong> (<code>grok-imagine-image-2-0-segment-edit</code>) refines an existing source task. Required: <strong>taskId</strong> (chosen from your Image 2.0 text-to-image history) and <strong>prompt</strong> (max 65000). <strong>maskIndexs</strong> is optional—supply 0-based segment indexes to edit specific regions, or omit it to edit the whole image.'
   }
 }
 
@@ -243,6 +306,36 @@ const workflowFaqMap = {
     {
       question: 'Is a prompt required for Grok image-to-image?',
       answer: 'No—the prompt is <strong>optional</strong> (max 5000 chars). You can submit the image alone or add instructions for style, lighting, or subject changes.'
+    }
+  ],
+  '/home/grok/image-2-0-text-to-image': [
+    {
+      question: 'How is Grok Image 2.0 Text to Image different from the original?',
+      answer: 'Image 2.0 (<code>grok-imagine-image-2-0-text-to-image</code>) accepts prompts up to <strong>8000 characters</strong> and lets you choose <strong>five aspect ratios</strong> (1:1, 2:3, 3:2, 16:9, 9:16). The original text-to-image form submits a fixed <strong>1:1</strong> square with a 5000-char cap.'
+    },
+    {
+      question: 'What does Grok Image 2.0 Text to Image cost?',
+      answer: 'A <strong>flat per-image credit price</strong>—the exact amount is shown on the Generate button before you submit. New users get <strong>20 free credits</strong> on sign-up.'
+    }
+  ],
+  '/home/grok/image-2-0-image-edit': [
+    {
+      question: 'How many reference images can Grok Image 2.0 Edit take?',
+      answer: 'Between <strong>1 and 5 images</strong> per request. The prompt is <strong>optional</strong> (max 8000 chars), so you can restyle with images alone or add instructions.'
+    },
+    {
+      question: 'Can Grok Image 2.0 Edit auto-pick the aspect ratio?',
+      answer: 'Yes—besides <strong>1:1, 2:3, 3:2, 16:9, 9:16</strong> it supports <strong>auto</strong>, letting the model decide framing from your references. Aspect ratio is required.'
+    }
+  ],
+  '/home/grok/image-2-0-segment-edit': [
+    {
+      question: 'Where does the Task ID for Grok Image 2.0 Segment Edit come from?',
+      answer: 'It is selected from the <strong>Original Task</strong> dropdown, which lists your prior <code>grok-imagine-image-2-0-text-to-image</code> generations. Sign in to load your task history, then pick the image you want to refine.'
+    },
+    {
+      question: 'Are mask indexes required for segment edit?',
+      answer: 'No—<strong>maskIndexs</strong> is optional. Enter comma-separated <strong>0-based</strong> segment indexes to target specific regions, or leave it empty to edit the entire image. The prompt itself is required (up to <strong>65000 characters</strong>).'
     }
   ]
 }
@@ -277,7 +370,7 @@ function isCurrentMode(path) {
   return route.path === path || route.path === `${path}/`
 }
 
-watchRouteScroll((path) => path === '/home/grok/text-to-image' || path === '/home/grok/image-to-image')
+watchRouteScroll((path) => ['/home/grok/text-to-image', '/home/grok/image-to-image', '/home/grok/image-2-0-text-to-image', '/home/grok/image-2-0-image-edit', '/home/grok/image-2-0-segment-edit'].includes(path.replace(/\/$/, '')))
 
 const openFaqIndex = ref(0)
 function toggleFaq(index) {

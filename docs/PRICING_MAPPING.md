@@ -64,11 +64,14 @@
 | Flux 2 Image to Image | `flux-2-image-to-image` | RULE | 按 quality(1K/2K) 匹配 |
 | Flux 2 Pro Text to Image | `flux-2-pro-text-to-image` | RULE | 按 quality(1K/2K) 匹配 |
 | Flux 2 Pro Image to Image | `flux-2-pro-image-to-image` | RULE | 按 quality(1K/2K) 匹配 |
+| Flux 3 Klein Text to Image | `flux-3-klein-text-to-image` | RULE | 单张价按 quality(1K/2K/4K) 命中 × 张数(1–4) |
+| Flux 3 Klein Edit Image | `flux-3-klein-edit-image` | RULE | 同上；1–10 参考图 |
 
 - **组件**：`components/tools/FluxKontextTool.vue`
 - **modelKey 以本表为准**（下划线）。表单里 `formData.model` 为 `'flux-kontext-pro'` 或 `'flux-kontext-max'`（连字符），分别对应上表两个 modelKey。
 - 若定价接口返回的 key 为连字符形式（如 `flux-kontext-pro`），前端 `getPrice` / `useToolSEOAsync` 会做下划线↔连字符兼容查找。
 - **Flux 2 系列（RULE）**：`quality = flux2Form.resolution`（`1K` / `2K`）；`getPrice` 另传 `scene: 'generate'` 与接口 rules 对齐（见 `FluxKontextTool.vue`）。
+- **Flux 3 Klein 系列（RULE，2 mode）**：`modelKey` 直接取 tab（`flux-3-klein-text-to-image` / `flux-3-klein-edit-image`）。**底部价格 = 单张 credits × clamp(numImages, 1, 4)**，与 wan-image / ideogram / qwen-image-edit 批量价口径一致。单张价取法：`getPrice(modelKey, { quality: flux3KleinForm.resolution, numImages: '1', scene: 'generate' })`，若后端 rules 未配 `numImages` 维度则回退 `getPrice(modelKey, { quality: flux3KleinForm.resolution, scene: 'generate' })`；`quality` 取值为 `1K` / `2K` / `4K`（与后端 DTO `resolution` 字段 `@Pattern` 一致）。body 仍照常发送 `resolution` 与 `numImages`（实际出图张数），仅底部展示价做「单张 × 张数」乘算。切换 Resolution 或 Number of Images 时 `fluxKontextPriceText` 实时重算。
 
 ---
 
@@ -80,11 +83,15 @@
 | Nano Banana（图生图）  | `nano-banana-edit`| ONCE  | 编辑模式 |
 | Nano Banana Pro        | `nano-banana-pro` | RULE  | 按 resolution(quality) 等匹配 |
 | Nano Banana 2          | `nano-banana-2`   | RULE  | 按 resolution 映射 quality（1K/2K/4K），scene: generate |
+| Nano Banana 2 Lite     | `nano-banana-2-lite` | ONCE | 单档固定价，`getPrice(key)` 直接取 `once.credits` |
+| Nano Banana 2.1        | `nano-banana-2-1` | RULE  | 按 resolution 映射 quality（1K/2K/4K），scene: generate |
 
 - **组件**：`components/tools/NanoBananaTool.vue`
 - **Nano Banana**：由 `formData.mode === 'image-to-image'` 决定用 `nano-banana-edit` 还是 `nano-banana`。
 - **Nano Banana Pro（RULE）**：表单 **Resolution** 映射到规则字段 **quality**（1K/2K/4K）。传入 `formFields` 为 `quality: proFormData.resolution`、`duration: 0`、`size: ''`、`batchSize: 1`、`speed: 'none'`、`scene: 'generate'`，与 rules 匹配。
 - **Nano Banana 2（RULE）**：`quality = resolution`（1K/2K/4K）；传入 `scene: 'generate'`。其余参数（`aspect_ratio`、`image_input`、`output_format`）不参与价格匹配。
+- **Nano Banana 2 Lite（ONCE）**：文生图/图生图合一、单档固定价。`nanoBanana2LitePriceText` 直接 `getPrice('nano-banana-2-lite')`，**不传 formFields**（ONCE 忽略匹配字段）。body 传 `imageUrls`（0–10 可选）、必填 `aspectRatio`，无 `resolution` / `outputFormat`。
+- **Nano Banana 2.1（RULE）**：与 Pro / Nano Banana 2 同款口径，`quality = nano21FormData.resolution`（1K/2K/4K）为计费维度；传 `duration: 0`、`size: ''`、`batchSize: 1`、`speed: 'none'`、`scene: 'generate'`。body 传 `imageInput`（0–10 可选）、必填 `resolution`、可选 `aspectRatio`（默认 auto）、`outputFormat`（默认 jpg）。
 
 ---
 
@@ -143,7 +150,8 @@
 
 - **组件**：`components/tools/QwenTool.vue`
 - **映射**：`qwenPriceModelKeyMap` 由 `mode` 取 modelKey。
-- **formFields（RULE 时）**：`text-to-image` / `image-edit` 传 `imageSize`；`image-edit` 另传 `numImages`；`z-image` 传 `aspectRatio`。其余旧 mode 传空对象，以接口 rules 为准。
+- **formFields（RULE 时）**：`text-to-image` / `image-edit` 传 `imageSize`；`z-image` 传 `aspectRatio`。其余旧 mode 传空对象，以接口 rules 为准。
+- **image-edit 多图总价（与 wan-image 的 `batchSize` / ideogram 逻辑一致）**：`qwen-image-edit` 支持 `numImages`（1–4）。底部价格 = **单张 credits × clamp(numImages, 1, 4)**。单张价取法：`getPrice(modelKey, { imageSize, numImages: '1' })`，若后端未配 `numImages` 维度则回退 `getPrice(modelKey, { imageSize })`。切换 Number of images 时 `qwenPriceText` 实时重算。
 - **新家族（v2.1 / v3 / v3 Pro，共 6 mode）**：计价统一 **`resolution → quality`**：`getPrice(modelKey, { quality: formData.resolution })`，`quality` 取值为 `1K` / `2K`（大写，与后端 DTO `@Pattern(regexp="1K|2K")` 一致；4K 厂商拒单）。字段差异：v2.1 用 `aspectRatio`（含 auto，仅 i2i）+ `enhancePrompt` + `background`（opaque/transparent）+ `outputFormat`（png/webp/jpeg）；v3 / v3 Pro 用 `imageSize`（8 档，缺省 16:9）+ `promptExtend` + `negativePrompt`（≤5000）+ `outputFormat`（png/jpeg）。
 
 ---
@@ -162,7 +170,8 @@
 
 - **组件**：`components/tools/IdeogramTool.vue`
 - **映射**：`IDEOGRAM_PRICE_KEY_BY_MODE` 由 `mode` 取 modelKey。
-- **所有模式（RULE）**：统一传入 `formFields` 为 `{ speed: form.rendering_speed, scene: 'generate' }`。`rendering_speed` 对应 rules 的 `speed`（如 TURBO、BALANCED、QUALITY）。
+- **所有模式（RULE）**：统一传入 `formFields` 为 `{ speed: form.rendering_speed, scene: 'generate' }`，取**单张** credits。`rendering_speed` 对应 rules 的 `speed`（如 TURBO、BALANCED、QUALITY）。
+- **多图总价（与 wan-image 的 `batchSize` 逻辑一致）**：`v3-remix / v3-reframe / character / character-edit / character-remix` 支持 `num_images`（1–4）。底部价格 = `单张 credits × clamp(num_images, 1, 4)`；`v3-text-to-image / v3-edit` 不显示张数控件，按 1 张计价。切换 Number of images 时 `ideogramCreditsText` 实时重算。
 
 ---
 
@@ -171,7 +180,7 @@
 | 前端模式（tab）   | modelKey           | 类型  | 说明 |
 |-------------------|--------------------|-------|------|
 | imagen4-generate  | `imagen4-generate` | ONCE / RULE | 常规生成 |
-| imagen4-fast      | `imagen4-fast`     | ONCE / RULE | 快速生成（支持 1-4 张） |
+| imagen4-fast      | `imagen4-fast`     | ONCE / RULE | 快速生成（固定单张，已移除 Num Images 字段，body 不再传 numImages） |
 | imagen4-ultra     | `imagen4-ultra`    | ONCE  | 直接匹配 once，当前为 18 credits |
 
 - **组件**：`components/tools/Imagen4Tool.vue`
@@ -186,9 +195,17 @@
 |-------------------|----------------------------------|-------|------|
 | text-to-image     | `gpt-image-1.5-text-to-image`   | RULE  | 按 size（Quality：medium/high）匹配 |
 | image-to-image    | `gpt-image-1.5-image-to-image`  | RULE  | 同上 |
+| v2-text-to-image  | `gpt-image-2-text-to-image`      | RULE  | 按 resolution（1K/2K/4K）匹配，接口 rules 口径为 quality |
+| v2-image-to-image | `gpt-image-2-image-to-image`     | RULE  | 同上 |
+| v2-5-flare-text-to-image | `gpt-image-2-5-flare-text-to-image` | RULE | 按 resolution（1K/2K/4K，DTO 必传）匹配；宽高比与 background 不参与计价 |
+| v2-5-flare-image-to-image | `gpt-image-2-5-flare-image-to-image` | RULE | 同上；inputUrls 可选（≤16），不影响价格 |
+| v2-5-sunburst-text-to-image | `gpt-image-2-5-sunburst-text-to-image` | RULE | 按 resolution 匹配 |
+| v2-5-sunburst-image-to-image | `gpt-image-2-5-sunburst-image-to-image` | RULE | 同上 |
 
 - **组件**：`components/tools/GPTImageTool.vue`
-- **价格匹配**：`currentModelKey` 由 `mode` 取；RULE 匹配字段为 **size**，对应表单 **Quality**（`form.quality`：`medium` / `high`）。组件当前使用本地 `modelPricing` 与 `form.quality` 匹配；若对接接口 getPrice，应传 `formFields` 为 `{ duration: 0, quality: '', size: form.quality, batchSize: 1, speed: 'none', scene: 'generate' }`（与接口 rules 字段一致）。
+- **价格匹配**：`currentModelKey` 由 `MODE_CONFIG` 按 mode 取；1.5 的 RULE 匹配字段为 **size**（对应表单 Quality），v2 / 2.5 的 RULE 匹配字段为 **resolution**（接口 rules 沿用 `quality` 口径，故 formFields 传 `{ quality: form.resolution, duration: 0, size: '', batchSize: 1, speed: 'none', scene: 'generate' }`）。
+- **2.5 取价优先级**：先调 `/api/common/models/price`（`fetchPrices` + `getPrice`）；接口未返回该 modelKey 时回落组件内本地 `modelPricing` 兜底表（1K/2K/4K 三档，与 v2 同构造），后端正式定价上线后无需改前端。
+- **2.5 约束**：resolution 必传（1K/2K/4K）；background（transparent/opaque/auto）与 27:16 / 16:27 / 9:8 / 8:9 四个宽高比仅 1K 支持，切到 2K/4K 时表单会自动清理这些选项，避免后端校验失败。
 
 ---
 
@@ -356,6 +373,9 @@
 |-----------------|----------|------|------|
 | text-to-image | `grok-imagine-text-to-image` | ONCE / RULE | `getPrice(modelKey)`，无额外 formFields |
 | image-to-image | `grok-imagine-image-to-image` | ONCE / RULE | 同上 |
+| image-2-0-text-to-image | `grok-imagine-image-2-0-text-to-image` | ONCE | `getPrice(modelKey)`，无 formFields；prompt≤8000、aspectRatio 必填（1:1/2:3/3:2/16:9/9:16） |
+| image-2-0-image-edit | `grok-imagine-image-2-0-image-edit` | ONCE | 同上；prompt 可选≤8000、imageUrls 1–5、aspectRatio 必填（含 auto） |
+| image-2-0-segment-edit | `grok-imagine-image-2-0-segment-edit` | ONCE | 同上；prompt 必填≤65000、taskId 必填（extend-list 取 `grok-imagine-image-2-0-text-to-image`）、maskIndexs 可选 |
 | text-to-video | `grok-imagine-text-to-video` | RULE | `getPrice(modelKey, { duration: form.duration, quality: form.resolution })` |
 | image-to-video | `grok-imagine-image-to-video` | RULE | 同上 |
 | video-1-5-preview | `grok-imagine-video-1-5-preview` | RULE | `getPrice(modelKey, { duration: 1, quality: form.resolution })` 取**每秒单价**，再乘所选 1-15s 时长（统一入口，resolution 仅 480p/720p） |
@@ -364,6 +384,8 @@
 
 - **组件**：`components/tools/GrokToolCore.vue`
 - **映射**：`grokPriceModelKeyMap` 由 `mode` 取 modelKey。
+- **Image 2.0 三模型**（`image-2-0-text-to-image` / `image-2-0-image-edit` / `image-2-0-segment-edit`）均为 **ONCE 单档直接取价**，底部价各自独立展示；DTO 无 duration/resolution 计费维度，故 `getPrice(modelKey)` 不传 formFields。
+- **segment-edit 的 taskId**：复用 `/api/records/extend-list`，按 `image-2-0-segment-edit` 模式将请求 model 切为 `grok-imagine-image-2-0-text-to-image`（与 upscale/extend 复用同一套缓存/登录守卫，缓存按 model 分 key）。
 
 ---
 
@@ -410,12 +432,15 @@
 |-----------------------------|------------------------|
 | `nano-banana-pro`           | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
 | `nano-banana-2`             | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
+| `nano-banana-2-1`           | quality（resolution：1K/2K/4K）、duration、size、batchSize、speed、scene |
 | `midjourney_imagine`        | speed（relaxed/fast/turbo）、duration、quality、size、batchSize、scene |
 | `flux-2-*` / `flux-2-pro-*` | quality（1K/2K）、scene |
+| `flux-3-klein-text-to-image` / `flux-3-klein-edit-image` | quality（1K/2K/4K）、scene；底部展示价 = 单张价 × numImages（1–4），可先传 `numImages: '1'` 命中失败则回退不传 |
 | `seedream-5-lite-text-to-image` / `seedream-5-lite-image-to-image` | aspectRatio、quality（接口为 ONCE 时仍可传，多余字段不参与匹配） |
 | `seedream-5-pro-*` / `seedream-5-flash-*` | quality（1K/1.5K/2K，来自表单 Resolution） |
 | `ideogram-v3-*` / `ideogram-character*` | speed（TURBO/BALANCED/QUALITY）、scene |
 | `gpt-image-1.5-text-to-image` / `gpt-image-1.5-image-to-image` | size（medium/high，对应 Quality） |
+| `gpt-image-2-*` / `gpt-image-2-5-flare-*` / `gpt-image-2-5-sunburst-*` | resolution（1K/2K/4K，接口 rules 以 quality 字段承载） |
 | `wan-2-6-text-to-video` / `wan-2-6-image-to-video` / `wan-2-6-video-to-video` | duration、quality（720p/1080p） |
 | `wan-2-7-text-to-video` / `wan-2-7-image-to-video` / `wan-2-7-video-edit` / `wan-2-7-r2v` | 展示价：`duration: 1` + quality 取**每秒单价**，再乘计费秒（见上文「### 15. Wan」） |
 | `wan-2-7-image` / `wan-2-7-image-pro` | quality、batchSize |
@@ -437,7 +462,7 @@
 | `kling-3.0-omni-text-to-video` / `kling-3.0-omni-image-to-video` / `kling-3.0-omni-reference-to-video` | 展示价：`duration: 1`（每秒单价）+ quality（720p/1080p/4k）+ scene（no_audio/with_audio，reference 额外 with_video），再乘 3–15s 秒数 |
 | `kling-3.0-omni-transformation` | duration（**上传视频实际时长向上取整**，非每秒单价、无 scene）、quality（720p/1080p/4k）；未上传时按 5s 展示 |
 | `runway_generate`           | duration、quality（如 720p）、scene |
-| `qwen-text-to-image` / `qwen-image-edit` | imageSize；`qwen-image-edit` 另 numImages |
+| `qwen-text-to-image` / `qwen-image-edit` | imageSize（`image-edit` 底部价 = 单张价 × numImages，1–4） |
 | `qwen-z-image`              | aspectRatio |
 | `qwen2-text-to-image` / `qwen2-image-edit` | 以接口 rules 为准；无匹配字段时传 `{}` |
 | `qwen2-1-text-to-image` / `qwen2-1-image-to-image` / `qwen3-text-to-image` / `qwen3-image-to-image` / `qwen3-pro-text-to-image` / `qwen3-pro-image-to-image` | quality（1K/2K，来自表单 Resolution） |

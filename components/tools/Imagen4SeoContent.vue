@@ -10,7 +10,7 @@
     <meta itemprop="operatingSystem" content="Web" />
     <meta
       itemprop="description"
-      content="Google Imagen 4 text-to-image on FuseAITools—Generate, Fast (1–4 images), and Ultra tiers with prompts up to 5000 characters and five aspect ratios."
+      content="Google Imagen 4 text-to-image on FuseAITools—Generate, Fast, and Ultra tiers with prompts up to 5000 characters and five aspect ratios."
     />
 
     <div class="version-badge">🖼️ Google Imagen 4 · Three Tiers · Text to Image</div>
@@ -30,7 +30,7 @@
       <p class="tool-sub">
         Imagen 4 on <a href="/" class="seo-inline-link">FuseAITools</a> is Google's
         <strong>text-to-image</strong> suite—pick <strong>Generate</strong> for balanced quality,
-        <strong>Fast</strong> for speed and batch output (1–4 images), or <strong>Ultra</strong> for flagship fidelity.
+        <strong>Fast</strong> for raw speed, or <strong>Ultra</strong> for flagship fidelity.
         All tiers share optional <strong>negative prompts</strong>, <strong>five aspect ratios</strong>, and
         <strong>seed</strong> controls. Credits appear on the Generate button before you submit; new users receive
         <strong>20 free credits</strong> on sign-up.
@@ -71,13 +71,13 @@
             <tr>
               <td>Positioning</td>
               <td><strong>Balanced</strong> quality and speed</td>
-              <td><strong>Speed + batch</strong> exploration</td>
+              <td><strong>Speed-first</strong> exploration</td>
               <td><strong>Flagship</strong> fidelity</td>
             </tr>
             <tr>
               <td>Output count</td>
               <td><strong>1</strong> image per request</td>
-              <td><strong>1–4</strong> images per request</td>
+              <td><strong>1</strong> image per request</td>
               <td><strong>1</strong> image per request</td>
             </tr>
             <tr>
@@ -107,7 +107,7 @@
             <tr>
               <td>Best for</td>
               <td>Everyday marketing and social stills</td>
-              <td>Rapid A/B tests and concept batches</td>
+              <td>Rapid iteration and A/B tests</td>
               <td>Hero assets and client delivery</td>
             </tr>
           </tbody>
@@ -171,9 +171,9 @@
             <tr>
               <td><strong>Fast</strong></td>
               <td>Prompt (max 5000 chars)</td>
-              <td>1–4 images</td>
+              <td>1 image</td>
               <td>Same five ratios (default 16:9)</td>
-              <td>Negative prompt, num images, integer seed</td>
+              <td>Negative prompt, integer seed</td>
             </tr>
             <tr>
               <td><strong>Ultra</strong></td>
@@ -186,14 +186,14 @@
         </table>
       </div>
       <p class="meta-note">
-        All tiers are text-to-image only—no image upload on this page. Credits depend on tier and batch count (Fast);
+        All tiers are text-to-image only—no image upload on this page. Credits depend on tier;
         the exact amount appears on Generate before submission.
       </p>
     </section>
 
     <section class="info-section" aria-labelledby="workflows-heading">
       <h2 id="workflows-heading" class="section-title">Imagen 4 — Three Text-to-Image Tiers</h2>
-      <p class="section-lead">Switch tabs to match speed, batch size, or final quality:</p>
+      <p class="section-lead">Switch tabs to match speed or final quality:</p>
       <div class="model-modes-grid">
         <NuxtLink
           v-for="item in imageWorkflows"
@@ -243,14 +243,14 @@
     </div>
 
     <div v-if="showFastUpgradeTip" class="upgrade-tip">
-      ⚡ <strong>Need batch output or faster iteration?</strong>
+      ⚡ <strong>Need faster, lower-cost iteration?</strong>
       Try
       <a
         href="/home/imagen4/imagen4-fast"
         class="seo-inline-link"
         @click.prevent="navigateToToolTop('/home/imagen4/imagen4-fast')"
       >Imagen 4 Fast →</a>
-      for <strong>1–4 images</strong> per request with integer seed control.
+      for speed-first single-image generation with integer seed control.
     </div>
 
     <div v-if="showUltraUpgradeTip" class="upgrade-tip">
@@ -303,7 +303,7 @@ const imageWorkflows = [
   {
     name: 'Imagen 4 Fast',
     title: 'Fast',
-    description: 'Speed tier—output 1–4 images per request with integer seed; default aspect 16:9.',
+    description: 'Speed tier—single fast image per request with integer seed; default aspect 16:9.',
     path: IMAGEN4_PATHS.fast,
     icon: 'fas fa-bolt'
   },
@@ -323,7 +323,7 @@ const workflowIntroMap = {
   },
   [IMAGEN4_PATHS.fast]: {
     title: '⚡ Imagen 4 Fast',
-    lead: 'Optimized for speed and exploration—Imagen 4 Fast outputs <strong>1–4 images</strong> per request from the same prompt. Default aspect is <strong>16:9</strong>; use an optional <strong>integer seed</strong> for reproducible batches during A/B testing.'
+    lead: 'Optimized for speed and low-cost exploration—Imagen 4 Fast returns a single image per request from your prompt. Default aspect is <strong>16:9</strong>; use an optional <strong>integer seed</strong> for reproducible results during A/B testing.'
   },
   [IMAGEN4_PATHS.ultra]: {
     title: '✨ Imagen 4 Ultra',
@@ -340,7 +340,7 @@ const workflowDefinitionMap = {
   [IMAGEN4_PATHS.fast]: {
     title: 'What is Imagen 4 Fast?',
     body:
-      '<strong>Imagen 4 Fast</strong> on FuseAITools (<code>imagen4-fast</code>) generates <strong>1–4 images</strong> from one prompt for rapid iteration. Required: <strong>prompt</strong> (max 5000 chars). Optional: negative prompt, <strong>num images</strong> (1–4), aspect ratio (default <strong>16:9</strong>), and <strong>integer seed</strong>. Ideal for concept batches and high-volume testing.'
+      '<strong>Imagen 4 Fast</strong> on FuseAITools (<code>imagen4-fast</code>) is the speed-first tier for rapid single-image iteration. Required: <strong>prompt</strong> (max 5000 chars). Optional: negative prompt, aspect ratio (default <strong>16:9</strong>), and <strong>integer seed</strong>. Ideal for fast drafts and high-volume testing.'
   },
   [IMAGEN4_PATHS.ultra]: {
     title: 'What is Imagen 4 Ultra?',
@@ -354,7 +354,7 @@ const workflowFaqMap = {
     {
       question: 'How does Imagen 4 Generate differ from Imagen 4 Fast?',
       answer:
-        'Generate outputs <strong>one balanced-quality image</strong> per request with a <strong>string seed</strong> (≤500 chars). Fast returns <strong>1–4 images</strong> per run with an <strong>integer seed</strong> and defaults to <strong>16:9</strong>—better for rapid batch exploration.'
+        'Generate outputs <strong>one balanced-quality image</strong> per request with a <strong>string seed</strong> (≤500 chars). Fast is the <strong>speed-first</strong> tier—one image per run with an <strong>integer seed</strong> and defaults to <strong>16:9</strong>—better for rapid, lower-cost iteration.'
     },
     {
       question: 'Which aspect ratios does Imagen 4 Generate support?',
@@ -364,21 +364,21 @@ const workflowFaqMap = {
   ],
   [IMAGEN4_PATHS.fast]: [
     {
-      question: 'How many images can Imagen 4 Fast generate at once?',
+      question: 'What makes Imagen 4 Fast different from Generate?',
       answer:
-        'Between <strong>1 and 4</strong> images per request—set <strong>Num Images</strong> on the form. All images share the same prompt, negative prompt, aspect ratio, and optional integer seed.'
+        'Fast is the <strong>speed-first</strong> tier—one image per request at a lower credit cost, defaulting to <strong>16:9</strong> with an <strong>integer seed</strong>. Use it for rapid drafts and high-volume iteration; choose Generate for balanced quality or Ultra for flagship fidelity.'
     },
     {
       question: 'Why does Imagen 4 Fast use an integer seed instead of a string?',
       answer:
-        'Fast accepts an optional <strong>integer seed</strong> for reproducible batch runs. Generate and Ultra use an optional <strong>seed string</strong> (≤500 characters)—pick the tier that matches your workflow.'
+        'Fast accepts an optional <strong>integer seed</strong> for reproducible runs. Generate and Ultra use an optional <strong>seed string</strong> (≤500 characters)—pick the tier that matches your workflow.'
     }
   ],
   [IMAGEN4_PATHS.ultra]: [
     {
       question: 'When should I choose Imagen 4 Ultra over Generate or Fast?',
       answer:
-        'Choose Ultra when you need <strong>flagship fidelity</strong> for final delivery—one high-quality image per request. Use Fast for <strong>1–4</strong> quick variants or Generate for everyday balanced stills at lower credit cost.'
+        'Choose Ultra when you need <strong>flagship fidelity</strong> for final delivery—one high-quality image per request. Use Fast for <strong>quick single-image drafts</strong> at lower credit cost or Generate for everyday balanced stills.'
     },
     {
       question: 'Does Imagen 4 Ultra support the same aspect ratios as Generate?',
@@ -397,7 +397,7 @@ const commonFaq = [
   {
     question: 'How is Imagen 4 priced on FuseAITools?',
     answer:
-      'Credits depend on tier—and for Fast, on <strong>num images</strong>—shown on the Generate button before you submit. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      'Credits depend on tier—shown on the Generate button before you submit. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
   }
 ]
 
@@ -436,19 +436,19 @@ const tierCompareColumns = computed(() => {
 const tierCompareRows = computed(() => {
   if (isGeneratePage.value) {
     return [
-      { label: 'Output per request', cells: ['<strong>1</strong> image', '<strong>1–4</strong> images', '<strong>1</strong> image'] },
+      { label: 'Output per request', cells: ['<strong>1</strong> image', '<strong>1</strong> image', '<strong>1</strong> image'] },
       { label: 'Speed focus', cells: ['Balanced', '<strong>Fastest</strong>', 'Quality-first'] },
       { label: 'Seed type', cells: ['String (≤500 chars)', 'Integer', 'String (≤500 chars)'] },
       { label: 'Default aspect', cells: ['1:1', '16:9', '1:1'] },
-      { label: 'Best for', cells: ['Everyday stills', 'Batch ideation', 'Hero / client assets'] }
+      { label: 'Best for', cells: ['Everyday stills', 'Rapid drafts', 'Hero / client assets'] }
     ]
   }
   if (isFastPage.value) {
     return [
-      { label: 'Output per request', cells: ['<strong>1–4</strong> images', '<strong>1</strong> image'] },
+      { label: 'Output per request', cells: ['<strong>1</strong> image', '<strong>1</strong> image'] },
       { label: 'Speed focus', cells: ['<strong>Fastest</strong>', 'Quality-first'] },
       { label: 'Seed type', cells: ['Integer', 'String (≤500 chars)'] },
-      { label: 'Best for', cells: ['Batch ideation', 'Hero / client assets'] }
+      { label: 'Best for', cells: ['Rapid drafts', 'Hero / client assets'] }
     ]
   }
   return []
@@ -469,9 +469,9 @@ const coreFeatures = [
   },
   {
     icon: '⚡',
-    title: 'Batch on Fast',
+    title: 'Speed on Fast',
     description:
-      'Imagen 4 Fast outputs <strong>1–4 images</strong> per request—compare variants without re-running the prompt.'
+      'Imagen 4 Fast is the speed-first, lower-cost tier—iterate rapidly on single-image drafts without waiting on flagship renders.'
   },
   {
     icon: '☁️',
@@ -484,7 +484,7 @@ const coreFeatures = [
 const scenarioTags = [
   'Marketing & ad stills',
   'Social square & vertical',
-  'Concept batch testing',
+  'Rapid iteration',
   'Hero / print assets',
   'Negative-prompt cleanup'
 ]

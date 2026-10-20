@@ -43,13 +43,6 @@
               </div>
             </div>
 
-            <div class="form-group" v-if="mode === 'imagen4-fast'">
-              <label class="form-label">Num Images</label>
-              <div class="tab-group">
-                <button v-for="n in ['1','2','3','4']" :key="n" type="button" class="tab-option" :class="{ active: formData.numImages === n }" @click="formData.numImages = n">{{ n }}</button>
-              </div>
-            </div>
-
             <div class="form-group">
               <label class="form-label">Seed</label>
               <input v-if="mode === 'imagen4-fast'" v-model.number="formData.seedNumber" type="number" class="form-input" placeholder="Optional integer seed" />
@@ -151,7 +144,6 @@ const formData = reactive({
   prompt: '',
   negativePrompt: '',
   aspectRatio: '1:1',
-  numImages: '1',
   seedText: '',
   seedNumber: null
 })
@@ -186,7 +178,6 @@ function fillFormFromOriginalData(o) {
   if (o.prompt != null) formData.prompt = String(o.prompt)
   if (o.negativePrompt != null) formData.negativePrompt = String(o.negativePrompt)
   if (o.aspectRatio) formData.aspectRatio = String(o.aspectRatio)
-  if (o.numImages != null) formData.numImages = String(o.numImages)
   if (o.seed != null && o.seed !== '') {
     const n = Number(o.seed)
     if (!Number.isNaN(n) && String(o.seed).trim() !== '') {
@@ -267,7 +258,6 @@ async function generate() {
       aspectRatio: formData.aspectRatio || (modeVal === 'imagen4-fast' ? '16:9' : '1:1')
     }
     if (modeVal === 'imagen4-fast') {
-      body.numImages = formData.numImages
       if (formData.seedNumber != null && formData.seedNumber !== '') body.seed = Number(formData.seedNumber)
     } else if (formData.seedText) {
       body.seed = formData.seedText

@@ -423,7 +423,8 @@ const discountText = computed(() => {
   return ` · ${percent}%`
 })
 
-// 价格：Ideogram 7 模式统一通过 Rendering speed -> price.rules[].speed 匹配 credits
+// 价格：Ideogram 7 模式统一通过 Rendering speed -> price.rules[].speed 匹配单张 credits
+// 多图模式（remix / reframe / character*）总价随 num_images 张数累加，逻辑与 wan-image 的 batchSize 一致
 const IDEOGRAM_PRICE_KEY_BY_MODE = {
   'v3-text-to-image': 'ideogram-v3-text-to-image',
   'v3-edit': 'ideogram-v3-edit',
@@ -437,10 +438,15 @@ const IDEOGRAM_PRICE_KEY_BY_MODE = {
 const ideogramCreditsText = computed(() => {
   const key = IDEOGRAM_PRICE_KEY_BY_MODE[mode.value]
   if (!key) return ''
-  const credits = getPrice(key, {
+  const perImage = getPrice(key, {
     speed: form.rendering_speed,
     scene: 'generate'
   })
+  if (perImage == null) return ''
+  const numImages = needsNumImages(mode.value)
+    ? Math.max(1, Math.min(4, Number(form.num_images) || 1))
+    : 1
+  const credits = perImage * numImages
   const str = formatCredits(credits)
   return str ? `· ${str} credits${discountText.value}` : ''
 })
