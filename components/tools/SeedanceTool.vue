@@ -30,8 +30,24 @@
         <div class="config-header">
           <h4 class="panel-title">Configuration</h4>
         </div>
+
+        <!-- 服务暂停醒目提示（v1.5 Pro 专用，置于表单顶部最醒目位置，样式参照 SoraTool） -->
+        <div v-if="isV15ProSuspended" class="seedance-suspended-notice" role="alert">
+          <div class="seedance-suspended-icon"><i class="fas fa-ban"></i></div>
+          <div class="seedance-suspended-body">
+            <p class="seedance-suspended-title">Seedance 1.5 Pro has been retired</p>
+            <p class="seedance-suspended-text">
+              Since <strong>ByteDance has discontinued maintenance of the upstream model</strong>, Seedance 1.5 Pro was officially retired on <strong>October 20, 2026</strong>. The Seedance 1.5 Pro generation features on this site have been taken offline accordingly, and new generation tasks can no longer be submitted.
+            </p>
+            <p class="seedance-suspended-text">
+              <strong>Videos you successfully generated previously</strong> are not affected. You can go to <strong>History</strong> to view and access them as usual.
+            </p>
+            <p class="seedance-suspended-foot">Other Seedance models (v1 Lite / v1 Pro / Seedance 2 / Seedance 2.5) remain available. We apologize for the inconvenience and appreciate your understanding and support.</p>
+          </div>
+        </div>
+
         <form class="config-form" @submit.prevent="generate">
-          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView">
+          <fieldset class="config-fieldset" :disabled="isGenerating || isDetailView || isV15ProSuspended">
             <div class="form-group">
               <label for="seedance-prompt" class="form-label">
                 Prompt <span class="required">*</span>
@@ -425,11 +441,12 @@
             </template>
 
             <div class="form-actions">
-              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView">
-                <i v-if="isGenerating" class="fas fa-spinner fa-spin"></i>
+              <button type="submit" class="btn-primary" :disabled="!canGenerate || isGenerating || isDetailView || isV15ProSuspended">
+                <i v-if="isV15ProSuspended" class="fas fa-ban"></i>
+                <i v-else-if="isGenerating" class="fas fa-spinner fa-spin"></i>
                 <i v-else class="fas fa-play"></i>
-                {{ isGenerating ? 'Generating...' : 'Generate Video' }}
-                <span v-if="seedancePriceText" class="price-tag">{{ seedancePriceText }}</span>
+                {{ isV15ProSuspended ? 'Service paused, submission unavailable' : (isGenerating ? 'Generating...' : 'Generate Video') }}
+                <span v-if="seedancePriceText && !isV15ProSuspended" class="price-tag">{{ seedancePriceText }}</span>
               </button>
             </div>
           </fieldset>
@@ -559,6 +576,11 @@ const pathToMode = {}
 Object.keys(modeTabToPath).forEach(k => { pathToMode[modeTabToPath[k]] = k })
 
 const mode = ref('v1-lite-text-to-video')
+
+// 因字节跳动已停止上游模型维护，Seedance 1.5 Pro 于 2026-10-20 正式停用，本站同步下线该 tab 的生成功能；历史生成记录仍可在历史记录中查询。恢复服务时将 v15ProSuspended 改为 false 即可。
+const v15ProSuspended = true
+const isV15ProSuspended = computed(() => v15ProSuspended && mode.value === 'v1-5-pro')
+
 function goToTab(m) {
   mode.value = m
   router.push(modeTabToPath[m] || modeTabToPath['v1-lite-text-to-video'])
@@ -1053,6 +1075,10 @@ function clearResults() {
 }
 
 async function generate() {
+  if (isV15ProSuspended.value) {
+    showError('Seedance 1.5 Pro has been retired on October 20, 2026. New generation tasks are unavailable; videos generated previously can still be found in History.')
+    return
+  }
   if (!canGenerate.value) return
   const p = (formData.prompt || '').trim()
   isGenerating.value = true
@@ -1306,6 +1332,38 @@ watch(mode, (m) => {
 .config-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: var(--flux-foreground); }
 .config-fieldset { border: none; margin: 0; padding: 0; }
 .config-form { display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
+
+/* 服务暂停醒目提示（参照 SoraTool 暗红告警样式） */
+.seedance-suspended-notice {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  border: 2px solid #dc2626;
+  border-left: 6px solid #dc2626;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 100%);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.14);
+}
+.seedance-suspended-icon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dc2626;
+  color: #fff;
+  font-size: 20px;
+}
+.seedance-suspended-body { flex: 1; min-width: 0; }
+.seedance-suspended-title { margin: 0 0 8px; font-size: 16px; font-weight: 700; color: #b91c1c; letter-spacing: .3px; }
+.seedance-suspended-text { margin: 0 0 6px; font-size: 13.5px; line-height: 1.6; color: #7f1d1d; }
+.seedance-suspended-text strong { color: #b91c1c; }
+.seedance-suspended-foot { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9a3412; }
+.seedance-suspended-notice + .config-form .config-fieldset { opacity: .6; }
 
 .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
 .form-group:last-of-type { margin-bottom: 0; }
