@@ -352,6 +352,16 @@ const ASPECTS_V2 = ['auto', '1:1', '9:16', '16:9', '4:3', '3:4']
 const ASPECTS_V25 = ['auto', '1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '27:16', '16:27', '9:8', '8:9']
 const ASPECTS_1K_ONLY = ['27:16', '16:27', '9:8', '8:9']
 
+// 必须先于下面的 watch 初始化：watch 的 getter 在创建时即被求值，否则会命中 TDZ
+const form = reactive({
+  prompt: '',
+  aspect_ratio: '1:1',
+  quality: 'medium',
+  resolution: '1K',
+  background: '',
+  input_urls: []
+})
+
 watch(mode, (m) => {
   if (m === 'v2-text-to-image' || m === 'v2-image-to-image') {
     if (!ASPECTS_V2.includes(form.aspect_ratio)) {
@@ -393,14 +403,6 @@ watch([() => form.resolution, () => form.aspect_ratio], () => {
     if (form.background) form.background = ''
     if (ASPECTS_1K_ONLY.includes(form.aspect_ratio)) form.aspect_ratio = 'auto'
   }
-})
-const form = reactive({
-  prompt: '',
-  aspect_ratio: '1:1',
-  quality: 'medium',
-  resolution: '1K',
-  background: '',
-  input_urls: []
 })
 
 const isV2Mode = computed(() => mode.value === 'v2-text-to-image' || mode.value === 'v2-image-to-image')

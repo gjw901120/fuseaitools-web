@@ -28,7 +28,12 @@ declare global {
   const definePayloadReviver: typeof import('../../node_modules/nuxt/dist/app/composables/payload')['definePayloadReviver']
   const effect: typeof import('../../node_modules/vue')['effect']
   const effectScope: typeof import('../../node_modules/vue')['effectScope']
+  const epochToIsoString: typeof import('../../composables/useDateFormat')['epochToIsoString']
   const fetchWithCache: typeof import('../../composables/useApiCache')['fetchWithCache']
+  const formatCalendarDate: typeof import('../../composables/useDateFormat')['formatCalendarDate']
+  const formatDate: typeof import('../../composables/useDateFormat')['formatDate']
+  const formatDateTime: typeof import('../../composables/useDateFormat')['formatDateTime']
+  const formatRelativeTime: typeof import('../../composables/useDateFormat')['formatRelativeTime']
   const getAppManifest: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']
   const getCurrentInstance: typeof import('../../node_modules/vue')['getCurrentInstance']
   const getCurrentScope: typeof import('../../node_modules/vue')['getCurrentScope']
@@ -114,6 +119,7 @@ declare global {
   const useCookie: typeof import('../../node_modules/nuxt/dist/app/composables/cookie')['useCookie']
   const useCssModule: typeof import('../../node_modules/vue')['useCssModule']
   const useCssVars: typeof import('../../node_modules/vue')['useCssVars']
+  const useDateFormat: typeof import('../../composables/useDateFormat')['useDateFormat']
   const useError: typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']
   const useExtendListAuth: typeof import('../../composables/useExtendListAuth')['useExtendListAuth']
   const useFetch: typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']
@@ -238,7 +244,12 @@ declare module 'vue' {
     readonly definePayloadReviver: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/payload')['definePayloadReviver']>
     readonly effect: UnwrapRef<typeof import('../../node_modules/vue')['effect']>
     readonly effectScope: UnwrapRef<typeof import('../../node_modules/vue')['effectScope']>
+    readonly epochToIsoString: UnwrapRef<typeof import('../../composables/useDateFormat')['epochToIsoString']>
     readonly fetchWithCache: UnwrapRef<typeof import('../../composables/useApiCache')['fetchWithCache']>
+    readonly formatCalendarDate: UnwrapRef<typeof import('../../composables/useDateFormat')['formatCalendarDate']>
+    readonly formatDate: UnwrapRef<typeof import('../../composables/useDateFormat')['formatDate']>
+    readonly formatDateTime: UnwrapRef<typeof import('../../composables/useDateFormat')['formatDateTime']>
+    readonly formatRelativeTime: UnwrapRef<typeof import('../../composables/useDateFormat')['formatRelativeTime']>
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
@@ -324,6 +335,7 @@ declare module 'vue' {
     readonly useCookie: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/cookie')['useCookie']>
     readonly useCssModule: UnwrapRef<typeof import('../../node_modules/vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('../../node_modules/vue')['useCssVars']>
+    readonly useDateFormat: UnwrapRef<typeof import('../../composables/useDateFormat')['useDateFormat']>
     readonly useError: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']>
     readonly useExtendListAuth: UnwrapRef<typeof import('../../composables/useExtendListAuth')['useExtendListAuth']>
     readonly useFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']>
