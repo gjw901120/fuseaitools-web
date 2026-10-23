@@ -76,7 +76,7 @@
         </div>
         <div v-else class="result-display">
           <div class="image-result">
-            <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" />
+            <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" loading="lazy" decoding="async" />
             <div v-else class="image-placeholder">
               <i class="fas fa-spinner fa-spin"></i>
               <p>Generating...</p>
@@ -192,7 +192,7 @@ function fillFormFromOriginalData(o) {
 
 function pickDetailImageUrl(d) {
   if (!d || typeof d !== 'object') return ''
-  let url = d.outputUrl || d.imageUrl
+  const url = d.outputUrl || d.imageUrl
   if (url) return typeof url === 'string' ? url : url?.url || ''
   const ou = d.outputUrls
   if (typeof ou === 'string' && ou) return ou
@@ -217,7 +217,7 @@ async function loadDetailByRecordId(recordId) {
   loadingRecordId.value = recordId
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)

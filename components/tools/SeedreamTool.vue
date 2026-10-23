@@ -170,15 +170,15 @@
           <div v-if="!isDetailView && route.path === '/home/seedream/5-lite-text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/seedream-abstract-tech-blog-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Abstract tech blog cover — Seedream 5 Lite tutorial</a>
-              <a href="https://fuseaitools.com/news/seedream-vertical-social-story-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Vertical social story cover — Seedream 5 Lite tutorial</a>
+              <a href="/news/seedream-abstract-tech-blog-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Abstract tech blog cover — Seedream 5 Lite tutorial</a>
+              <a href="/news/seedream-vertical-social-story-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Vertical social story cover — Seedream 5 Lite tutorial</a>
             </div>
           </div>
 
           <div v-if="!isDetailView && route.path === '/home/seedream/5-lite-image-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/seedream-nezha-first-last-frame-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">First &amp; last frame images for video (Nezha &amp; Ao Bing sprint) — Seedream 5 Lite</a>
+              <a href="/news/seedream-nezha-first-last-frame-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">First &amp; last frame images for video (Nezha &amp; Ao Bing sprint) — Seedream 5 Lite</a>
             </div>
           </div>
 
@@ -196,7 +196,7 @@
                 <p class="form-label">Decomposed layers ({{ multiResultImages.length }} images)</p>
                 <div class="result-image-grid">
                   <a v-for="(u, idx) in multiResultImages" :key="idx" :href="u" target="_blank" rel="noopener noreferrer" class="grid-image-link">
-                    <img :src="u" :alt="`Generated image ${idx + 1}`" class="result-image grid-image" />
+                    <img :src="u" :alt="`Generated image ${idx + 1}`" class="result-image grid-image" loading="lazy" decoding="async" />
                   </a>
                 </div>
                 <div class="image-actions">
@@ -212,7 +212,7 @@
             </div>
             <div v-else class="result-display">
               <div class="image-result">
-                <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" />
+                <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" loading="lazy" decoding="async" />
                 <div v-else class="image-placeholder">
                   <i class="fas fa-spinner fa-spin"></i>
                   <p>Generating...</p>
@@ -471,7 +471,7 @@ function fillFormFromOriginalData(o) {
 
 function pickDetailImageUrl(d) {
   if (!d || typeof d !== 'object') return ''
-  let url = d.outputUrl || d.imageUrl
+  const url = d.outputUrl || d.imageUrl
   if (url) return typeof url === 'string' ? url : url?.url || ''
   const ou = d.outputUrls
   if (typeof ou === 'string' && ou) return ou
@@ -513,7 +513,7 @@ async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)

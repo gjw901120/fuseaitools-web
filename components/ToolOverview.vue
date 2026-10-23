@@ -59,6 +59,8 @@
 </template>
 
 <script setup>
+import { SITE_ORIGIN } from '~/constants/site'
+
 const props = defineProps({
   config: {
     type: Object,
@@ -67,7 +69,7 @@ const props = defineProps({
   },
 })
 const route = useRoute()
-const baseUrl = 'https://fuseaitools.com'
+const baseUrl = SITE_ORIGIN
 const canonicalUrl = `${baseUrl}${route.path}`.replace(/\/$/, '') || baseUrl
 const overviewPath = (route.path || '').replace(/\/$/, '')
 

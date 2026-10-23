@@ -18,7 +18,7 @@
                 <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
                   <div class="logo-card">
                     <div class="logo-wrapper">
-                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                      <img :src="item.logo" :alt="item.title" class="model-logo" loading="lazy" decoding="async" />
                     </div>
                     <h3 class="model-title">{{ item.title }}</h3>
                   </div>
@@ -35,7 +35,7 @@
                 <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
                   <div class="logo-card">
                     <div class="logo-wrapper">
-                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                      <img :src="item.logo" :alt="item.title" class="model-logo" loading="lazy" decoding="async" />
                     </div>
                     <h3 class="model-title">{{ item.title }}</h3>
                   </div>
@@ -52,7 +52,7 @@
                 <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
                   <div class="logo-card">
                     <div class="logo-wrapper">
-                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                      <img :src="item.logo" :alt="item.title" class="model-logo" loading="lazy" decoding="async" />
                     </div>
                     <h3 class="model-title">{{ item.title }}</h3>
                   </div>
@@ -69,7 +69,7 @@
                 <NuxtLink :to="item.route" class="gallery-item" @click="scrollToTop">
                   <div class="logo-card">
                     <div class="logo-wrapper">
-                      <img :src="item.logo" :alt="item.title" class="model-logo" />
+                      <img :src="item.logo" :alt="item.title" class="model-logo" loading="lazy" decoding="async" />
                     </div>
                     <h3 class="model-title">{{ item.title }}</h3>
                   </div>

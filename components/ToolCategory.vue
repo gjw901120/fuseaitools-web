@@ -10,7 +10,7 @@
           :key="index"
           class="tool-item"
       >
-        <img v-if="toolLogo(tool)" :src="toolLogo(tool)" :alt="toolName(tool)" class="tool-logo" />
+        <img v-if="toolLogo(tool)" :src="toolLogo(tool)" :alt="toolName(tool)" class="tool-logo" loading="lazy" decoding="async" />
         <span>{{ toolName(tool) }}</span>
       </div>
     </div>

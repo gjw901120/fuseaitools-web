@@ -18,7 +18,7 @@ export const useAuth = () => {
   const clearAuth = () => {
     user.value = null
     token.value = null
-    if (process.client) {
+    if (import.meta.client) {
       localStorage.removeItem('auth_token')
       localStorage.removeItem('auth_user')
     }
@@ -26,7 +26,7 @@ export const useAuth = () => {
 
   // 从 localStorage 恢复用户信息
   const initAuth = () => {
-    if (process.client) {
+    if (import.meta.client) {
       const savedToken = localStorage.getItem('auth_token')
       const savedUser = localStorage.getItem('auth_user')
       
@@ -110,12 +110,12 @@ export const useAuth = () => {
 
     // 保存到 localStorage
     // Token 保留 30 天（过期时间由后端 JWT 的 exp 字段决定）
-    if (process.client) {
+    if (import.meta.client) {
       localStorage.setItem('auth_token', jwtToken)
       localStorage.setItem('auth_user', JSON.stringify(user.value))
       
       // 记录登录时间（可选，用于调试）
-      if (process.dev) {
+      if (import.meta.dev) {
         const payload = parseJWT(jwtToken)
         if (payload?.exp) {
           const expirationDate = new Date(payload.exp * 1000)
@@ -143,7 +143,7 @@ export const useAuth = () => {
   })
 
   // 初始化
-  if (process.client) {
+  if (import.meta.client) {
     initAuth()
   }
 

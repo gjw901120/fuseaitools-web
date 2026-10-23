@@ -188,7 +188,7 @@
                 </div>
                 <template v-else-if="formData.videoUrls.length">
                   <div class="wan-video-preview-wrap">
-                    <video :src="formData.videoUrls[0]" class="wan-video-preview" controls></video>
+                    <video :src="formData.videoUrls[0]" class="wan-video-preview" controls preload="metadata"></video>
                     <button type="button" class="wan-video-remove" title="Remove" @click.stop="clearVideo">×</button>
                   </div>
                 </template>
@@ -253,7 +253,7 @@
                 <div v-if="isUploadingWan27FirstClip" class="wan-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
                 <template v-else-if="formData.firstClipUrl">
                   <div class="wan-video-preview-wrap" @click.stop>
-                    <video :src="formData.firstClipUrl" class="wan-video-preview" controls playsinline></video>
+                    <video :src="formData.firstClipUrl" class="wan-video-preview" controls playsinline preload="metadata"></video>
                     <button type="button" class="wan-video-remove" title="Remove" @click.stop="clearWan27FirstClip">×</button>
                   </div>
                   <button type="button" class="action-btn wan-upload-replace-btn" @click.stop="triggerWan27FirstClipInput">Replace clip</button>
@@ -295,7 +295,7 @@
                 <div v-if="isUploadingWan27EditVideo" class="wan-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
                 <template v-else-if="formData.videoUrl">
                   <div class="wan-video-preview-wrap">
-                    <video :src="formData.videoUrl" class="wan-video-preview" controls playsinline></video>
+                    <video :src="formData.videoUrl" class="wan-video-preview" controls playsinline preload="metadata"></video>
                     <button type="button" class="wan-video-remove" title="Remove" @click.stop="clearWan27EditVideo">×</button>
                   </div>
                 </template>
@@ -366,7 +366,7 @@
                   <div class="wan-ref-videos-block" @click.stop>
                     <div class="wan-ref-videos-list">
                       <div v-for="(url, idx) in formData.referenceVideos" :key="url + idx" class="wan-video-preview-wrap wan-ref-video-tile">
-                        <video :src="url" class="wan-video-preview" controls playsinline></video>
+                        <video :src="url" class="wan-video-preview" controls playsinline preload="metadata"></video>
                         <button type="button" class="wan-video-remove" title="Remove" @click.stop="removeWan27R2vReferenceVideoAt(idx)">×</button>
                       </div>
                     </div>
@@ -485,7 +485,7 @@
                       <div class="wan-ref-videos-block" @click.stop>
                         <div class="wan-ref-videos-list">
                           <div v-for="(url, idx) in formData.wan30RefVideos" :key="'wan30-v-' + idx" class="wan-video-preview-wrap wan-ref-video-tile">
-                            <video :src="url" class="wan-video-preview" controls playsinline></video>
+                            <video :src="url" class="wan-video-preview" controls playsinline preload="metadata"></video>
                             <button type="button" class="wan-video-remove" title="Remove" @click.stop="removeWan30RefVideoAt(idx)">×</button>
                           </div>
                         </div>
@@ -772,8 +772,8 @@
         <div v-if="!isDetailView && route.path === '/home/wan/2-7-image'" class="tutorial-showcase">
           <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
           <div class="tutorial-showcase-links">
-            <a href="https://fuseaitools.com/news/wan-27-sequential-animation-frames-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create animation frame sequences in one click with Wan 2.7 Image sequential mode</a>
-            <a href="https://fuseaitools.com/news/wan-27-color-palette-brand-geometry-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use Wan 2.7 Image Color Palette to generate brand-consistent geometric visuals</a>
+            <a href="/news/wan-27-sequential-animation-frames-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create animation frame sequences in one click with Wan 2.7 Image sequential mode</a>
+            <a href="/news/wan-27-color-palette-brand-geometry-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use Wan 2.7 Image Color Palette to generate brand-consistent geometric visuals</a>
           </div>
         </div>
         <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
@@ -793,7 +793,7 @@
             <template v-if="displayResult.imageUrls?.length">
               <div class="image-grid">
                 <div v-for="(imgUrl, idx) in displayResult.imageUrls" :key="imgUrl + idx" class="image-grid-item">
-                  <img :src="imgUrl" class="image-element" :alt="`Generated image ${idx + 1}`" />
+                  <img :src="imgUrl" class="image-element" :alt="`Generated image ${idx + 1}`" loading="lazy" decoding="async" />
                   <div class="video-actions image-item-actions">
                     <button @click="downloadImageAsset(imgUrl, idx)" class="action-btn">
                       <i class="fas fa-download"></i> Download
@@ -803,7 +803,7 @@
               </div>
             </template>
             <div v-else class="image-player">
-              <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" class="image-element" alt="Generated image" />
+              <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" class="image-element" alt="Generated image" loading="lazy" decoding="async" />
               <div v-else class="video-placeholder">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Generating...</p>
@@ -817,7 +817,7 @@
           </div>
           <div v-else class="video-result">
             <div class="video-player">
-              <video v-if="displayResult.videoUrl" :src="displayResult.videoUrl" controls class="video-element"></video>
+              <video v-if="displayResult.videoUrl" :src="displayResult.videoUrl" controls preload="metadata" class="video-element"></video>
               <div v-else class="video-placeholder">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Generating...</p>
@@ -869,13 +869,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UploadImage from './common/UploadImage.vue'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import { useRecordPolling } from '~/composables/useRecordPolling'
 import { useModelPrice } from '~/composables/useModelPrice'
+import { useWanBbox } from '~/composables/useWanBbox'
 
 const router = useRouter()
 const route = useRoute()
@@ -1057,274 +1058,34 @@ const nMax = computed(() => formData.enableSequential ? 12 : 4)
 const maxImageFiles = computed(() => isWanImageMode.value ? 9 : 5)
 
 /* —— bbox_list 可视化（与 input_urls 对齐） —— */
-const bboxActiveImageIdx = ref(0)
-const bboxThumbSizeByIdx = reactive({})
-function onBboxThumbLoad(e, idx) {
-  const el = e?.target
-  if (el instanceof HTMLImageElement && el.naturalWidth) {
-    bboxThumbSizeByIdx[idx] = { w: el.naturalWidth, h: el.naturalHeight }
-  }
-}
-const activeImageBboxCount = computed(() => (formData.bboxPerImage[bboxActiveImageIdx.value] || []).length)
-
-function syncBboxPerImageToImages() {
-  const len = formData.imageUrls.length
-  while (formData.bboxPerImage.length < len) formData.bboxPerImage.push([])
-  if (formData.bboxPerImage.length > len) formData.bboxPerImage.splice(len)
-  if (bboxActiveImageIdx.value >= len) bboxActiveImageIdx.value = Math.max(0, len - 1)
-}
-
-watch(
-  () => formData.imageUrls.length,
-  () => {
-    syncBboxPerImageToImages()
-  },
-  { immediate: true }
-)
-
-watch(hasImageInput, (ok) => {
-  if (!ok) bboxModalOpen.value = false
-})
-
-const bboxModalOpen = ref(false)
-const bboxModalImageIdx = ref(0)
-/** @type {import('vue').Ref<number | null>} */
-const bboxModalEditIdx = ref(null)
-const bboxModalCanvasRef = ref(null)
-const bboxModalNaturalW = ref(0)
-const bboxModalNaturalH = ref(0)
-/** @type {import('vue').Ref<number[] | null>} */
-const bboxDraft = ref(null)
-
-let bboxModalImg = null
-let bboxCreating = false
-/** @type {{ x: number, y: number } | null} */
-let bboxDragStart = null
-
-function normalizeRectCoords(x1, y1, x2, y2) {
-  return [
-    Math.round(Math.min(x1, x2)),
-    Math.round(Math.min(y1, y2)),
-    Math.round(Math.max(x1, x2)),
-    Math.round(Math.max(y1, y2))
-  ]
-}
-
-function parseBoxRow(row) {
-  if (!Array.isArray(row)) return []
-  const out = []
-  for (const b of row) {
-    if (Array.isArray(b) && b.length >= 4) {
-      const x1 = Number(b[0])
-      const y1 = Number(b[1])
-      const x2 = Number(b[2])
-      const y2 = Number(b[3])
-      if ([x1, y1, x2, y2].every(Number.isFinite)) out.push(normalizeRectCoords(x1, y1, x2, y2))
-    }
-    if (out.length >= 2) break
-  }
-  return out
-}
-
-function applyBboxListFromApi(raw) {
-  if (!Array.isArray(raw)) return
-  syncBboxPerImageToImages()
-  formData.bboxPerImage = formData.imageUrls.map((_, i) => parseBoxRow(raw[i]))
-}
-
-function buildBboxListForApi() {
-  if (!hasImageInput.value) return undefined
-  const out = formData.imageUrls.map((_, i) => (formData.bboxPerImage[i] || []).map((b) => [...b]))
-  const any = out.some((row) => row.length > 0)
-  return any ? out : undefined
-}
-
-function removeBboxBox(imageIdx, boxIdx) {
-  const arr = formData.bboxPerImage[imageIdx]
-  if (arr) arr.splice(boxIdx, 1)
-}
-
-function clearBboxesForActiveImage() {
-  const i = bboxActiveImageIdx.value
-  if (formData.bboxPerImage[i]) formData.bboxPerImage[i].splice(0, formData.bboxPerImage[i].length)
-}
-
-function clearAllBboxes() {
-  formData.imageUrls.forEach((_, i) => {
-    if (!formData.bboxPerImage[i]) formData.bboxPerImage[i] = []
-    else formData.bboxPerImage[i].splice(0, formData.bboxPerImage[i].length)
-  })
-}
-
-function openBboxModal(imageIdx, editIdx) {
-  const existing = formData.bboxPerImage[imageIdx] || []
-  if (editIdx == null && existing.length >= 2) {
-    showError('Each image supports at most 2 boxes.')
-    return
-  }
-  bboxModalImageIdx.value = imageIdx
-  bboxModalEditIdx.value = editIdx
-  bboxDraft.value = null
-  bboxCreating = false
-  bboxDragStart = null
-  bboxModalNaturalW.value = 0
-  bboxModalNaturalH.value = 0
-  bboxModalImg = null
-  bboxModalOpen.value = true
-
-  const url = formData.imageUrls[imageIdx]
-  const img = new Image()
-  // 不设 crossOrigin：CDN 若未返回 Access-Control-Allow-Origin，anonymous 会导致 CORS 失败；
-  // 此处仅用 drawImage 展示与画框，无需读像素，与缩略图 <img> 同源策略一致即可加载。
-  img.onload = () => {
-    bboxModalImg = img
-    bboxModalNaturalW.value = img.naturalWidth
-    bboxModalNaturalH.value = img.naturalHeight
-    nextTick(() => {
-      const c = bboxModalCanvasRef.value
-      if (!c || !bboxModalImg) return
-      c.width = bboxModalNaturalW.value
-      c.height = bboxModalNaturalH.value
-      redrawBboxModalCanvas()
-    })
-  }
-  img.onerror = () => {
-    showError('Failed to load image for bbox editor')
-    bboxModalOpen.value = false
-  }
-  img.src = url
-}
-
-function closeBboxModalCancel() {
-  onWindowBboxPointerUp()
-  bboxModalOpen.value = false
-  bboxDraft.value = null
-  bboxCreating = false
-  bboxDragStart = null
-  bboxModalEditIdx.value = null
-  bboxModalImg = null
-}
-
-function clearBboxModalDraft() {
-  bboxDraft.value = null
-  bboxCreating = false
-  bboxDragStart = null
-  redrawBboxModalCanvas()
-}
-
-const bboxDraftValid = computed(() => {
-  const d = bboxDraft.value
-  if (!d || d.length < 4) return false
-  return d[2] - d[0] >= 2 && d[3] - d[1] >= 2
-})
-
-function canvasPixelFromEvent(e) {
-  const canvas = bboxModalCanvasRef.value
-  if (!canvas) return { x: 0, y: 0 }
-  const rect = canvas.getBoundingClientRect()
-  const scaleX = canvas.width / rect.width
-  const scaleY = canvas.height / rect.height
-  const x = (e.clientX - rect.left) * scaleX
-  const y = (e.clientY - rect.top) * scaleY
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
-  return {
-    x: clamp(x, 0, canvas.width),
-    y: clamp(y, 0, canvas.height)
-  }
-}
-
-function onWindowBboxPointerMove(e) {
-  if (!bboxCreating || !bboxDragStart || !bboxModalImg) return
-  const p = canvasPixelFromEvent(e)
-  bboxDraft.value = normalizeRectCoords(bboxDragStart.x, bboxDragStart.y, p.x, p.y)
-  redrawBboxModalCanvas()
-}
-
-function onWindowBboxPointerUp() {
-  bboxCreating = false
-  bboxDragStart = null
-  window.removeEventListener('mousemove', onWindowBboxPointerMove)
-  window.removeEventListener('mouseup', onWindowBboxPointerUp)
-}
-
-function onBboxCanvasPointerDown(e) {
-  if (!bboxModalImg) return
-  const p = canvasPixelFromEvent(e)
-  bboxCreating = true
-  bboxDragStart = p
-  bboxDraft.value = [p.x, p.y, p.x, p.y]
-  redrawBboxModalCanvas()
-  window.addEventListener('mousemove', onWindowBboxPointerMove)
-  window.addEventListener('mouseup', onWindowBboxPointerUp)
-}
-
-function onBboxCanvasPointerUp() {
-  onWindowBboxPointerUp()
-}
-
-function strokeBoxOnCtx(ctx, b, stroke, fill) {
-  const [x1, y1, x2, y2] = b
-  const w = x2 - x1
-  const h = y2 - y1
-  if (w <= 0 || h <= 0) return
-  if (fill) {
-    ctx.fillStyle = fill
-    ctx.fillRect(x1, y1, w, h)
-  }
-  const lw = Math.max(2, Math.round((ctx.canvas?.width || 512) / 256))
-  ctx.strokeStyle = stroke
-  ctx.lineWidth = lw
-  ctx.strokeRect(x1, y1, w, h)
-}
-
-function redrawBboxModalCanvas() {
-  const c = bboxModalCanvasRef.value
-  if (!c || !bboxModalImg) return
-  const ctx = c.getContext('2d')
-  if (!ctx) return
-  ctx.clearRect(0, 0, c.width, c.height)
-  ctx.drawImage(bboxModalImg, 0, 0)
-  const idx = bboxModalImageIdx.value
-  const saved = formData.bboxPerImage[idx] || []
-  const editI = bboxModalEditIdx.value
-  saved.forEach((b, si) => {
-    if (editI != null && si === editI) return
-    strokeBoxOnCtx(ctx, b, '#2563eb', 'rgba(37, 99, 235, 0.12)')
-    ctx.fillStyle = '#2563eb'
-    ctx.font = `${Math.max(12, Math.round(c.width / 48))}px sans-serif`
-    ctx.fillText(`Box ${si + 1}`, b[0] + 4, b[1] + Math.max(14, Math.round(c.width / 40)))
-  })
-  if (bboxDraft.value) strokeBoxOnCtx(ctx, bboxDraft.value, '#ea580c', 'rgba(234, 88, 12, 0.15)')
-}
-
-function saveBboxModal() {
-  if (!bboxDraftValid.value) {
-    showError('Drag a rectangle first (min ~2px per side).')
-    return
-  }
-  const norm = normalizeRectCoords(bboxDraft.value[0], bboxDraft.value[1], bboxDraft.value[2], bboxDraft.value[3])
-  const i = bboxModalImageIdx.value
-  if (!formData.bboxPerImage[i]) formData.bboxPerImage[i] = []
-  const edit = bboxModalEditIdx.value
-  if (edit != null) {
-    formData.bboxPerImage[i].splice(edit, 1, norm)
-  } else {
-    formData.bboxPerImage[i].push(norm)
-  }
-  closeBboxModalCancel()
-}
-
-watch(bboxModalOpen, (open) => {
-  if (!open) return
-  nextTick(() => {
-    if (bboxModalImg && bboxModalCanvasRef.value) {
-      const c = bboxModalCanvasRef.value
-      c.width = bboxModalNaturalW.value
-      c.height = bboxModalNaturalH.value
-      redrawBboxModalCanvas()
-    }
-  })
-})
+/**
+ * bbox_list 编辑（缩略图、弹窗画框、保存/回填）抽到 composables/useWanBbox.js，
+ * 与 formData.bboxPerImage 共用同一份状态。
+ */
+const {
+  bboxActiveImageIdx,
+  bboxThumbSizeByIdx,
+  onBboxThumbLoad,
+  activeImageBboxCount,
+  syncBboxPerImageToImages,
+  applyBboxListFromApi,
+  buildBboxListForApi,
+  removeBboxBox,
+  clearBboxesForActiveImage,
+  clearAllBboxes,
+  openBboxModal,
+  closeBboxModalCancel,
+  clearBboxModalDraft,
+  bboxDraftValid,
+  onBboxCanvasPointerDown,
+  onBboxCanvasPointerUp,
+  saveBboxModal,
+  bboxModalOpen,
+  bboxModalImageIdx,
+  bboxModalNaturalW,
+  bboxModalNaturalH,
+  bboxModalCanvasRef
+} = useWanBbox(formData, hasImageInput, showError)
 
 function fillFormFromOriginalData(o) {
   if (!o || typeof o !== 'object') return
@@ -1407,7 +1168,7 @@ function fillFormFromOriginalData(o) {
 
 function pickDetailVideoUrl(d) {
   if (!d || typeof d !== 'object') return ''
-  let url = d.outputUrl || d.videoUrl
+  const url = d.outputUrl || d.videoUrl
   if (url) return typeof url === 'string' ? url : url?.url || ''
   const ou = d.outputUrls
   if (typeof ou === 'string' && ou) return ou
@@ -1443,7 +1204,7 @@ async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)

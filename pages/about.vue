@@ -87,7 +87,9 @@
 </template>
 
 <script setup>
-const siteUrl = 'https://fuseaitools.com'
+import { SITE_ORIGIN } from '~/constants/site'
+
+const siteUrl = SITE_ORIGIN
 const aboutCanonical = `${siteUrl}/about`
 
 useHead({

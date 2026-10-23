@@ -12,7 +12,7 @@ export function getEffectiveApiBase(event) {
     try {
       const u = new URL(getHeader(event, 'referer'))
       host = u.hostname.toLowerCase()
-    } catch (_) {}
+    } catch (_) { /* 忽略：referer 非法时按无 host 处理 */ }
   }
   const isProductionDomain = host === 'www.fuseaitools.com' || host === 'fuseaitools.com'
 

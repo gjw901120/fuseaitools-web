@@ -5,7 +5,7 @@ export function useExtendListAuth() {
   const { isAuthenticated } = useAuth()
 
   function shouldFetchExtendList() {
-    if (!process.client) return false
+    if (!import.meta.client) return false
     return !!isAuthenticated.value
   }
 

@@ -138,7 +138,7 @@
           <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
               <div class="image-wrapper">
-                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" loading="lazy" decoding="async" />
                 <div class="image-overlay">
                   <button @click="downloadImage(image)" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -172,7 +172,7 @@
           <div v-else-if="!isDetailView && generatedImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in generatedImages" :key="index" class="image-item">
               <div class="image-wrapper">
-                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" loading="lazy" decoding="async" />
                 <div class="image-overlay">
                   <button @click="downloadImage(image)" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -290,7 +290,7 @@ const uploadedFiles = ref([])
 const referenceImagesUploadRef = ref(null)
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')
@@ -454,7 +454,7 @@ const generateImage = async () => {
       return
     }
 
-    let urls = data?.outputUrls ?? data?.urls ?? data?.data?.outputUrls ?? data?.images ?? (Array.isArray(data) ? data : [])
+    const urls = data?.outputUrls ?? data?.urls ?? data?.data?.outputUrls ?? data?.images ?? (Array.isArray(data) ? data : [])
     if (!Array.isArray(urls) || urls.length === 0) {
       showError('No image URLs in response')
       return

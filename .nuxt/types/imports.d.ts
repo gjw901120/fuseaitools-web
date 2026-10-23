@@ -2,6 +2,7 @@
 export {}
 declare global {
   const CHILD_LABEL_OVERRIDES_BY_ROUTE: typeof import('../../utils/toolBreadcrumbs')['CHILD_LABEL_OVERRIDES_BY_ROUTE']
+  const PRODUCTION_API_BASE: typeof import('../../utils/apiBase')['PRODUCTION_API_BASE']
   const TOOL_PARENT_LABEL_BY_SLUG: typeof import('../../utils/toolBreadcrumbs')['TOOL_PARENT_LABEL_BY_SLUG']
   const abortNavigation: typeof import('../../node_modules/nuxt/dist/app/composables/router')['abortNavigation']
   const addRouteMiddleware: typeof import('../../node_modules/nuxt/dist/app/composables/router')['addRouteMiddleware']
@@ -37,6 +38,7 @@ declare global {
   const getAppManifest: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']
   const getCurrentInstance: typeof import('../../node_modules/vue')['getCurrentInstance']
   const getCurrentScope: typeof import('../../node_modules/vue')['getCurrentScope']
+  const getEffectiveApiBaseForClient: typeof import('../../utils/apiBase')['getEffectiveApiBaseForClient']
   const getFetchErrorMessage: typeof import('../../utils/parseStandardApiResponse')['getFetchErrorMessage']
   const getPriceRangeFromData: typeof import('../../composables/useModelPrice')['getPriceRangeFromData']
   const getRouteRules: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']
@@ -139,7 +141,6 @@ declare global {
   const useModelPrice: typeof import('../../composables/useModelPrice')['useModelPrice']
   const useNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']
   const useNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']
-  const useNuxtDevTools: typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']
   const usePreviewMode: typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']
   const useRecordPolling: typeof import('../../composables/useRecordPolling')['useRecordPolling']
   const useRequestEvent: typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']
@@ -196,6 +197,7 @@ declare global {
   const useToolSeoPageScroll: typeof import('../../composables/useToolSeoPageScroll')['useToolSeoPageScroll']
   const useTransitionState: typeof import('../../node_modules/vue')['useTransitionState']
   const useUserDetail: typeof import('../../composables/useUserDetail')['useUserDetail']
+  const useWanBbox: typeof import('../../composables/useWanBbox')['useWanBbox']
   const watch: typeof import('../../node_modules/vue')['watch']
   const watchEffect: typeof import('../../node_modules/vue')['watchEffect']
   const watchPostEffect: typeof import('../../node_modules/vue')['watchPostEffect']
@@ -218,6 +220,7 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
     readonly CHILD_LABEL_OVERRIDES_BY_ROUTE: UnwrapRef<typeof import('../../utils/toolBreadcrumbs')['CHILD_LABEL_OVERRIDES_BY_ROUTE']>
+    readonly PRODUCTION_API_BASE: UnwrapRef<typeof import('../../utils/apiBase')['PRODUCTION_API_BASE']>
     readonly TOOL_PARENT_LABEL_BY_SLUG: UnwrapRef<typeof import('../../utils/toolBreadcrumbs')['TOOL_PARENT_LABEL_BY_SLUG']>
     readonly abortNavigation: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/router')['abortNavigation']>
     readonly addRouteMiddleware: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/router')['addRouteMiddleware']>
@@ -253,6 +256,7 @@ declare module 'vue' {
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
+    readonly getEffectiveApiBaseForClient: UnwrapRef<typeof import('../../utils/apiBase')['getEffectiveApiBaseForClient']>
     readonly getFetchErrorMessage: UnwrapRef<typeof import('../../utils/parseStandardApiResponse')['getFetchErrorMessage']>
     readonly getPriceRangeFromData: UnwrapRef<typeof import('../../composables/useModelPrice')['getPriceRangeFromData']>
     readonly getRouteRules: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']>
@@ -355,7 +359,6 @@ declare module 'vue' {
     readonly useModelPrice: UnwrapRef<typeof import('../../composables/useModelPrice')['useModelPrice']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
-    readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>
     readonly usePreviewMode: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']>
     readonly useRecordPolling: UnwrapRef<typeof import('../../composables/useRecordPolling')['useRecordPolling']>
     readonly useRequestEvent: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']>
@@ -412,6 +415,7 @@ declare module 'vue' {
     readonly useToolSeoPageScroll: UnwrapRef<typeof import('../../composables/useToolSeoPageScroll')['useToolSeoPageScroll']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
     readonly useUserDetail: UnwrapRef<typeof import('../../composables/useUserDetail')['useUserDetail']>
+    readonly useWanBbox: UnwrapRef<typeof import('../../composables/useWanBbox')['useWanBbox']>
     readonly watch: UnwrapRef<typeof import('../../node_modules/vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('../../node_modules/vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('../../node_modules/vue')['watchPostEffect']>

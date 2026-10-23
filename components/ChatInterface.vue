@@ -44,6 +44,8 @@
                 :src="fileUrl" 
                 :alt="`Image ${index + 1}`"
                 class="message-image"
+                loading="lazy"
+                decoding="async"
                 @click="openImagePreview(fileUrl)"
               />
               <!-- 文档显示文档图标 -->
@@ -214,7 +216,7 @@ const userName = computed(() => {
 
 // 获取认证 token
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token.value) {
       return token.value
@@ -244,7 +246,7 @@ const chatDetailLoading = ref(false)
 const routeRecordId = computed(() => route.query['record-id'] || '')
 
 async function loadChatDetailByRecordId(recordId) {
-  if (!recordId || !process.client) return
+  if (!recordId || !import.meta.client) return
   if (!CHAT_DETAIL_ROUTE_PATHS.has(route.path)) return
   chatDetailLoading.value = true
   try {
@@ -338,7 +340,7 @@ const currentModelInfo = computed(() => {
 // 获取模型列表（先读本地 1 小时缓存，无有效缓存时请求 /api/common/models/tree 并写入缓存）
 const fetchModels = async () => {
   if (!props.modelCategory) return
-  if (!process.client) {
+  if (!import.meta.client) {
     console.warn('fetchModels: Skipping on server side')
     return
   }
@@ -437,7 +439,7 @@ const getFileName = (url) => {
 
 // 打开图片预览
 const openImagePreview = (imageUrl) => {
-  if (!process.client) return
+  if (!import.meta.client) return
   // 在新窗口打开图片
   window.open(imageUrl, '_blank')
 }
@@ -445,7 +447,7 @@ const openImagePreview = (imageUrl) => {
 // 格式化消息文本（支持 Markdown 风格的表格、列表等）
 const formatMessageText = (text) => {
   if (!text) return ''
-  if (!process.client) return text // 服务端渲染时直接返回原文
+  if (!import.meta.client) return text // 服务端渲染时直接返回原文
   
   // 转义 HTML 特殊字符，防止 XSS
   const escapeHtml = (str) => {
@@ -521,7 +523,7 @@ const formatMessageText = (text) => {
   formatted = formatted.replace(/^#\s+(.+)$/gm, '<h1 class="message-heading">$1</h1>')
   
   // 处理无序列表：- 或 * 开头
-  formatted = formatted.replace(/^[\-\*]\s+(.+)$/gm, '<li class="message-list-item">$1</li>')
+  formatted = formatted.replace(/^[-*]\s+(.+)$/gm, '<li class="message-list-item">$1</li>')
   // 将连续的列表项包装在 ul 标签中
   formatted = formatted.replace(/(<li[^>]*>[\s\S]*?<\/li>)/g, (match) => {
     if (match.includes('<ul')) return match
@@ -787,7 +789,7 @@ const sendMessage = async () => {
 
 // 流式聊天请求
 const streamChatRequest = async (prompt, messageId, userMessageId) => {
-  if (!process.client) return
+  if (!import.meta.client) return
   
   // 获取模型名称
   const modelName = currentModelInfo.value.name
@@ -807,7 +809,7 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
   // fileUrls 字段仅应用在 Chat 类型模型上（包括 GPT、DeepSeek、Claude、Gemini 等）
   if (fileUrls.value.length > 0 && currentModelInfo.value && currentModelInfo.value.type === 'CHAT') {
     requestBody.fileUrls = fileUrls.value
-    if (process.dev) {
+    if (import.meta.dev) {
       console.log('[Chat Stream] Adding fileUrls to request:', {
         model: modelName,
         category: props.modelCategory,
@@ -900,7 +902,7 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
           try {
             const eventName = currentEvent || 'message'
 
-            if (process.dev) {
+            if (import.meta.dev) {
               // 用 log（不是 debug），避免控制台过滤导致看不到
               console.log('[Chat Stream] SSE message received:', { event: eventName, id: currentId, data: currentData })
             }
@@ -1038,7 +1040,7 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
   if (currentData && !hasError) {
     const eventName = currentEvent || 'message'
     try {
-      if (process.dev) {
+      if (import.meta.dev) {
         console.log('[Chat Stream] SSE final message received:', { event: eventName, id: currentId, data: currentData })
       }
 
@@ -1067,7 +1069,7 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
         })
         console.warn('[Chat Stream] Non-00000 raw string (final):', String(currentData))
         // 即使控制台被过滤，也把最后一次错误挂到 window 上，便于手动查看
-        if (process.client) {
+        if (import.meta.client) {
           window.__lastStreamError = {
             at: Date.now(),
             event: eventName,
@@ -1133,7 +1135,7 @@ const handleNewStart = () => {
   // 清除聊天消息
   chatMessages.value = []
   // 重新加载页面
-  if (process.client) {
+  if (import.meta.client) {
     window.location.reload()
   }
 }

@@ -81,7 +81,7 @@ export function useUserDetail() {
 
   // 当在工具页面等位置首次使用该 composable 且参数为空时，
   // 触发一次异步加载（不阻塞调用方），后续计算会自动使用最新的 discount。
-  if (process.client && isAuthenticated.value && !loaded.value && !loading.value) {
+  if (import.meta.client && isAuthenticated.value && !loaded.value && !loading.value) {
     loading.value = true
     loadUserDetail().finally(() => {
       loading.value = false

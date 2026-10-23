@@ -58,7 +58,7 @@
               <div v-if="referenceVideo && !isUploadingVideo" class="luma-video-display">
                 <div v-if="isDetailView" class="form-label">Input video (this task)</div>
                 <div class="luma-video-preview-wrap">
-                  <video :src="referenceVideo" class="luma-video-preview" controls></video>
+                  <video :src="referenceVideo" class="luma-video-preview" controls preload="metadata"></video>
                   <button v-if="!isDetailView" type="button" class="luma-video-remove" title="Remove" @click="clearReferenceVideo">
                     <i class="fas fa-times"></i>
                   </button>
@@ -218,7 +218,7 @@ const { post } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')
@@ -390,7 +390,7 @@ const modifyVideo = async () => {
     const data = await post('/api/video/luma/generate', body)
     const rid = data?.recordId ?? data?.data?.recordId
     if (rid) { router.push(route.path + '?record-id=' + encodeURIComponent(rid)); return }
-    let payload = data?.data ?? data
+    const payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
       url: payload.videoUrl || payload.url,

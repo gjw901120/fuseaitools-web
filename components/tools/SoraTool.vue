@@ -590,8 +590,6 @@ const form = reactive({
 
 const imageUploadRef = ref(null)
 const imageUrlsText = ref('')
-const videoList = ref([])
-const isLoadingVideoList = ref(false)
 const isUploadingImages = ref(false)
 const watermarkVideoInputRef = ref(null)
 const isUploadingWatermarkVideo = ref(false)
@@ -721,27 +719,6 @@ const switchMode = (model) => {
   router.push({ path, query: nextQuery })
 }
 
-// 获取视频列表
-const fetchVideoList = async () => {
-  if (isLoadingVideoList.value) return
-  isLoadingVideoList.value = true
-  try {
-    const response = await fetch('/api/sora/video-list')
-    if (response.ok) {
-      const data = await response.json()
-      videoList.value = Array.isArray(data) ? data : (data.list || data.videos || [])
-    } else {
-      console.error('Failed to fetch video list')
-      videoList.value = []
-    }
-  } catch (error) {
-    console.error('Error fetching video list:', error)
-    videoList.value = []
-  } finally {
-    isLoadingVideoList.value = false
-  }
-}
-
 const canSubmit = computed(() => {
   // watermark remover: require selected video URL
   if (form.model === 'watermark-remover') {
@@ -860,7 +837,7 @@ const onSubmit = async () => {
       })
       return
     }
-    let payload = data?.data ?? data
+    const payload = data?.data ?? data
     results.value.unshift(typeof payload === 'object' ? payload : { raw: payload })
   } catch (e) {
     console.error(e)

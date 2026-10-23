@@ -209,8 +209,8 @@
           <div v-if="!isDetailView && route.path === '/home/ideogram/v3-text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/ideogram-cinematic-dusk-lakeside-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create a cinematic dusk lakeside scene for calm, magical brand visuals</a>
-              <a href="https://fuseaitools.com/news/ideogram-french-relaxed-illustration-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create French relaxed illustrations and add warm storytelling to your brand</a>
+              <a href="/news/ideogram-cinematic-dusk-lakeside-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create a cinematic dusk lakeside scene for calm, magical brand visuals</a>
+              <a href="/news/ideogram-french-relaxed-illustration-brand-visual-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create French relaxed illustrations and add warm storytelling to your brand</a>
             </div>
           </div>
           <template v-if="isDetailView && (loadingRecordId || (!detailData && routeRecordId))">
@@ -232,9 +232,11 @@
             </div>
           </template>
           <template v-else-if="isDetailView && detailData && Number(detailData.status) === 2">
-            <div v-if="detailOutputItems.length > 0" class="result-item" v-for="(item, idx) in detailOutputItems" :key="`detail-${idx}`">
-              <img :src="item.url" :alt="'Output ' + (idx + 1)" class="result-image" loading="lazy" />
-            </div>
+            <template v-if="detailOutputItems.length > 0">
+              <div v-for="(item, idx) in detailOutputItems" :key="`detail-${idx}`" class="result-item">
+                <img :src="item.url" :alt="'Output ' + (idx + 1)" class="result-image" loading="lazy" />
+              </div>
+            </template>
             <div v-else class="result-item">
               <pre class="payload-json">{{ JSON.stringify(detailData, null, 2) }}</pre>
             </div>
@@ -655,23 +657,8 @@ const onSubmit = async () => {
         negativePrompt: form.negative_prompt?.trim() || undefined
       }
     } else {
-      // 兜底走老的 generate 接口，避免未来新增 mode 时直接报错
-      apiPath = '/api/image/ideogram/generate'
-      body = {
-        model: m,
-        prompt: form.prompt?.trim() || undefined,
-        renderingSpeed: form.rendering_speed,
-        style: form.style,
-        expandPrompt: form.expand_prompt,
-        imageSize: form.image_size,
-        seed: form.seed,
-        negativePrompt: form.negative_prompt?.trim() || undefined,
-        numImages: form.num_images,
-        strength: form.strength
-      }
-      if (form.image_url) body.imageUrl = form.image_url
-      if (form.mask_url) body.maskUrl = form.mask_url
-      if (form.reference_image_urls?.length) body.referenceImageUrls = form.reference_image_urls
+      showError(`Unsupported mode: ${m}`)
+      return
     }
 
     const data = await post(apiPath, body)

@@ -192,7 +192,7 @@
                   </div>
                   <div v-if="formData.video_urls.length && !isUploadingMotionVideo" class="kling-video-display">
                     <div class="kling-video-preview-wrap">
-                      <video :src="formData.video_urls[0]" class="kling-video-preview" controls></video>
+                      <video :src="formData.video_urls[0]" class="kling-video-preview" controls preload="metadata"></video>
                     </div>
                   </div>
                 </div>
@@ -369,7 +369,7 @@
                   <div v-if="isUploadingOmniRefVideo" class="kling-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading video...</div>
                   <div v-if="formData.omni_ref_video_urls.length && !isUploadingOmniRefVideo" class="kling-video-display">
                     <div v-for="(u, i) in formData.omni_ref_video_urls" :key="'omni-rv-' + i" class="kling-video-preview-wrap">
-                      <video :src="u" class="kling-video-preview" controls></video>
+                      <video :src="u" class="kling-video-preview" controls preload="metadata"></video>
                     </div>
                   </div>
                 </div>
@@ -465,7 +465,7 @@
                   <div v-if="isUploadingOmniTransform" class="kling-video-uploading"><i class="fas fa-spinner fa-spin"></i> Uploading video...</div>
                   <div v-if="formData.omni_trans_video_urls.length && !isUploadingOmniTransform" class="kling-video-display">
                     <div class="kling-video-preview-wrap">
-                      <video :src="formData.omni_trans_video_urls[0]" class="kling-video-preview" controls></video>
+                      <video :src="formData.omni_trans_video_urls[0]" class="kling-video-preview" controls preload="metadata"></video>
                     </div>
                   </div>
                 </div>
@@ -573,7 +573,7 @@
         </div>
         <div v-else-if="displayVideoUrl" class="video-result">
           <div class="video-player">
-            <video :src="displayVideoUrl" controls class="video-element"></video>
+            <video :src="displayVideoUrl" controls preload="metadata" class="video-element"></video>
           </div>
           <div class="video-actions">
             <button @click="downloadVideo" class="action-btn"><i class="fas fa-download"></i> Download</button>
@@ -1257,7 +1257,7 @@ function removeShotElement(shotIdx) {
 watch(() => formData.v3_multi_shots, (multi) => {
   if (!multi && formData.v3_multi_prompt.length > 1) {
     const first = formData.v3_multi_prompt[0]
-    const d = Number(first?.duration) ?? 5
+    const d = Number(first?.duration)
     formData.v3_multi_prompt = [{ prompt: first?.prompt ?? '', duration: (d >= 3 && d <= 15) ? d : 5, element: first?.element ?? null }]
   }
 }, { flush: 'sync' })
@@ -1412,7 +1412,7 @@ const canGenerate = computed(() => {
 
 function pickKlingDetailVideoUrl(d) {
   if (!d || typeof d !== 'object') return ''
-  let url = d.outputUrl || d.videoUrl
+  const url = d.outputUrl || d.videoUrl
   if (url) return typeof url === 'string' ? url : url?.url || ''
   const ou = d.outputUrls
   if (typeof ou === 'string' && ou) return ou
@@ -1637,7 +1637,7 @@ async function loadDetailByRecordId(recordId) {
   loadingRecordId.value = recordId
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)

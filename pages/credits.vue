@@ -174,7 +174,9 @@ definePageMeta({
 useHead({
   title: 'Credits - FuseAI Tools',
   meta: [
-    { name: 'description', content: 'View your credits balance and consumption history.' }
+    { name: 'description', content: 'View your credits balance and consumption history.' },
+    // 账户页不收录：避免登录态页面被索引，也不进 sitemap
+    { name: 'robots', content: 'noindex, nofollow' }
   ]
 })
 

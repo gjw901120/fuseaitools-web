@@ -1,15 +1,5 @@
 import { parseStandardApiJson } from '~/utils/parseStandardApiResponse.js'
-
-const PRODUCTION_API_BASE = 'https://api.fuseaitools.com/api'
-
-function getEffectiveApiBaseForClient(configApiBase) {
-  if (typeof window === 'undefined') return configApiBase || ''
-  const host = (window.location?.hostname || '').toLowerCase()
-  if (host === 'www.fuseaitools.com' || host === 'fuseaitools.com') {
-    if (!configApiBase || configApiBase.includes('127.0.0.1')) return PRODUCTION_API_BASE
-  }
-  return configApiBase || ''
-}
+import { getEffectiveApiBaseForClient } from '~/utils/apiBase.js'
 
 /**
  * 返回 batch-upload 的请求地址。

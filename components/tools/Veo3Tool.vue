@@ -322,16 +322,6 @@
           <p>Generating...</p>
         </div>
         <div v-else-if="!displayResult" class="empty-state">
-          <!-- 预览视频 - Video Extend 模式不显示 -->
-          <div v-if="formData.generationType !== 'VIDEO_EXTEND'" class="preview-video-container">
-            <video 
-              :key="formData.generationType"
-              :src="getPreviewVideoSrc()" 
-              controls 
-              class="preview-video"
-              muted
-            ></video>
-          </div>
           <h4>No video generated yet</h4>
           <p>Enter video description and click "Generate Video" to start creating</p>
         </div>
@@ -345,6 +335,7 @@
                 :src="displayResult.videoUrl" 
                 controls 
                 class="video-element"
+                preload="metadata"
               ></video>
               <div v-else class="video-placeholder">
                 <i class="fas fa-video"></i>
@@ -371,10 +362,6 @@
                     <i class="fas fa-share"></i>
                 Share Video
               </button>
-              <button v-if="!isDetailView && displayResult.taskId" @click="get1080PVideo" class="action-btn">
-                <i class="fas fa-hd-video"></i>
-                Get 1080P
-                  </button>
             </div>
           </div>
           
@@ -469,7 +456,7 @@ const { post, get } = useApi()
 const { fetchRecordDetailOnce, pollRecordByStatus } = useRecordPolling()
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')
@@ -840,16 +827,6 @@ const getPromptHint = () => {
   return ''
 }
 
-// 获取预览视频路径
-const getPreviewVideoSrc = () => {
-  if (formData.generationType === 'FIRST_AND_LAST_FRAMES_2_VIDEO') {
-    return '/tools-example/veo3_frames.mp4'
-  } else if (formData.generationType === 'REFERENCE_2_VIDEO') {
-    return '/tools-example/veo3_i2v.mp4'
-  }
-  return '/tools-example/veo3_t2v.mp4'
-}
-
 // 种子取值范围 10000-99999
 const clampSeeds = (v) => {
   if (v == null || v === '') return undefined
@@ -936,27 +913,6 @@ const extendVideo = async () => {
     if (!error?.__fromApi) showError(error?.message || 'Request failed')
   } finally {
     isGenerating.value = false
-  }
-}
-
-// 获取1080P视频
-const get1080PVideo = async () => {
-  if (!result.value?.taskId) return
-
-  try {
-    const response = await fetch(`/api/veo3/1080p/${result.value.taskId}`, {
-      method: 'GET'
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      result.value.videoUrl = data.videoUrl
-    } else {
-      throw new Error('Failed to get 1080P video')
-    }
-  } catch (error) {
-    console.error('Failed to get 1080P video:', error)
-    showError('Failed to get 1080P video, please try again')
   }
 }
 
@@ -1307,22 +1263,6 @@ const shareVideo = () => {
   color: #6b7280;
   gap: 20px;
   padding: 20px;
-}
-
-.preview-video-container {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  background: #000;
-}
-
-.preview-video {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 .empty-icon {

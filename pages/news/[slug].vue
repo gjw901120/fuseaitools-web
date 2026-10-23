@@ -60,6 +60,26 @@
       </div>
     </section>
 
+    <!-- Related articles：详情接口没有 relatedList，改用同分类列表接口取前 3 条（含内链，利于 SEO） -->
+    <section v-if="relatedArticles.length" class="related-section">
+      <div class="simply-container">
+        <h2 class="related-title">Related articles</h2>
+        <div class="related-grid">
+          <NuxtLink
+            v-for="item in relatedArticles"
+            :key="item.slug"
+            :to="`/news/${item.slug}`"
+            class="related-card"
+          >
+            <span v-if="item.category" class="related-category">{{ item.category }}</span>
+            <h3 class="related-card-title">{{ item.title }}</h3>
+            <p v-if="item.excerpt" class="related-card-excerpt">{{ item.excerpt }}</p>
+            <span class="related-card-cta">Read more <i class="fas fa-arrow-right"></i></span>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <!-- Loading State -->
@@ -87,11 +107,11 @@
 </template>
 
 <script setup>
+import { SITE_ORIGIN } from '~/constants/site'
 import { clampDescription } from '~/composables/seoDescription'
 import { useDateFormat } from '~/composables/useDateFormat'
 // 获取路由参数
 const route = useRoute()
-const router = useRouter()
 
 // 定义页面元数据
 definePageMeta({
@@ -110,10 +130,10 @@ const { data: detailData, pending, error, refresh } = await useFetch('/api/news/
 })
 
 watch(() => route.params.slug, async (newSlug, oldSlug) => {
-  if (newSlug !== oldSlug && process.client) await refresh()
+  if (newSlug !== oldSlug && import.meta.client) await refresh()
 }, { immediate: false })
 watch(() => route.fullPath, async (newPath, oldPath) => {
-  if (newPath !== oldPath && process.client) await refresh()
+  if (newPath !== oldPath && import.meta.client) await refresh()
 }, { immediate: false })
 
 // 接口失败或无数据
@@ -137,6 +157,7 @@ const article = computed(() => {
     slug: d.path,
     excerpt: d.description || '',
     category: CATEGORY_LABELS[d.category] ?? (d.category != null ? String(d.category) : ''),
+    categoryValue: d.category ?? null,
     image: d.image || firstImg || undefined,
     publishDate: d.gmtCreate || null,
     updatedAt: d.gmtModified || null,
@@ -165,9 +186,31 @@ const articleBodyHtml = computed(() => {
 const prevSlug = computed(() => article.value?.prevPath || '')
 const nextSlug = computed(() => article.value?.nextPath || '')
 
+// 相关文章：详情接口没有 relatedList/relatedArticles 字段，改用同分类列表接口，排除当前文章取前 3 条。
+// 接口失败时返回空数组，区块不渲染，不影响正文与预渲染。
+const { data: relatedData } = await useFetch('/api/news/list', {
+  key: `related-${route.params.slug}`,
+  query: computed(() => ({
+    category: article.value?.categoryValue ?? undefined,
+    size: 6
+  })),
+  server: true,
+  default: () => ({ data: null })
+})
+
 const relatedArticles = computed(() => {
-  const list = detailData.value?.data?.relatedList || detailData.value?.relatedArticles
-  return Array.isArray(list) ? list : []
+  const records = relatedData.value?.data?.records
+  if (!Array.isArray(records)) return []
+  const currentSlug = article.value?.slug
+  return records
+    .filter((r) => r && r.path && r.path !== currentSlug)
+    .slice(0, 3)
+    .map((r) => ({
+      slug: r.path,
+      title: (r.title || '').trim(),
+      excerpt: r.description || '',
+      category: CATEGORY_LABELS[r.category] ?? ''
+    }))
 })
 
 const showNotFound = computed(() => !pending && (!!error || apiFailed.value))
@@ -192,14 +235,14 @@ useHead({
         { property: 'og:description', content: normalizedDescription },
         { property: 'og:image', content: newArticle.image || '' },
         { property: 'og:type', content: 'article' },
-        { property: 'og:url', content: `https://fuseaitools.com/news/${newArticle.slug || ''}` },
+        { property: 'og:url', content: `${SITE_ORIGIN}/news/${newArticle.slug || ''}` },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: newArticle.title || '' },
         { name: 'twitter:description', content: normalizedDescription },
         { name: 'twitter:image', content: newArticle.image || '' }
       ],
       link: [
-        { rel: 'canonical', href: `https://fuseaitools.com/news/${newArticle.slug || ''}` }
+        { rel: 'canonical', href: `${SITE_ORIGIN}/news/${newArticle.slug || ''}` }
       ],
       script: [
         {
@@ -216,9 +259,9 @@ useHead({
             "publisher": {
               "@type": "Organization",
               "name": "FuseAI Tools",
-              "logo": { "@type": "ImageObject", "url": "https://fuseaitools.com/favicon.png" }
+              "logo": { "@type": "ImageObject", "url": `${SITE_ORIGIN}/favicon.png` }
             },
-            "mainEntityOfPage": { "@type": "WebPage", "@id": `https://fuseaitools.com/news/${newArticle.slug || ''}` },
+            "mainEntityOfPage": { "@type": "WebPage", "@id": `${SITE_ORIGIN}/news/${newArticle.slug || ''}` },
             "articleSection": newArticle.category || '',
             "wordCount": (newArticle.readTime || 0) * 200
           })
@@ -229,10 +272,6 @@ useHead({
 }, { immediate: true })
 
 const { formatDate } = useDateFormat()
-
-const navigateToDetail = (slug) => {
-  navigateTo(`/news/${slug}`)
-}
 
 </script>
 
@@ -276,6 +315,77 @@ const navigateToDetail = (slug) => {
 .error-content p {
   color: var(--flux-muted, hsl(215, 12%, 62%));
   margin-bottom: 2rem;
+}
+
+/* Related articles */
+.related-section {
+  padding: 0 0 80px;
+  background: var(--flux-bg, hsl(220, 14%, 5%));
+}
+
+.related-title {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  border-radius: 14px;
+  background: var(--flux-card, hsl(215, 25%, 14%));
+  border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.related-card:hover {
+  border-color: var(--flux-primary, hsl(173, 80%, 40%));
+  transform: translateY(-2px);
+}
+
+.related-category {
+  align-self: flex-start;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--flux-primary-muted, hsla(173, 80%, 40%, 0.15));
+  color: var(--flux-primary, hsl(173, 80%, 40%));
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.related-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--flux-foreground, hsl(0, 0%, 98%));
+}
+
+.related-card-excerpt {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--flux-muted, hsl(215, 12%, 62%));
+}
+
+.related-card-cta {
+  margin-top: auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--flux-primary, hsl(173, 80%, 40%));
 }
 
 .article-nav {

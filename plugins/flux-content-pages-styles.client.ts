@@ -20,9 +20,17 @@ function appendFluxContentStyles() {
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
-  appendFluxContentStyles()
+  const route = useRoute()
 
-  nuxtApp.hook('page:finish', () => {
-    appendFluxContentStyles()
-  })
+  // 只有这几个页面需要覆盖，工具页注入纯属浪费（样式重算 + 无意义的 DOM 追加）
+  const CONTENT_ROUTE_PREFIXES = ['/pricing', '/about', '/news', '/credits']
+  const isContentRoute = (path: string) =>
+    CONTENT_ROUTE_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))
+
+  const sync = () => {
+    if (isContentRoute(route.path)) appendFluxContentStyles()
+  }
+
+  sync()
+  nuxtApp.hook('page:finish', sync)
 })

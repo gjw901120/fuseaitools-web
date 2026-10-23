@@ -622,8 +622,8 @@
           <div v-if="!isDetailView && route.path === '/home/suno/generate'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/create-lofi-study-playlist-with-suno-v5" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create a LoFi study playlist with Suno V5</a>
-              <a href="https://fuseaitools.com/news/suno-generate-epic-podcast-opening-30s" target="_blank" rel="noopener noreferrer" class="tutorial-link">30-second epic podcast intro with Suno V5</a>
+              <a href="/news/create-lofi-study-playlist-with-suno-v5" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create a LoFi study playlist with Suno V5</a>
+              <a href="/news/suno-generate-epic-podcast-opening-30s" target="_blank" rel="noopener noreferrer" class="tutorial-link">30-second epic podcast intro with Suno V5</a>
             </div>
           </div>
           <!-- 详情页：status 3 失败 -->
@@ -785,7 +785,7 @@ const sunoPriceText = computed(() => {
 })
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')
@@ -945,9 +945,9 @@ function fillFormFromOriginalData(originalData) {
   else if (o.model && sunoModelToFunction[o.model]) formData.function = sunoModelToFunction[o.model]
   const keys = ['prompt', 'customMode', 'instrumental', 'model', 'style', 'title', 'negativeTags', 'vocalGender', 'audioId', 'defaultParamFlag', 'continueAt', 'expandDefaultParamFlag', 'expandContinueAt', 'accompanimentTitle', 'accompanimentTags', 'accompanimentNegativeTags', 'vocalTitle', 'vocalStyle', 'vocalNegativeTags']
   keys.forEach(k => { if (o[k] !== undefined) formData[k] = o[k] })
-  if (o.styleWeight != null) formData.styleWeight = Number(o.styleWeight) ?? 0.65
-  if (o.weirdnessConstraint != null) formData.weirdnessConstraint = Number(o.weirdnessConstraint) ?? 0.65
-  if (o.audioWeight != null) formData.audioWeight = Number(o.audioWeight) ?? 0.65
+  if (o.styleWeight != null) formData.styleWeight = Number.isFinite(Number(o.styleWeight)) ? Number(o.styleWeight) : 0.65
+  if (o.weirdnessConstraint != null) formData.weirdnessConstraint = Number.isFinite(Number(o.weirdnessConstraint)) ? Number(o.weirdnessConstraint) : 0.65
+  if (o.audioWeight != null) formData.audioWeight = Number.isFinite(Number(o.audioWeight)) ? Number(o.audioWeight) : 0.65
   const fileUrl = o.fileUrl || o.uploadUrl || o.audioUrl
   if (fileUrl) {
     const url = String(fileUrl)

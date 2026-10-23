@@ -4,6 +4,15 @@
  */
 import { getToolBreadcrumbByRoute } from '~/utils/toolBreadcrumbs'
 import { clampDescription } from '~/composables/seoDescription'
+import { SITE_ORIGIN } from '~/constants/site'
+
+/**
+ * SSR 友好的异步版本：会先从 /api/common/models/price 拉取定价，用 getPriceRangeFromData 得到 credits 区间，再写入 JSON-LD。
+ * 用法（页面里 top-level await）：
+ * const seoConfig = await useToolSEOAsync({ ..., priceFromApi: { modelKey: 'sora-2-text-to-video', eligibleQuantityName: 'Credits Required' } })
+ * useHead(seoConfig)
+ */
+import { getPriceRangeFromData } from '~/composables/useModelPrice'
 
 /**
  * 可选入参（每个工具页独立传）：
@@ -31,7 +40,7 @@ export const useToolSEO = (toolInfo) => {
     priceFromApi = null // { modelKey, formFields?, eligibleQuantityName? } 或 null
   } = toolInfo
 
-  const baseUrl = 'https://fuseaitools.com'
+  const baseUrl = SITE_ORIGIN
   const fullUrl = `${baseUrl}${route}`
   // 工具 logo 用于 og:image（文件名与 tools-logo 目录一致：空格去掉）
   const toolImageUrl = `${baseUrl}/tools-logo/${name.replace(/\s+/g, '')}.png`
@@ -215,14 +224,6 @@ export const useToolSEO = (toolInfo) => {
   return seoConfig
 }
 
-/**
- * SSR 友好的异步版本：会先从 /api/common/models/price 拉取定价，用 getPriceRangeFromData 得到 credits 区间，再写入 JSON-LD。
- * 用法（页面里 top-level await）：
- * const seoConfig = await useToolSEOAsync({ ..., priceFromApi: { modelKey: 'sora-2-text-to-video', eligibleQuantityName: 'Credits Required' } })
- * useHead(seoConfig)
- */
-import { getPriceRangeFromData } from '~/composables/useModelPrice'
-
 // 客户端路由切换时避免重复请求 price：做一个内存级 TTL 缓存 + in-flight 复用（按 authorization 分桶）
 const PRICE_MODELS_CACHE_TTL_MS = 60 * 60 * 1000
 const _priceModelsCacheByAuth = new Map()
@@ -262,22 +263,22 @@ export async function useToolSEOAsync(toolInfo) {
     return useToolSEO({ ...rest, priceSpecification })
   }
 
-  let range = { minCredits: null, maxCredits: null }
+  let range
   try {
     // 让 price 请求尽可能携带鉴权：
     // - SSR：透传当前请求的 authorization（如果有）
     // - CSR：从 localStorage 读 token（如果有）
     const headers = {}
-    if (process.server) {
+    if (import.meta.server) {
       try {
         const h = useRequestHeaders(['authorization'])
         if (h?.authorization) headers.authorization = h.authorization
-      } catch (_) {}
-    } else if (process.client) {
+      } catch (_) { /* 忽略：SSR 取不到请求头时不带鉴权 */ }
+    } else if (import.meta.client) {
       try {
         const token = localStorage.getItem('auth_token')
         if (token) headers.authorization = `Bearer ${token}`
-      } catch (_) {}
+      } catch (_) { /* 忽略：localStorage 不可用时不带鉴权 */ }
     }
 
     const res = await fetchPriceModelsWithCache(headers)

@@ -3,6 +3,13 @@
  * @see 原 sitemap.xml.get.js 逻辑
  */
 import { getEffectiveApiBase } from '../utils/getApiBase'
+// 注意：Nitro dev 会把相对路径 import 重写到 .nuxt/dev/index.mjs 下方导致解析错误，
+// 服务端引用根级常量必须用 ~~ 别名（rootDir）。
+import { SITE_ORIGIN } from '~~/constants/site.js'
+
+// 静态页 lastmod 用服务启动（≈部署）日期：若每次请求都取当天，
+// 全站 URL 会永远显示“今天更新”，lastmod 失去可信度、影响抓取优先级判断。
+const STATIC_LAST_MODIFIED = new Date().toISOString().split('T')[0]
 
 export default defineEventHandler(async (event) => {
   const method = getMethod(event)
@@ -17,8 +24,8 @@ export default defineEventHandler(async (event) => {
     return ''
   }
 
-  const baseUrl = 'https://fuseaitools.com'
-  const currentDate = new Date().toISOString().split('T')[0]
+  const baseUrl = SITE_ORIGIN
+  const currentDate = STATIC_LAST_MODIFIED
 
   let newsPages = []
   try {
@@ -86,6 +93,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/gpt-image/v2-5-flare-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/gpt-image/v2-5-sunburst-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/gpt-image/v2-5-sunburst-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/gpt-image/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-remix', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -93,6 +101,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/ideogram/character', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/character-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/character-remix', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: '/home/ideogram/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/midjourney/imagine', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/midjourney/upscale', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/midjourney/vary', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },

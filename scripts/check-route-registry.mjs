@@ -49,4 +49,8 @@ for (const { key, file, minSegments } of REGISTERS) {
 }
 
 console.log(`\n共 ${routes.length} 条 pages/home 路由，未登记合计 ${missingTotal} 条。`)
-console.log('注：孤儿旧别名页与 chat 工具页（无 TOOL_PARENT_LABEL_BY_SLUG 映射）可保留为“缺”。\n')
+if (missingTotal > 0) {
+  console.error('\n路由登记不完整：新增/删除工具页时，请同步 sitemap、prerender、面包屑三张登记表。')
+  process.exit(1)
+}
+console.log('路由登记表校验通过。\n')

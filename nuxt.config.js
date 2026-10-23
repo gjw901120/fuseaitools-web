@@ -29,6 +29,8 @@ export default defineNuxtConfig({
   // SEO：服务端 301 永久重定向（仅旧二级路径 -> 新三级路径；父路径 /home/{tool} 已改为静态详情页，不再 301）
   routeRules: {
     ...midjourneyLegacyRedirects,
+    // 已删除的调试页：保留 301，避免曾被收录的 URL 直接变 404
+    '/test-routes': { redirect: { to: '/', statusCode: 301 } },
     // 旧二级路径 -> 新三级路径
     '/home/suno-extend': { redirect: { to: '/home/suno/extend', statusCode: 301 } },
     '/home/suno-generate': { redirect: { to: '/home/suno/generate', statusCode: 301 } },
@@ -254,7 +256,7 @@ export default defineNuxtConfig({
     '@/assets/css/flux-content-pages.css'
   ],
 
-  modules: [],
+  modules: ['@nuxt/eslint'],
 
   app: {
     head: {

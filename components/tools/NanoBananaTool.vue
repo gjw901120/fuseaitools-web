@@ -658,8 +658,8 @@
           <div v-if="!isDetailView && route.path === '/home/nano-banana/generate'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/nano-banana-cozy-social-media-illustration-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create healing social media illustrations: cozy flat style (16:9)</a>
-              <a href="https://fuseaitools.com/news/nano-banana-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create cinematic short-video covers: vertical 9:16 thumbnails</a>
+              <a href="/news/nano-banana-cozy-social-media-illustration-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create healing social media illustrations: cozy flat style (16:9)</a>
+              <a href="/news/nano-banana-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Create cinematic short-video covers: vertical 9:16 thumbnails</a>
             </div>
           </div>
           <div class="image-container-main">
@@ -667,7 +667,7 @@
           <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
               <div class="image-wrapper">
-                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" loading="lazy" decoding="async" />
                 <div class="image-overlay">
                   <button @click="downloadImage(image)" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -704,7 +704,7 @@
           <div v-else-if="generatedImages.length > 0" class="image-showcase">
             <div v-for="(image, index) in generatedImages" :key="index" class="image-item">
               <div class="image-wrapper">
-                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" loading="lazy" decoding="async" />
                 <div class="image-overlay">
                   <button @click="downloadImage(image)" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -1170,7 +1170,7 @@ const nanoBanana21PriceText = computed(() => {
 })
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')

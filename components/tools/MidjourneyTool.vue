@@ -175,7 +175,7 @@
                 :class="{ selected: upscaleForm.imageIndex === idx }"
                 @click="upscaleForm.imageIndex = idx"
               >
-                <img :src="url" :alt="`Image ${idx}`" />
+                <img :src="url" :alt="`Image ${idx}`" loading="lazy" decoding="async" />
                 <span class="index-badge">{{ idx }}</span>
               </button>
             </div>
@@ -221,7 +221,7 @@
                 :class="{ selected: varyForm.imageIndex === idx + 1 }"
                 @click="varyForm.imageIndex = idx + 1"
               >
-                <img :src="url" :alt="`Image ${idx + 1}`" />
+                <img :src="url" :alt="`Image ${idx + 1}`" loading="lazy" decoding="async" />
                 <span class="index-badge">{{ idx + 1 }}</span>
             </button>
           </div>
@@ -256,7 +256,7 @@
           <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputList.length > 0" class="results-showcase">
             <div v-for="(item, idx) in detailOutputList" :key="idx" class="result-item">
               <div class="result-content">
-                <img v-if="item.isImage" :src="item.url" class="detail-output-image" :alt="`Output ${idx + 1}`" />
+                <img v-if="item.isImage" :src="item.url" class="detail-output-image" :alt="`Output ${idx + 1}`" loading="lazy" decoding="async" />
                 <pre v-else class="result-json">{{ item.url }}</pre>
               </div>
             </div>
@@ -496,7 +496,7 @@ const EXTEND_LIST_MODEL = 'midjourney_imagine'
 const extendList = ref([])
 const loadingExtendList = ref(false)
 const fetchExtendList = async () => {
-  if (!process.client) return
+  if (!import.meta.client) return
   if (!guardExtendListFetch(extendList, { loadingRef: loadingExtendList })) return
   loadingExtendList.value = true
   try {
@@ -565,7 +565,7 @@ const needFileUrlsButEmpty = computed(() => {
 const fileUrlsUploadRef = ref(null)
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')

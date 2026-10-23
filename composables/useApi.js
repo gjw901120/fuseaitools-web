@@ -1,19 +1,5 @@
 import { getFetchErrorMessage, parseStandardApiJson } from '~/utils/parseStandardApiResponse.js'
-
-/** 生产环境 API 基地址（与 server/utils/getApiBase.js 一致） */
-const PRODUCTION_API_BASE = 'https://api.fuseaitools.com/api'
-
-/**
- * 客户端根据当前域名得到有效的 apiBase，避免构建时未设置 NODE_ENV 导致用错 127.0.0.1
- */
-function getEffectiveApiBaseForClient(configApiBase) {
-  if (typeof window === 'undefined') return configApiBase || ''
-  const host = (window.location?.hostname || '').toLowerCase()
-  if (host === 'www.fuseaitools.com' || host === 'fuseaitools.com') {
-    if (!configApiBase || configApiBase.includes('127.0.0.1')) return PRODUCTION_API_BASE
-  }
-  return configApiBase || ''
-}
+import { getEffectiveApiBaseForClient } from '~/utils/apiBase.js'
 
 /**
  * 统一的 API 请求封装
@@ -31,7 +17,7 @@ export const useApi = () => {
    * @returns {string|null} 返回 token 或 null
    */
   const getAuthToken = () => {
-    if (!process.client) return null
+    if (!import.meta.client) return null
     
     try {
       // 优先从 useAuth 获取（如果已初始化）
@@ -96,7 +82,7 @@ export const useApi = () => {
       }
       
       // 如果是客户端，添加 credentials 和 mode 配置
-      if (process.client) {
+      if (import.meta.client) {
         fetchOptions.credentials = 'include'
         fetchOptions.mode = 'cors'
       }
@@ -111,11 +97,11 @@ export const useApi = () => {
         return parsed.data
       }
       const errorMessage = parsed.errorMessage
-      if (process.client && !silent) {
+      if (import.meta.client && !silent) {
         try {
           const { showError } = useToast()
           showError(errorMessage)
-        } catch (_) {}
+        } catch (_) { /* 忽略：toast 不可用时不影响请求结果 */ }
       }
       const err = new Error(errorMessage)
       err.__fromApi = true
@@ -124,13 +110,13 @@ export const useApi = () => {
       console.error('API request error:', error)
       if (error.__fromApi) throw error
       const errorMessage = getFetchErrorMessage(error)
-      if (process.client && !silent) {
+      if (import.meta.client && !silent) {
         try {
           const { showError } = useToast()
           showError(errorMessage)
-        } catch (_) {}
+        } catch (_) { /* 忽略：toast 不可用时不影响错误抛出 */ }
       }
-      throw new Error(errorMessage)
+      throw new Error(errorMessage, { cause: error })
     }
   }
 

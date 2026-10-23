@@ -7,6 +7,8 @@
 </template>
 
 <script setup>
+import { SITE_ORIGIN } from '~/constants/site'
+
 // SEO 配置：突出 AI tools free、注册送 20 credits
 useHead({
   title: 'AI Tools Free - FuseAI Tools | 100+ AI Models, 20 Credits on Sign Up',
@@ -23,15 +25,15 @@ useHead({
     { property: 'og:title', content: 'AI Tools Free | FuseAI Tools - 20 Credits on Sign Up' },
     { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://fuseaitools.com' },
-    { property: 'og:image', content: 'https://fuseaitools.com/logo-wide.png' },
+    { property: 'og:url', content: SITE_ORIGIN },
+    { property: 'og:image', content: `${SITE_ORIGIN}/logo-wide.png` },
     { property: 'og:site_name', content: 'FuseAI Tools' },
     { property: 'og:locale', content: 'en_US' },
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: 'AI Tools Free | FuseAI Tools - 20 Credits on Sign Up' },
     { name: 'twitter:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free.' },
-    { name: 'twitter:image', content: 'https://fuseaitools.com/logo-wide.png' },
+    { name: 'twitter:image', content: `${SITE_ORIGIN}/logo-wide.png` },
     // Additional meta tags
     { name: 'author', content: 'FuseAI Tools' },
     { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
@@ -40,7 +42,7 @@ useHead({
     { name: 'revisit-after', content: '7 days' }
   ],
   link: [
-    { rel: 'canonical', href: 'https://fuseaitools.com' }
+    { rel: 'canonical', href: SITE_ORIGIN }
   ],
   script: [
     {
@@ -49,8 +51,8 @@ useHead({
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "FuseAI Tools",
-        "url": "https://fuseaitools.com",
-        "logo": "https://fuseaitools.com/logo-wide.png",
+        "url": SITE_ORIGIN,
+        "logo": `${SITE_ORIGIN}/logo-wide.png`,
         "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, ElevenLabs, Suno and more.",
         "contactPoint": {
           "@type": "ContactPoint",
@@ -65,7 +67,7 @@ useHead({
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "FuseAI Tools",
-        "url": "https://fuseaitools.com",
+        "url": SITE_ORIGIN,
         "description": "AI tools free: 100+ AI models in one platform. Sign up for 20 free credits."
       })
     }

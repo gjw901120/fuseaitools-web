@@ -1,4 +1,9 @@
 export const TOOL_PARENT_LABEL_BY_SLUG = {
+  // chat
+  gpt: 'GPT',
+  claude: 'Claude',
+  gemini: 'Gemini',
+  deepseek: 'DeepSeek',
   // image
   'gpt-4o-image': 'GPT 4o Image',
   'gpt-image': 'GPT Image',
@@ -26,8 +31,14 @@ export const TOOL_PARENT_LABEL_BY_SLUG = {
 }
 
 export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
+  // chat
+  '/home/gpt/generate': 'Generate',
+  '/home/claude/generate': 'Generate',
+  '/home/gemini/generate': 'Generate',
+  '/home/deepseek/generate': 'Generate',
   // image
   '/home/gpt-4o-image/generate': 'Generate',
+  '/home/gpt-image/generate': 'Generate',
   '/home/gpt-image/text-to-image': 'Text to Image',
   '/home/gpt-image/image-to-image': 'Image to Image',
   '/home/gpt-image/v2-text-to-image': 'V2 Text to Image',
@@ -36,6 +47,7 @@ export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
   '/home/gpt-image/v2-5-flare-image-to-image': '2.5 Flare Image to Image',
   '/home/gpt-image/v2-5-sunburst-text-to-image': '2.5 Sunburst Text to Image',
   '/home/gpt-image/v2-5-sunburst-image-to-image': '2.5 Sunburst Image to Image',
+  '/home/ideogram/generate': 'Generate',
   '/home/ideogram/v3-text-to-image': 'V3 Text to Image',
   '/home/ideogram/v3-edit': 'V3 Edit',
   '/home/ideogram/v3-remix': 'V3 Remix',

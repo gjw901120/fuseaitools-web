@@ -24,7 +24,7 @@ export const useMjApi = () => {
             try {
                 data = await res.json()
             } catch (e) {
-                throw new Error(`响应解析失败: ${res.status}`)
+                throw new Error(`响应解析失败: ${res.status}`, { cause: e })
             }
             if (!res.ok) {
                 throw new Error(data?.description || `请求失败: ${res.status}`)

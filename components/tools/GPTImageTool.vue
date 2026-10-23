@@ -193,8 +193,8 @@
           <div v-if="!isDetailView && route.path === '/home/gpt-image/text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/gpt-image-candid-street-fashion-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create natural candid fashion editorials - no more stiff poses</a>
-              <a href="https://fuseaitools.com/news/gpt-image-pet-emotional-portrait-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Capture the story in your pet's eyes with AI - create heartfelt emotional imagery</a>
+              <a href="/news/gpt-image-candid-street-fashion-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use AI to create natural candid fashion editorials - no more stiff poses</a>
+              <a href="/news/gpt-image-pet-emotional-portrait-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Capture the story in your pet's eyes with AI - create heartfelt emotional imagery</a>
             </div>
           </div>
           <!-- 详情页：根据 record-id 轮询展示 -->
@@ -292,7 +292,7 @@ async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)

@@ -11,7 +11,7 @@ const STORAGE_PREFIX = 'api_cache_'
  * @returns {*} 缓存的数据，或 null
  */
 function getCached(key) {
-  if (!process.client || typeof localStorage === 'undefined') return null
+  if (!import.meta.client || typeof localStorage === 'undefined') return null
   try {
     const raw = localStorage.getItem(STORAGE_PREFIX + key)
     if (!raw) return null
@@ -29,7 +29,7 @@ function getCached(key) {
  * @param {*} data - 要缓存的数据（会被 JSON.stringify）
  */
 function setCached(key, data) {
-  if (!process.client || typeof localStorage === 'undefined') return
+  if (!import.meta.client || typeof localStorage === 'undefined') return
   try {
     const expiresAt = Date.now() + CACHE_TTL_MS
     localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify({ data, expiresAt }))

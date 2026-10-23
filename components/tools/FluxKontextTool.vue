@@ -429,15 +429,15 @@
           <div v-if="!isDetailView && route.path === '/home/flux-kontext/flux-2-pro-text-to-image'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/flux-2-pro-text-to-image-cinematic-dusk-mountains-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to generate cinematic dusk mountain visuals</a>
-              <a href="https://fuseaitools.com/news/flux-2-pro-text-to-image-midnight-ramen-food-photography-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to create mouth-watering midnight ramen photography</a>
+              <a href="/news/flux-2-pro-text-to-image-cinematic-dusk-mountains-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to generate cinematic dusk mountain visuals</a>
+              <a href="/news/flux-2-pro-text-to-image-midnight-ramen-food-photography-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Use flux-2-pro-text-to-image to create mouth-watering midnight ramen photography</a>
             </div>
           </div>
           <!-- 详情页：status 2 展示 outputUrls -->
           <div v-if="isDetailView && detailData && detailData.status === 2 && detailOutputImages.length > 0" class="image-grid">
             <div v-for="(image, index) in detailOutputImages" :key="index" class="image-item">
               <div class="image-container">
-                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" loading="lazy" decoding="async" />
                 <div class="image-overlay">
                   <button @click="downloadImage(image)" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -485,7 +485,7 @@
               class="image-item"
             >
               <div class="image-container">
-                <img :src="image.url" :alt="`Generated image ${index + 1}`" />
+                <img :src="image.url" :alt="`Generated image ${index + 1}`" loading="lazy" decoding="async" />
                 <div class="image-overlay">
                   <button @click="downloadImage(image)" class="action-btn">
                     <i class="fas fa-download"></i>
@@ -693,7 +693,10 @@ function fillFormFromOriginalData(originalData) {
   if (o.outputFormat) formData.outputFormat = (o.outputFormat || 'JPEG').toLowerCase() === 'png' ? 'png' : 'jpeg'
   if (typeof o.promptUpsampling === 'boolean') formData.promptUpsampling = o.promptUpsampling
   if (o.model) formData.model = o.model === 'flux_kontext_max' ? 'flux-kontext-max' : (o.model === 'flux_kontext_pro' ? 'flux-kontext-pro' : formData.model)
-  if (o.safetyTolerance != null) formData.safetyTolerance = Number(o.safetyTolerance) ?? 2
+  if (o.safetyTolerance != null) {
+    const st = Number(o.safetyTolerance)
+    formData.safetyTolerance = Number.isFinite(st) ? st : 2
+  }
   if (o.watermark != null) formData.watermark = String(o.watermark || '')
 }
 
@@ -731,7 +734,7 @@ watch(() => route.path, (path) => {
 }, { immediate: true })
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')
@@ -870,21 +873,18 @@ const canGenerate = computed(() => {
   return true
 })
 
-// 映射前端值到后端枚举
-const aspectRatioMap = {
-  '21:9': 'RATIO_21_9',
-  '16:9': 'RATIO_16_9',
-  '4:3': 'RATIO_4_3',
-  '1:1': 'RATIO_1_1',
-  '3:4': 'RATIO_3_4',
-  '9:16': 'RATIO_9_16'
+// 后端 FluxKontextAspectRatioEnum 的 @JsonValue/@JsonCreator 绑定的是 ratio（'16:9'），不接受枚举名（RATIO_16_9）。
+// aspectRatioReverseMap 同时兜底历史记录里可能存在的枚举名写法。
+const ASPECT_RATIOS = ['21:9', '16:9', '4:3', '1:1', '3:4', '9:16']
+const normalizeAspectRatio = (value) => {
+  const ratio = aspectRatioReverseMap[value] || value
+  return ASPECT_RATIOS.includes(ratio) ? ratio : '16:9'
 }
-const outputFormatMap = { jpeg: 'JPEG', png: 'PNG' }
 // Model Version：PRICING_MAPPING 中 modelKey 为 flux_kontext_pro / flux_kontext_max；表单与接口用连字符 flux-kontext-pro / flux-kontext-max
 
 const flux2ApiPathByTab = {
   'flux-2-text-to-image': '/api/image/flux-2/text-to-image',
-  'flux-2-image-to-image': '/api/image/flux-2/text-to-image',
+  'flux-2-image-to-image': '/api/image/flux-2/image-to-image',
   'flux-2-pro-text-to-image': '/api/image/flux-2-pro/text-to-image',
   'flux-2-pro-image-to-image': '/api/image/flux-2-pro/image-to-image'
 }
@@ -1022,11 +1022,11 @@ const generateImage = async () => {
       prompt: promptTrim,
       enableTranslation: !!formData.enableTranslation,
       imageUrl: mode.value === 'edit' ? formData.imageUrl : '',
-      aspectRatio: aspectRatioMap[formData.aspectRatio] || 'RATIO_16_9',
-      outputFormat: outputFormatMap[formData.outputFormat] || 'JPEG',
+      aspectRatio: normalizeAspectRatio(formData.aspectRatio),
+      outputFormat: formData.outputFormat === 'png' ? 'png' : 'jpeg',
       promptUpsampling: !!formData.promptUpsampling,
       model: formData.model || 'flux-kontext-pro',
-      safetyTolerance: Number(formData.safetyTolerance) ?? 2,
+      safetyTolerance: Number.isFinite(Number(formData.safetyTolerance)) ? Number(formData.safetyTolerance) : 2,
       watermark: (formData.watermark && String(formData.watermark).trim()) || undefined
     }
     if (requestBody.watermark && requestBody.watermark.length > 100) {

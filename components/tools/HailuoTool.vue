@@ -128,7 +128,7 @@
         </div>
         <div v-else-if="displayResult?.videoUrl" class="video-result">
           <div class="video-player">
-            <video :src="displayResult.videoUrl" controls class="video-element"></video>
+            <video :src="displayResult.videoUrl" controls preload="metadata" class="video-element"></video>
           </div>
           <div class="video-actions">
             <button @click="downloadVideo" class="action-btn">
@@ -219,7 +219,7 @@ async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)
@@ -282,7 +282,7 @@ const canGenerate = computed(() => {
 
 function pickDetailVideoUrl(d) {
   if (!d || typeof d !== 'object') return ''
-  let url = d.outputUrl || d.videoUrl
+  const url = d.outputUrl || d.videoUrl
   if (url) return typeof url === 'string' ? url : url?.url || ''
   const ou = d.outputUrls
   if (typeof ou === 'string' && ou) return ou

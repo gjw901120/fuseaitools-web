@@ -297,8 +297,8 @@
         <div v-if="!isDetailView && route.path === '/home/qwen/text-to-image'" class="tutorial-showcase">
           <p class="tutorial-showcase-title">🎨 Tutorial Showcase</p>
           <div class="tutorial-showcase-links">
-            <a href="https://fuseaitools.com/news/qwen-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Generate cinematic AI covers for short videos (vertical, high CTR)</a>
-            <a href="https://fuseaitools.com/news/qwen-brand-story-image-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Tell your brand story with warm and emotional promotional visuals</a>
+            <a href="/news/qwen-cinematic-short-video-cover-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Generate cinematic AI covers for short videos (vertical, high CTR)</a>
+            <a href="/news/qwen-brand-story-image-tutorial" target="_blank" rel="noopener noreferrer" class="tutorial-link">Tell your brand story with warm and emotional promotional visuals</a>
           </div>
         </div>
         <div v-if="isDetailView && Number(detailData?.status) === 3" class="detail-failure-state">
@@ -315,7 +315,7 @@
         </div>
         <div v-else class="result-display">
           <div class="image-result">
-            <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" />
+            <img v-if="displayResult.imageUrl" :src="displayResult.imageUrl" alt="Generated" class="result-image" loading="lazy" decoding="async" />
             <div v-else class="image-placeholder">
               <i class="fas fa-spinner fa-spin"></i>
               <p>Generating...</p>
@@ -695,7 +695,7 @@ function fillFormFromOriginalData(o) {
 
 function pickDetailImageUrl(d) {
   if (!d || typeof d !== 'object') return ''
-  let url = d.outputUrl || d.imageUrl
+  const url = d.outputUrl || d.imageUrl
   if (url) return typeof url === 'string' ? url : url?.url || ''
   const ou = d.outputUrls
   if (typeof ou === 'string' && ou) return ou
@@ -718,7 +718,7 @@ async function loadDetailByRecordId(recordId) {
   if (!recordId || routeRecordId.value !== recordId) return
   detailData.value = null
   try {
-    let data = await fetchRecordDetailOnce(recordId)
+    const data = await fetchRecordDetailOnce(recordId)
     if (routeRecordId.value !== recordId) return
     detailData.value = data || null
     if (data?.originalData) fillFormFromOriginalData(data.originalData)

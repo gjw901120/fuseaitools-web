@@ -21,9 +21,16 @@ function appendFluxFormStyles() {
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
-  appendFluxFormStyles()
+  const route = useRoute()
 
-  nuxtApp.hook('page:finish', () => {
-    appendFluxFormStyles()
-  })
+  // 只有工具页（/home 及其子路由）需要覆盖，营销页/资讯页注入是纯浪费
+  const isToolRoute = (path: string) => path === '/home' || path.startsWith('/home/')
+
+  const sync = () => {
+    if (isToolRoute(route.path)) appendFluxFormStyles()
+  }
+
+  sync()
+  // 工具组件已改异步加载，其 CSS 可能晚于本插件到达，路由切换后需重新排到 head 末尾
+  nuxtApp.hook('page:finish', sync)
 })

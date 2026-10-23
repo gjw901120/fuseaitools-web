@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
+    "lint": "eslint . --max-warnings 79",
+    "lint:fix": "eslint . --fix",
+    "prebuild": "node scripts/smoke-test.mjs",
+    "check:backend": "node scripts/check-backend-contract.mjs",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -12,14 +16,12 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxt/eslint": "^1.17.0",
+    "eslint": "^10.13.0",
     "nuxt": "^3.13.0"
   },
   "dependencies": {
     "@kedwithgod/browser-fingerprint": "^1.0.2",
-    "@nuxtjs/tailwindcss": "^6.8.0",
-    "blueimp-md5": "^2.19.0",
-    "icojs": "^0.20.1",
-    "pngjs": "^7.0.0",
-    "semver": "^7.7.4"
+    "blueimp-md5": "^2.19.0"
   }
 }

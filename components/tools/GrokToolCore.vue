@@ -256,14 +256,14 @@
         </div>
         <div v-else class="result-display">
           <div v-if="displayResult.imageUrl" class="image-result">
-            <img :src="displayResult.imageUrl" alt="Generated image" class="result-image" />
+            <img :src="displayResult.imageUrl" alt="Generated image" class="result-image" loading="lazy" decoding="async" />
             <div class="media-actions">
               <button v-if="!isDetailView" class="action-btn" @click="downloadImage"><i class="fas fa-download"></i> Download</button>
             </div>
           </div>
           <div v-else class="video-result">
             <div class="video-player">
-              <video :src="displayResult.videoUrl" controls class="video-element"></video>
+              <video :src="displayResult.videoUrl" controls preload="metadata" class="video-element"></video>
             </div>
             <div class="media-actions">
               <button v-if="!isDetailView" class="action-btn" @click="downloadVideo"><i class="fas fa-download"></i> Download</button>

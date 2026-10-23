@@ -230,7 +230,7 @@
         <div v-if="isDetailView && Number(detailData?.status) === 3" class="state-block error">Generation failed.</div>
         <div v-else-if="isDetailView && (!detailData || [0,1].includes(Number(detailData.status)))" class="state-block">Generating...</div>
         <div v-else-if="displayResult?.videoUrl" class="video-result">
-          <video :src="displayResult.videoUrl" controls class="video-element"></video>
+          <video :src="displayResult.videoUrl" controls preload="metadata" class="video-element"></video>
           <div class="video-actions"><button class="action-btn" @click="downloadVideo">Download</button></div>
         </div>
         <div v-else class="state-block">Fill in the form and click Generate Video.</div>

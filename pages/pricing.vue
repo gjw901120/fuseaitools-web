@@ -278,8 +278,10 @@
 </template>
 
 <script setup>
+import { SITE_ORIGIN } from '~/constants/site'
+
 // 设置页面 SEO
-const siteUrl = 'https://fuseaitools.com'
+const siteUrl = SITE_ORIGIN
 const pricingCanonical = `${siteUrl}/pricing`
 
 useHead({

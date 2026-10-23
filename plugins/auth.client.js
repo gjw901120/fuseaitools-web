@@ -2,7 +2,7 @@
  * 认证插件 - 处理 URL 中的 token（用于 Google 登录回调等）
  */
 export default defineNuxtPlugin((nuxtApp) => {
-  if (process.server) return
+  if (import.meta.server) return
 
   const route = useRoute()
   const router = useRouter()

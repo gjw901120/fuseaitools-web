@@ -10,7 +10,7 @@
         
         <div class="timeline-container">
           <div class="timeline-items">
-            <div class="timeline-item" v-for="(record, index) in usageHistory" :key="record.id">
+            <div class="timeline-item" v-for="record in usageHistory" :key="record.id">
               <div class="timeline-marker" :class="[record.status, record.type]">
                 <i :class="record.icon"></i>
               </div>
@@ -207,28 +207,28 @@
 <script setup>
 import { clampDescription } from '~/composables/seoDescription'
 import { routeToToolMap } from '~/constants/routeToToolMap'
-// 导入组件
-import Veo3Tool from '~/components/tools/Veo3Tool.vue'
-import RunwayTool from '~/components/tools/RunwayTool.vue'
-import LumaTool from '~/components/tools/LumaTool.vue'
-import GPT4oImageTool from '~/components/tools/GPT4oImageTool.vue'
-import GPTImageTool from '~/components/tools/GPTImageTool.vue'
-import IdeogramTool from '~/components/tools/IdeogramTool.vue'
-import NanoBananaTool from '~/components/tools/NanoBananaTool.vue'
-import ElevenLabsTool from '~/components/tools/ElevenLabsTool.vue'
-import FluxKontextTool from '~/components/tools/FluxKontextTool.vue'
-import SunoTool from '~/components/tools/SunoTool.vue'
-import SoraTool from '~/components/tools/SoraTool.vue'
-import WanTool from '~/components/tools/WanTool.vue'
-import SeedanceTool from '~/components/tools/SeedanceTool.vue'
-import HailuoTool from '~/components/tools/HailuoTool.vue'
-import KlingTool from '~/components/tools/KlingTool.vue'
-import SeedreamTool from '~/components/tools/SeedreamTool.vue'
-import QwenTool from '~/components/tools/QwenTool.vue'
-import Imagen4Tool from '~/components/tools/Imagen4Tool.vue'
-import { useRouter } from 'vue-router'
-import { useRoute } from 'vue-router'
-import { watch, provide, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRouter, useRoute  } from 'vue-router'
+import { watch, provide, onMounted, onUnmounted, nextTick, defineAsyncComponent } from 'vue'
+// 工具组件统一改异步加载：静态 import 会把 18 个工具（约 2.7 万行）打进同一个 chunk，
+// 首页只加载当前选中工具对应的代码。
+const Veo3Tool = defineAsyncComponent(() => import('~/components/tools/Veo3Tool.vue'))
+const RunwayTool = defineAsyncComponent(() => import('~/components/tools/RunwayTool.vue'))
+const LumaTool = defineAsyncComponent(() => import('~/components/tools/LumaTool.vue'))
+const GPT4oImageTool = defineAsyncComponent(() => import('~/components/tools/GPT4oImageTool.vue'))
+const GPTImageTool = defineAsyncComponent(() => import('~/components/tools/GPTImageTool.vue'))
+const IdeogramTool = defineAsyncComponent(() => import('~/components/tools/IdeogramTool.vue'))
+const NanoBananaTool = defineAsyncComponent(() => import('~/components/tools/NanoBananaTool.vue'))
+const ElevenLabsTool = defineAsyncComponent(() => import('~/components/tools/ElevenLabsTool.vue'))
+const FluxKontextTool = defineAsyncComponent(() => import('~/components/tools/FluxKontextTool.vue'))
+const SunoTool = defineAsyncComponent(() => import('~/components/tools/SunoTool.vue'))
+const SoraTool = defineAsyncComponent(() => import('~/components/tools/SoraTool.vue'))
+const WanTool = defineAsyncComponent(() => import('~/components/tools/WanTool.vue'))
+const SeedanceTool = defineAsyncComponent(() => import('~/components/tools/SeedanceTool.vue'))
+const HailuoTool = defineAsyncComponent(() => import('~/components/tools/HailuoTool.vue'))
+const KlingTool = defineAsyncComponent(() => import('~/components/tools/KlingTool.vue'))
+const SeedreamTool = defineAsyncComponent(() => import('~/components/tools/SeedreamTool.vue'))
+const QwenTool = defineAsyncComponent(() => import('~/components/tools/QwenTool.vue'))
+const Imagen4Tool = defineAsyncComponent(() => import('~/components/tools/Imagen4Tool.vue'))
 
 const router = useRouter()
 const route = useRoute()

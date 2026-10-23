@@ -39,60 +39,78 @@ fuseaitools-web/
 ├── assets/                 # 需构建的静态资源（CSS 等）
 │   └── css/
 ├── components/             # 全局/业务组件
-│   ├── AppHeader.vue
-│   ├── AppFooter.vue
+│   ├── AppHeader.vue / AppFooter.vue
+│   ├── HomeLayout.vue      # 工具页外壳：Header + 主区 + SEO 插槽（below-main）
 │   ├── ChatInterface.vue   # 聊天统一界面
 │   ├── Toast.vue / ToastContainer.vue
 │   ├── LoginModal.vue / VerifyCodeModal.vue
 │   └── tools/              # 各 AI 工具页使用的组件
-│       ├── common/        # 通用上传等（UploadImage、UploadAudio）
+│       ├── common/         # 通用上传/配置/结果面板（UploadImage、UploadAudio…）
+│       ├── ToolSeoContent.vue    # SEO 内容唯一渲染器（数据驱动）
+│       ├── QwenV3SeoContent.vue  # SEO 薄壳：只引入 data/seo/*.js
 │       ├── GPT4oImageTool.vue
 │       ├── FluxKontextTool.vue
-│       ├── NanoBananaTool.vue
 │       └── ...
 ├── composables/            # 组合式函数（逻辑复用）
-│   ├── useApi.js          # 统一 HTTP + 认证 + 错误/Toast
-│   ├── useAuth.js         # 登录态、Token
-│   ├── useToast.js        # 全局 Toast
-│   ├── useHomeLayout.js   # 首页布局/导航状态
-│   └── useToolSEO.js      # 工具页 SEO
-├── data/                   # 静态数据（如 news.json）
+│   ├── useApi.js           # 统一 HTTP + 认证 + 错误/Toast
+│   ├── useAuth.js          # 登录态、Token
+│   ├── useApiCache.js      # models tree/price 的 localStorage 1 小时缓存
+│   ├── useModelPrice.js    # 按模型 key + 表单字段计算 credits
+│   ├── useRecordPolling.js # 非 chat 任务的 recordId 轮询
+│   ├── useToolSEO.js / useToolSeoFaqSchema.js / useToolSeoPageScroll.js
+│   └── ...
+├── constants/              # 常量单一数据源
+│   ├── site.js             # SITE_ORIGIN（canonical/og/sitemap/llms.txt 统一引用）
+│   ├── routeToToolMap.js   # 路由 → 工具组件映射（新增页面必须登记）
+│   └── footerNav.js
+├── data/                   # 静态数据
+│   ├── seo/                # 每工具一份 SEO 内容数据（qwen-v3.js、kling-v30.js…）
+│   ├── elevenlabs-voices.js
+│   └── toolOverviews.js
 ├── layouts/
-│   └── default.vue        # 默认布局：Header + 主内容 + Footer + Toast
+│   └── default.vue         # 默认布局：Header + 主内容 + Footer + Toast
+├── middleware/
+│   └── midjourney-disabled.global.js
 ├── pages/                  # 文件路由
-│   ├── index.vue          # 站点首页（营销页）
-│   ├── about.vue / pricing.vue
-│   ├── home/              # 工具中心与各工具页
-│   │   ├── index.vue      # 工具聚合首页（左侧历史 + 右侧工具导航/展示）
-│   │   ├── gpt.vue / claude.vue / deepseek.vue / gemini.vue
-│   │   ├── gpt-4o-image.vue / flux-kontext.vue / nano-banana.vue
-│   │   ├── midjourney.vue / veo3.vue / runway.vue / luma.vue / sora.vue
-│   │   ├── elevenlabs.vue + elevenlabs/*.vue
-│   │   └── suno.vue + suno/*.vue
+│   ├── index.vue           # 站点首页（营销页）
+│   ├── about.vue / pricing.vue / credits.vue / test-routes.vue
+│   ├── home/               # 工具中心与各工具页（二级/三级路由）
 │   └── news/
 │       ├── index.vue
 │       └── [slug].vue
 ├── plugins/
-│   └── auth.client.js     # 客户端登录态恢复（如读 Token）
-├── public/                 # 无需构建的静态文件
-│   ├── favicon.ico
-│   ├── robots.txt / sitemap.xml
-│   └── tools-logo/        # 各工具 Logo
+│   ├── auth.client.js      # 客户端登录态恢复
+│   └── flux-*.client.ts    # 工具页/内容页样式按路由注入
+├── public/                 # 无需构建的静态文件（favicon、tools-logo、示例图…）
+├── scripts/                # 构建前质量闸门
+│   ├── check-route-registry.mjs  # 路由登记校验
+│   ├── check-seo-content.mjs     # SEO 文案迁移一致性校验
+│   ├── check-backend-contract.mjs # 前后端契约校验（读隔壁 Java 服务源码）
+│   └── smoke-test.mjs            # prebuild 入口，串联 6 项检查
 ├── server/                 # Nitro 服务端
-│   ├── api/               # 代理与 BFF 接口
-│   │   ├── chat/          # 对话：chatgpt、claude、deepseek、gemini
-│   │   ├── common/        # 公共：batch-upload、models/tree、models/price
-│   │   ├── image/         # 图像：gpt4o-image、flux-kontext、nano-banana、nano-banana-pro
-│   │   ├── midjourney/    # Midjourney：imagine、blend、describe、swap-face
-│   │   ├── audio/         # 音频：elevenLabs/*、suno/*
-│   │   ├── video/         # 视频：veo、runway、luma、sora、sora-pro
-│   │   ├── news/          # 资讯
-│   │   └── user/          # 用户：登录、发送验证码
-│   └── routes/            # 特殊路由（如 sitemap.xml）
-├── nuxt.config.js         # Nuxt 配置（SSR、Nitro preset、SEO、CSS）
-├── Dockerfile
-├── docker-compose.yml
-└── ARCHITECTURE.md        # 本文档
+│   ├── api/
+│   │   ├── [...path].js    # catch-all 代理（白名单内业务接口统一入口）
+│   │   ├── chat/           # SSE 流式对话（独立文件）
+│   │   ├── common/         # batch-upload、models/tree、models/price
+│   │   ├── records/        # 记录详情/列表/扩展列表/chat 详情
+│   │   ├── news/           # 资讯列表/详情
+│   │   ├── user/           # 登录、验证码、credits-detail、refresh-timezone
+│   │   ├── refund/         # 退款/取消订阅
+│   │   └── stripe/         # 支付会话
+│   ├── routes/             # 特殊路由（sitemap.xml 等）
+│   └── utils/
+│       ├── apiProxyRoutes.js  # 代理白名单（METHOD /path，131 条）
+│       └── getApiBase.js      # 服务端后端基地址
+├── utils/                  # 客户端工具
+│   ├── apiBase.js          # 客户端 API 基地址（生产直连 api.fuseaitools.com）
+│   ├── parseStandardApiResponse.js
+│   ├── md5.js
+│   └── toolBreadcrumbs.js
+├── eslint.config.mjs       # ESLint 扁平配置（@nuxt/eslint）
+├── error.vue               # 全站错误页
+├── nuxt.config.js          # Nuxt 配置（SSR、Nitro preset、SEO、CSS、ESLint 模块）
+├── Dockerfile / docker-compose.yml
+└── ARCHITECTURE.md         # 本文档
 ```
 
 ---
@@ -125,6 +143,17 @@ fuseaitools-web/
 - **ChatInterface**：统一封装多模型对话（GPT/Claude/DeepSeek/Gemini），包含输入、上传文件、流式输出、历史等。
 - **各 Tool 组件**：接收路由/模型信息，内部调用 `useApi`、`useAuth`、`useToast`，上传走 `/api/common/batch-upload`，业务请求走对应 `/api/chat/*` 或 `/api/image/*`。
 
+#### 巨型 Tool 组件的拆分约定
+
+超过 ~1500 行的 Tool 组件按「先逻辑、后模板」推进，每刀都可独立验证：
+
+1. **逻辑先出**：纯状态机/交互逻辑抽到 `composables/use<Tool><Feature>.js`，签名统一为 `useXxx(依赖对象, showError)`，组件内只保留解构赋值，模板零改动；
+2. **模板后拆**：轮廓清晰的面板（结果区、上传器、模式表单）再抽为 `components/tools/<tool>/*.vue`，props 只传只读数据 + 回调；
+3. **样式跟随**：被抽走模板对应的 scoped 样式一并迁到子组件，父组件不留孤儿样式；
+4. **每刀必验**：`npm run lint` + `npm run build`（构建自动跑冒烟测试与全站预渲染，渲染报错会直接中断）。
+
+已拆分：`WanTool.vue` 的 bbox_list 编辑（缩略图 / 画框弹窗 / 回填）→ `composables/useWanBbox.js`（3051 → 2811 行）。下一步候选（按收益排序）：`WanTool` 上传处理器 → `useWanUploads`；`ElevenLabsTool` / `NanoBananaTool` / `SunoTool` 的生成与轮询逻辑。
+
 ### 4.4 组合式函数（Composables）
 
 | 名称 | 作用 |
@@ -145,9 +174,32 @@ fuseaitools-web/
 ### 5.1 角色
 
 - Nitro 以 **BFF/代理** 身份存在：接收浏览器请求，转发到后端 Java 服务，并统一处理 CORS、认证头、错误体。
-- 后端基地址在开发/生产环境不同（如开发 `http://127.0.0.1:8080`，生产 `https://www.fuseaitools.com`），在各自 API 的 `server/api/**/*.js` 中写死或通过环境变量区分。
+- 后端基地址由 `server/utils/getApiBase.js` 统一解析：开发环境 `http://127.0.0.1:8080/api`，生产域名下 `https://api.fuseaitools.com/api`。
+- 浏览器端直连由 `utils/apiBase.js` 解析：线上 non-www / www 域名强制走 `https://api.fuseaitools.com/api`（静态资源由 CloudFront 分发，不处理 `/api`，POST 会 403），代理只服务本地开发与 SSR。
+- 对外声明的主域统一从 `constants/site.js` 的 `SITE_ORIGIN` 引入，禁止在页面/结构化数据里硬编码域名。
 
-### 5.2 API 分类与对应接口
+### 5.2 代理实现
+
+绝大多数业务接口由 **catch-all 代理** `server/api/[...path].js` 统一转发，不再为每个后端接口建文件：
+
+- 透传 `Authorization`、`Cookie`、`Accept`、`Content-Type`（含 multipart 边界）与查询串；
+- 请求体按原始字节转发，不做 JSON 解析再序列化，避免字段丢失；
+- 原样返回上游状态码、`Content-Type`、`Content-Disposition`、`Set-Cookie` 与响应体，SSE 直接返回流。
+
+可转发路径登记在 `server/utils/apiProxyRoutes.js` 白名单（`METHOD /path`），未登记一律 404，避免把后端 `/api` 全量暴露给公网。当前白名单 **131 条（130 POST + 1 GET）**；**新增后端接口只需在白名单加一行**，不再新建代理文件。
+
+以下路径行为有差异，保留独立文件（Nitro 静态路由优先于 catch-all）：
+
+| 路径 | 保留原因 |
+|------|----------|
+| `chat/*` | SSE 流式响应，直接返回 `response.body` |
+| `common/batch-upload` | multipart 重组，后端要求 part 名为 `file` |
+| `common/models/price` | 进程内 TTL 缓存 + 未登录时的服务端凭证 |
+| `common/models/tree`、`records/*`、`news/*`、`user/credits-detail` | 查询参数校验与默认值 |
+| `user/login-by-email`、`send-email-code`、`auth/refresh-timezone` | 依赖 `$fetch` 的 HTTP 错误映射 |
+| `refund/*`、`stripe/create-session` | 退款/支付会话的请求体与错误码转换 |
+
+### 5.3 API 分类与对应接口
 
 #### 对话（Chat）
 
@@ -176,68 +228,33 @@ fuseaitools-web/
 
 除 chat 类型流式会话外，Image（4）、Audio（2）、Video（4）等模型的生成接口可能返回 `{ "errorCode": "00000", "data": { "recordId": "xxx" } }`。此时前端使用 `composables/useRecordPolling.js` 每 10 秒请求一次 `/api/records/detail?record-id=xxx`，直到返回 `data.outputUrls`；将 `outputUrls` 在右侧结果区展示。**轮询期间表单通过 fieldset disabled 锁定，不可修改**。
 
-#### 图像（Image）
+#### 业务接口（白名单分组）
 
-| 前端路径 | 方法 | 说明 |
-|----------|------|------|
-| `/api/image/gpt4o-image/generate` | POST | GPT-4o 图像生成 |
-| `/api/image/flux-kontext/generate` | POST | Flux Kontext 生成/编辑 |
-| `/api/image/nano-banana/generate` | POST | Nano Banana 文生图 |
-| `/api/image/nano-banana/edit` | POST | Nano Banana 编辑/图生图 |
-| `/api/image/nano-banana-pro/generate` | POST | Nano Banana Pro 生成 |
+除下方「独立文件接口」外，其余接口全部由 catch-all 代理转发。完整清单以 `server/utils/apiProxyRoutes.js` 为准（131 条），本文不再逐条罗列，避免文档与代码漂移。
 
-#### Midjourney
+| 分组 | 条数 | 代表路径 | 覆盖范围 |
+|------|------|----------|----------|
+| `image/*` | 59 | `/api/image/qwen/v3-text-to-image`、`/api/image/flux-2/image-to-image` | gpt-image（v2 / v2.5）、gpt4o-image、flux-kontext / flux-2 / flux-2-pro / flux-3-klein、grok、ideogram、imagen4、nano-banana（2 / 2-lite / 2-1 / pro）、qwen（v1 / v2 / v21 / v3 / v3-pro / z-image）、seedream（lite / 5-flash / 5-pro）、wan 2.7 image |
+| `video/*` | 58 | `/api/video/kling/3-0-video`、`/api/video/seedance/v2` | grok、hailuo、happy-horse、kling（2.6 / 3.0 / omni / avatar / turbo）、luma、runway、seedance（lite / pro / v2 系列）、sora / sora-pro、veo、wan（v1 / v27 / v30） |
+| `audio/*` | 10 | `/api/audio/elevenLabs/text-to-speech`、`/api/audio/suno/generate` | ElevenLabs 4 条（TTS / STT / 音效 / 音频分离），Suno 6 条（generate / extend / upload / instrumental / vocals） |
+| `midjourney/*` | 3 | `/api/midjourney/imagine`、`/upscale`、`/vary` | blend / describe / swap-face 后端已下线，不再登记 |
+| `user/*` | 1 | `GET /api/user/detail` | 其余用户接口见下方独立文件表 |
 
-| 前端路径 | 方法 | 说明 |
-|----------|------|------|
-| `/api/midjourney/imagine` | POST | Imagine 文生图 |
-| `/api/midjourney/blend` | POST | Blend 混合 |
-| `/api/midjourney/describe` | POST | Describe 图生文 |
-| `/api/midjourney/swap-face` | POST | Swap Face 换脸 |
+#### 独立文件接口（Nitro 文件路由）
 
-#### 音频（Audio）
+Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立文件：
 
-| 前端路径 | 方法 | 说明 |
-|----------|------|------|
-| `/api/audio/elevenLabs/text-to-speech` | POST | ElevenLabs 文本转语音（Multilingual v2 / Turbo 2.5） |
-| `/api/audio/elevenLabs/speech-to-text` | POST | ElevenLabs 语音转文本 |
-| `/api/audio/elevenLabs/sound-effect-v2` | POST | ElevenLabs 音效 v2 |
-| `/api/audio/elevenLabs/audio-isolation` | POST | ElevenLabs 音频分离 |
-| `/api/audio/suno/generate` | POST | Suno 音乐生成 |
-| `/api/audio/suno/extend` | POST | Suno 音乐延长 |
-| `/api/audio/suno/upload-cover` | POST | Suno 音频覆盖 |
-| `/api/audio/suno/upload-extend` | POST | Suno 音频扩展 |
-| `/api/audio/suno/add-instrumental` | POST | Suno 伴奏生成 |
-| `/api/audio/suno/add-vocals` | POST | Suno 人声生成 |
-
-#### 视频（Video）
-
-| 前端路径 | 方法 | 说明 |
-|----------|------|------|
-| `/api/video/veo/generate` | POST | Veo 3 生成（文生视频/首尾帧/图生视频） |
-| `/api/video/veo/extend` | POST | Veo 3 视频扩展 |
-| `/api/video/runway/generate` | POST | Runway 视频生成 |
-| `/api/video/runway/extend` | POST | Runway 视频扩展 |
-| `/api/video/runway/aleph` | POST | Runway Aleph 视频转换 |
-| `/api/video/luma/generate` | POST | Luma 视频修改 |
-| `/api/video/sora/generate` | POST | Sora 生成（text-to-video / image-to-video） |
-| `/api/video/sora/watermark-remover` | POST | Sora 去水印 |
-| `/api/video/sora-pro/generate` | POST | Sora Pro 生成（pro-text-to-video / pro-image-to-video） |
-| `/api/video/sora-pro/storyboard` | POST | Sora Pro 分镜 |
-
-#### 资讯（News）
-
-| 前端路径 | 方法 | 说明 |
-|----------|------|------|
-| `/api/news` | GET | 资讯列表 |
-| `/api/news/[slug]` | GET | 资讯详情 |
-
-#### 用户（User）
-
-| 前端路径 | 方法 | 说明 |
-|----------|------|------|
-| `/api/user/login-by-email` | POST | 邮箱登录 |
-| `/api/user/send-email-code` | POST | 发送验证码 |
+| 前端路径 | 方法 | 文件 / 说明 |
+|----------|------|-------------|
+| `/api/chat/{chatgpt,claude,deepseek,gemini}` | POST | `server/api/chat/*.post.js`，SSE 流式响应 |
+| `/api/common/batch-upload` | POST | `server/api/common/batch-upload.post.js`，multipart 重组 |
+| `/api/common/models/tree`、`/api/common/models/price` | GET | `server/api/common/models/*.get.js`，price 带进程内 TTL 缓存 |
+| `/api/records/{detail,chat-detail,list,extend-list}` | GET | `server/api/records/*.get.js`，查询参数校验与默认值 |
+| `/api/news/{list,detail}` | GET | `server/api/news/*.get.js` |
+| `/api/user/{login-by-email,send-email-code,credits-detail}` | POST/GET | `server/api/user/*`，HTTP 错误映射 |
+| `/api/user/auth/refresh-timezone` | POST | `server/api/user/auth/refresh-timezone.post.js` |
+| `/api/refund/{refund-subscription,refund-recharge,cancel-subscription,*-detail}` | POST/GET | `server/api/refund/*` |
+| `/api/stripe/create-session` | POST | `server/api/stripe/create-session.post.js` |
 
 ---
 
@@ -245,7 +262,7 @@ fuseaitools-web/
 - **上传类**：Nitro 使用 `readMultipartFormData` 解析，再以 `FormData` 转发到后端，保证 `file` 字段与后端一致。
 - **业务类**：请求体 JSON，响应 JSON；代理透传 `Authorization`；失败时若后端返回 `errorMessage`，代理可透传或包装为 `createError`，前端统一用 `useApi` 或 catch 展示 `errorMessage`。
 
-### 5.3 错误与 errorMessage
+### 5.4 错误与 errorMessage
 
 - 后端统一格式如：`{ errorCode, errorMessage, data }`。
 - 代理在非 2xx 或业务错误时，应尽量把后端 `errorMessage` 透传或放入 `message`，前端在 catch 或 `useApi` 中展示，保证「失败时抛出/展示 errorMessage」。
@@ -269,15 +286,38 @@ fuseaitools-web/
   - `node-server`：生成 Node 服务，保留服务端 API 与 SSR，适合 Docker 或 Node 托管。
 - **Docker**：根目录提供 `Dockerfile`、`docker-compose.yml`，用于构建运行 Nitro 的镜像及编排；细节见 `README_DOCKER.md` / `DOCKER_SETUP.md`。
 - **预渲染**：`nuxt.config.js` 中 `nitro.prerender.routes` 列出需预渲染的路径，提升首屏与 SEO。
+- **构建前质量闸门**：`prebuild` 自动执行 `node scripts/smoke-test.mjs`，任一失败则构建中断：
+  1. **路由登记**：`pages/home/**` 新增页面是否已登记到 `constants/routeToToolMap.js`（`scripts/check-route-registry.mjs`）；
+  2. **白名单格式**：`server/utils/apiProxyRoutes.js` 每条必须是 `METHOD /path` 且不以 `/` 结尾；
+  3. **调用与白名单对齐**：扫描 `components/`、`composables/`、`pages/` 里的 `/api` 调用点与 `server/api/**` 文件路由，未登记的调用直接失败；
+  4. **SEO 数据完整性**：`data/seo/*.js` 必填字段（`component` / `rootId` / `meta` / `sections`）+ 薄壳组件必须显式 import `ToolSeoContent`；
+  5. **SEO 文案一致性**：`scripts/check-seo-content.mjs --all` 对比 git HEAD 的旧组件，防止数据化迁移丢字；
+  6. **前后端契约**：`scripts/check-backend-contract.mjs` 读取 `../fuseaitools-server` 的 Java 源码（可用 `FUSE_SERVER_DIR` 覆盖），校验白名单路由能在 Controller 找到、请求体顶层字段能映射到 `@RequestBody` DTO、DTO 枚举字段的传值符合 `@JsonCreator` 的可接受值；后端目录不存在时自动跳过，未修复的后端缺陷只提示不阻断。
+- **代码检查**：`npm run lint`（ESLint 扁平配置见 `eslint.config.mjs`）。基线 **0 error**；存量 `unused-vars` 以 warning 形式存在，用 `--max-warnings` 锁住数值，新增代码不得抬高。
 
 ---
 
 ## 八、扩展与约定
 
-- **新增 AI 工具页**：在 `pages/home/` 下增加或复用路由，在 `home/index.vue` 的导航/工具列表中注册对应 Tool 组件；如需新接口，在 `server/api/image/` 或 `server/api/chat/` 下新增代理并转发到后端。
+- **新增 AI 工具页**：在 `pages/home/` 下增加或复用路由，在 `home/index.vue` 的导航/工具列表中注册对应 Tool 组件；如需新接口，在 `server/utils/apiProxyRoutes.js` 白名单加一行 `POST /xxx/yyy` 即可，不需要新建代理文件。
 - **新增对话模型**：在 `server/api/chat/` 增加 `xxx.post.js`，前端在 ChatInterface 的模型列表与 `getChatApiUrl` 中增加分支。
 - **统一请求与错误**：新接口尽量通过 `useApi` 调用，失败时由后端返回 `errorMessage`，代理透传，前端统一 Toast 展示并重置状态，避免「失败后无法再次发起」。
 - **上传**：需要传文件的接口，先通过 `/api/common/batch-upload` 拿到 URL，再把 URL 作为参数字段传给具体业务接口。
+- **SEO 内容数据化（新增/修改工具页必读）**：
+  1. 内容写到 `data/seo/<tool>.js`，schema 参照 `data/seo/qwen-v3.js`：`component` / `rootId` / `rootClass` / `meta` / `introByPath` / `definitionByPath` / `faqByPath` / `commonFaq` / `sections[]` / `tips[]` / `watchPathIncludes`；
+  2. `sections` 可用类型：`intro`、`definition`、`prose`、`features`、`badges`、`table`、`faq`、`workflows`，个别工具的特有段落用 `html` 兜底；顺序自由，按渲染顺序排列即可；
+  3. **按路由收窄**：`sections` 和 `tips` 都支持 `paths: ['/home/x/y']`，只在列出的路由渲染；同一段落按路由文案不同（如 v1/v1.1 对比表）时，就写成多个带 `paths` 的 section，不要写模板逻辑；
+  4. 表格单元格可以是字符串或 `{ html, colspan }`（合并单元格用后者），`headers` 为纯文本；`table` 还支持 `lead` / `note` / `ariaLabel`；
+  5. 薄壳组件（如 `QwenV3SeoContent.vue`）只保留三件事：`<ToolSeoContent :data="seo" />`、**显式** `import ToolSeoContent from '~/components/tools/ToolSeoContent.vue'`、引入数据文件与 `assets/css/tool-seo-content.css`。显式 import 不可省略——Nuxt 自动导入会解析为 `ToolsToolSeoContent`，导致 SSR 渲染为空且不报错；
+  6. 迁移或改写后用 `node scripts/check-seo-content.mjs <组件名>`（或 `--all`）做文案比对，确认无丢字；脚本会把旧组件文案与 `data/seo/*.js` 做去标签/折叠空白后的子串比对，类名、`v-for` 表达式与跨标签碎片会自动忽略；
+  7. 模板结构（标题层级、FAQ 折叠、内链事件委托、JSON-LD FAQ schema）统一由 `ToolSeoContent.vue` 维护，**不要在数据文件里写模板逻辑**；
+  8. `npm run build` 的 prebuild 会自动跑 `smoke-test`，其中 [4/6] 会校验「每个数据文件字段完整 + 薄壳引用正确」，新增数据文件无需改脚本。
+- **域名与 URL**：canonical / og:url / sitemap / llms.txt 一律从 `constants/site.js` 的 `SITE_ORIGIN` 拼接，不要在页面里硬编码域名。
+- **前后端契约（改请求参数必读）**：
+  1. `npm run check:backend` 手动跑契约校验；`prebuild` 也会跑（后端目录缺失时跳过），保证「改路由/改字段/改枚举」不会静默失效；
+  2. 后端 Jackson 默认 `FAIL_ON_UNKNOWN_PROPERTIES=false` + camelCase，**字段名拼错不会报错，只会被丢弃**；请求体字段一律以 DTO 字段名为准；
+  3. `*Enum` 类型字段按 `@JsonCreator` 的规则传值：多数枚举用 `@JsonValue` 的 code/ratio（如 `FluxKontextAspectRatioEnum` 收 `16:9` 而不是 `RATIO_16_9`），少数无 creator 的枚举才收枚举名；新增枚举字段时先看后端 `@JsonCreator` 再写前端；
+  4. 后端 `BeanUtils.copyProperties(DTO, Request)` 遇到同名不同类型的字段会**静默跳过**，String→Enum 的字段必须在 Service 里显式 `setXxx(Enum.fromCode(...))`；契约脚本的 D 项会持续提示这类遗漏。
 
 ---
 

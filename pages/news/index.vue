@@ -58,7 +58,7 @@
               @click="navigateToDetail(article)"
             >
               <div class="news-image" v-if="article.image">
-                <img :src="article.image" :alt="article.title" />
+                <img :src="article.image" :alt="article.title" loading="lazy" decoding="async" />
               </div>
               <div class="news-content">
                 <div class="news-header">

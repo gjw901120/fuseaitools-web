@@ -15,7 +15,7 @@ export function useRecordPolling() {
   const isRecordIdStillInUrl = (recordId) => (route.query['record-id'] || '') === recordId
 
   const getToken = () => {
-    if (!process.client) return null
+    if (!import.meta.client) return null
     try {
       const { token } = useAuth()
       if (token?.value) return token.value

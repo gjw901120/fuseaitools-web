@@ -522,10 +522,10 @@
           <div v-if="!isDetailView && route.path === '/home/elevenlabs/turbo-2-5'" class="tutorial-showcase">
             <p class="tutorial-showcase-title">🎵 Tutorial Showcase</p>
             <div class="tutorial-showcase-links">
-              <a href="https://fuseaitools.com/news/ai-social-short-video-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
+              <a href="/news/ai-social-short-video-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
                 Use AI Voice to Bring Short Videos to Life: A Social-First TTS Workflow
               </a>
-              <a href="https://fuseaitools.com/news/epic-trailer-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
+              <a href="/news/epic-trailer-voiceover-with-elevenlabs-turbo-2-5" target="_blank" rel="noopener noreferrer" class="tutorial-link">
                 Create Epic Trailer Voiceovers with AI: Make Brand Promos More Impactful
               </a>
             </div>
@@ -766,7 +766,7 @@ const batchUploadUrl = useBatchUploadUrl()
 onMounted(() => { fetchPrices() })
 
 const getAuthToken = () => {
-  if (!process.client) return null
+  if (!import.meta.client) return null
   try {
     if (token?.value) return token.value
     return localStorage.getItem('auth_token')
@@ -1126,7 +1126,7 @@ const getPreviewPath = (voiceId) => {
 const playVoicePreviewFor = (voiceId) => {
   if (!voiceId) return
   if (voicePreviewAudio.value) {
-    try { voicePreviewAudio.value.pause() } catch (_) {}
+    try { voicePreviewAudio.value.pause() } catch (_) { /* 忽略：preview 音频可能已被浏览器回收 */ }
     voicePreviewAudio.value = null
   }
   playingVoiceId.value = voiceId

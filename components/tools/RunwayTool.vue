@@ -267,7 +267,7 @@
               <div v-if="alephReferenceVideo && !isUploadingAlephVideo" class="aleph-video-display">
                 <div v-if="isDetailView" class="form-label">Input video (this task)</div>
                 <div class="aleph-video-preview-wrap">
-                  <video :src="alephReferenceVideo" class="aleph-video-preview" controls></video>
+                  <video :src="alephReferenceVideo" class="aleph-video-preview" controls preload="metadata"></video>
                   <button v-if="!isDetailView" type="button" class="aleph-video-remove" title="Remove" @click="clearAlephReferenceVideo">
                     <i class="fas fa-times"></i>
                   </button>
@@ -533,7 +533,7 @@
               class="video-showcase-item"
             >
               <div class="video-player">
-                <video controls :src="video.url" :poster="video.thumbnail">
+                <video controls :src="video.url" :poster="video.thumbnail" preload="metadata">
                   Your browser does not support video playback
                 </video>
               </div>
@@ -1112,7 +1112,7 @@ const generateVideo = async () => {
     const data = await post('/api/video/runway/generate', body)
     const rid = data?.recordId ?? data?.data?.recordId
     if (rid) { router.push(getRunwayRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
-    let payload = data?.data ?? data
+    const payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
       url: payload.videoUrl || payload.url,
@@ -1171,7 +1171,7 @@ const generateAlephVideo = async () => {
     const data = await post('/api/video/runway/aleph', body)
     const rid = data?.recordId ?? data?.data?.recordId
     if (rid) { router.push(getRunwayRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
-    let payload = data?.data ?? data
+    const payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
       url: payload.videoUrl || payload.url,
@@ -1224,7 +1224,7 @@ const generateExtendVideo = async () => {
     const data = await post('/api/video/runway/extend', body)
     const rid = data?.recordId ?? data?.data?.recordId
     if (rid) { router.push(getRunwayRecordPath() + '?record-id=' + encodeURIComponent(rid)); return }
-    let payload = data?.data ?? data
+    const payload = data?.data ?? data
     const newVideo = {
       id: payload.taskId || Date.now(),
       url: payload.videoUrl || payload.url,

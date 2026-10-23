@@ -2,141 +2,141 @@
 
 > FuseAITools is an all-in-one AI platform with 100+ models for chat, image, video, and audio. Use tools in the browser with credit-based pricing; new users receive 20 free credits on sign-up. This file lists the most useful public pages for understanding our products and workflows.
 
-FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Seedream, Seedance, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://fuseaitools.com/robots.txt).
+FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Seedream, Seedance, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://www.fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://www.fuseaitools.com/robots.txt).
 
 ## Core pages
 
-- [Home](https://fuseaitools.com/): Marketing homepage, product overview, and FAQ.
-- [AI Tools Hub](https://fuseaitools.com/home): Launch pad for all integrated AI tools.
-- [Pricing](https://fuseaitools.com/pricing): Subscription plans, credit top-ups, and 20 free credits on sign-up.
-- [About](https://fuseaitools.com/about): Platform overview, contact, and 20 free credits on sign-up.
-- [News](https://fuseaitools.com/news): Tutorials, comparisons, and product updates.
+- [Home](https://www.fuseaitools.com/): Marketing homepage, product overview, and FAQ.
+- [AI Tools Hub](https://www.fuseaitools.com/home): Launch pad for all integrated AI tools.
+- [Pricing](https://www.fuseaitools.com/pricing): Subscription plans, credit top-ups, and 20 free credits on sign-up.
+- [About](https://www.fuseaitools.com/about): Platform overview, contact, and 20 free credits on sign-up.
+- [News](https://www.fuseaitools.com/news): Tutorials, comparisons, and product updates.
 
 ## Chat
 
-- [GPT](https://fuseaitools.com/home/gpt): OpenAI GPT chat and generation overview.
-- [GPT Generate](https://fuseaitools.com/home/gpt/generate): Multi-turn chat and content generation.
-- [Claude](https://fuseaitools.com/home/claude): Anthropic Claude overview.
-- [Claude Generate](https://fuseaitools.com/home/claude/generate): Claude chat workspace.
-- [Gemini](https://fuseaitools.com/home/gemini): Google Gemini overview.
-- [Gemini Generate](https://fuseaitools.com/home/gemini/generate): Gemini chat workspace.
-- [DeepSeek](https://fuseaitools.com/home/deepseek): DeepSeek overview.
-- [DeepSeek Generate](https://fuseaitools.com/home/deepseek/generate): DeepSeek chat workspace.
+- [GPT](https://www.fuseaitools.com/home/gpt): OpenAI GPT chat and generation overview.
+- [GPT Generate](https://www.fuseaitools.com/home/gpt/generate): Multi-turn chat and content generation.
+- [Claude](https://www.fuseaitools.com/home/claude): Anthropic Claude overview.
+- [Claude Generate](https://www.fuseaitools.com/home/claude/generate): Claude chat workspace.
+- [Gemini](https://www.fuseaitools.com/home/gemini): Google Gemini overview.
+- [Gemini Generate](https://www.fuseaitools.com/home/gemini/generate): Gemini chat workspace.
+- [DeepSeek](https://www.fuseaitools.com/home/deepseek): DeepSeek overview.
+- [DeepSeek Generate](https://www.fuseaitools.com/home/deepseek/generate): DeepSeek chat workspace.
 
 ## Image
 
-- [GPT 4o Image](https://fuseaitools.com/home/gpt-4o-image): OpenAI's latest unified image generation—T2I + I2I in one interface; up to 5 ref images, prompt enhancement, fallback mechanism.
-- [GPT 4o Image Generate](https://fuseaitools.com/home/gpt-4o-image/generate): Unified image generation with optional reference images and enhancement toggle.
-- [GPT Image](https://fuseaitools.com/home/gpt-image): GPT image generation suite overview.
-- [GPT Image 1.5 Text to Image](https://fuseaitools.com/home/gpt-image/text-to-image): Classic T2I—prompt ≤3000 chars, quality medium/high, 3 aspect ratios.
-- [GPT Image 1.5 Image to Image](https://fuseaitools.com/home/gpt-image/image-to-image): Classic I2I—edit 1 reference image with prompt, quality control.
-- [GPT Image v2 Text to Image](https://fuseaitools.com/home/gpt-image/v2-text-to-image): Modern T2I—prompt ≤20000 chars, 6 aspect ratios, 1K/2K/4K resolution.
-- [GPT Image v2 Image to Image](https://fuseaitools.com/home/gpt-image/v2-image-to-image): Modern I2I—up to 16 reference images, resolution tiers, 6 aspect ratios.
-- [Ideogram](https://fuseaitools.com/home/ideogram): Ideogram image tools overview.
-- [Flux Kontext](https://fuseaitools.com/home/flux-kontext): FLUX image generation overview.
-- [Nano Banana Overview](https://fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
-- [Nano Banana Text to Image](https://fuseaitools.com/home/nano-banana/generate): Prompt-only, eleven aspect ratios, PNG/JPEG, up to 5000 chars.
-- [Nano Banana Image to Image](https://fuseaitools.com/home/nano-banana/edit): Edit 1–10 images with natural-language prompts.
-- [Nano Banana Pro Generate](https://fuseaitools.com/home/nano-banana/pro-generate): 1–10 reference images, 1K/2K/4K resolution.
-- [Nano Banana 2](https://fuseaitools.com/home/nano-banana/nano-banana-2): Up to 20k prompt, optional 0–14 images, fifteen aspect ratios.
-- [Seedream Overview](https://fuseaitools.com/home/seedream): ByteDance Seedream 5 Lite image tools; pairs with Seedance video; 20 free credits on sign-up.
-- [Seedream 5 Lite Text to Image](https://fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
-- [Seedream 5 Lite Image to Image](https://fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.
-- [Qwen Image](https://fuseaitools.com/home/qwen): Qwen image tools overview.
-- [Qwen v1 Text to Image](https://fuseaitools.com/home/qwen/text-to-image): Full-parameter T2I—5000-char prompts, steps 2–250, guidance, acceleration, negative prompt.
-- [Qwen v1 Image to Image](https://fuseaitools.com/home/qwen/image-to-image): Transform reference images with denoising strength 0–1 and full controls.
-- [Qwen v1 Image Edit](https://fuseaitools.com/home/qwen/image-edit): Natural-language image editing—1–4 outputs, steps 2–49, sync mode.
-- [Qwen Z-Image](https://fuseaitools.com/home/qwen/z-image): Fast T2I with 5 aspect ratios (1:1–9:16), 3–15s generation.
-- [Qwen v2 Text to Image](https://fuseaitools.com/home/qwen/v2-text-to-image): Streamlined T2I with 5 aspect ratios, prompt up to 800 chars.
-- [Qwen v2 Image Edit](https://fuseaitools.com/home/qwen/v2-image-edit): Reference-based editing with 8 aspect ratios including 21:9.
-- [Imagen 4 Overview](https://fuseaitools.com/home/imagen4): Google Imagen 4 text-to-image—Generate, Fast (1–4 images), and Ultra tiers; 20 free credits on sign-up.
-- [Imagen 4 Generate](https://fuseaitools.com/home/imagen4/imagen4-generate): Balanced text-to-image—prompt up to 5000 chars, five aspect ratios, optional negative prompt and seed string.
-- [Imagen 4 Fast](https://fuseaitools.com/home/imagen4/imagen4-fast): Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).
-- [Imagen 4 Ultra](https://fuseaitools.com/home/imagen4/imagen4-ultra): Flagship fidelity—one high-quality image per prompt; pairs with Veo 3.1 video.
+- [GPT 4o Image](https://www.fuseaitools.com/home/gpt-4o-image): OpenAI's latest unified image generation—T2I + I2I in one interface; up to 5 ref images, prompt enhancement, fallback mechanism.
+- [GPT 4o Image Generate](https://www.fuseaitools.com/home/gpt-4o-image/generate): Unified image generation with optional reference images and enhancement toggle.
+- [GPT Image](https://www.fuseaitools.com/home/gpt-image): GPT image generation suite overview.
+- [GPT Image 1.5 Text to Image](https://www.fuseaitools.com/home/gpt-image/text-to-image): Classic T2I—prompt ≤3000 chars, quality medium/high, 3 aspect ratios.
+- [GPT Image 1.5 Image to Image](https://www.fuseaitools.com/home/gpt-image/image-to-image): Classic I2I—edit 1 reference image with prompt, quality control.
+- [GPT Image v2 Text to Image](https://www.fuseaitools.com/home/gpt-image/v2-text-to-image): Modern T2I—prompt ≤20000 chars, 6 aspect ratios, 1K/2K/4K resolution.
+- [GPT Image v2 Image to Image](https://www.fuseaitools.com/home/gpt-image/v2-image-to-image): Modern I2I—up to 16 reference images, resolution tiers, 6 aspect ratios.
+- [Ideogram](https://www.fuseaitools.com/home/ideogram): Ideogram image tools overview.
+- [Flux Kontext](https://www.fuseaitools.com/home/flux-kontext): FLUX image generation overview.
+- [Nano Banana Overview](https://www.fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
+- [Nano Banana Text to Image](https://www.fuseaitools.com/home/nano-banana/generate): Prompt-only, eleven aspect ratios, PNG/JPEG, up to 5000 chars.
+- [Nano Banana Image to Image](https://www.fuseaitools.com/home/nano-banana/edit): Edit 1–10 images with natural-language prompts.
+- [Nano Banana Pro Generate](https://www.fuseaitools.com/home/nano-banana/pro-generate): 1–10 reference images, 1K/2K/4K resolution.
+- [Nano Banana 2](https://www.fuseaitools.com/home/nano-banana/nano-banana-2): Up to 20k prompt, optional 0–14 images, fifteen aspect ratios.
+- [Seedream Overview](https://www.fuseaitools.com/home/seedream): ByteDance Seedream 5 Lite image tools; pairs with Seedance video; 20 free credits on sign-up.
+- [Seedream 5 Lite Text to Image](https://www.fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
+- [Seedream 5 Lite Image to Image](https://www.fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.
+- [Qwen Image](https://www.fuseaitools.com/home/qwen): Qwen image tools overview.
+- [Qwen v1 Text to Image](https://www.fuseaitools.com/home/qwen/text-to-image): Full-parameter T2I—5000-char prompts, steps 2–250, guidance, acceleration, negative prompt.
+- [Qwen v1 Image to Image](https://www.fuseaitools.com/home/qwen/image-to-image): Transform reference images with denoising strength 0–1 and full controls.
+- [Qwen v1 Image Edit](https://www.fuseaitools.com/home/qwen/image-edit): Natural-language image editing—1–4 outputs, steps 2–49, sync mode.
+- [Qwen Z-Image](https://www.fuseaitools.com/home/qwen/z-image): Fast T2I with 5 aspect ratios (1:1–9:16), 3–15s generation.
+- [Qwen v2 Text to Image](https://www.fuseaitools.com/home/qwen/v2-text-to-image): Streamlined T2I with 5 aspect ratios, prompt up to 800 chars.
+- [Qwen v2 Image Edit](https://www.fuseaitools.com/home/qwen/v2-image-edit): Reference-based editing with 8 aspect ratios including 21:9.
+- [Imagen 4 Overview](https://www.fuseaitools.com/home/imagen4): Google Imagen 4 text-to-image—Generate, Fast (1–4 images), and Ultra tiers; 20 free credits on sign-up.
+- [Imagen 4 Generate](https://www.fuseaitools.com/home/imagen4/imagen4-generate): Balanced text-to-image—prompt up to 5000 chars, five aspect ratios, optional negative prompt and seed string.
+- [Imagen 4 Fast](https://www.fuseaitools.com/home/imagen4/imagen4-fast): Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).
+- [Imagen 4 Ultra](https://www.fuseaitools.com/home/imagen4/imagen4-ultra): Flagship fidelity—one high-quality image per prompt; pairs with Veo 3.1 video.
 
 ## Video — HappyHorse v1
 
 HappyHorse v1 focuses on native audio-video joint generation (lip-sync, ambient sound, multi-shot narrative).
 
-- [HappyHorse Overview](https://fuseaitools.com/home/happy-horse): Four v1 workflows with native audio-video sync; 20 free credits on sign-up.
-- [HappyHorse v1 Text to Video](https://fuseaitools.com/home/happy-horse/v1-text-to-video): Generate video from text; 3–15s, 720p/1080p, multiple aspect ratios.
-- [HappyHorse v1 Image to Video](https://fuseaitools.com/home/happy-horse/v1-image-to-video): Animate one input image with optional prompt.
-- [HappyHorse v1 Reference to Video](https://fuseaitools.com/home/happy-horse/v1-reference-to-video): 1–9 reference images with character placeholders.
-- [HappyHorse v1 Video Edit](https://fuseaitools.com/home/happy-horse/v1-video-edit): Edit existing video with natural-language instructions.
+- [HappyHorse Overview](https://www.fuseaitools.com/home/happy-horse): Four v1 workflows with native audio-video sync; 20 free credits on sign-up.
+- [HappyHorse v1 Text to Video](https://www.fuseaitools.com/home/happy-horse/v1-text-to-video): Generate video from text; 3–15s, 720p/1080p, multiple aspect ratios.
+- [HappyHorse v1 Image to Video](https://www.fuseaitools.com/home/happy-horse/v1-image-to-video): Animate one input image with optional prompt.
+- [HappyHorse v1 Reference to Video](https://www.fuseaitools.com/home/happy-horse/v1-reference-to-video): 1–9 reference images with character placeholders.
+- [HappyHorse v1 Video Edit](https://www.fuseaitools.com/home/happy-horse/v1-video-edit): Edit existing video with natural-language instructions.
 
 ## Video — Wan 2.6 & 2.7
 
 Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 adds image tools (1K/2K/4K stills), frame-controlled I2V, Video Edit, and R2V (up to 5 references). Image and video workflows cross-link on each tool page.
 
-- [Wan Overview](https://fuseaitools.com/home/wan): Wan image and video tools hub.
-- [Wan 2.6 Text to Video](https://fuseaitools.com/home/wan/text-to-video): Role-play oriented text-to-video.
-- [Wan 2.6 Image to Video](https://fuseaitools.com/home/wan/image-to-video): Image-to-video with multi-shot options.
-- [Wan 2.6 Video to Video](https://fuseaitools.com/home/wan/video-to-video): Upload footage and transform with prompts (5/10s output).
-- [Wan 2.7 Text to Video](https://fuseaitools.com/home/wan/v2-7-text-to-video): Advanced text-to-video, 2–15s.
-- [Wan 2.7 Image to Video](https://fuseaitools.com/home/wan/v2-7-image-to-video): First/last frame and driving audio controls.
-- [Wan 2.7 Video Edit](https://fuseaitools.com/home/wan/v2-7-video-edit): Natural-language video editing.
-- [Wan 2.7 R2V](https://fuseaitools.com/home/wan/v2-7-r2v): Up to 5 reference images/videos for ensemble scenes.
-- [Wan 2.7 Image](https://fuseaitools.com/home/wan/2-7-image): Wan 2.7 image generation.
-- [Wan 2.7 Image Pro](https://fuseaitools.com/home/wan/2-7-image-pro): Wan 2.7 Image Pro (higher quality tier).
+- [Wan Overview](https://www.fuseaitools.com/home/wan): Wan image and video tools hub.
+- [Wan 2.6 Text to Video](https://www.fuseaitools.com/home/wan/text-to-video): Role-play oriented text-to-video.
+- [Wan 2.6 Image to Video](https://www.fuseaitools.com/home/wan/image-to-video): Image-to-video with multi-shot options.
+- [Wan 2.6 Video to Video](https://www.fuseaitools.com/home/wan/video-to-video): Upload footage and transform with prompts (5/10s output).
+- [Wan 2.7 Text to Video](https://www.fuseaitools.com/home/wan/v2-7-text-to-video): Advanced text-to-video, 2–15s.
+- [Wan 2.7 Image to Video](https://www.fuseaitools.com/home/wan/v2-7-image-to-video): First/last frame and driving audio controls.
+- [Wan 2.7 Video Edit](https://www.fuseaitools.com/home/wan/v2-7-video-edit): Natural-language video editing.
+- [Wan 2.7 R2V](https://www.fuseaitools.com/home/wan/v2-7-r2v): Up to 5 reference images/videos for ensemble scenes.
+- [Wan 2.7 Image](https://www.fuseaitools.com/home/wan/2-7-image): Wan 2.7 image generation.
+- [Wan 2.7 Image Pro](https://www.fuseaitools.com/home/wan/2-7-image-pro): Wan 2.7 Image Pro (higher quality tier).
 
 ## Video — Runway
 
 Runway covers Generate (text or image to 5s/10s at 720p/1080p), Extend (continue a completed generate task), and Aleph (style transform on uploaded video). Typical pipeline: Generate → Extend → Aleph.
 
-- [Runway Overview](https://fuseaitools.com/home/runway): Three linked video workflows; 20 free credits on sign-up.
-- [Runway Generate](https://fuseaitools.com/home/runway/generate): Text-to-video or optional image-to-video—prompt ≤1800, 5s/10s, five aspect ratios.
-- [Runway Extend](https://fuseaitools.com/home/runway/extend): Continue a Runway Generate task with prompt ≤1000 at 720p/1080p.
-- [Runway Aleph](https://fuseaitools.com/home/runway/aleph): Style-transform uploaded MP4/MOV/AVI (max 10MB) with optional reference image and seed.
+- [Runway Overview](https://www.fuseaitools.com/home/runway): Three linked video workflows; 20 free credits on sign-up.
+- [Runway Generate](https://www.fuseaitools.com/home/runway/generate): Text-to-video or optional image-to-video—prompt ≤1800, 5s/10s, five aspect ratios.
+- [Runway Extend](https://www.fuseaitools.com/home/runway/extend): Continue a Runway Generate task with prompt ≤1000 at 720p/1080p.
+- [Runway Aleph](https://www.fuseaitools.com/home/runway/aleph): Style-transform uploaded MP4/MOV/AVI (max 10MB) with optional reference image and seed.
 
 ## Video — Luma
 
 Luma Dream Machine on FuseAITools is video modification only—upload MP4/MOV/AVI (max 500MB, 10s), describe changes in English, optional watermark. Not text-to-video; pair with Seedance or Wan for generation.
 
-- [Luma Overview](https://fuseaitools.com/home/luma): Single video-modification workflow; 20 free credits on sign-up.
-- [Luma Video Modification](https://fuseaitools.com/home/luma/generate): English prompt + uploaded clip; modelKey Luma; per-run credits.
+- [Luma Overview](https://www.fuseaitools.com/home/luma): Single video-modification workflow; 20 free credits on sign-up.
+- [Luma Video Modification](https://www.fuseaitools.com/home/luma/generate): English prompt + uploaded clip; modelKey Luma; per-run credits.
 
 ## Video — Other models
 
-- [Veo3](https://fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
-- [Sora](https://fuseaitools.com/home/sora): OpenAI Sora video tools overview; two tiers (Sora 2 standard and Sora 2 Pro) plus a standalone watermark remover; 20 free credits on sign-up.
-- [Sora 2 Text to Video](https://fuseaitools.com/home/sora/text-to-video): Standard T2V—prompt ≤10000 chars, portrait/landscape, 10s/15s, optional watermark removal.
-- [Sora 2 Image to Video](https://fuseaitools.com/home/sora/image-to-video): Standard I2V—animate up to 3 reference images with prompt, aspect ratio and duration controls.
-- [Sora 2 Pro Text to Video](https://fuseaitools.com/home/sora/pro-text-to-video): Pro T2V—standard/high size control, 10s/15s, watermark removal.
-- [Sora 2 Pro Image to Video](https://fuseaitools.com/home/sora/pro-image-to-video): Pro I2V—size control (standard/high), up to 3 ref images, watermark removal.
-- [Sora 2 Pro Storyboard](https://fuseaitools.com/home/sora/pro-storyboard): Multi-scene narrative builder—per-shot descriptions, 10s/15s/25s, optional reference images.
-- [Sora Watermark Remover](https://fuseaitools.com/home/sora/watermark-remover): Standalone utility—upload Sora videos/images and remove OpenAI watermark, no prompt or aspect ratio needed.
-- [Kling](https://fuseaitools.com/home/kling): Kling video and avatar tools overview.
+- [Veo3](https://www.fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
+- [Sora](https://www.fuseaitools.com/home/sora): OpenAI Sora video tools overview; two tiers (Sora 2 standard and Sora 2 Pro) plus a standalone watermark remover; 20 free credits on sign-up.
+- [Sora 2 Text to Video](https://www.fuseaitools.com/home/sora/text-to-video): Standard T2V—prompt ≤10000 chars, portrait/landscape, 10s/15s, optional watermark removal.
+- [Sora 2 Image to Video](https://www.fuseaitools.com/home/sora/image-to-video): Standard I2V—animate up to 3 reference images with prompt, aspect ratio and duration controls.
+- [Sora 2 Pro Text to Video](https://www.fuseaitools.com/home/sora/pro-text-to-video): Pro T2V—standard/high size control, 10s/15s, watermark removal.
+- [Sora 2 Pro Image to Video](https://www.fuseaitools.com/home/sora/pro-image-to-video): Pro I2V—size control (standard/high), up to 3 ref images, watermark removal.
+- [Sora 2 Pro Storyboard](https://www.fuseaitools.com/home/sora/pro-storyboard): Multi-scene narrative builder—per-shot descriptions, 10s/15s/25s, optional reference images.
+- [Sora Watermark Remover](https://www.fuseaitools.com/home/sora/watermark-remover): Standalone utility—upload Sora videos/images and remove OpenAI watermark, no prompt or aspect ratio needed.
+- [Kling](https://www.fuseaitools.com/home/kling): Kling video and avatar tools overview.
 
 ## Video — Seedance
 
 Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro (4/8/12s with optional audio), and Seedance 2 multimodal (4–15s, first/last frame, reference media). Pairs with Seedream for ByteDance image-to-video pipelines.
 
-- [Seedance Overview](https://fuseaitools.com/home/seedance): Eight workflows from v1 Lite/Pro through Seedance 2; 20 free credits on sign-up.
-- [Seedance v1 Lite Text to Video](https://fuseaitools.com/home/seedance/v1-lite-text-to-video): Text-to-video with 16:9–9:21 ratios, 480p–1080p, 5s/10s.
-- [Seedance v1 Lite Image to Video](https://fuseaitools.com/home/seedance/v1-lite-image-to-video): Animate one image with optional end frame.
-- [Seedance v1 Pro Text to Video](https://fuseaitools.com/home/seedance/v1-pro-text-to-video): Pro T2V with 21:9 ultra-wide support.
-- [Seedance v1 Pro Image to Video](https://fuseaitools.com/home/seedance/v1-pro-image-to-video): Pro image animation with full controls.
-- [Seedance v1 Pro Fast Image to Video](https://fuseaitools.com/home/seedance/v1-pro-fast-image-to-video): Speed-optimized I2V at 720p/1080p.
-- [Seedance 1.5 Pro](https://fuseaitools.com/home/seedance/v1-5-pro): Unified T2V/I2V with optional audio, 4/8/12s.
-- [Seedance 2 Fast](https://fuseaitools.com/home/seedance/v2-fast): Multimodal video with up to 3 reference videos.
-- [Seedance 2](https://fuseaitools.com/home/seedance/v2): Full multimodal with up to 5 reference videos.
+- [Seedance Overview](https://www.fuseaitools.com/home/seedance): Eight workflows from v1 Lite/Pro through Seedance 2; 20 free credits on sign-up.
+- [Seedance v1 Lite Text to Video](https://www.fuseaitools.com/home/seedance/v1-lite-text-to-video): Text-to-video with 16:9–9:21 ratios, 480p–1080p, 5s/10s.
+- [Seedance v1 Lite Image to Video](https://www.fuseaitools.com/home/seedance/v1-lite-image-to-video): Animate one image with optional end frame.
+- [Seedance v1 Pro Text to Video](https://www.fuseaitools.com/home/seedance/v1-pro-text-to-video): Pro T2V with 21:9 ultra-wide support.
+- [Seedance v1 Pro Image to Video](https://www.fuseaitools.com/home/seedance/v1-pro-image-to-video): Pro image animation with full controls.
+- [Seedance v1 Pro Fast Image to Video](https://www.fuseaitools.com/home/seedance/v1-pro-fast-image-to-video): Speed-optimized I2V at 720p/1080p.
+- [Seedance 1.5 Pro](https://www.fuseaitools.com/home/seedance/v1-5-pro): Unified T2V/I2V with optional audio, 4/8/12s.
+- [Seedance 2 Fast](https://www.fuseaitools.com/home/seedance/v2-fast): Multimodal video with up to 3 reference videos.
+- [Seedance 2](https://www.fuseaitools.com/home/seedance/v2): Full multimodal with up to 5 reference videos.
 
 ## Video — Hailuo
 
 Hailuo 2.3 (MiniMax) image-to-video: one image + prompt, 6s/10s at 768P/1080P (10s → 768P only). Pro for max fidelity; Standard for faster drafts. Not text-to-video.
 
-- [Hailuo Overview](https://fuseaitools.com/home/hailuo): Pro and Standard I2V tiers; 20 free credits on sign-up.
-- [Hailuo 2.3 Pro Image to Video](https://fuseaitools.com/home/hailuo/image-to-video-pro): Cinematic I2V—prompt ≤5000, one image, RULE credits by duration and quality.
-- [Hailuo 2.3 Standard Image to Video](https://fuseaitools.com/home/hailuo/image-to-video-standard): Same controls as Pro—optimized for iteration speed.
+- [Hailuo Overview](https://www.fuseaitools.com/home/hailuo): Pro and Standard I2V tiers; 20 free credits on sign-up.
+- [Hailuo 2.3 Pro Image to Video](https://www.fuseaitools.com/home/hailuo/image-to-video-pro): Cinematic I2V—prompt ≤5000, one image, RULE credits by duration and quality.
+- [Hailuo 2.3 Standard Image to Video](https://www.fuseaitools.com/home/hailuo/image-to-video-standard): Same controls as Pro—optimized for iteration speed.
 
-- [Grok Video](https://fuseaitools.com/home/grok): Grok image and video tools overview.
+- [Grok Video](https://www.fuseaitools.com/home/grok): Grok image and video tools overview.
 
 ## Audio
 
-- [Suno](https://fuseaitools.com/home/suno): AI music generation (generate, extend, vocals, and more).
-- [ElevenLabs](https://fuseaitools.com/home/elevenlabs): Text-to-speech, sound effects, and audio tools.
+- [Suno](https://www.fuseaitools.com/home/suno): AI music generation (generate, extend, vocals, and more).
+- [ElevenLabs](https://www.fuseaitools.com/home/elevenlabs): Text-to-speech, sound effects, and audio tools.
 
 ## Optional
 
-- [News index](https://fuseaitools.com/news): Article list; individual articles live under `/news/{slug}`.
-- [About FuseAITools](https://fuseaitools.com/about): Support and service contacts.
+- [News index](https://www.fuseaitools.com/news): Article list; individual articles live under `/news/{slug}`.
+- [About FuseAITools](https://www.fuseaitools.com/about): Support and service contacts.

@@ -23,7 +23,7 @@ export function clampDescription(rawText, min = 120, max = 160, options = {}) {
     const clipped = text.slice(0, max)
     const lastSpace = clipped.lastIndexOf(' ')
     const safe = lastSpace > 0 ? clipped.slice(0, lastSpace).trim() : clipped.trim()
-    text = safe.replace(/[,:;.\-]+$/g, '').trim() + '.'
+    text = safe.replace(/[,:;.-]+$/g, '').trim() + '.'
   }
 
   return text
