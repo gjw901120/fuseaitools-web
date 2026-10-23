@@ -16,9 +16,10 @@ else
     exit 1
 fi
 
-# 步骤 1: 先手动拉取基础镜像（避免构建时拉取失败）
-echo "📥 拉取基础镜像 node:20-alpine..."
-docker pull node:20-alpine || {
+# 步骤 1: 先手动拉取基础镜像（避免构建时拉取失败；需与 Dockerfile 的 FROM 一致）
+NODE_IMAGE="node:24-alpine"
+echo "📥 拉取基础镜像 ${NODE_IMAGE}..."
+docker pull "$NODE_IMAGE" || {
     echo "❌ 镜像拉取失败，请检查网络连接"
     exit 1
 }

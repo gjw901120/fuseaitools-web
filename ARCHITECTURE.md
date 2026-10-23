@@ -82,10 +82,11 @@ fuseaitools-web/
 │   ├── auth.client.js      # 客户端登录态恢复
 │   └── flux-*.client.ts    # 工具页/内容页样式按路由注入
 ├── public/                 # 无需构建的静态文件（favicon、tools-logo、示例图…）
-├── scripts/                # 构建前质量闸门
+├── scripts/                # 构建质量闸门（prebuild + postbuild）
 │   ├── check-route-registry.mjs  # 路由登记校验
 │   ├── check-seo-content.mjs     # SEO 文案迁移一致性校验
 │   ├── check-backend-contract.mjs # 前后端契约校验（读隔壁 Java 服务源码）
+│   ├── check-build-output.mjs    # 产物校验：相对链接 / 404 页 / 站内死链
 │   └── smoke-test.mjs            # prebuild 入口，串联 6 项检查
 ├── server/                 # Nitro 服务端
 │   ├── api/
@@ -285,7 +286,10 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
   - `static`：生成静态站点，适合纯前端或预渲染路由。
   - `node-server`：生成 Node 服务，保留服务端 API 与 SSR，适合 Docker 或 Node 托管。
 - **Docker**：根目录提供 `Dockerfile`、`docker-compose.yml`，用于构建运行 Nitro 的镜像及编排；细节见 `README_DOCKER.md` / `DOCKER_SETUP.md`。
-- **预渲染**：`nuxt.config.js` 中 `nitro.prerender.routes` 列出需预渲染的路径，提升首屏与 SEO。
+  - 基础镜像为 `node:24-alpine`（Node 20 已 EOL，且 `eslint-plugin-jsdoc` / `jsdoc-type-pratt-parser` 要求 `>=24.15`），`build.sh` 的拉取镜像名需与 Dockerfile 保持一致；
+  - `npm ci --no-audit --no-fund --loglevel=error` 安装依赖：审计报告只覆盖 devDependencies（生产依赖 0 漏洞）且不进运行镜像；`loglevel=error` 屏蔽间接依赖的 engine/deprecation 噪音，安装失败仍以 error 输出；
+  - 运行镜像只复制 `.output` 与 `package.json`，不再重复复制 `public/`（`.output/public` 已包含全部静态资源）。
+- **预渲染**：`nuxt.config.js` 中 `nitro.prerender.routes` 列出需预渲染的路径，提升首屏与 SEO。`crawlLinks: true` 会沿着页面内链接继续抓取，因此**页面里必须使用带前导 `/` 的绝对路径**；相对链接会被按当前页 URL 解析成嵌套路径（如 `/home/qwen/home/qwen/x`），爬虫必然 404。
 - **构建前质量闸门**：`prebuild` 自动执行 `node scripts/smoke-test.mjs`，任一失败则构建中断：
   1. **路由登记**：`pages/home/**` 新增页面是否已登记到 `constants/routeToToolMap.js`（`scripts/check-route-registry.mjs`）；
   2. **白名单格式**：`server/utils/apiProxyRoutes.js` 每条必须是 `METHOD /path` 且不以 `/` 结尾；
@@ -293,6 +297,10 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
   4. **SEO 数据完整性**：`data/seo/*.js` 必填字段（`component` / `rootId` / `meta` / `sections`）+ 薄壳组件必须显式 import `ToolSeoContent`；
   5. **SEO 文案一致性**：`scripts/check-seo-content.mjs --all` 对比 git HEAD 的旧组件，防止数据化迁移丢字；
   6. **前后端契约**：`scripts/check-backend-contract.mjs` 读取 `../fuseaitools-server` 的 Java 源码（可用 `FUSE_SERVER_DIR` 覆盖），校验白名单路由能在 Controller 找到、请求体顶层字段能映射到 `@RequestBody` DTO、DTO 枚举字段的传值符合 `@JsonCreator` 的可接受值；后端目录不存在时自动跳过，未修复的后端缺陷只提示不阻断。
+- **构建后质量闸门**：`postbuild` 自动执行 `node scripts/check-build-output.mjs`，直接检查 `.output/public`：
+  1. **相对链接**：任何 `href` 不以 `/`、`#`、协议开头的站内链接直接判失败（这是嵌套 404 的唯一来源）；
+  2. **404 产物页**：`failOnError: false` 下坏链会被写成静态页，脚本会删除对应 html/payload，并提示修链接（避免被 CDN、搜索引擎当作真实页面）；
+  3. **站内死链**：`href` 指向的路由在产物中既无 html 也无静态文件时只提示，用于发现后端文章数据里的失效 `prevPath` / `nextPath`。
 - **代码检查**：`npm run lint`（ESLint 扁平配置见 `eslint.config.mjs`）。基线 **0 error**；存量 `unused-vars` 以 warning 形式存在，用 `--max-warnings` 锁住数值，新增代码不得抬高。
 
 ---

@@ -1,8 +1,10 @@
-# 使用官方 Node.js 20 LTS 作为基础镜像
-FROM node:20-alpine AS base
+# Node 24 LTS：Node 20 已 EOL，且 eslint-plugin-jsdoc / jsdoc-type-pratt-parser 要求 >=24.15
+FROM node:24-alpine AS base
 
 # 安装必要的依赖
 RUN apk add --no-cache libc6-compat wget
+# 关闭 npm 升级提示（构建日志噪音）
+ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 WORKDIR /app
 
 # 依赖安装阶段
@@ -10,8 +12,10 @@ FROM base AS deps
 # 复制 package 文件
 COPY package.json package-lock.json* ./
 # 安装依赖
-# 注意：npm 警告（如 deprecated）来自间接依赖，不影响功能
-RUN npm ci
+# --no-audit/--no-fund：audit 报告只覆盖 devDependencies（生产依赖 0 漏洞），
+# 且全部不进运行镜像；loglevel=error 屏蔽间接依赖的 engine/deprecation 噪音，
+# 真正的安装失败仍以 error 输出。
+RUN npm ci --no-audit --no-fund --loglevel=error
 
 # 构建阶段
 FROM base AS builder
@@ -41,8 +45,8 @@ RUN adduser --system --uid 1001 nuxtjs
 
 # 复制构建产物和必要文件
 # 注意：需要保持 .output 目录结构
+# .output/public 已包含 public/ 的全部静态资源，无需重复复制（省 ~16MB）
 COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
-COPY --from=builder --chown=nuxtjs:nodejs /app/public ./public
 COPY --from=builder --chown=nuxtjs:nodejs /app/package.json ./package.json
 
 # 切换到非 root 用户

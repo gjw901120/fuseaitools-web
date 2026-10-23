@@ -8,11 +8,15 @@
     "lint": "eslint . --max-warnings 79",
     "lint:fix": "eslint . --fix",
     "prebuild": "node scripts/smoke-test.mjs",
-    "check:backend": "node scripts/check-backend-contract.mjs",
     "build": "nuxt build",
+    "postbuild": "node scripts/check-build-output.mjs",
+    "check:backend": "node scripts/check-backend-contract.mjs",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
