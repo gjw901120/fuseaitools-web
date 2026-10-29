@@ -30,6 +30,14 @@
           <img v-else :src="toolIcon" :alt="toolName" />
         </div>
         <div class="message-content">
+          <!-- 思考过程：后端以独立的 {reasoning} 事件下发，与正文分开存储（仅部分通道会回传明文） -->
+          <div v-if="message.reasoning" class="message-reasoning">
+            <button type="button" class="reasoning-toggle" @click="toggleReasoning(message.id)">
+              <i :class="message.reasoningOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+              <span>Reasoning</span>
+            </button>
+            <div v-show="message.reasoningOpen" class="reasoning-text">{{ message.reasoning }}</div>
+          </div>
           <div class="message-text" v-html="formatMessageText(message.text)"></div>
           <!-- 显示上传的文件和图片 -->
           <div v-if="message.fileUrls && message.fileUrls.length > 0" class="message-files">
@@ -91,22 +99,23 @@
             </select>
             <i class="fas fa-chevron-down select-arrow-icon" aria-hidden="true" />
           </div>
-          <!-- Web Search Icon -->
+          <!-- Web Search Icon：仅通道与模型都支持时展示（Claude 联网通道故障期隐藏，见 CHAT_CHANNELS） -->
           <div 
-            v-if="currentModelInfo && currentModelInfo.isSearch === 1"
+            v-if="supportsWebSearch"
             class="action-icon" 
-            :class="{ active: currentModelInfo && currentModelInfo.isSearch === 1 }"
+            :class="{ active: isWebSearchEnabled }"
             @click="toggleWebSearch" 
-            title="Web Search"
+            :title="`Web Search: ${isWebSearchEnabled ? 'On' : 'Off'}`"
           >
             <i class="fas fa-globe"></i>
           </div>
-          <!-- Thinking Icon -->
+          <!-- Thinking Icon：可点击开关，关闭时显式下发 enableDeep=false -->
           <div 
-            v-if="currentModelInfo && currentModelInfo.isThink === 1"
+            v-if="supportsDeepThinking"
             class="action-icon" 
-            :class="{ active: currentModelInfo && currentModelInfo.isThink === 1 }"
-            title="Thinking Mode"
+            :class="{ active: isDeepThinkingEnabled }"
+            @click="toggleDeepThinking"
+            :title="`Deep Thinking: ${isDeepThinkingEnabled ? 'On' : 'Off'}`"
           >
             <i class="fas fa-brain"></i>
           </div>
@@ -196,8 +205,35 @@ const CHAT_DETAIL_ROUTE_PATHS = new Set([
   '/home/gpt/generate',
   '/home/gemini/generate',
   '/home/deepseek/generate',
-  '/home/claude/generate'
+  '/home/claude/generate',
+  '/home/grok-chat/generate',
+  '/home/kimi/generate'
 ])
+
+/**
+ * Chat 通道能力表：与后端 ChatChannelEnum + 各 *ConversationDTO 字段一一对应（前端唯一事实来源）。
+ * key 必须与 models_category.name 完全一致（模型下拉按分类名严格匹配）。
+ * - endpoint：Nuxt SSE 代理路径（server/api/chat/*.post.js）。未登记的分类一律拒绝发送，
+ *   不能回落到 chatgpt——后端按 requestName 前缀反查通道，走错端点只会静默丢掉本通道独有字段。
+ * - webSearch：该通道的 DTO 是否有 enableWebSearch 字段。Grok / Kimi / DeepSeek 没有该字段，
+ *   传过去会被忽略、且会被前后端契约自检判越界，因此不下发。
+ *   Claude 后端字段齐备（web_search_20250305），但联网通道建档期全量 500 尚未复测，先隐藏入口。
+ *
+ * 思考明文不在本表配置：服务端 handleResponsesStream（GPT/Grok/DeepSeek/Kimi 共用）、processClaudeStream、
+ * processGeminiStream 只要收到 thinking delta
+ * 就无条件 push(callback, "reasoning", …)，ChatChannelEnum.thoughtVisible 在服务侧也只被赋值、从未被读取，
+ * 所以前端出不出现 Reasoning 块只取决于本次流里有无 reasoning 事件（见 streamChatRequest）。
+ * 厂商实测结论存档在后端 sql/chat-migration-legacy-offline.md：GPT 只回 encrypted_content、Grok 无 reasoning 项，
+ * 这两路收不到思考包属正常现象，不是缺陷。
+ */
+const CHAT_CHANNELS = {
+  'GPT': { endpoint: '/api/chat/chatgpt', webSearch: true },
+  'DeepSeek': { endpoint: '/api/chat/deepseek', webSearch: false },
+  'Claude': { endpoint: '/api/chat/claude', webSearch: false },
+  'Gemini': { endpoint: '/api/chat/gemini', webSearch: true },
+  'Grok Chat': { endpoint: '/api/chat/grok', webSearch: false },
+  'Kimi': { endpoint: '/api/chat/kimi', webSearch: false }
+}
 
 // 计算用户头像
 const userAvatar = computed(() => {
@@ -235,6 +271,9 @@ const chatMessages = ref([])
 const uploadedFiles = ref([]) // 文件对象列表
 const fileUrls = ref([]) // 上传后的文件 URL 数组
 const isWebSearchEnabled = ref(false)
+// 深度思考开关：默认关。后端把 enableDeep=null 解释为「未表态」并取通道默认档
+// （GPT/Grok/Kimi/DeepSeek 默认 medium、Gemini 默认 high），所以这里必须显式传 true/false
+const isDeepThinkingEnabled = ref(false)
 const selectedModel = ref('')
 const modelsData = ref(null)
 const loadingModels = ref(false)
@@ -337,6 +376,15 @@ const currentModelInfo = computed(() => {
   }) || null
 })
 
+// 当前分类的通道能力；未登记时为 null，发送前会拦
+const chatChannel = computed(() => CHAT_CHANNELS[props.modelCategory] || null)
+
+// 联网搜索入口：通道有 enableWebSearch 字段 且 模型 is_search=1（后端会拒 is_search=0 + true）
+const supportsWebSearch = computed(() => Boolean(chatChannel.value?.webSearch) && currentModelInfo.value?.isSearch === 1)
+
+// 深度思考入口：6 个通道的 DTO 都有 enableDeep，能否开启由模型 is_think 决定
+const supportsDeepThinking = computed(() => currentModelInfo.value?.isThink === 1)
+
 // 获取模型列表（先读本地 1 小时缓存，无有效缓存时请求 /api/common/models/tree 并写入缓存）
 const fetchModels = async () => {
   if (!props.modelCategory) return
@@ -379,12 +427,13 @@ const onModelChange = () => {
   console.log('Selected model:', selectedModel.value)
   console.log('Current model info:', currentModelInfo.value)
   
-  // 根据模型状态重置 Web Search 状态
-  if (currentModelInfo.value && currentModelInfo.value.isSearch === 0) {
+  // 模型能力变化后，把不可用的开关复位，避免带着后端会拒的参数发请求
+  if (!supportsWebSearch.value) {
     isWebSearchEnabled.value = false
   }
-  
-  // 这里可以添加其他模型切换的逻辑
+  if (!supportsDeepThinking.value) {
+    isDeepThinkingEnabled.value = false
+  }
 }
 
 // 组件挂载时获取模型列表
@@ -695,6 +744,18 @@ const toggleWebSearch = () => {
   console.log('Web search:', isWebSearchEnabled.value ? 'Enabled' : 'Disabled')
 }
 
+// 切换深度思考（下发 enableDeep，档位由后端 ChatChannelEnum 按通道取 deepEffort / lightEffort）
+const toggleDeepThinking = () => {
+  isDeepThinkingEnabled.value = !isDeepThinkingEnabled.value
+  console.log('Deep thinking:', isDeepThinkingEnabled.value ? 'Enabled' : 'Disabled')
+}
+
+// 思考过程默认折叠：长会话里正文才是主体，思考只是辅助信息
+const toggleReasoning = (messageId) => {
+  const message = chatMessages.value.find(m => m.id === messageId)
+  if (message) message.reasoningOpen = !message.reasoningOpen
+}
+
 // 自动滚动到底部
 const scrollToBottom = () => {
   nextTick(() => {
@@ -742,12 +803,14 @@ const sendMessage = async () => {
   // 滚动到底部
   scrollToBottom()
   
-  // 创建助手消息用于流式更新
+  // 创建助手消息用于流式更新（reasoning 与正文分桶，后端不会把思考写进 contents）
   const assistantMessageId = Date.now() + 1
   const assistantMessage = {
     id: assistantMessageId,
     role: 'assistant',
     text: '',
+    reasoning: '',
+    reasoningOpen: false,
     timestamp: new Date()
   }
   chatMessages.value.push(assistantMessage)
@@ -806,7 +869,7 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
   }
   
   // 如果有上传的文件 URL，且当前模型是 CHAT 类型，添加到请求中
-  // fileUrls 字段仅应用在 Chat 类型模型上（包括 GPT、DeepSeek、Claude、Gemini 等）
+  // fileUrls 字段仅应用在 Chat 类型模型上（六个通道均支持）
   if (fileUrls.value.length > 0 && currentModelInfo.value && currentModelInfo.value.type === 'CHAT') {
     requestBody.fileUrls = fileUrls.value
     if (import.meta.dev) {
@@ -817,6 +880,14 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
         fileCount: fileUrls.value.length
       })
     }
+  }
+
+  // enableDeep 必须显式传值：不传等于「未表态」，后端会取通道默认档（GPT/Grok/Kimi/DeepSeek=medium、Gemini=high），
+  // 相当于默认替用户开了深度思考（首包延迟与费用都会上升）
+  requestBody.enableDeep = supportsDeepThinking.value && isDeepThinkingEnabled.value
+  // 联网搜索只在通道 DTO 有该字段时下发（Grok / Kimi / DeepSeek 无 enableWebSearch）
+  if (chatChannel.value?.webSearch) {
+    requestBody.enableWebSearch = supportsWebSearch.value && isWebSearchEnabled.value
   }
   
   // 获取认证 token
@@ -834,19 +905,14 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
     headers['Authorization'] = `Bearer ${authToken}`
   }
   
-  // 根据模型分类选择对应的 API 接口
-  const getChatApiUrl = (category) => {
-    const apiMap = {
-      'GPT': '/api/chat/chatgpt',
-      'DeepSeek': '/api/chat/deepseek',
-      'Claude': '/api/chat/claude',
-      'Gemini': '/api/chat/gemini'
-    }
-    return apiMap[category] || '/api/chat/chatgpt' // 默认使用 chatgpt
+  // 根据模型分类选择对应的 API 接口：未登记的分类直接失败，
+  // 绝不能像此前那样回落 /api/chat/chatgpt（会错端点 + 丢字段，故障会表现为“参数不生效”很难排查）
+  if (!chatChannel.value) {
+    throw new Error(`Unsupported chat category: ${props.modelCategory}`)
   }
-  
+
   // 使用代理 API
-  const url = getChatApiUrl(props.modelCategory)
+  const url = chatChannel.value.endpoint
 
   try {
     // 发送流式请求
@@ -921,12 +987,13 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
               }
             }
 
-            // 全局错误判断：只要 errorCode != '00000' 就弹框（内容只取 errorMessage，空则默认文案）
+            // 全局错误判断：只要 errorCode != '00000' 就弹框
+            // 业务错下发 errorMessage、系统错只下发 message（见后端 ChatController.newCallback().onError），两个都要读
             if (data && typeof data === 'object' && data.errorCode && String(data.errorCode) !== '00000') {
-              const msg =
-                (typeof data.errorMessage === 'string' && data.errorMessage.trim())
-                  ? data.errorMessage.trim()
-                  : 'sorry！Service is busy. Please try again later.'
+              const rawError = (typeof data.errorMessage === 'string' && data.errorMessage.trim())
+                ? data.errorMessage.trim()
+                : (typeof data.message === 'string' ? data.message.trim() : '')
+              const msg = rawError || 'sorry！Service is busy. Please try again later.'
 
               // 无论是否开启 dev，都输出一条可见的日志，便于你对照 Postman 的 SSE 内容
               console.warn('[Chat Stream] Non-00000 errorCode received:', {
@@ -960,8 +1027,11 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
               break
             }
 
-            // 处理 message 事件（正常消息内容）
+            // 处理 message 事件（正文增量 content 与思考增量 reasoning 共用一个事件名，必须分桶）
             if (eventName === 'message') {
+              const messageIndex = chatMessages.value.findIndex(m => m.id === messageId)
+              if (messageIndex === -1) continue
+
               // 兼容多种后端字段：content / data.content / text
               const content =
                 (data && typeof data === 'object')
@@ -969,13 +1039,16 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
                   : data
 
               if (content !== undefined && content !== null && String(content).length > 0) {
-                const messageIndex = chatMessages.value.findIndex(m => m.id === messageId)
-                if (messageIndex !== -1) {
-                  // 追加内容
-                  chatMessages.value[messageIndex].text += String(content)
-                  // 实时滚动
-                  scrollToBottom()
-                }
+                // 追加内容
+                chatMessages.value[messageIndex].text += String(content)
+                // 实时滚动
+                scrollToBottom()
+              }
+
+              const reasoning = (data && typeof data === 'object') ? (data.reasoning ?? null) : null
+              if (reasoning !== undefined && reasoning !== null && String(reasoning).length > 0) {
+                // 思考明文只进 reasoning 桶，绝不并入正文——否则多轮会把思考过程当成助手答案喂回去
+                chatMessages.value[messageIndex].reasoning = String(chatMessages.value[messageIndex].reasoning || '') + String(reasoning)
               }
             }
             
@@ -1056,10 +1129,10 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
       }
 
       if (data && typeof data === 'object' && data.errorCode && String(data.errorCode) !== '00000') {
-        const msg =
-          (typeof data.errorMessage === 'string' && data.errorMessage.trim())
-            ? data.errorMessage.trim()
-            : 'sorry！Service is busy. Please try again later.'
+        const rawError = (typeof data.errorMessage === 'string' && data.errorMessage.trim())
+          ? data.errorMessage.trim()
+          : (typeof data.message === 'string' ? data.message.trim() : '')
+        const msg = rawError || 'sorry！Service is busy. Please try again later.'
 
         console.warn('[Chat Stream] Non-00000 errorCode received (final):', {
           event: eventName,
@@ -1093,15 +1166,20 @@ const streamChatRequest = async (prompt, messageId, userMessageId) => {
         handledError = Object.assign(new Error(msg), { __handled: true })
         isStreaming.value = false
       } else if (eventName === 'message') {
-        const content =
-          (data && typeof data === 'object')
-            ? (data.content ?? data?.data?.content ?? data.text ?? null)
-            : data
+        const messageIndex = chatMessages.value.findIndex(m => m.id === messageId)
+        if (messageIndex !== -1) {
+          const content =
+            (data && typeof data === 'object')
+              ? (data.content ?? data?.data?.content ?? data.text ?? null)
+              : data
 
-        if (content !== undefined && content !== null && String(content).length > 0) {
-          const messageIndex = chatMessages.value.findIndex(m => m.id === messageId)
-          if (messageIndex !== -1) {
+          if (content !== undefined && content !== null && String(content).length > 0) {
             chatMessages.value[messageIndex].text += String(content)
+          }
+
+          const reasoning = (data && typeof data === 'object') ? (data.reasoning ?? null) : null
+          if (reasoning !== undefined && reasoning !== null && String(reasoning).length > 0) {
+            chatMessages.value[messageIndex].reasoning = String(chatMessages.value[messageIndex].reasoning || '') + String(reasoning)
           }
         }
       } else if (eventName === 'complete' && data && typeof data === 'object' && data.status === 'completed') {
@@ -1319,6 +1397,44 @@ const generateAIResponse = (userInput) => {
   margin-bottom: 4px;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* 思考过程（reasoning）：默认折叠，与正文视觉分层 */
+.message-reasoning {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: #eef2f7;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.reasoning-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.reasoning-toggle:hover {
+  color: #334155;
+}
+
+.reasoning-text {
+  margin-top: 6px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-height: 260px;
+  overflow-y: auto;
 }
 
 /* Markdown 格式化样式 */

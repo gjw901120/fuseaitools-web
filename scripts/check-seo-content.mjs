@@ -4,10 +4,14 @@
  * 用法：
  *   node scripts/check-seo-content.mjs QwenV3SeoContent [...其他组件名]
  *   node scripts/check-seo-content.mjs --all   # 校验 data/seo 下全部已迁移组件
+ *   node scripts/check-seo-content.mjs --all --ref=<git rev>   # 改比对基准版本（默认 HEAD）
  *
- * 原理：从 git HEAD 版本的旧 SeoContent 组件里提取全部可读文案（模板文本节点 + 字符串字面量），
+ * 原理：从 git 基准版本（默认 HEAD）的旧 SeoContent 组件里提取全部可读文案（模板文本节点 + 字符串字面量），
  * 与迁移后的 data/seo/*.js 做「去标签 + 折叠空白」后的子串比对，确保数据化过程中没有丢字。
  * 差异会逐条列出，供人工确认（改写文案属于预期变更时，重新迁移该条即可）。
+ *
+ * 注意：组件一旦迁完并入库，基准版本本身就是薄壳，可提取的真文案为 0 段（输出「旧组件文案片段 0 段」），
+ * 属于预期降级而不是通过。要回验迁移保真度，把 `--ref` 指到迁移前的 commit 即可。
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -18,6 +22,8 @@ const ROOT = process.cwd()
 const args = process.argv.slice(2)
 const all = args.includes('--all')
 const targets = args.filter((a) => !a.startsWith('--'))
+/** 比对基准版本：未迁移时默认 HEAD 即可；回验历史迁移保真度时传 --ref=<sha> */
+const REF = (args.find((a) => a.startsWith('--ref=')) || '--ref=HEAD').slice('--ref='.length) || 'HEAD'
 
 const norm = (s) => s.replace(/\s+/g, ' ').trim()
 const stripTags = (s) => s.replace(/<[^>]+>/g, ' ')
@@ -58,18 +64,53 @@ function probeSegments(s) {
     .filter((t) => t.length >= 20 && !/[=<>{}]/.test(t))
 }
 
+/**
+ * 剔除注释：HTML 注释、块注释、整行 `//` 行注释。
+ * 行注释只匹配整行行首（允许任意缩进），不会影响文案里出现的 URL（`https://` 不在行首）。
+ */
+function stripComments(src) {
+  return src
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/^[ \t]*\/\/[^\n]*$/gm, ' ')
+}
+
+/**
+ * 只保留模板区：文本节点抽取不能跑在 `<script>` / `<style>` 上。
+ * 薄壳组件的 `<script setup>` 被 `>([^<>{}]+)<` 当成一个巨型文本节点（注释 + import 拼成一句），
+ * 造成全部已迁移组件报假差异。反过来剔除 script/style 块比只取 `<template>` 安全，
+ * 因为嵌套的 `<template #slot>` 用非贪心匹配会在内层 `</template>` 处截断，丢真文案。
+ */
+function templateOnly(src) {
+  return src
+    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
+}
+
 /** 从旧组件源码中提取候选文案片段 */
 function extractSnippets(source) {
   const out = new Set()
-  // 模板文本节点
-  for (const m of source.matchAll(/>([^<>{}]+)</g)) {
+  const cleaned = stripComments(source)
+  // 模板文本节点（已剔注释与 script/style 块）
+  for (const m of templateOnly(cleaned).matchAll(/>([^<>{}]+)</g)) {
     const t = norm(m[1])
     if (t.length >= 20 && isCopyText(t)) out.add(t)
   }
-  // 单引号 / 双引号字符串字面量（data、FAQ、表格单元格等）
+  // 单引号 / 双引号字符串字面量（data、FAQ、表格单元格等，分布在 script 里，故走全文）
   for (const re of [/'((?:[^'\\\n]|\\.){20,})'/g, /"((?:[^"\\\n]|\\.){20,})"/g]) {
-    for (const m of source.matchAll(re)) {
+    for (const m of cleaned.matchAll(re)) {
       const t = norm(m[1].replace(/\\'/g, "'").replace(/\\"/g, '"'))
+      if (t.length >= 20 && isCopyText(t)) out.add(t)
+    }
+  }
+  /**
+   * 反引号模板字面量：长正文（content: `...`）的主战场。
+   * 旧版本是靠“文本节点正则在全文乱跑”间接抓到它们的，改成只扫模板区后必须显式补回来，
+   * 否则就是覆盖率回退。`${expr}` 插值当成分段边界，不让变量名泄进文案比对。
+   */
+  for (const m of cleaned.matchAll(/`((?:[^`\\]|\\.){20,})`/gs)) {
+    for (const piece of m[1].split(/\$\{[^}]*\}/g)) {
+      const t = norm(piece)
       if (t.length >= 20 && isCopyText(t)) out.add(t)
     }
   }
@@ -94,7 +135,7 @@ function resolvePairs() {
 function headVersion(component) {
   const rel = `components/tools/${component}.vue`
   try {
-    return execFileSync('git', ['show', `HEAD:${rel}`], { cwd: ROOT, encoding: 'utf8' })
+    return execFileSync('git', ['show', `${REF}:${rel}`], { cwd: ROOT, encoding: 'utf8' })
   } catch {
     return null
   }
@@ -110,7 +151,7 @@ let failed = 0
 for (const { dataFile, component } of pairs) {
   const old = headVersion(component)
   if (!old) {
-    console.log(`· ${component}: git HEAD 中找不到，跳过`)
+    console.log(`· ${component}: git ${REF} 中找不到，跳过`)
     continue
   }
   const newText = flatten(fs.readFileSync(dataFile, 'utf8'))

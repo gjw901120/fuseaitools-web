@@ -221,6 +221,126 @@ Tool use: Search—real-time web, fact-check, multi-language. Maps—location, l
       }
     ]
   },
+  'grok-chat': {
+    title: 'Grok Chat',
+    category: 'Chat',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Grok is xAI\'s conversational model family, built around real-time context, direct answers, and strong science and coding reasoning. The Grok 4 series on FuseAITools runs on the OpenAI Responses protocol, takes documents and images as input, and lets you switch deep thinking on or off per message. Use Grok on FuseAITools for research-style Q&A, code review, and unfiltered brainstorming.',
+    features: [
+      { name: 'Chat & Generate', path: '/home/grok-chat/generate', description: 'Multi-turn dialogue with optional deep thinking (low to xhigh tiers on the server side) and file or image context in one flow.' }
+    ],
+    sections: [
+      {
+        title: 'Core capabilities',
+        content: `Real-time conversation: Answers framed around current events, technical releases, and fast-moving topics, with a direct style that avoids hedging.
+
+Reasoning and analysis: Step-by-step decomposition of science, math, and product questions; trade-off comparison; assumption checking.
+
+Code work: Implementation from description, review for bugs and security, refactoring suggestions, and explanation of unfamiliar codebases.
+
+Context input: Attach documents and images in the chat; text files are read into the prompt, images go in as multimodal blocks.`
+      },
+      {
+        title: 'Model tiers on FuseAITools',
+        content: `grok-4-5, grok-4-6, and grok-4-7 are all available under Model selection and share the same token pricing structure (249 credits per 1M input tokens, 741 per 1M output tokens).
+
+Deep thinking is a per-message switch. Turning it off asks the channel for the light tier; turning it on requests the deep tier, at the cost of a slower first token.`
+      },
+      {
+        title: 'Channel limits worth knowing',
+        content: `No server-side web search: the Grok chat channel exposes only function-style tools, so there is no search toggle and search cost is never added to your bill.
+
+No visible reasoning stream: this channel does not return thinking text to callers, so the Reasoning panel stays empty even with deep thinking enabled—the model still reasons, you just do not see the trace.
+
+Thinking tiers are low / medium / high / xhigh; anything outside that list is rejected by the server before the call is billed.`
+      },
+      {
+        title: 'Use cases',
+        content: `Research and explainer work: dig into a technical topic, compare options, and get the assumptions spelled out.
+
+Development: prototype code, review a diff, debug an error message, migrate between frameworks.
+
+Writing and editing: drafts with a blunt editorial voice, structure critique, headline and copy variants.
+
+Learning: worked solutions with intermediate steps, concept summaries, quiz-style recall.`
+      },
+      {
+        title: 'Best practices',
+        content: `State the constraint set early (language, version, performance target, style) so the first answer is already close.
+
+Turn deep thinking on only for the messages that need it—everyday lookups are faster on the light tier.
+
+Attach the source document instead of paraphrasing it; the channel reads files into context directly.
+
+Ask for the reasoning chain in prose when you need to audit an answer, since the thinking stream is not returned.`
+      },
+      {
+        title: 'Try Grok Chat on FuseAITools',
+        content: `Grok Chat on FuseAITools brings xAI's direct, real-time conversational style into the same credits account as your image, audio, and video tools. Start a conversation, switch deep thinking on for the hard questions, and keep the whole thread in one history.`
+      }
+    ]
+  },
+  kimi: {
+    title: 'Kimi',
+    category: 'Chat',
+    showCategory: false,
+    introFullWidth: true,
+    intro: 'Kimi is Moonshot AI\'s long-context reasoning model, built for reading entire documents, codebases, and reports in one pass and answering with the source in mind. Kimi k3 on FuseAITools streams its thinking content, so you can open the Reasoning panel and see how an answer was reached. Use Kimi on FuseAITools for document-heavy research, long-code comprehension, and multi-step analysis.',
+    features: [
+      { name: 'Chat & Generate', path: '/home/kimi/generate', description: 'Long-context Q&A with visible streaming reasoning, file and image attachments, and a per-message deep thinking switch.' }
+    ],
+    sections: [
+      {
+        title: 'Core capabilities',
+        content: `Long-context reading: hold whole manuals, contracts, and multi-file codebases in one conversation and answer questions that span them.
+
+Visible reasoning: the thinking stream is returned as a separate channel from the answer, so the model's decomposition stays inspectable without polluting the reply.
+
+Document and image input: attach files in the chat; text documents are read into context, images go in as multimodal blocks.
+
+Structured output: summaries, extraction tables, comparison matrices, and citation-style pointers back into the supplied material.`
+      },
+      {
+        title: 'Model and pricing',
+        content: `kimi-k3 is the single model on this channel, billed per token at 741 credits per 1M input tokens and 3705 per 1M output tokens.
+
+Deep thinking is a per-message switch: off asks for the light tier, on asks for the deep tier. Output tokens are the expensive side of the bill, so long reasoning runs cost materially more than short answers.`
+      },
+      {
+        title: 'Channel limits worth knowing',
+        content: `No web search: the vendor documents this series as not supporting search tools, so there is no search toggle and the field is not sent at all.
+
+Thinking tiers are low / medium / high; a tier outside that list is rejected by the server before any billing happens.
+
+Reasoning text is displayed but never merged into the answer, and it is not replayed as assistant output in later turns.`
+      },
+      {
+        title: 'Use cases',
+        content: `Document work: contract and policy review, technical documentation Q&A, literature triage, report summarization.
+
+Codebase comprehension: read several files at once, explain an unfamiliar module, trace a bug across call sites.
+
+Research: compare claims across sources, build an evidence table, surface contradictions.
+
+Teaching: worked solutions with the reasoning shown, step-by-step concept explanations, exercise generation.`
+      },
+      {
+        title: 'Best practices',
+        content: `Attach the real document rather than a summary of it—the long context is the point of this channel.
+
+Ask a scoped question per turn; broad "tell me everything" prompts burn output credits on structure you did not need.
+
+Open the Reasoning panel when you need to audit an answer, and close it when you only want the result.
+
+Turn deep thinking on for multi-hop questions and leave it off for lookups inside the supplied material.`
+      },
+      {
+        title: 'Try Kimi on FuseAITools',
+        content: `Kimi on FuseAITools puts long-context reading and inspectable reasoning behind the same credits account as the rest of the toolbox. Upload the document, ask the question, and watch the reasoning arrive alongside the answer.`
+      }
+    ]
+  },
   'gpt-image': {
     title: 'GPT Image',
     category: 'Image',
@@ -989,7 +1109,9 @@ First & Last to Video: Supply start and end frames; the model generates the moti
 
 Reference to Video: Turn a single reference image into coherent video while preserving style, character and object consistency, and atmosphere. Great for character animation, bringing scenes to life, illustration animation, and brand storytelling.
 
-Extend: Add seamless extra content to existing clips. The model maintains coherence, style, and smooth transitions, with multiple duration options. Use for lengthening shorts, expanding scenes, continuing stories, or completing content.`
+Extend: Add seamless extra content to existing clips. The model maintains coherence, style, and smooth transitions, with multiple duration options. Use for lengthening shorts, expanding scenes, continuing stories, or completing content.
+
+Model tiers: Standard (veo3), Fast (veo3_fast), and Lite (veo3_lite) are selected under Model Type—all three bill per video under the same pricing rule, each at its own credits rate. Reference to Video accepts the Fast and Lite tiers only.`
       },
       {
         title: 'Technical highlights',

@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Veo 3.1 Text to Video Generator',
   description:
-    'Veo 3.1 text-to-video on FuseAITools—Google DeepMind video at /home/veo3. Standard or Fast, 16:9/9:16/Auto, prompts up to 1000 chars. 20 free credits on sign-up.',
+    'Veo 3.1 text-to-video on FuseAITools—Google DeepMind video at /home/veo3. Standard, Fast or Lite, 16:9/9:16/Auto, prompts up to 1000 chars. 20 free credits on sign-up.',
   category: 'video',
   route: '/home/veo3/text-to-video',
   keywords: ['Veo3', 'Veo 3.1', 'text to video', 'Google Veo', 'DeepMind', 'FuseAITools'],
@@ -25,7 +25,7 @@ const seoConfig = await useToolSEOAsync({
   applicationSubCategory: 'Video Generation',
   offers: { price: '0', priceCurrency: 'USD' },
   offerDescription: 'Pay per video with credits.',
-  priceFromApi: { modelKey: ['veo3', 'veo3_fast'], eligibleQuantityName: 'Credits Required' }
+  priceFromApi: { modelKey: ['veo3', 'veo3_fast', 'veo3_lite'], eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

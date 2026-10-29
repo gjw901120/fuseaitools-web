@@ -4,6 +4,8 @@ export const TOOL_PARENT_LABEL_BY_SLUG = {
   claude: 'Claude',
   gemini: 'Gemini',
   deepseek: 'DeepSeek',
+  'grok-chat': 'Grok Chat',
+  kimi: 'Kimi',
   // image
   'gpt-4o-image': 'GPT 4o Image',
   'gpt-image': 'GPT Image',
@@ -36,6 +38,8 @@ export const CHILD_LABEL_OVERRIDES_BY_ROUTE = {
   '/home/claude/generate': 'Generate',
   '/home/gemini/generate': 'Generate',
   '/home/deepseek/generate': 'Generate',
+  '/home/grok-chat/generate': 'Generate',
+  '/home/kimi/generate': 'Generate',
   // image
   '/home/gpt-4o-image/generate': 'Generate',
   '/home/gpt-image/generate': 'Generate',

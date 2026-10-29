@@ -7,7 +7,7 @@
       </div>
       <div class="tool-details">
         <h3>Veo 3.1</h3>
-        <p>Veo 3.1 on FuseAITools is Google DeepMind video—routes at /home/veo3 with text-to-video, first-and-last frames, reference-to-video, and extend. Choose Standard (veo3) or Fast (veo3_fast) for generate modes; pair with Seedance for ByteDance video workflows.</p>
+        <p>Veo 3.1 on FuseAITools is Google DeepMind video—routes at /home/veo3 with text-to-video, first-and-last frames, reference-to-video, and extend. Choose Standard (veo3), Fast (veo3_fast) or Lite (veo3_lite) for generate modes; pair with Seedance for ByteDance video workflows.</p>
       </div>
     </div>
 
@@ -184,28 +184,21 @@
         <!-- 模型选择 - 非视频扩展模式显示（含 Text to Video、First And Last Frames、Image to Video） -->
         <div v-if="formData.generationType !== 'VIDEO_EXTEND'" class="form-group">
           <label class="form-label">Model Type</label>
-          <div class="option-tabs two-columns">
-            <button 
+          <div class="option-tabs" :class="modelOptions.length === 2 ? 'two-columns' : 'three-columns'">
+            <button
+              v-for="opt in modelOptions"
+              :key="opt.value"
               type="button"
               class="option-tab"
-              :class="{ active: formData.model === 'veo3' }"
-              @click="formData.model = 'veo3'"
+              :class="{ active: formData.model === opt.value }"
+              @click="formData.model = opt.value"
             >
-              <i class="fas fa-star"></i>
-              <span>Standard</span>
-            </button>
-            <button 
-              type="button"
-              class="option-tab"
-              :class="{ active: formData.model === 'veo3_fast' }"
-              @click="formData.model = 'veo3_fast'"
-            >
-              <i class="fas fa-bolt"></i>
-              <span>Fast</span>
+              <i :class="opt.icon"></i>
+              <span>{{ opt.label }}</span>
             </button>
           </div>
           <div class="form-hint">
-            Standard model has higher quality, fast model generates faster
+            Standard model has higher quality, fast model generates faster, lite model is the lightweight tier
           </div>
         </div>
 
@@ -499,6 +492,23 @@ const formData = reactive({
   taskId: ''
 })
 
+// Model Type 三档，code 与后端 VeoModelEnum 一一对应（veo3 / veo3_fast / veo3_lite）
+// referenceSupported=false 的档位后端会拒：REFERENCE_2_VIDEO 只开放 fast / lite
+const MODEL_OPTIONS = [
+  { value: 'veo3', label: 'Standard', icon: 'fas fa-star', referenceSupported: false },
+  { value: 'veo3_fast', label: 'Fast', icon: 'fas fa-bolt', referenceSupported: true },
+  { value: 'veo3_lite', label: 'Lite', icon: 'fas fa-feather-alt', referenceSupported: true }
+]
+const modelOptions = computed(() => (
+  formData.generationType === 'REFERENCE_2_VIDEO'
+    ? MODEL_OPTIONS.filter(opt => opt.referenceSupported)
+    : MODEL_OPTIONS
+))
+// 当前档位不在可选列表时回落到 fast（例如详情回填 veo3 后切到参考图模式）
+watch(modelOptions, (opts) => {
+  if (!opts.some(opt => opt.value === formData.model)) formData.model = 'veo3_fast'
+})
+
 // Video Extend：Original Task 从 extend-list 拉取（model=veo3），提交值为 taskId
 const EXTEND_LIST_MODEL = 'veo3'
 const extendList = ref([])
@@ -660,7 +670,7 @@ const discountText = computed(() => {
   return ` · ${percent}%`
 })
 
-// 价格：Video Extend -> veo3_extend；Text/First And Last Frames/Image to Video -> veo3(Standard) / veo3_fast(Fast)
+// 价格：Video Extend -> veo3_extend；Text/First And Last Frames/Image to Video -> formData.model（veo3 / veo3_fast / veo3_lite），定价规则一致
 const veo3PriceText = computed(() => {
   const key = formData.generationType === 'VIDEO_EXTEND' ? 'veo3_extend' : (formData.model || 'veo3_fast')
   const credits = getPrice(key)

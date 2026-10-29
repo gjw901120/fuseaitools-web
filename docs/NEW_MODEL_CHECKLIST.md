@@ -425,10 +425,11 @@ watchRouteScroll((path) => path === '{pageRoute}' || path === '{pageRoute}/')
 node scripts/check-route-registry.mjs
 ```
 
-差集里允许保留的只有两类：
+差集里允许保留的只有一类：
 
 - 孤儿旧别名页——`/home/gpt-image/generate`、`/home/ideogram/generate`（全站无入链，故意不进 sitemap）
-- chat 工具页——`/home/{gpt,claude,deepseek,gemini}/generate`（`TOOL_PARENT_LABEL_BY_SLUG` 本就不含 chat，按设计回退成 SEO name）
+
+chat 工具页（`/home/{gpt,deepseek,claude,gemini,grok-chat,kimi}/generate`）已于 2026-10 全部补齐三张表（含 `TOOL_PARENT_LABEL_BY_SLUG` 的 chat 段），**不再属于例外**；新增 chat 通道时按同一口径登记。另需注意：chat 为 TOKEN 计费，不进 `/api/common/models/price`，页面 `priceSpecification` 必须按 `docs/PRICING_MAPPING.md` 「### 22. Chat 通道」的区间手算。
 
 ---
 

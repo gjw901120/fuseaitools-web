@@ -22,7 +22,9 @@ const seoConfig = useToolSEO({
   applicationSubCategory: 'AI Chat',
   offers: { price: '0', priceCurrency: 'USD' },
   offerDescription: 'Credits-based pricing for DeepSeek chat.',
-  priceSpecification: { price: 260, minValue: 260, maxValue: 260, eligibleQuantityName: 'Credits Required' }
+  // Chat 为 TOKEN 计费（每 100 万 token 积分），不在 /api/common/models/price 的 ONCE/RULE 输出内，只能静态登记。
+  // 口径取 sql/chat-deepseek.md 的**售价列** prompt/completion（不是 loss_* 成本列）：当前通道仅 deepseek-v4-1-flash 在线，prompt 39 / completion 147
+  priceSpecification: { price: 147, minValue: 39, maxValue: 147, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

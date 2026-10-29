@@ -9,13 +9,13 @@ export default {
   meta: {
     name: 'Veo 3.1 Video on FuseAITools',
     category: 'MultimediaApplication',
-    description: 'Veo 3.1 text, first/last frames, reference-to-video, and extend workflows on FuseAITools—Google DeepMind video with Standard or Fast models.'
+    description: 'Veo 3.1 text, first/last frames, reference-to-video, and extend workflows on FuseAITools—Google DeepMind video with Standard, Fast or Lite models.'
   },
   badge: '🎬 Veo 3.1 · Google DeepMind · Four Workflows',
   introByPath: {
     '/home/veo3/text-to-video': {
       title: '📝 Veo 3.1 Text to Video',
-      lead: 'Describe video content in up to <strong>1000 characters</strong>—choose <strong>Standard (veo3)</strong> or <strong>Fast (veo3_fast)</strong>, set aspect ratio <strong>16:9, 9:16, or Auto</strong>, and optionally enable English translation for better results.'
+      lead: 'Describe video content in up to <strong>1000 characters</strong>—choose <strong>Standard (veo3)</strong>, <strong>Fast (veo3_fast)</strong> or <strong>Lite (veo3_lite)</strong>, set aspect ratio <strong>16:9, 9:16, or Auto</strong>, and optionally enable English translation for better results.'
     },
     '/home/veo3/first-and-last-to-video': {
       title: '🖼️ Veo 3.1 First & Last Frames to Video',
@@ -23,7 +23,7 @@ export default {
     },
     '/home/veo3/reference-to-video': {
       title: '🎞️ Veo 3.1 Reference to Video',
-      lead: 'Provide <strong>1–3 reference images</strong> plus a prompt—Veo 3.1 generates video content guided by your stills. Uses the <strong>Fast</strong> model by default for responsive image-to-video output.'
+      lead: 'Provide <strong>1–3 reference images</strong> plus a prompt—Veo 3.1 generates video content guided by your stills. Uses the <strong>Fast</strong> model by default; reference-to-video accepts the <strong>Fast</strong> and <strong>Lite</strong> tiers.'
     },
     '/home/veo3/extend': {
       title: '⏩ Veo 3.1 Video Extend',
@@ -33,7 +33,7 @@ export default {
   definitionByPath: {
     '/home/veo3/text-to-video': {
       title: 'What is Veo 3.1 Text to Video?',
-      body: '<strong>Veo 3.1 Text to Video</strong> on FuseAITools turns a prompt (1–1000 characters) into a short video clip via Google DeepMind. Pick <strong>Standard or Fast</strong>, aspect ratio <strong>16:9, 9:16, or Auto</strong>, optional seed (10000–99999), watermark, and automatic English translation—ideal for cinematic previews and social content.'
+      body: '<strong>Veo 3.1 Text to Video</strong> on FuseAITools turns a prompt (1–1000 characters) into a short video clip via Google DeepMind. Pick <strong>Standard, Fast or Lite</strong>, aspect ratio <strong>16:9, 9:16, or Auto</strong>, optional seed (10000–99999), watermark, and automatic English translation—ideal for cinematic previews and social content.'
     },
     '/home/veo3/first-and-last-to-video': {
       title: 'What is Veo 3.1 First & Last Frames to Video?',
@@ -55,8 +55,8 @@ export default {
         answer: 'Choose <strong>16:9, 9:16, or Auto</strong> in the form. <strong>16:9</strong> supports a post-generation <strong>1080P upgrade</strong> via the Get 1080P button.'
       },
       {
-        question: 'Should I use Standard or Fast for Veo 3.1 text-to-video?',
-        answer: 'Use <strong>Fast (veo3_fast)</strong> for quick previews and iteration; switch to <strong>Standard (veo3)</strong> when you need higher quality for final output.'
+        question: 'Should I use Standard, Fast or Lite for Veo 3.1 text-to-video?',
+        answer: 'Use <strong>Fast (veo3_fast)</strong> for quick previews and iteration; switch to <strong>Standard (veo3)</strong> when you need higher quality for final output. <strong>Lite (veo3_lite)</strong> is the lightweight tier—same per-video billing rule, billed at its own credits rate.'
       }
     ],
     '/home/veo3/first-and-last-to-video': [
@@ -76,7 +76,7 @@ export default {
       },
       {
         question: 'Which model is used for Veo 3.1 reference-to-video?',
-        answer: 'Reference-to-video defaults to the <strong>Fast (veo3_fast)</strong> model for responsive image-guided generation.'
+        answer: 'Reference-to-video defaults to the <strong>Fast (veo3_fast)</strong> model for responsive image-guided generation; <strong>Lite (veo3_lite)</strong> is the other tier available in this mode.'
       }
     ],
     '/home/veo3/extend': [
@@ -111,7 +111,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Veo 3.1 on FuseAITools',
-      html: 'Veo 3.1 on <a href="/" class="seo-inline-link">FuseAITools</a> brings <strong>Google DeepMind video generation</strong> to the browser—text-to-video, keyframe animation, reference-driven clips, and video extension in one tool stack. Choose <strong>Standard (veo3)</strong> for higher quality or <strong>Fast (veo3_fast)</strong> for quicker previews. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Veo 3.1 on <a href="/" class="seo-inline-link">FuseAITools</a> brings <strong>Google DeepMind video generation</strong> to the browser—text-to-video, keyframe animation, reference-driven clips, and video extension in one tool stack. Choose <strong>Standard (veo3)</strong> for higher quality, <strong>Fast (veo3_fast)</strong> for quicker previews, or <strong>Lite (veo3_lite)</strong> as the lightweight tier. New users receive <strong>20 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -121,7 +121,7 @@ export default {
         {
           icon: '🎬',
           title: 'Google DeepMind Video',
-          description: 'Veo 3.1 delivers cinematic motion from text or images—<strong>Standard</strong> for quality, <strong>Fast</strong> for speed.'
+          description: 'Veo 3.1 delivers cinematic motion from text or images—<strong>Standard</strong> for quality, <strong>Fast</strong> for speed, <strong>Lite</strong> for a lightweight tier.'
         },
         {
           icon: '🖼️',
@@ -155,35 +155,35 @@ export default {
     {
       type: 'table',
       id: 'compare-heading',
-      title: '📊 Veo 3.1 Standard vs Fast',
-      ariaLabel: 'Veo 3.1 Standard vs Fast',
-      headers: ['Dimension', 'Standard (veo3)', 'Fast (veo3_fast)'],
+      title: '📊 Veo 3.1 Standard vs Fast vs Lite',
+      ariaLabel: 'Veo 3.1 Standard vs Fast vs Lite',
+      headers: ['Dimension', 'Standard (veo3)', 'Fast (veo3_fast)', 'Lite (veo3_lite)'],
       rows: [
         [
           'Quality',
           '<strong>Higher fidelity</strong>—best for final output',
-          'Optimized for speed—ideal for iteration'
+          'Optimized for speed—ideal for iteration',
+          'Lightweight tier—budget-conscious drafts'
         ],
-        ['Speed', 'Longer generation time', '<strong>Faster turnaround</strong> for previews'],
+        ['Speed', 'Longer generation time', '<strong>Faster turnaround</strong> for previews', 'Lightweight pipeline for quick drafts'],
         [
           'Workflows',
-          {
-            html: '<strong>Text, first/last frames, reference-to-video</strong>',
-            colspan: 2
-          }
+          '<strong>Text, first/last frames</strong>',
+          '<strong>Text, first/last frames, reference-to-video</strong>',
+          '<strong>Text, first/last frames, reference-to-video</strong>'
         ],
         [
           'Aspect ratio',
           {
             html: '<strong>16:9, 9:16, Auto</strong>—16:9 supports 1080P upgrade',
-            colspan: 2
+            colspan: 3
           }
         ],
         [
           'Prompt length',
           {
             html: 'Up to <strong>1000 characters</strong> with optional English translation',
-            colspan: 2
+            colspan: 3
           }
         ]
       ]
@@ -203,21 +203,21 @@ export default {
         [
           '<strong>Text to Video</strong>',
           'Prompt (1–1000 chars)',
-          'Standard / Fast',
+          'Standard / Fast / Lite',
           '16:9, 9:16, Auto',
           'Translation, seed, watermark'
         ],
         [
           '<strong>First & Last Frames</strong>',
           'Prompt + 1–2 images',
-          'Standard / Fast',
+          'Standard / Fast / Lite',
           '16:9, 9:16, Auto',
           '1 image = orbit; 2 = start/end keyframes'
         ],
         [
           '<strong>Reference to Video</strong>',
           'Prompt + 1–3 reference images',
-          'Fast (default)',
+          'Fast (default) / Lite',
           'Follows references',
           'Translation, seed, watermark'
         ],
@@ -229,7 +229,7 @@ export default {
           'Seed, watermark; 1080P clips not extendable'
         ]
       ],
-      lead: 'Parameters below match the FuseAITools Veo 3.1 form and API (<code>veo3</code>, <code>veo3_fast</code>, <code>veo3_extend</code>).',
+      lead: 'Parameters below match the FuseAITools Veo 3.1 form and API (<code>veo3</code>, <code>veo3_fast</code>, <code>veo3_lite</code>, <code>veo3_extend</code>).',
       note: 'Image inputs: JPG/PNG (max 10MB). After generation, use <strong>Get 1080P</strong> on 16:9 outputs. Credits are shown on the Generate button before submission.'
     },
     {
@@ -241,7 +241,7 @@ export default {
         {
           name: 'Veo 3.1 Text to Video',
           title: 'Text to Video',
-          description: 'Describe scenes in up to 1000 characters—Standard or Fast, 16:9/9:16/Auto, optional translation.',
+          description: 'Describe scenes in up to 1000 characters—Standard, Fast or Lite, 16:9/9:16/Auto, optional translation.',
           path: '/home/veo3/text-to-video',
           icon: 'fas fa-font'
         },
@@ -255,7 +255,7 @@ export default {
         {
           name: 'Veo 3.1 Reference to Video',
           title: 'Image to Video',
-          description: '1–3 reference images plus prompt—AI generates video content guided by your stills.',
+          description: '1–3 reference images plus prompt—AI generates video content guided by your stills. Fast or Lite tier.',
           path: '/home/veo3/reference-to-video',
           icon: 'fas fa-image'
         },

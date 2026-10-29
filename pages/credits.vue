@@ -324,7 +324,10 @@ const modelToPathMap = {
   GPT: { default: '/home/gpt/generate' },
   DeepSeek: { default: '/home/deepseek/generate' },
   Claude: { default: '/home/claude/generate' },
-  Gemini: { default: '/home/gemini/generate' }
+  Gemini: { default: '/home/gemini/generate' },
+  // 后端 credits 明细的 modelCategory 直取 models_category.name，新通道为 'Grok Chat' / 'Kimi'
+  'Grok Chat': { default: '/home/grok-chat/generate' },
+  Kimi: { default: '/home/kimi/generate' }
 }
 
 function getDetailPath(modelCategory, model) {

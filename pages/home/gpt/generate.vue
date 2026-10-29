@@ -22,7 +22,9 @@ const seoConfig = useToolSEO({
   applicationSubCategory: 'AI Chat',
   offers: { price: '0', priceCurrency: 'USD' },
   offerDescription: 'Credits-based pricing for GPT chat.',
-  priceSpecification: { price: 450, minValue: 20, maxValue: 450, eligibleQuantityName: 'Credits Required' }
+  // Chat 为 TOKEN 计费（每 100 万 token 积分），不在 /api/common/models/price 的 ONCE/RULE 输出内，只能静态登记。
+  // 口径取 sql/chat-gpt-reasoning.md 全 8 个在线模型的**售价列** prompt/completion（不是 loss_* 成本列）：最低 gpt-6-luna prompt 9，最高 gpt-6-astra completion 4320
+  priceSpecification: { price: 4320, minValue: 9, maxValue: 4320, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

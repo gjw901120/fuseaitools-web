@@ -8,6 +8,8 @@ const OVERVIEW_KEY_TO_LOGO = {
   deepseek: '/tools-logo/Deepseek.png',
   claude: '/tools-logo/Claude.png',
   gemini: '/tools-logo/Gemini.png',
+  'grok-chat': '/tools-logo/Grok.png',
+  kimi: '/tools-logo/Kimi.svg',
   'gpt-4o-image': '/tools-logo/ChatGPT4OImage.png',
   'gpt-image': '/tools-logo/GPTImage.png',
   'ideogram': '/tools-logo/Ideogram.png',

@@ -39,6 +39,7 @@
 
 - 不依赖表单或 `formFields`，仅根据接口返回的该 modelKey 下 **ONCE 单值** 或 **RULE 下全部规则的 credits** 取最小/最大。
 - 若接口返回为统一包裹格式 `{ errorCode, data }`，则使用 `data` 作为上述结构的输入。
+- **例外（TOKEN 计费）**：6 个 chat 通道按每 100 万 token 计价，**不在 `/api/common/models/price` 的返回内**（该接口只输出 ONCE / RULE），因此各 `generate.vue` 用 `useToolSEO`（非 Async）静态登记区间，取值规则与刷新方式见「### 22. Chat 通道」。
 
 ---
 
@@ -248,12 +249,15 @@
 | Video Extend        | `veo3_extend`| ONCE  | 延展视频 |
 | Text/Image to Video（Standard） | `veo3`      | ONCE  | 模型选 veo3 |
 | Text/Image to Video（Fast）    | `veo3_fast` | ONCE  | 模型选 veo3_fast |
+| Text/Image to Video（Lite）    | `veo3_lite` | ONCE  | 模型选 veo3_lite，定价规则同 fast/standard |
 
 - **组件**：`components/tools/Veo3Tool.vue`
-- **逻辑**：`formData.generationType === 'VIDEO_EXTEND'` 用 `veo3_extend`，否则用 `formData.model`（`veo3` 或 `veo3_fast`）作为 modelKey。
+- **逻辑**：`formData.generationType === 'VIDEO_EXTEND'` 用 `veo3_extend`，否则用 `formData.model`（`veo3` / `veo3_fast` / `veo3_lite`）作为 modelKey。
+- **档位限制**：后端 `VeoModelEnum` 中 REFERENCE_2_VIDEO 只开放 `veo3_fast` / `veo3_lite`，前端在参考图模式下只渲染这两个选项。
 - **SEO minValue/maxValue**：
   - `/home/veo3/extend`：仅取 `veo3_extend`（ONCE，当前为 200/200）。
-  - `/home/veo3/text-to-video`、`/home/veo3/reference-to-video`、`/home/veo3/first-and-last-to-video`：按 `Model Type` 兼容 `standard -> veo3` 与 `fast -> veo3_fast`，SEO 区间取两者合并后的最小/最大值（当前为 36/200）。
+  - `/home/veo3/text-to-video`、`/home/veo3/first-and-last-to-video`：按 `Model Type` 兼容 `standard -> veo3`、`fast -> veo3_fast`、`lite -> veo3_lite`，SEO 区间取合并后的最小/最大值。
+  - `/home/veo3/reference-to-video`：只取该模式可用的 `veo3_fast`、`veo3_lite`。
 
 ---
 
@@ -423,6 +427,26 @@
 
 - **组件**：`components/tools/HappyHorseTool.vue`
 - **计价一致**：v1 与 v1.1 生成类模式均 `getPrice(modelKey, { duration: 1, quality, scene: 'generate' })` 取每秒单价，再乘 clamp(3, 15) 计费秒。
+
+---
+
+### 22. Chat 通道（GPT / DeepSeek / Claude / Gemini / Grok Chat / Kimi）
+
+- **组件**：`components/ChatInterface.vue`（六个通道共用，端点与字段能力见其内 `CHAT_CHANNELS`）。
+- **不走价格接口**：chat 模型 `pricing_type = 2`（TOKEN），`ModelsServiceImpl.getModelsPrice()` 只输出 ONCE / RULE，故 `getPrice` 取不到值，提交按钮也不展示预估 credits（按实际 token 结算：`credits = tokens ÷ 1,000,000 × 单价`）。
+- **静态区间口径**：`minValue` = 该通道在线模型中**最低的 prompt 单价**，`maxValue` = **最高的 completion 单价**，`price` 与 `maxValue` 一致；数据来源为 `fuseaitools-server` 的 `sql/chat-*.md` 定价表。
+- **必须取售价列**：定价表的 12 列里 `loss_prompt` / `loss_completion` 是**成本价**，`prompt` / `completion` 才是用户实扣的**售价**（对应 `models_pricing_token.loss_prompt_credits` 与 `prompt_credits`）。两者差 3 倍（毛利倍率），误取成本列就是对用户虚报低价。可用 `node scripts/check-backend-contract.mjs` 自动比对（E 项）。
+
+| 通道 / modelCategory | 路由 | 在线模型数 | minValue（售价 prompt） | maxValue（售价 completion） | 定价表 |
+|---|---|---|---|---|---|
+| `GPT` | `/home/gpt/generate` | 8 | 9（`gpt-6-luna`） | 4320（`gpt-6-astra`） | `sql/chat-gpt-reasoning.md` |
+| `DeepSeek` | `/home/deepseek/generate` | 1 | 39 | 147 | `sql/chat-deepseek.md` |
+| `Claude` | `/home/claude/generate` | 13 | 21（`claude-haiku-5-5`） | 6174（`claude-fable-5`） | `sql/chat-claude-web-search.md` |
+| `Gemini` | `/home/gemini/generate` | 3 | 72（flash 两档；成本价 24 不可用） | 1236（`gemini-4-argon`） | `sql/chat-gemini-native-stream.md` |
+| `Grok Chat` | `/home/grok-chat/generate` | 3 | 249（三档同价） | 741（三档同价） | `sql/chat-grok.md` |
+| `Kimi` | `/home/kimi/generate` | 1 | 741 | 3705 | `sql/chat-kimi.md` |
+
+- **后端加/减 chat 模型或改价时必须同步重算这 6 组数字**（否则 JSON-LD 的 `Offers` 区间与实际扣费不符），这也是区间唯一的人工维护点。
 
 ---
 

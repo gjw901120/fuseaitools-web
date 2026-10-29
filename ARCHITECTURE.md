@@ -295,8 +295,8 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
   2. **白名单格式**：`server/utils/apiProxyRoutes.js` 每条必须是 `METHOD /path` 且不以 `/` 结尾；
   3. **调用与白名单对齐**：扫描 `components/`、`composables/`、`pages/` 里的 `/api` 调用点与 `server/api/**` 文件路由，未登记的调用直接失败；
   4. **SEO 数据完整性**：`data/seo/*.js` 必填字段（`component` / `rootId` / `meta` / `sections`）+ 薄壳组件必须显式 import `ToolSeoContent`；
-  5. **SEO 文案一致性**：`scripts/check-seo-content.mjs --all` 对比 git HEAD 的旧组件，防止数据化迁移丢字；
-  6. **前后端契约**：`scripts/check-backend-contract.mjs` 读取 `../fuseaitools-server` 的 Java 源码（可用 `FUSE_SERVER_DIR` 覆盖），校验白名单路由能在 Controller 找到、请求体顶层字段能映射到 `@RequestBody` DTO、DTO 枚举字段的传值符合 `@JsonCreator` 的可接受值；后端目录不存在时自动跳过，未修复的后端缺陷只提示不阻断。
+  5. **SEO 文案一致性**：`scripts/check-seo-content.mjs --all` 对比 git 基准版本（默认 HEAD）的旧组件，防止数据化迁移丢字。组件一旦迁完入库，基准版本本身就是薄壳，输出为「旧组件文案片段 0 段」——这是预期降级而非真验证；要回验迁移保真度把基准指到迁移前的 commit：`--ref=<sha>^`；
+  6. **前后端契约**：`scripts/check-backend-contract.mjs` 读取 `../fuseaitools-server` 的 Java 源码（可用 `FUSE_SERVER_DIR` 覆盖），校验白名单路由能在 Controller 找到、请求体顶层字段能映射到 `@RequestBody` DTO、DTO 枚举字段的传值符合 `@JsonCreator` 的可接受值；另外把 6 个 chat 页的 `priceSpecification` 区间与 `sql/chat-*.md` 的**售价列**逐数字比对（该表同时有 `loss_*` 成本列，误取会对用户虚报低价，而这类错只有数值能查出来）；后端目录不存在时自动跳过，未修复的后端缺陷只提示不阻断。
 - **构建后质量闸门**：`postbuild` 自动执行 `node scripts/check-build-output.mjs`，直接检查 `.output/public`：
   1. **相对链接**：任何 `href` 不以 `/`、`#`、协议开头的站内链接直接判失败（这是嵌套 404 的唯一来源）；
   2. **404 产物页**：`failOnError: false` 下坏链会被写成静态页，脚本会删除对应 html/payload，并提示修链接（避免被 CDN、搜索引擎当作真实页面）；
@@ -308,7 +308,7 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
 ## 八、扩展与约定
 
 - **新增 AI 工具页**：在 `pages/home/` 下增加或复用路由，在 `home/index.vue` 的导航/工具列表中注册对应 Tool 组件；如需新接口，在 `server/utils/apiProxyRoutes.js` 白名单加一行 `POST /xxx/yyy` 即可，不需要新建代理文件。
-- **新增对话模型**：在 `server/api/chat/` 增加 `xxx.post.js`，前端在 ChatInterface 的模型列表与 `getChatApiUrl` 中增加分支。
+- **新增对话模型**：先在后端 `ChatChannelEnum` 确认通道协议与档位白名单；新通道才需要在 `server/api/chat/` 加 `xxx.post.js`（SSE 代理，镜像 `chatgpt.post.js`，**不**加进 `API_PROXY_ROUTES`，由 `smoke-test` 的 `collectNitroApiRoutes()` 覆盖），并在 `ChatInterface.vue` 的 `CHAT_CHANNELS` 登记 `endpoint` / `webSearch`（未登记的分类直接拒绝发送，不再回落 chatgpt）；新模型则只需把 `models_category.name` 加进该表 key 与各处路由登记。思考明文**不在前端配置**：服务端只要收到 thinking delta 就下发 `{reasoning}` 事件，前端收到就渲染（后端 `ChatChannelEnum.thoughtVisible` 也是个只被赋值、从未被读取的字段）。字段能力必须与后端 DTO 对齐：`enableWebSearch` 仅 GPT/Claude/Gemini，`enableDeep` 全通道且**必须显式传值**（不传等于「未表态」，后端取通道默认档）。
 - **统一请求与错误**：新接口尽量通过 `useApi` 调用，失败时由后端返回 `errorMessage`，代理透传，前端统一 Toast 展示并重置状态，避免「失败后无法再次发起」。
 - **上传**：需要传文件的接口，先通过 `/api/common/batch-upload` 拿到 URL，再把 URL 作为参数字段传给具体业务接口。
 - **SEO 内容数据化（新增/修改工具页必读）**：
@@ -317,7 +317,7 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
   3. **按路由收窄**：`sections` 和 `tips` 都支持 `paths: ['/home/x/y']`，只在列出的路由渲染；同一段落按路由文案不同（如 v1/v1.1 对比表）时，就写成多个带 `paths` 的 section，不要写模板逻辑；
   4. 表格单元格可以是字符串或 `{ html, colspan }`（合并单元格用后者），`headers` 为纯文本；`table` 还支持 `lead` / `note` / `ariaLabel`；
   5. 薄壳组件（如 `QwenV3SeoContent.vue`）只保留三件事：`<ToolSeoContent :data="seo" />`、**显式** `import ToolSeoContent from '~/components/tools/ToolSeoContent.vue'`、引入数据文件与 `assets/css/tool-seo-content.css`。显式 import 不可省略——Nuxt 自动导入会解析为 `ToolsToolSeoContent`，导致 SSR 渲染为空且不报错；
-  6. 迁移或改写后用 `node scripts/check-seo-content.mjs <组件名>`（或 `--all`）做文案比对，确认无丢字；脚本会把旧组件文案与 `data/seo/*.js` 做去标签/折叠空白后的子串比对，类名、`v-for` 表达式与跨标签碎片会自动忽略；
+  6. 迁移或改写后用 `node scripts/check-seo-content.mjs <组件名>`（或 `--all`）做文案比对，确认无丢字；脚本会把旧组件文案与 `data/seo/*.js` 做去标签/折叠空白后的子串比对，类名、`v-for` 表达式与跨标签碎片会自动忽略；片段只从**模板区**取文本节点（`<script>` / `<style>` 与注释先剔除，否则薄壳组件的 import 行会被当成一个巨型文案报假差异），`<script>` 里的长正文则通过单/双引号与**反引号模板字面量**补齐（`${}` 插值当分段边界）。
   7. 模板结构（标题层级、FAQ 折叠、内链事件委托、JSON-LD FAQ schema）统一由 `ToolSeoContent.vue` 维护，**不要在数据文件里写模板逻辑**；
   8. `npm run build` 的 prebuild 会自动跑 `smoke-test`，其中 [4/6] 会校验「每个数据文件字段完整 + 薄壳引用正确」，新增数据文件无需改脚本。
 - **域名与 URL**：canonical / og:url / sitemap / llms.txt 一律从 `constants/site.js` 的 `SITE_ORIGIN` 拼接，不要在页面里硬编码域名。

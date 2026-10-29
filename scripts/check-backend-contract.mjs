@@ -5,10 +5,13 @@
  *   node scripts/check-backend-contract.mjs
  *   FUSE_SERVER_DIR=/path/to/fuseaitools-server node scripts/check-backend-contract.mjs
  *
- * 校验三类「前端调不通 / 静默失效」的问题：
+ * 校验四类「前端调不通 / 静默失效 / 数值失真」的问题：
  *   A. 路由存在性：白名单里的 METHOD /path 必须能在 Java Controller 找到
  *   B. 请求体字段：前端发送的顶层字段必须能映射到后端 @RequestBody DTO
  *   C. 枚举传值：前端大写下划线字面量若恰为某枚举常量名，而后端 @JsonCreator 只认别的值 → 反序列化得到 null
+ *   D. DTO → Request 类型不一致：BeanUtils.copyProperties 会静默跳过
+ *   E. chat 页 TOKEN 定价区间：与后端 sql/chat-*.md 的售价列（prompt / completion）逐数字比对，
+ *      防止误取 loss_* 成本列（差 3 倍）或后端改价后前端静态区间静默失真
  *
  * 后端目录不存在时直接跳过（exit 0），保证前端仓库可独立构建。
  */
@@ -301,6 +304,112 @@ if (gaps.length) {
   gaps.forEach((g) => console.log(`  ! ${g}：copyProperties 会跳过，实际使用 Request 的默认值`))
 } else {
   ok('DTO → Request 的类型不一致字段均有显式赋值')
+}
+
+// —— E. chat 页 TOKEN 定价区间 vs 后端 sql/chat-*.md 售价列 ——
+/** modelCategory → 页面目录（pages/home/<slug>/generate.vue） */
+const CHAT_PRICE_PAGES = {
+  GPT: 'gpt',
+  DeepSeek: 'deepseek',
+  Claude: 'claude',
+  Gemini: 'gemini',
+  'Grok Chat': 'grok-chat',
+  Kimi: 'kimi'
+}
+/** 模型名前缀 → 通道（与后端 ChatChannelEnum 的 requestName 判定同口径） */
+const CHAT_PREFIXES = [
+  [/^gpt-/, 'GPT'],
+  [/^deepseek-/, 'DeepSeek'],
+  [/^claude-/, 'Claude'],
+  [/^gemini-/, 'Gemini'],
+  [/^grok-/, 'Grok Chat'],
+  [/^kimi-/, 'Kimi']
+]
+
+/**
+ * 解析 sql/chat-*.md 的 12 列定价表。列序：
+ * model_id | pricing_id | 模型 | 损耗¥ | 损耗$ | 售价$ | loss_prompt | prompt | loss_completion | completion | is_search | is_think
+ * 第 4/5/6 列是带 `in/out` 的文本列，不参与取数。
+ * 跳过 legacy/offline 文件：里面是旧 31 个已软删模型的说明表（列数不同，且价格已失真）。
+ */
+function chatPricingRows() {
+  const sqlDir = path.join(SERVER_DIR, 'sql')
+  if (!fs.existsSync(sqlDir)) return null
+  const byModel = new Map()
+  for (const f of fs.readdirSync(sqlDir).filter((n) => /^chat-.*\.md$/.test(n) && !/legacy|offline/i.test(n))) {
+    for (const line of fs.readFileSync(path.join(sqlDir, f), 'utf8').split('\n')) {
+      if (!/^\|\s*\d+\s*\|/.test(line)) continue
+      const cells = line.split('|').slice(1, -1).map((c) => c.trim())
+      if (cells.length !== 12) continue
+      const name = (cells[2].match(/`([^`]+)`/) || [])[1]
+      const credits = [6, 7, 8, 9, 10, 11].map((i) => (/^\d+$/.test(cells[i]) ? Number(cells[i]) : NaN))
+      if (!name || credits.some(Number.isNaN)) continue
+      byModel.set(name, { file: f, name, lossPrompt: credits[0], prompt: credits[1], lossCompletion: credits[2], completion: credits[3], isSearch: credits[4], isThink: credits[5] })
+    }
+  }
+  return [...byModel.values()]
+}
+
+/** 读页面里静态登记的 priceSpecification */
+function pagePriceSpec(slug) {
+  const file = path.join(ROOT, 'pages', 'home', slug, 'generate.vue')
+  if (!fs.existsSync(file)) return null
+  const m = fs.readFileSync(file, 'utf8').match(/priceSpecification:\s*\{([^}]*)\}/)
+  if (!m) return null
+  const num = (key) => {
+    const hit = m[1].match(new RegExp(`${key}:\\s*(\\d+)`))
+    return hit ? Number(hit[1]) : null
+  }
+  return { price: num('price'), minValue: num('minValue'), maxValue: num('maxValue') }
+}
+
+const priceRows = chatPricingRows()
+if (!priceRows) {
+  console.log('  · 后端无 sql/ 目录，跳过 chat 定价区间校验')
+} else {
+  const unknown = []
+  const expect = new Map()
+  for (const r of priceRows) {
+    const hit = CHAT_PREFIXES.find(([re]) => re.test(r.name))
+    if (!hit) { unknown.push(r.name); continue }
+    const cur = expect.get(hit[1]) || { min: Infinity, max: 0, models: 0, searchable: 0 }
+    cur.min = Math.min(cur.min, r.prompt)
+    cur.max = Math.max(cur.max, r.completion)
+    cur.models += 1
+    if (r.isSearch === 1) cur.searchable += 1
+    expect.set(hit[1], cur)
+  }
+  let checkedPages = 0
+  let priceIssues = 0
+  const bad = (msg) => { fail(msg); priceIssues += 1 }
+  for (const [channel, slug] of Object.entries(CHAT_PRICE_PAGES)) {
+    const want = expect.get(channel)
+    const spec = pagePriceSpec(slug)
+    if (!want) { bad(`后端 sql/chat-*.md 里没有 ${channel} 通道的在线模型，但前端还有对应页面`); continue }
+    if (!spec) { bad(`pages/home/${slug}/generate.vue 缺少可解析的 priceSpecification`); continue }
+    checkedPages += 1
+    if (spec.minValue !== want.min) {
+      bad(`${channel} minValue=${spec.minValue}，但后端 ${want.models} 个在线模型的最低售价 prompt=${want.min}（若误取了 loss_prompt 成本列会刚好差 3 倍）`)
+    }
+    if (spec.maxValue !== want.max) {
+      bad(`${channel} maxValue=${spec.maxValue}，但后端最高售价 completion=${want.max}`)
+    }
+    if (spec.price !== spec.maxValue) bad(`${channel} price=${spec.price} 与 maxValue=${spec.maxValue} 不一致（约定取最高价）`)
+  }
+  if (unknown.length) console.log(`  ! sql/chat-*.md 里有不认识的模型名前缀，未纳入区间：${unknown.slice(0, 5).join(', ')}`)
+  if (checkedPages === Object.keys(CHAT_PRICE_PAGES).length && !priceIssues) {
+    ok(`${checkedPages} 个 chat 页的定价区间与后端 ${priceRows.length} 个在线模型的售价列一致`)
+  }
+
+  /** 联网入口与 is_search 对齐：前端开了开关但后端没人支持 = 必挂；后端支持但前端隐藏 = 只提示（Claude 现状） */
+  const iface = fs.readFileSync(path.join(ROOT, 'components/ChatInterface.vue'), 'utf8')
+  const flags = new Map([...iface.matchAll(/'([\w ]+)':\s*\{[^}]*webSearch:\s*(true|false)/g)].map((m) => [m[1], m[2] === 'true']))
+  for (const [channel, on] of flags) {
+    const want = expect.get(channel)
+    if (!want) continue
+    if (on && want.searchable === 0) fail(`${channel} 前端展示联网开关，但后端该通道无 is_search=1 的模型（传 true 会被 prepareChannel 拒）`)
+    if (!on && want.searchable > 0) console.log(`  · ${channel}：后端有 ${want.searchable}/${want.models} 个模型 is_search=1，前端入口暂隐藏（已知现状）`)
+  }
 }
 
 console.log('')

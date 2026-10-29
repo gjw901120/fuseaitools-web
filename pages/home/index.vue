@@ -261,7 +261,9 @@ const toolRouteMap = {
   'GPT': '/home/gpt/generate',
   'Deepseek': '/home/deepseek/generate',
   'Claude': '/home/claude/generate',
-  'Gemini': '/home/gemini/generate'
+  'Gemini': '/home/gemini/generate',
+  'Grok Chat': '/home/grok-chat/generate',
+  'Kimi': '/home/kimi/generate'
 }
 
 // SEO优化
@@ -537,6 +539,24 @@ const allToolsList = [
     icon: '/tools-logo/Gemini.png',
     rating: 4.7,
     usageCount: 680
+  },
+  {
+    id: 26,
+    name: 'Grok Chat',
+    type: 'chat',
+    description: 'xAI\'s Grok is built for real-time conversation: strong on current events, science and coding, with a direct answering style and long-context reasoning. The Grok 4 series runs on the OpenAI Responses protocol with switchable deep thinking, and takes documents and images as input.',
+    icon: '/tools-logo/Grok.png',
+    rating: 4.7,
+    usageCount: 0
+  },
+  {
+    id: 27,
+    name: 'Kimi',
+    type: 'chat',
+    description: 'Moonshot\'s Kimi is a long-context reasoning model built for document-heavy work: read whole manuals, codebases, and reports in one pass, and stream its thinking content so you can inspect how an answer was reached.',
+    icon: '/tools-logo/Kimi.svg',
+    rating: 4.7,
+    usageCount: 0
   },
   
   // Image 工具
@@ -867,10 +887,10 @@ const getSelectedToolInfo = () => {
   return tool || allTools.value[0]
 }
 
-// 判断是否是chat工具（GPT/Deepseek/Claude/Gemini）
+// 判断是否是chat工具（六个 chat 通道，名称与 allToolsList 一致）
 const isChatTool = () => {
   const tool = getSelectedToolInfo()
-  const chatToolNames = ['GPT', 'Deepseek', 'Claude', 'Gemini']
+  const chatToolNames = ['GPT', 'Deepseek', 'Claude', 'Gemini', 'Grok Chat', 'Kimi']
   return chatToolNames.includes(tool.name)
 }
 

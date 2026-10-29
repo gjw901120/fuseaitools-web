@@ -22,7 +22,10 @@ const seoConfig = useToolSEO({
   applicationSubCategory: 'AI Chat',
   offers: { price: '0', priceCurrency: 'USD' },
   offerDescription: 'Credits-based pricing for Gemini chat.',
-  priceSpecification: { price: 260, minValue: 40, maxValue: 260, eligibleQuantityName: 'Credits Required' }
+  // Chat 为 TOKEN 计费（每 100 万 token 积分），不在 /api/common/models/price 的 ONCE/RULE 输出内，只能静态登记。
+  // 口径取 sql/chat-gemini-native-stream.md 全 3 个在线模型的**售价列** prompt/completion（不是 loss_prompt/loss_completion 成本列）：
+  // 最低 gemini-3-6/3-8-flash prompt 72，最高 gemini-4-argon completion 1236
+  priceSpecification: { price: 1236, minValue: 72, maxValue: 1236, eligibleQuantityName: 'Credits Required' }
 })
 useHead(seoConfig)
 </script>

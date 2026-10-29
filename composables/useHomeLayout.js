@@ -20,6 +20,9 @@ export const useHomeLayout = () => {
     'Deepseek': '/home/deepseek/generate',
     'Claude': '/home/claude/generate',
     'Gemini': '/home/gemini/generate',
+    // 后端 models_category.name 为 'Grok Chat'（与图像/视频工具的 'Grok' 区分），前端 key 必须逐字一致
+    'Grok Chat': '/home/grok-chat/generate',
+    'Kimi': '/home/kimi/generate',
     'Veo3': '/home/veo3/text-to-video',
     'Runway': '/home/runway/generate',
     'Luma': '/home/luma/generate',
@@ -50,6 +53,7 @@ export const useHomeLayout = () => {
   // API category -> 类型（用于图标）
   const categoryToType = {
     'GPT': 'chat', 'DeepSeek': 'chat', 'Deepseek': 'chat', 'Claude': 'chat', 'Gemini': 'chat',
+    'Grok Chat': 'chat', 'Kimi': 'chat',
     'Veo3': 'video', 'Runway': 'video', 'Luma': 'video', 'Sora': 'video', 'Wan': 'image', 'Wan Image': 'image', 'WanVideo': 'video', 'Seedance': 'video', 'Hailuo': 'video', 'HappyHorse': 'video', 'Happy Horse': 'video',
     'Midjourney': 'image', 'GPT 4o Image': 'image', 'GPT Image': 'image', 'Ideogram': 'image', 'Flux Kontext': 'image', 'Nano Banana': 'image', 'Seedream': 'image', 'Qwen': 'image', 'Imagen4': 'image', 'Grok': 'image',
     'Suno': 'audio', 'Elevenlabs': 'audio', 'ElevenLabs': 'audio'
@@ -85,7 +89,9 @@ export const useHomeLayout = () => {
     'Elevenlabs': '/tools-logo/Elevenlabs.png',
     'ElevenLabs': '/tools-logo/Elevenlabs.png',
     'Imagen4': '/tools-logo/Imagen4.png',
-    'Grok': '/tools-logo/Grok.png'
+    'Grok': '/tools-logo/Grok.png',
+    'Grok Chat': '/tools-logo/Grok.png',
+    'Kimi': '/tools-logo/Kimi.svg'
   }
 
   // 工具名称到路由的映射（导航用）
@@ -118,7 +124,9 @@ export const useHomeLayout = () => {
     'GPT': '/home/gpt/generate',
     'Deepseek': '/home/deepseek/generate',
     'Claude': '/home/claude/generate',
-    'Gemini': '/home/gemini/generate'
+    'Gemini': '/home/gemini/generate',
+    'Grok Chat': '/home/grok-chat/generate',
+    'Kimi': '/home/kimi/generate'
   }
 
   // 响应式数据
@@ -203,6 +211,24 @@ export const useHomeLayout = () => {
       icon: '/tools-logo/Gemini.png',
       rating: 4.7,
       usageCount: 680
+    },
+    {
+      id: 29,
+      name: 'Grok Chat',
+      type: 'chat',
+      description: 'xAI\'s Grok is built for real-time conversation: strong on current events, science and coding, with a direct answering style and long-context reasoning. The Grok 4 series runs on the OpenAI Responses protocol with switchable deep thinking, and takes documents and images as input.',
+      icon: '/tools-logo/Grok.png',
+      rating: 4.7,
+      usageCount: 0
+    },
+    {
+      id: 30,
+      name: 'Kimi',
+      type: 'chat',
+      description: 'Moonshot\'s Kimi is a long-context reasoning model built for document-heavy work: read whole manuals, codebases, and reports in one pass, and stream its thinking content so you can inspect how an answer was reached.',
+      icon: '/tools-logo/Kimi.svg',
+      rating: 4.7,
+      usageCount: 0
     },
     // Image 工具
     {
@@ -458,6 +484,7 @@ export const useHomeLayout = () => {
     // Veo3（三级路由）
     veo3: '/home/veo3/text-to-video',
     veo3_fast: '/home/veo3/text-to-video',
+    veo3_lite: '/home/veo3/text-to-video',
     text_2_video: '/home/veo3/text-to-video',
     first_and_last_frames_2_video: '/home/veo3/first-and-last-to-video',
     reference_2_video: '/home/veo3/reference-to-video',
@@ -628,6 +655,8 @@ export const useHomeLayout = () => {
     'Deepseek': '/home/deepseek',
     'Claude': '/home/claude',
     'Gemini': '/home/gemini',
+    'Grok Chat': '/home/grok-chat',
+    'Kimi': '/home/kimi',
     'Veo3': '/home/veo3',
     'Runway': '/home/runway',
     'Luma': '/home/luma',

@@ -179,5 +179,9 @@ export const routeToToolMap = {
   '/home/claude': 'Claude',
   '/home/claude/generate': 'Claude',
   '/home/gemini': 'Gemini',
-  '/home/gemini/generate': 'Gemini'
+  '/home/gemini/generate': 'Gemini',
+  '/home/grok-chat': 'Grok Chat',
+  '/home/grok-chat/generate': 'Grok Chat',
+  '/home/kimi': 'Kimi',
+  '/home/kimi/generate': 'Kimi'
 }
