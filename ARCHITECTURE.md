@@ -83,7 +83,7 @@ fuseaitools-web/
 │   └── flux-*.client.ts    # 工具页/内容页样式按路由注入
 ├── public/                 # 无需构建的静态文件（favicon、tools-logo、示例图…）
 ├── scripts/                # 构建质量闸门（prebuild + postbuild）
-│   ├── check-route-registry.mjs  # 路由登记校验
+│   ├── check-route-registry.mjs  # 路由登记 + 首页画廊入口校验
 │   ├── check-seo-content.mjs     # SEO 文案迁移一致性校验
 │   ├── check-backend-contract.mjs # 前后端契约校验（读隔壁 Java 服务源码）
 │   ├── check-build-output.mjs    # 产物校验：相对链接 / 404 页 / 站内死链
@@ -291,7 +291,7 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
   - 运行镜像只复制 `.output` 与 `package.json`，不再重复复制 `public/`（`.output/public` 已包含全部静态资源）。
 - **预渲染**：`nuxt.config.js` 中 `nitro.prerender.routes` 列出需预渲染的路径，提升首屏与 SEO。`crawlLinks: true` 会沿着页面内链接继续抓取，因此**页面里必须使用带前导 `/` 的绝对路径**；相对链接会被按当前页 URL 解析成嵌套路径（如 `/home/qwen/home/qwen/x`），爬虫必然 404。
 - **构建前质量闸门**：`prebuild` 自动执行 `node scripts/smoke-test.mjs`，任一失败则构建中断：
-  1. **路由登记**：`pages/home/**` 新增页面是否已登记到 `constants/routeToToolMap.js`（`scripts/check-route-registry.mjs`）；
+  1. **路由登记与首页入口**：`pages/home/**` 新增页面是否已登记到 sitemap / prerender / 面包屑三张表，且每个工具父页（`pages/home/{tool}.vue`）在首页「100+ AI Models」画廊 `components/ImageGallery.vue` 有入口卡片（反向也查：画廊链到不存在的页即悬空）；脚本 `scripts/check-route-registry.mjs`；
   2. **白名单格式**：`server/utils/apiProxyRoutes.js` 每条必须是 `METHOD /path` 且不以 `/` 结尾；
   3. **调用与白名单对齐**：扫描 `components/`、`composables/`、`pages/` 里的 `/api` 调用点与 `server/api/**` 文件路由，未登记的调用直接失败；
   4. **SEO 数据完整性**：`data/seo/*.js` 必填字段（`component` / `rootId` / `meta` / `sections`）+ 薄壳组件必须显式 import `ToolSeoContent`；
@@ -307,7 +307,7 @@ Nitro 静态路由优先于 catch-all，以下接口因行为差异保留独立�
 
 ## 八、扩展与约定
 
-- **新增 AI 工具页**：在 `pages/home/` 下增加或复用路由，在 `home/index.vue` 的导航/工具列表中注册对应 Tool 组件；如需新接口，在 `server/utils/apiProxyRoutes.js` 白名单加一行 `POST /xxx/yyy` 即可，不需要新建代理文件。
+- **新增 AI 工具页**：在 `pages/home/` 下增加或复用路由，在 `home/index.vue` 的导航/工具列表中注册对应 Tool 组件；**首页「100+ AI Models」画廊 `components/ImageGallery.vue`（Chat / Image / Audio / Video 四行硬编码列表）与 `constants/footerNav.js` 也要加入口，否则用户从首页点不进去**——前者已由 `check-route-registry.mjs` 强制校验，后者是精选清单不做强校验；如需新接口，在 `server/utils/apiProxyRoutes.js` 白名单加一行 `POST /xxx/yyy` 即可，不需要新建代理文件。
 - **新增对话模型**：先在后端 `ChatChannelEnum` 确认通道协议与档位白名单；新通道才需要在 `server/api/chat/` 加 `xxx.post.js`（SSE 代理，镜像 `chatgpt.post.js`，**不**加进 `API_PROXY_ROUTES`，由 `smoke-test` 的 `collectNitroApiRoutes()` 覆盖），并在 `ChatInterface.vue` 的 `CHAT_CHANNELS` 登记 `endpoint` / `webSearch`（未登记的分类直接拒绝发送，不再回落 chatgpt）；新模型则只需把 `models_category.name` 加进该表 key 与各处路由登记。思考明文**不在前端配置**：服务端只要收到 thinking delta 就下发 `{reasoning}` 事件，前端收到就渲染（后端 `ChatChannelEnum.thoughtVisible` 也是个只被赋值、从未被读取的字段）。字段能力必须与后端 DTO 对齐：`enableWebSearch` 仅 GPT/Claude/Gemini，`enableDeep` 全通道且**必须显式传值**（不传等于「未表态」，后端取通道默认档）。
 - **统一请求与错误**：新接口尽量通过 `useApi` 调用，失败时由后端返回 `errorMessage`，代理透传，前端统一 Toast 展示并重置状态，避免「失败后无法再次发起」。
 - **上传**：需要传文件的接口，先通过 `/api/common/batch-upload` 拿到 URL，再把 URL 作为参数字段传给具体业务接口。

@@ -9,6 +9,8 @@ export const footerNavColumns = [
       { label: 'Claude', to: '/home/claude/generate' },
       { label: 'Gemini', to: '/home/gemini/generate' },
       { label: 'DeepSeek', to: '/home/deepseek/generate' },
+      { label: 'Grok Chat', to: '/home/grok-chat/generate' },
+      { label: 'Kimi', to: '/home/kimi/generate' },
     ],
   },
   {

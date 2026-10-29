@@ -122,6 +122,17 @@ const chatModels = ref([
     title: 'Gemini',
     logo: '/tools-logo/Gemini.png',
     route: '/home/gemini'
+  },
+  // Grok 图像/视频工具也叫 Grok，Chat 通道沿用后端 models_category 名称 'Grok Chat' 以示区分
+  {
+    title: 'Grok Chat',
+    logo: '/tools-logo/Grok.png',
+    route: '/home/grok-chat'
+  },
+  {
+    title: 'Kimi',
+    logo: '/tools-logo/Kimi.svg',
+    route: '/home/kimi'
   }
 ])
 

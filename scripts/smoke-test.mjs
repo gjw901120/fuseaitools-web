@@ -3,7 +3,7 @@
  * 用法：node scripts/smoke-test.mjs
  *
  * 覆盖六类「上线即坏」的常见问题：
- *   1. 路由登记不全：新增工具页没同步 sitemap / prerender / 面包屑
+ *   1. 路由登记不全：新增工具页没同步 sitemap / prerender / 面包屑，或首页画廊漏加入口卡片
  *   2. API 白名单漏登记：前端调用了未放行的后端路径 → 线上 404
  *   3. 白名单格式错误：METHOD /path 写错导致永远匹配不上
  *   4. SEO 数据化完整性：数据文件缺字段、薄壳组件找不到数据源
@@ -47,11 +47,11 @@ function collectNitroApiRoutes() {
   return out
 }
 
-// —— 1. 路由登记表（sitemap / prerender / 面包屑） ——
-console.log('\n[1/6] 路由登记表')
+// —— 1. 路由登记表（sitemap / prerender / 面包屑）+ 首页画廊入口 ——
+console.log('\n[1/6] 路由登记表与首页入口')
 try {
   execFileSync(process.execPath, ['scripts/check-route-registry.mjs'], { stdio: 'pipe' })
-  ok('sitemap / prerender / 面包屑 三张登记表完整')
+  ok('sitemap / prerender / 面包屑 三张登记表完整，首页画廊入口无缺失/悬空')
 } catch (e) {
   const detail = (e.stdout?.toString() || '') + (e.stderr?.toString() || '')
   fail('路由登记表不完整')
