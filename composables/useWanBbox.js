@@ -195,19 +195,23 @@ export function useWanBbox(formData, hasImageInput, showError) {
   function onWindowBboxPointerUp() {
     bboxCreating = false
     bboxDragStart = null
-    window.removeEventListener('mousemove', onWindowBboxPointerMove)
-    window.removeEventListener('mouseup', onWindowBboxPointerUp)
+    window.removeEventListener('pointermove', onWindowBboxPointerMove)
+    window.removeEventListener('pointerup', onWindowBboxPointerUp)
+    window.removeEventListener('pointercancel', onWindowBboxPointerUp)
   }
 
   function onBboxCanvasPointerDown(e) {
     if (!bboxModalImg) return
+    // Pointer Events 统一鼠标 / 触摸 / 手写笔；配合画布 CSS touch-action:none，
+    // 手指拖动画框时不会触发页面滚动。
     const p = canvasPixelFromEvent(e)
     bboxCreating = true
     bboxDragStart = p
     bboxDraft.value = [p.x, p.y, p.x, p.y]
     redrawBboxModalCanvas()
-    window.addEventListener('mousemove', onWindowBboxPointerMove)
-    window.addEventListener('mouseup', onWindowBboxPointerUp)
+    window.addEventListener('pointermove', onWindowBboxPointerMove)
+    window.addEventListener('pointerup', onWindowBboxPointerUp)
+    window.addEventListener('pointercancel', onWindowBboxPointerUp)
   }
 
   function onBboxCanvasPointerUp() {

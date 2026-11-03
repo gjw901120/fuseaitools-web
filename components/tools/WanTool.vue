@@ -852,8 +852,9 @@
           <canvas
             ref="bboxModalCanvasRef"
             class="bbox-modal-canvas"
-            @mousedown.prevent="onBboxCanvasPointerDown"
-            @mouseup.prevent="onBboxCanvasPointerUp"
+            @pointerdown.prevent="onBboxCanvasPointerDown"
+            @pointerup.prevent="onBboxCanvasPointerUp"
+            @pointercancel="onBboxCanvasPointerUp"
           />
         </div>
         <div class="bbox-modal-footer">
@@ -2706,6 +2707,8 @@ watch(() => formData.enableSequential, (enabled) => {
   display: block;
   cursor: crosshair;
   vertical-align: top;
+  /* 触摸/手写笔拖动画框时禁止页面跟随滚动（与 Pointer Events 配合） */
+  touch-action: none;
 }
 .bbox-modal-footer {
   display: flex;
@@ -2808,5 +2811,33 @@ watch(() => formData.enableSequential, (enabled) => {
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; }
   .config-panel, .result-panel { width: 100%; }
+}
+
+/* bbox 弹窗 Teleport 到 body，拿不到 .home-layout--flux 作用域，单在组件内做手机端精修 */
+@media (max-width: 768px) {
+  .bbox-modal-canvas-wrap {
+    padding: 6px;
+    max-height: min(58dvh, 520px);
+  }
+
+  /* 底部按钮改纵向铺满、主操作置顶，单手可达 */
+  .bbox-modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .bbox-modal-footer-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bbox-modal-footer .action-btn,
+  .bbox-modal-save {
+    width: 100% !important;
+    min-height: var(--tap-target);
+    justify-content: center;
+  }
 }
 </style>

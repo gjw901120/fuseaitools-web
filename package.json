@@ -11,6 +11,7 @@
     "build": "nuxt build",
     "postbuild": "node scripts/check-build-output.mjs",
     "check:backend": "node scripts/check-backend-contract.mjs",
+    "check:mobile": "node scripts/check-mobile.mjs",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"

@@ -228,76 +228,9 @@ const formatFileSize = (bytes) => {
 }
 
 const previewImage = (file) => {
+  // 手势实现已抽至 composables/useMediaLightbox.js，与工具结果区点击放大（事件委托插件）共用同一套 lightbox
   const url = URL.createObjectURL(file)
-  
-  // 创建预览模态框
-  const modal = document.createElement('div')
-  modal.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-lightbox);
-    cursor: pointer;
-  `
-  
-  const img = document.createElement('img')
-  img.src = url
-  img.style.cssText = `
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  `
-  
-  const closeBtn = document.createElement('div')
-  closeBtn.style.cssText = `
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    color: #333;
-  `
-  closeBtn.innerHTML = '×'
-  
-  modal.appendChild(img)
-  modal.appendChild(closeBtn)
-  document.body.appendChild(modal)
-  
-  // 点击关闭
-  const closeModal = () => {
-    document.body.removeChild(modal)
-    URL.revokeObjectURL(url)
-  }
-  
-  modal.addEventListener('click', closeModal)
-  closeBtn.addEventListener('click', (e) => {
-    e.stopPropagation()
-    closeModal()
-  })
-  
-  // ESC键关闭
-  const handleKeydown = (e) => {
-    if (e.key === 'Escape') {
-      closeModal()
-      document.removeEventListener('keydown', handleKeydown)
-    }
-  }
-  document.addEventListener('keydown', handleKeydown)
+  openImageLightbox(url, { alt: file?.name || 'preview', revoke: true })
 }
 
 // 暴露方法给父组件

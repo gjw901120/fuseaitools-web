@@ -15,6 +15,26 @@ body {
     --container-padding: 4rem;
     --section-spacing: 4rem;
     --content-max-width: 1600px;
+
+    /* ── 统一断点 token（全站移动端适配的唯一标准，勿再引入其它断点） ──
+       CSS 媒体查询无法读取自定义属性，因此这里仅作为“刻度登记 + 消费变量”，
+       实际 @media 必须使用同名字面量：640 / 768 / 1024。
+       - sm  ≤640px ：窄屏手机（竖屏）
+       - md  ≤768px ：手机 / 小平板（底部 Tab Bar、抽屉主战场）
+       - lg  ≤1024px：平板 / 窄窗口（导航折叠为抽屉的分界）
+       历史遗留的 480 / 900 / 1200 逐步收敛到以上三档。 */
+    --bp-sm: 640px;
+    --bp-md: 768px;
+    --bp-lg: 1024px;
+
+    /* 移动端可交互元素最小点击热区（对齐 WCAG 2.5.5 / iOS HIG） */
+    --tap-target: 44px;
+
+    /* 安全区（刘海 / 圆角 / 系统手势条），供弹层与底部 Tab Bar 复用 */
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-left: env(safe-area-inset-left, 0px);
+    --safe-area-right: env(safe-area-inset-right, 0px);
 }
 
 /* 基础样式设置 */

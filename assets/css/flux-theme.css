@@ -1166,5 +1166,36 @@
   margin: 0 0 0.5rem 0;
 }
 
+/* ── 移动端弹层化（≤768px）：居中卡片改为贴底 bottom-sheet，登录/验证码等更贴合单手操作 ── */
+@media (max-width: 768px) {
+  .flux-modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+    /* 键盘弹起时贴底卡片仍可见：靠卡片内部滚动，overlay 不锁死 */
+    padding-bottom: 0;
+  }
+
+  .flux-modal-card {
+    max-width: none;
+    width: 100%;
+    /* 只保留顶部圆角，形成底部抽屉观感 */
+    border-radius: 16px 16px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 1.5rem 1.25rem calc(1.5rem + var(--safe-area-bottom));
+    max-height: 88vh;
+    max-height: 88dvh;
+  }
+
+  /* 关闭按钮补足最小点击热区 */
+  .flux-modal-close {
+    width: var(--tap-target);
+    height: var(--tap-target);
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
 /* 全局模态图片预览（lightbox）层级参照：命令式创建，见 UploadImage.vue */
 

@@ -15,6 +15,9 @@
       <AppFooter />
     </div>
 
+    <!-- 移动端底部导航栏（≤768px 显示） -->
+    <AppMobileTabBar />
+
     <!-- Toast 通知容器 -->
     <ToastContainer />
   </div>
@@ -67,6 +70,11 @@ const { isFluxThemeRoute } = useFluxThemeRoute()
 @media (max-width: 768px) {
   :root {
     --container-padding: 1rem;
+  }
+
+  /* 为底部 Tab Bar 预留高度，避免页脚最后一屏内容被固定栏遮挡 */
+  .app-layout {
+    padding-bottom: calc(56px + var(--safe-area-bottom));
   }
 }
 </style>

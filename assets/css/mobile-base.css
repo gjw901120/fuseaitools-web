@@ -1,0 +1,99 @@
+/* ══════════════════════════════════════════════════════════════════
+   移动端全局响应式基础层（Phase 0 基建）
+   ----------------------------------------------------------------
+   职责：只放“与具体页面无关、全站长在手机上都要遵守”的地基规则——
+   触摸行为、点击热区、软键盘防遮挡、流体容器、降低动效。
+   单页面/单组件的布局适配不写在这里，避免全局层膨胀。
+   断点口径见 main.css :root 注释：sm≤640 / md≤768 / lg≤1024。
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 1) 触摸体验基线 */
+:root {
+  color-scheme: light;
+}
+
+html {
+  /* 禁用移动端横屏时字体自动放大，保证 clamp/rem 刻度稳定 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  /* 去掉 Android/iOS 点击时的灰色高亮块，交给组件自定义按压态 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 去除移动端 300ms 点击延迟，并禁用双击缩放对按钮的干扰 */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+label,
+summary {
+  touch-action: manipulation;
+}
+
+/* 2) 最小点击热区工具类：视觉尺寸小但需要好点的元素（图标按钮、关闭按钮）加此 class */
+.tap-target {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+}
+
+/* 3) 表单控件：移动端保持 ≥16px 字号，避免 iOS Safari 聚焦时自动放大页面 */
+@media (max-width: 1024px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* 4) 软键盘弹出防遮挡：
+   吸底的提交按钮容器预留安全区，键盘弹起时靠内容滚动露出，
+   而不是被键盘顶死在视口外。 */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    /* 聚焦时滚动到视口中部，避开键盘 */
+    scroll-margin-block: 120px;
+  }
+}
+
+/* 5) 流体容器：把固定的 4rem 大内边距在窄屏收敛为流体值，
+   container.css 里 .simply-container 用的是 !important 硬编码 padding，
+   这里用同样带 !important 的更晚声明覆盖，保持特异性竞争可控。 */
+@media (max-width: 1024px) {
+  .simply-container {
+    padding: 0 clamp(1rem, 4vw, 2rem) !important;
+  }
+}
+
+/* 6) 长内容横向滚动兜底：代码块 / 宽表格在手机上不撑破视口 */
+@media (max-width: 768px) {
+  pre,
+  table {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* 7) 视口高度：用 100dvh 兼容移动端动态地址栏，避免 100vh 底部被裁。
+   仅作用于全局外壳根容器，不影响工具组件内部布局。 */
+.app-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* 8) 尊重系统“降低动效”偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

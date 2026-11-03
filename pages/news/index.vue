@@ -624,6 +624,7 @@ watch(selectedCategory, () => {
   .filter-btn {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
+    min-height: var(--tap-target, 44px);
   }
 
   .pagination-buttons {
@@ -633,11 +634,12 @@ watch(selectedCategory, () => {
   .pagination-btn {
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
+    min-height: var(--tap-target, 44px);
   }
 
   .page-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     font-size: 0.875rem;
   }
 

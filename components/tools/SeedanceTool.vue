@@ -1591,8 +1591,6 @@ watch(mode, (m) => {
   text-decoration: underline;
 }
 
-@media (max-width: 1200px) {
-}
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; }
   .config-panel, .result-panel { width: 100%; }

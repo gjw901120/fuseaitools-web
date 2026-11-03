@@ -2,13 +2,14 @@
  * 部署前冒烟测试（prebuild 闸门）
  * 用法：node scripts/smoke-test.mjs
  *
- * 覆盖六类「上线即坏」的常见问题：
+ * 覆盖七类「上线即坏」的常见问题：
  *   1. 路由登记不全：新增工具页没同步 sitemap / prerender / 面包屑，或首页画廊漏加入口卡片
  *   2. API 白名单漏登记：前端调用了未放行的后端路径 → 线上 404
  *   3. 白名单格式错误：METHOD /path 写错导致永远匹配不上
  *   4. SEO 数据化完整性：数据文件缺字段、薄壳组件找不到数据源
  *   5. SEO 文案一致性：数据化迁移过程中丢字
  *   6. 前后端契约：白名单路由、请求体字段、枚举传值与隔壁 Java 服务源码对齐（后端不存在时跳过）
+ *   7. 移动端静态检查：死媒体查询块、非标准断点、固有宽度溢出、mouse 专属事件、viewport/样式顺序回归
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -48,7 +49,7 @@ function collectNitroApiRoutes() {
 }
 
 // —— 1. 路由登记表（sitemap / prerender / 面包屑）+ 首页画廊入口 ——
-console.log('\n[1/6] 路由登记表与首页入口')
+console.log('\n[1/7] 路由登记表与首页入口')
 try {
   execFileSync(process.execPath, ['scripts/check-route-registry.mjs'], { stdio: 'pipe' })
   ok('sitemap / prerender / 面包屑 三张登记表完整，首页画廊入口无缺失/悬空')
@@ -59,14 +60,14 @@ try {
 }
 
 // —— 2. 白名单格式 ——
-console.log('\n[2/6] API 白名单格式')
+console.log('\n[2/7] API 白名单格式')
 const routes = [...API_PROXY_ROUTES]
 const badFormat = routes.filter((r) => !/^(GET|POST|PUT|DELETE|PATCH) \/\S*[^/\s]$/.test(r))
 if (badFormat.length) badFormat.forEach((r) => fail(`格式异常（应为 "POST /path"）: ${r}`))
 else ok(`${routes.length} 条白名单格式正确`)
 
 // —— 3. 前端调用路径是否都在白名单内 ——
-console.log('\n[3/6] 前端调用 vs 白名单')
+console.log('\n[3/7] 前端调用 vs 白名单')
 const allowed = new Set([
   ...routes.map((r) => r.split(' ')[1]),
   ...collectNitroApiRoutes() // 独立代理文件（records/chat/news/refund/stripe...）
@@ -111,7 +112,7 @@ const unused = [...allowed].filter(
 if (unused.length) console.log(`  ! ${unused.length} 条白名单暂无静态调用（可能由动态路径拼接使用）：\n    ${unused.join('\n    ')}`)
 
 // —— 4. SEO 数据化完整性 ——
-console.log('\n[4/6] SEO 内容数据')
+console.log('\n[4/7] SEO 内容数据')
 const SEO_DATA_DIR = path.join(ROOT, 'data', 'seo')
 const REQUIRED_FIELDS = ['rootId', 'meta', 'badge', 'sections']
 if (!fs.existsSync(SEO_DATA_DIR)) {
@@ -143,7 +144,7 @@ if (!fs.existsSync(SEO_DATA_DIR)) {
 }
 
 // —— 5. 已迁移组件的文案一致性（防止数据化过程中丢字） ——
-console.log('\n[5/6] SEO 文案一致性')
+console.log('\n[5/7] SEO 文案一致性')
 if (!fs.existsSync(SEO_DATA_DIR)) {
   console.log('  · data/seo 尚未启用，跳过')
 } else {
@@ -158,7 +159,7 @@ if (!fs.existsSync(SEO_DATA_DIR)) {
 }
 
 // —— 6. 前后端契约（读取隔壁 Java 服务源码，目录不存在时自动跳过） ——
-console.log('\n[6/6] 前后端契约')
+console.log('\n[6/7] 前后端契约')
 try {
   const out = execFileSync(process.execPath, ['scripts/check-backend-contract.mjs'], { stdio: 'pipe' }).toString()
   if (out.includes('跳过契约校验')) console.log('  · 未找到后端源码，跳过契约校验')
@@ -171,6 +172,17 @@ try {
   const detail = (e.stdout?.toString() || '') + (e.stderr?.toString() || '')
   fail('前后端契约不一致')
   console.error(detail.trim().split('\n').slice(-30).map((l) => `    ${l}`).join('\n'))
+}
+
+// —— 7. 移动端静态检查（死媒体查询块 / 断点口径 / 固有宽度 / mouse 事件 / 全局配置） ——
+console.log('\n[7/7] 移动端静态检查')
+try {
+  execFileSync(process.execPath, ['scripts/check-mobile.mjs'], { stdio: 'pipe' })
+  ok('无死媒体查询块、断点口径统一、无未豁免固有宽度、无 mouse 专属事件、viewport/样式顺序完整')
+} catch (e) {
+  const detail = (e.stdout?.toString() || '') + (e.stderr?.toString() || '')
+  fail('移动端静态检查未通过')
+  console.error(detail.trim().split('\n').slice(-40).map((l) => `    ${l}`).join('\n'))
 }
 
 console.log('')

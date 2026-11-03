@@ -1,0 +1,223 @@
+/* ══════════════════════════════════════════════════════════════════
+   工具工作台响应式共享层（Phase 2）
+   ----------------------------------------------------------------
+   由 plugins/flux-tool-responsive-styles.client.ts 注入到 head 末尾，
+   作用域统一挂在 .home-layout--flux（HomeLayout 根节点恒定携带该类），
+   只针对 21 个 *Tool.vue 的同构类名收口移动端布局，不改任何组件 JS 逻辑。
+   断点口径见 main.css：lg≤1024 折叠为单列，md≤768 手机端交互精修。
+   与已有 main.css 的 .tool-interface .main-content 左右分栏比例规则互补：
+   那里负责 ≤1024 堆叠，这里负责外壳自然滚动 + 控件触摸化。
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ────────────────────────────────────────────────
+   lg ≤1024px：工作台外壳从“固定视口高度 + 嵌套滚动容器”
+   改为自然文档流单列，交给浏览器整页滚动（移动端标准手势）。
+   组件 scoped 的 @media(max-width:1024px) 只做了粗暴堆叠，未解决
+   .home-page{height:100vh;overflow:hidden} 造成的“滚动锁死”，这里统一纠偏。
+   ──────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .home-layout--flux.home-page {
+    height: auto !important;
+    min-height: 100vh;
+    overflow: visible !important;
+  }
+
+  .home-layout--flux .main-layout {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* 左侧 History：由固定 300px 视口块改为自然高度的可折叠条 */
+  .home-layout--flux .left-sidebar {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--flux-border-subtle);
+  }
+
+  /* 历史列表用一个有上限的内部滚动条承载，避免 1280px 固定高撑爆页面 */
+  .home-layout--flux .timeline-container {
+    height: auto !important;
+    max-height: 300px;
+  }
+
+  .home-layout--flux .right-main {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .home-layout--flux .tools-navigation {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .home-layout--flux .tool-interface {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .home-layout--flux .tool-interface-slot {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* 顶层分类 Tab：换行铺满改为横向滚动 chip 行，窄屏不塌成一坨 */
+  .home-layout--flux .nav-tabs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 12px;
+  }
+
+  .home-layout--flux .nav-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-layout--flux .nav-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* 二级工具 grid：桌面是 repeat(6,1fr) 网格，手机改为横向滚动 chip */
+  .home-layout--flux .sub-nav {
+    display: flex !important;
+    flex-wrap: nowrap;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .home-layout--flux .sub-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-layout--flux .sub-nav-item {
+    flex: 0 0 auto;
+    width: auto !important;
+  }
+}
+
+/* ────────────────────────────────────────────────
+   md ≤768px：手机端控件触摸化 + 布局精修
+   ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* 外边距收窄，把横向空间尽量让给内容 */
+  .home-layout--flux .right-main {
+    padding: 12px 10px !important;
+  }
+
+  .home-layout--flux .nav-tabs {
+    padding: 12px 12px 0;
+  }
+
+  .home-layout--flux .sub-nav {
+    padding: 12px;
+  }
+
+  /* 模式切换（Sora 等用 grid repeat(N)）统一改为横向滚动 chip，避免换行堆高 */
+  .home-layout--flux .mode-tabs {
+    display: flex !important;
+    grid-template-columns: none !important;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+  }
+
+  .home-layout--flux .mode-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-layout--flux .mode-tabs > .mode-tab,
+  .home-layout--flux .model-modes-grid > .mode-btn,
+  .home-layout--flux .mode-switch > .mode-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* 选项网格（宽高比 / 时长 / 风格等，如 Veo3 .option-tabs.two/three-columns、
+     Midjourney .task-options）在手机上统一降为双列，chip 文本仍可读又省纵向空间 */
+  .home-layout--flux .option-tabs.two-columns,
+  .home-layout--flux .option-tabs.three-columns,
+  .home-layout--flux .task-options {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* 选项 chip 组（宽高比/时长等 tab-group）保持可换行但字号收一档 */
+  .home-layout--flux .tab-group,
+  .home-layout--flux .tab-options {
+    gap: 6px;
+  }
+
+  /* 主操作按钮整行铺满 + 达最小点击热区，单手可点 */
+  .home-layout--flux .form-actions,
+  .home-layout--flux .video-actions,
+  .home-layout--flux .image-actions,
+  .home-layout--flux .media-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .home-layout--flux .generate-btn,
+  .home-layout--flux .form-actions .action-btn,
+  .home-layout--flux .video-actions .action-btn,
+  .home-layout--flux .image-actions .action-btn {
+    width: 100%;
+    min-height: var(--tap-target);
+  }
+
+  /* 面板之间留白收紧，减少纵向占用 */
+  .home-layout--flux .config-panel,
+  .home-layout--flux .result-panel,
+  .home-layout--flux .results-display-panel,
+  .home-layout--flux .image-display-panel {
+    border-radius: 10px;
+  }
+
+  /* 工具信息头：头像 + 长描述的横排在小屏挤成窄条，改为上下堆叠 */
+  .home-layout--flux .tool-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+
+  .home-layout--flux .tool-details p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
+
+/* ────────────────────────────────────────────────
+   结果图点击放大的视觉可供性（与 plugins/media-lightbox.client.js 委托规则一致，
+   不限视口宽度：桌面悬停同样提示可双击/点击 inspect）
+   ──────────────────────────────────────────────── */
+.home-layout--flux .result-panel img,
+.home-layout--flux .results-display-panel img,
+.home-layout--flux .image-display-panel img,
+.home-layout--flux .result-display img {
+  cursor: zoom-in;
+}
+
+/* 链接/按钮内的结果图保留原交互语义（如 Midjourney 变体选择 tile） */
+.home-layout--flux .result-panel a img,
+.home-layout--flux .result-panel button img,
+.home-layout--flux .results-display-panel a img,
+.home-layout--flux .results-display-panel button img {
+  cursor: pointer;
+}

@@ -256,6 +256,8 @@ export default defineNuxtConfig({
   css: [
     '@/assets/css/container.css',
     '@/assets/css/main.css',
+    // 移动端全局基础层：必须晚于 container.css，以便用 !important 覆盖 .simply-container 的硬编码内边距
+    '@/assets/css/mobile-base.css',
     '@/assets/css/flux-theme.css',
     '@/assets/css/flux-content-pages.css'
   ],
@@ -270,9 +272,14 @@ export default defineNuxtConfig({
       },
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { hid: 'description', name: 'description', content: 'all-in-one platform integrating top AI models like ChatGPT, Claude, Veo3, Elevenlabs, and Suno. Use visual workflows and one account to save costs and boost efficiency in creation, coding, and data analysis.' },
-        { name: 'keywords', content: 'all-in-one platform, chat models, video models, image models, radio models, simply ai tools' }
+        { name: 'keywords', content: 'all-in-one platform, chat models, video models, image models, radio models, simply ai tools' },
+        { name: 'theme-color', content: '#667eea' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+        { name: 'apple-mobile-web-app-title', content: 'FuseAI Tools' }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
@@ -281,6 +288,7 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
         { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon.png' },
+        { rel: 'manifest', href: '/manifest.webmanifest' },
         {
           rel: 'stylesheet',
           href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'

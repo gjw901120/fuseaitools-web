@@ -78,6 +78,8 @@ declare global {
   const onServerPrefetch: typeof import('../../node_modules/vue')['onServerPrefetch']
   const onUnmounted: typeof import('../../node_modules/vue')['onUnmounted']
   const onUpdated: typeof import('../../node_modules/vue')['onUpdated']
+  const openImageLightbox: typeof import('../../composables/useMediaLightbox')['openImageLightbox']
+  const openVideoLightbox: typeof import('../../composables/useMediaLightbox')['openVideoLightbox']
   const parseBatchUploadFetchResponse: typeof import('../../composables/useBatchUploadUrl')['parseBatchUploadFetchResponse']
   const parseStandardApiJson: typeof import('../../utils/parseStandardApiResponse')['parseStandardApiJson']
   const prefetchComponents: typeof import('../../node_modules/nuxt/dist/app/composables/preload')['prefetchComponents']
@@ -136,11 +138,14 @@ declare global {
   const useLazyFetch: typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useLazyFetch']
   const useLink: typeof import('../../node_modules/vue-router')['useLink']
   const useLoadingIndicator: typeof import('../../node_modules/nuxt/dist/app/composables/loading-indicator')['useLoadingIndicator']
+  const useMediaLightbox: typeof import('../../composables/useMediaLightbox')['useMediaLightbox']
   const useMjApi: typeof import('../../composables/useMjApi')['useMjApi']
+  const useMobileNav: typeof import('../../composables/useMobileNav')['useMobileNav']
   const useModel: typeof import('../../node_modules/vue')['useModel']
   const useModelPrice: typeof import('../../composables/useModelPrice')['useModelPrice']
   const useNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']
   const useNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']
+  const useNuxtDevTools: typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']
   const usePreviewMode: typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']
   const useRecordPolling: typeof import('../../composables/useRecordPolling')['useRecordPolling']
   const useRequestEvent: typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']
@@ -296,6 +301,8 @@ declare module 'vue' {
     readonly onServerPrefetch: UnwrapRef<typeof import('../../node_modules/vue')['onServerPrefetch']>
     readonly onUnmounted: UnwrapRef<typeof import('../../node_modules/vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('../../node_modules/vue')['onUpdated']>
+    readonly openImageLightbox: UnwrapRef<typeof import('../../composables/useMediaLightbox')['openImageLightbox']>
+    readonly openVideoLightbox: UnwrapRef<typeof import('../../composables/useMediaLightbox')['openVideoLightbox']>
     readonly parseBatchUploadFetchResponse: UnwrapRef<typeof import('../../composables/useBatchUploadUrl')['parseBatchUploadFetchResponse']>
     readonly parseStandardApiJson: UnwrapRef<typeof import('../../utils/parseStandardApiResponse')['parseStandardApiJson']>
     readonly prefetchComponents: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preload')['prefetchComponents']>
@@ -354,11 +361,14 @@ declare module 'vue' {
     readonly useLazyFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useLazyFetch']>
     readonly useLink: UnwrapRef<typeof import('../../node_modules/vue-router')['useLink']>
     readonly useLoadingIndicator: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/loading-indicator')['useLoadingIndicator']>
+    readonly useMediaLightbox: UnwrapRef<typeof import('../../composables/useMediaLightbox')['useMediaLightbox']>
     readonly useMjApi: UnwrapRef<typeof import('../../composables/useMjApi')['useMjApi']>
+    readonly useMobileNav: UnwrapRef<typeof import('../../composables/useMobileNav')['useMobileNav']>
     readonly useModel: UnwrapRef<typeof import('../../node_modules/vue')['useModel']>
     readonly useModelPrice: UnwrapRef<typeof import('../../composables/useModelPrice')['useModelPrice']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
+    readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>
     readonly usePreviewMode: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']>
     readonly useRecordPolling: UnwrapRef<typeof import('../../composables/useRecordPolling')['useRecordPolling']>
     readonly useRequestEvent: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']>

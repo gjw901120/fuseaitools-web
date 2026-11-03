@@ -740,9 +740,6 @@ const { formatDate } = useDateFormat()
 
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-}
-
 @media (max-width: 768px) {
   .article-title {
     font-size: 2rem;
@@ -751,6 +748,35 @@ const { formatDate } = useDateFormat()
   .article-meta {
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .article-content-section {
+    padding: 40px 0;
+  }
+
+  /* 正文标题手机端降一档，避免 2rem/1.75rem/1.5rem 在窄屏头部过重 */
+  .article-body.html-content :deep(h1) {
+    font-size: 1.5rem;
+  }
+
+  .article-body.html-content :deep(h2) {
+    font-size: 1.3rem;
+  }
+
+  .article-body.html-content :deep(h3) {
+    font-size: 1.15rem;
+  }
+
+  .article-body.html-content :deep(blockquote),
+  .article-body.html-content :deep(.recommendation),
+  .article-body.html-content :deep(.key-takeaways) {
+    padding: 0.9rem 1rem;
+  }
+
+  .article-body.html-content :deep(th),
+  .article-body.html-content :deep(td) {
+    padding: 8px 10px;
+    font-size: 0.875rem;
   }
 }
 </style>

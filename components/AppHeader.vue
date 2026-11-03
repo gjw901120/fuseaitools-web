@@ -60,38 +60,67 @@
           </ClientOnly>
         </div>
 
-        <button class="mobile-menu-btn" @click="toggleMobileMenu">
-          <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn tap-target" type="button" aria-label="Open menu" :aria-expanded="drawerOpen" @click="toggleDrawer">
+          <i :class="drawerOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
         </button>
       </div>
-
-      <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="mobile-menu">
-        <NuxtLink to="/home" class="mobile-nav-link" @click="closeMobileMenu">Home</NuxtLink>
-        <NuxtLink to="/features" class="mobile-nav-link" @click="closeMobileMenu">Features</NuxtLink>
-        <NuxtLink to="/pricing" class="mobile-nav-link" @click="closeMobileMenu">Pricing</NuxtLink>
-        <NuxtLink to="/news" class="mobile-nav-link" @click="closeMobileMenu">News</NuxtLink>
-        <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">About</NuxtLink>
-        <div class="mobile-actions">
-          <!-- 登录/用户信息 (ClientOnly to prevent hydration mismatch) -->
-          <ClientOnly>
-            <!-- 未登录状态 -->
-            <button v-if="!isAuthenticated" class="btn-signup" @click="openLoginModal">Log in</button>
-            
-            <!-- 已登录状态 -->
-            <div v-else class="mobile-user-info">
-              <img :src="userAvatar" :alt="userName || 'User'" class="mobile-user-avatar" />
-              <span v-if="userName" class="mobile-user-name">{{ userName }}</span>
-              <NuxtLink to="/credits" class="mobile-nav-link" @click="closeMobileMenu" style="margin-right: 12px;">Credits</NuxtLink>
-              <button class="mobile-logout-btn" @click="handleLogout">Log out</button>
-            </div>
-            <template #fallback>
-              <button class="btn-signup" disabled>Loading...</button>
-            </template>
-          </ClientOnly>
-        </div>
-      </div>
     </div>
+
+    <!-- 移动端导航抽屉（≤1024px 显示）：Teleport 到 body，避免受 header sticky 的层叠上下文限制 -->
+    <Teleport to="body">
+      <div v-if="drawerOpen" class="mobile-drawer" :class="{ 'mobile-drawer--flux': isFluxThemeRoute }">
+        <div class="mobile-drawer-backdrop" @click="closeDrawer"></div>
+        <aside class="mobile-drawer-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+          <div class="mobile-drawer-head">
+            <img src="/logo-wide.png" alt="FuseAI" class="mobile-drawer-logo" />
+            <button type="button" class="mobile-drawer-close tap-target" aria-label="Close menu" @click="closeDrawer">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <nav class="mobile-drawer-nav">
+            <NuxtLink to="/home" class="mobile-drawer-link" @click="closeDrawer">Home</NuxtLink>
+            <NuxtLink to="/pricing" class="mobile-drawer-link" @click="closeDrawer">Pricing</NuxtLink>
+            <NuxtLink to="/news" class="mobile-drawer-link" @click="closeDrawer">News</NuxtLink>
+            <NuxtLink to="/about" class="mobile-drawer-link" @click="closeDrawer">About</NuxtLink>
+          </nav>
+
+          <!-- 工具分区快捷入口：数据源与 Footer 一致（footerNavColumns） -->
+          <div class="mobile-drawer-groups">
+            <div v-for="col in footerNavColumns" :key="col.title" class="mobile-drawer-group">
+              <p class="mobile-drawer-group-title">{{ col.title }}</p>
+              <div class="mobile-drawer-group-links">
+                <NuxtLink
+                  v-for="link in col.links"
+                  :key="link.to"
+                  :to="link.to"
+                  class="mobile-drawer-tool-link"
+                  @click="closeDrawer"
+                >
+                  <span>{{ link.label }}</span>
+                  <span v-if="link.badge" class="mobile-drawer-badge">{{ link.badge }}</span>
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+
+          <div class="mobile-drawer-foot">
+            <ClientOnly>
+              <button v-if="!isAuthenticated" class="btn-signup mobile-drawer-login" @click="openLoginModal">Log in</button>
+              <div v-else class="mobile-drawer-user">
+                <img :src="userAvatar" :alt="userName || 'User'" class="mobile-drawer-avatar" />
+                <span v-if="userName" class="mobile-drawer-username">{{ userName }}</span>
+                <NuxtLink to="/credits" class="mobile-drawer-link" @click="closeDrawer">Credits</NuxtLink>
+                <button type="button" class="mobile-logout-btn" @click="handleLogout">Log out</button>
+              </div>
+              <template #fallback>
+                <button class="btn-signup mobile-drawer-login" disabled>Loading...</button>
+              </template>
+            </ClientOnly>
+          </div>
+        </aside>
+      </div>
+    </Teleport>
 
     <!-- 登录模态框 -->
     <LoginModal 
@@ -114,8 +143,11 @@
 
 <script setup>
 // Header component with login button
+import { footerNavColumns } from '~/constants/footerNav'
+
 const { isFluxThemeRoute } = useFluxThemeRoute()
 const { user, isAuthenticated, logout } = useAuth()
+const { drawerOpen, closeDrawer, toggleDrawer } = useMobileNav()
 
 // 计算用户头像和用户名
 const userAvatar = computed(() => {
@@ -130,23 +162,14 @@ const userName = computed(() => {
     : ''
 })
 
-const mobileMenuOpen = ref(false)
 const loginModalOpen = ref(false)
 const verifyCodeModalOpen = ref(false)
 const verifyEmail = ref('')
 const userMenuOpen = ref(false)
 
-const toggleMobileMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value
-}
-
-const closeMobileMenu = () => {
-  mobileMenuOpen.value = false
-}
-
 const openLoginModal = () => {
   loginModalOpen.value = true
-  closeMobileMenu() // 如果移动菜单打开，关闭它
+  closeDrawer() // 抽屉打开时一并收起
 }
 
 const closeLoginModal = () => {
@@ -177,7 +200,7 @@ const toggleUserMenu = () => {
 const handleLogout = () => {
   logout()
   userMenuOpen.value = false
-  closeMobileMenu()
+  closeDrawer()
 }
 
 const handleGoogleLogin = () => {
@@ -192,7 +215,8 @@ const handleEmailLogin = (email) => {
   // 可以在这里添加实际的登录API调用
 }
 
-// 点击外部关闭用户菜单
+// 点击外部关闭用户菜单 + 路由切换 / ESC 关闭抽屉
+const route = useRoute()
 onMounted(() => {
   const handleClickOutside = (e) => {
     if (userMenuOpen.value && !e.target.closest('.user-info') && !e.target.closest('.user-menu')) {
@@ -200,11 +224,20 @@ onMounted(() => {
     }
   }
   document.addEventListener('click', handleClickOutside)
-  
+
+  const handleEscape = (e) => {
+    if (e.key === 'Escape' && drawerOpen.value) closeDrawer()
+  }
+  document.addEventListener('keydown', handleEscape)
+
   onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside)
+    document.removeEventListener('keydown', handleEscape)
   })
 })
+
+// 跨页面跳转后确保抽屉关闭（例如从抽屉点了非当前监听项的链接）
+watch(() => route.fullPath, () => closeDrawer())
 </script>
 
 <style scoped>
@@ -374,6 +407,8 @@ onMounted(() => {
 
 .mobile-menu-btn {
   display: none;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -381,30 +416,176 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.mobile-menu {
-  display: none;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-top: 1px solid #e5e7eb;
+/* ── 移动端导航抽屉 ── */
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
 }
 
-.mobile-nav-link {
-  color: #4b5563;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 0;
-  transition: color 0.3s ease;
+.mobile-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(2px);
+  animation: mobileDrawerFade 0.2s ease;
 }
 
-.mobile-nav-link:hover {
-  color: #667eea;
-}
-
-.mobile-actions {
+.mobile-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  flex-direction: column;
+  width: min(88vw, 360px);
+  height: 100%;
+  padding: 1rem 1.25rem calc(1rem + var(--safe-area-bottom));
+  background: #fff;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.18);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: mobileDrawerSlide 0.26s ease;
+}
+
+@keyframes mobileDrawerFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mobileDrawerSlide {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--safe-area-top);
+  margin-bottom: 0.5rem;
+}
+
+.mobile-drawer-logo {
+  height: 36px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+}
+
+.mobile-drawer-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.mobile-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-drawer-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  color: #1f2937;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.mobile-drawer-groups {
+  flex: 1;
+}
+
+.mobile-drawer-group {
+  margin-bottom: 1rem;
+}
+
+.mobile-drawer-group-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin: 0 0 0.4rem;
+}
+
+.mobile-drawer-group-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.mobile-drawer-tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.7rem;
+  min-height: 36px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #374151;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.mobile-drawer-tool-link:active {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.mobile-drawer-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #fff;
+  background: #667eea;
+  border-radius: 999px;
+  padding: 1px 6px;
+  line-height: 1.4;
+}
+
+.mobile-drawer-foot {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.mobile-drawer-login {
+  width: 100%;
+  min-height: var(--tap-target);
+}
+
+.mobile-drawer-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.mobile-drawer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mobile-drawer-username {
+  flex: 1;
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1f2937;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 用户信息样式 */
@@ -472,31 +653,7 @@ onMounted(() => {
   width: 16px;
 }
 
-/* 移动端用户信息 */
-.mobile-user-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  width: 100%;
-  transform: scale(1.3);
-  transform-origin: left center;
-}
-
-.mobile-user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.mobile-user-name {
-  flex: 1;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #1f2937;
-}
-
+/* 移动端登出按钮（抽屉底部复用） */
 .mobile-logout-btn {
   padding: 0.5rem 1rem;
   background: #ef4444;
@@ -538,7 +695,7 @@ onMounted(() => {
 }
 
 .app-header--flux .user-name,
-.app-header--flux .mobile-user-name {
+.app-header--flux .mobile-drawer-username {
   color: var(--flux-foreground) !important;
 }
 
@@ -559,19 +716,33 @@ onMounted(() => {
   color: var(--flux-muted) !important;
 }
 
-.app-header--flux .mobile-menu {
-  border-top-color: var(--flux-border) !important;
+/* 抽屉 Teleport 到 body，不再是 .app-header 的子节点，
+   故深色主题通过自身的 .mobile-drawer--flux 修饰类驱动 */
+.mobile-drawer--flux .mobile-drawer-panel {
+  background: var(--flux-bg) !important;
 }
 
-.app-header--flux .mobile-nav-link {
+.mobile-drawer--flux .mobile-drawer-close,
+.mobile-drawer--flux .mobile-drawer-link {
+  color: var(--flux-foreground) !important;
+}
+
+.mobile-drawer--flux .mobile-drawer-nav,
+.mobile-drawer--flux .mobile-drawer-foot {
+  border-color: var(--flux-border) !important;
+}
+
+.mobile-drawer--flux .mobile-drawer-group-title {
   color: var(--flux-muted) !important;
 }
 
-.app-header--flux .mobile-nav-link:hover {
-  color: var(--flux-primary) !important;
+.mobile-drawer--flux .mobile-drawer-tool-link {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .top-banner-content {
     font-size: 0.875rem;
     padding: 1.0125rem 0; /* 再 +50% */
@@ -582,10 +753,6 @@ onMounted(() => {
   }
 
   .mobile-menu-btn {
-    display: block;
-  }
-
-  .mobile-menu {
     display: flex;
   }
 }

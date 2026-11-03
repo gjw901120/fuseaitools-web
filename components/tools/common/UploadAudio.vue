@@ -56,7 +56,13 @@
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
         </button>
         
-        <div class="progress-container" @click="handleProgressClick">
+        <div
+          class="progress-container"
+          @pointerdown="onScrubStart"
+          @pointermove="onScrubMove"
+          @pointerup="onScrubEnd"
+          @pointercancel="onScrubEnd"
+        >
           <div class="progress-bar" :style="{ width: progress + '%' }"></div>
         </div>
         
@@ -240,17 +246,39 @@ const handleEnded = () => {
   }
 }
 
-const handleProgressClick = (event) => {
+// 进度条拖拽 seek：Pointer Events 统一鼠标 / 触摸 / 手写笔，配合 touch-action:none 防止拖动时页面滚动
+let scrubbing = false
+
+const seekFromPointer = (event) => {
   if (!audioPlayer.value || duration.value === 0) return
-  
-  const progressBar = event.currentTarget
-  const clickX = event.clientX - progressBar.getBoundingClientRect().left
-  const newTime = (clickX / progressBar.offsetWidth) * duration.value
-  
+  const bar = event.currentTarget
+  const rect = bar.getBoundingClientRect()
+  if (rect.width === 0) return
+  const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width))
+  const newTime = ratio * duration.value
   audioPlayer.value.currentTime = newTime
   currentTime.value = newTime
 }
 
+const onScrubStart = (event) => {
+  if (!audioPlayer.value || duration.value === 0) return
+  scrubbing = true
+  event.currentTarget.setPointerCapture?.(event.pointerId)
+  seekFromPointer(event)
+}
+
+const onScrubMove = (event) => {
+  if (!scrubbing) return
+  seekFromPointer(event)
+}
+
+const onScrubEnd = (event) => {
+  if (!scrubbing) return
+  scrubbing = false
+  try {
+    event.currentTarget.releasePointerCapture?.(event.pointerId)
+  } catch (_) { /* pointer 已释放，忽略 */ }
+}
 const clearFile = () => {
   // 停止播放
   if (audioPlayer.value) {
@@ -474,6 +502,18 @@ onUnmounted(() => {
   border-radius: 2px;
   cursor: pointer;
   position: relative;
+  /* 拖拽 seek 时不让浏览器把横向手势当作页面滚动 */
+  touch-action: none;
+}
+
+/* 视觉高度保持 4px，但用透明伪元素把可点/可拖区域向上下各扩 ~11px，满足移动端触控热区 */
+.progress-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -11px;
+  bottom: -11px;
 }
 
 .progress-bar {

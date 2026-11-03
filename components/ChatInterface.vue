@@ -526,7 +526,7 @@ const formatMessageText = (text) => {
       
       // 处理表格
       if (tableRows.length > 0) {
-        let tableHtml = '<table class="message-table">'
+        let tableHtml = '<div class="message-table-wrap"><table class="message-table">'
         let isFirstRow = true
         
         tableRows.forEach((row, idx) => {
@@ -552,7 +552,7 @@ const formatMessageText = (text) => {
           isFirstRow = false
         })
         
-        tableHtml += '</table>'
+        tableHtml += '</table></div>'
         processedLines.push(tableHtml)
         i = j
         continue
@@ -1464,10 +1464,17 @@ const generateAIResponse = (userInput) => {
   font-size: 1.1em;
 }
 
+/* Markdown 表格滚动外壳：列数多的表格无包裹时会被 .chat-messages 的 overflow-x:hidden 直接裁切 */
+.message-text :deep(.message-table-wrap) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1em 0;
+}
+
 .message-text :deep(.message-table) {
   width: 100%;
   border-collapse: collapse;
-  margin: 1em 0;
+  margin: 0;
   font-size: 0.9em;
 }
 
@@ -1865,6 +1872,72 @@ const generateAIResponse = (userInput) => {
   background: #cbd5e1;
   cursor: not-allowed;
   transform: none;
+}
+
+/* ── 手机端精修（Phase 3：ChatInterface 原先无任何 @media）──
+   聊天页在 /home/{gemini,gpt,claude,deepseek,kimi,grok-chat}/generate，
+   工作台外壳已由 flux-tool-responsive.css 改为自然文档流；
+   这里把固定 1330px 魔术高度的消息区改为视口自适应，并补齐输入区触控热区。 */
+@media (max-width: 768px) {
+  .chat-header {
+    padding: 12px 14px;
+  }
+
+  .chat-messages {
+    /* 覆盖桌面 calc(1330px - 200px - 70px - 140px) 固定视口魔术数字 */
+    min-height: 320px;
+    max-height: calc(100dvh - 240px);
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  /* 窄屏下 70% 气泡过窄，放宽到 85%；头像缩一档留更多文本空间 */
+  .message-content {
+    max-width: 85%;
+    padding: 10px 12px;
+  }
+
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+  }
+
+  .chat-input {
+    padding: 12px 14px;
+  }
+
+  /* 操作按钮行（附件/模型选择等）超宽时横向滚动，不挤压输入区 */
+  .input-actions {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .input-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .input-actions > * {
+    flex: 0 0 auto;
+  }
+
+  /* 触控热区补到 44px */
+  .action-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .send-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .model-select-wrapper.select-with-arrow .model-select {
+    height: 44px;
+  }
 }
 </style>
 
