@@ -60,7 +60,7 @@
       </div>
     </section>
 
-    <!-- Related articles：详情接口没有 relatedList，改用同分类列表接口取前 3 条（含内链，利于 SEO） -->
+    <!-- Related articles：详情接口没有 relatedList，改用同分类列表接口取前 6 条（含内链，利于收录） -->
     <section v-if="relatedArticles.length" class="related-section">
       <div class="simply-container">
         <h2 class="related-title">Related articles</h2>
@@ -137,11 +137,15 @@ watch(() => route.fullPath, async (newPath, oldPath) => {
 }, { immediate: false })
 
 // 接口失败或无数据
+// 已删除/不存在的文章后端可能返回 errorCode '00000' + data: {}，空壳 data 必须同样视为未找到，
+// 否则会渲染 200 空页并把 canonical 拼成 /news/，被 Google 归为「备用网页（有适当的规范标记）」
 const apiFailed = computed(() => {
   const d = detailData.value
   if (!d) return true
   if (d.errorCode && d.errorCode !== '00000') return true
   if (!d.data || d.data.isDel === 1) return true
+  // 详情接口不返回 id，只能用 path + title 判定空壳数据
+  if (!d.data.path || !(d.data.title || '').trim()) return true
   return false
 })
 
@@ -186,13 +190,14 @@ const articleBodyHtml = computed(() => {
 const prevSlug = computed(() => article.value?.prevPath || '')
 const nextSlug = computed(() => article.value?.nextPath || '')
 
-// 相关文章：详情接口没有 relatedList/relatedArticles 字段，改用同分类列表接口，排除当前文章取前 3 条。
+// 相关文章：详情接口没有 relatedList/relatedArticles 字段，改用同分类列表接口，排除当前文章取前 6 条。
+// 目的是给存量文章加密内链网（旧版仅 3 条，文章只能靠 sitemap 发现，是「已抓取-未收录」的成因之一）。
 // 接口失败时返回空数组，区块不渲染，不影响正文与预渲染。
 const { data: relatedData } = await useFetch('/api/news/list', {
   key: `related-${route.params.slug}`,
   query: computed(() => ({
     category: article.value?.categoryValue ?? undefined,
-    size: 6
+    size: 10
   })),
   server: true,
   default: () => ({ data: null })
@@ -204,7 +209,7 @@ const relatedArticles = computed(() => {
   const currentSlug = article.value?.slug
   return records
     .filter((r) => r && r.path && r.path !== currentSlug)
-    .slice(0, 3)
+    .slice(0, 6)
     .map((r) => ({
       slug: r.path,
       title: (r.title || '').trim(),
@@ -213,8 +218,14 @@ const relatedArticles = computed(() => {
     }))
 })
 
-const showNotFound = computed(() => !pending && (!!error || apiFailed.value))
+// 注意：pending/error 是 Ref，脚本内必须取 .value，否则 !pending 恒为 false、Not Found 分支永不渲染
+const showNotFound = computed(() => !pending.value && (!!error.value || apiFailed.value))
 const notFoundMessage = computed(() => error.value?.message || detailData.value?.errorMessage || 'The article doesn\'t exist or has been removed.')
+
+// 未找到时输出真实 404 状态码（SSR），避免软 404 空壳页被搜索引擎收录并错挂 canonical
+if (showNotFound.value) {
+  setResponseStatus(404)
+}
 
 // SEO配置 - 使用watch来动态更新
 watch(article, (newArticle) => {

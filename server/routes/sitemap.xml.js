@@ -97,7 +97,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/gpt-image/v2-5-flare-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/gpt-image/v2-5-sunburst-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/gpt-image/v2-5-sunburst-image-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
-    { loc: '/home/gpt-image/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    // /home/gpt-image/generate 是 301 别名页（→ text-to-image），故意不进 sitemap，见 docs/NEW_MODEL_CHECKLIST.md「孤儿旧别名页」
     { loc: '/home/ideogram/v3-text-to-image', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/v3-remix', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
@@ -105,7 +105,7 @@ export default defineEventHandler(async (event) => {
     { loc: '/home/ideogram/character', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/character-edit', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/ideogram/character-remix', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
-    { loc: '/home/ideogram/generate', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
+    // /home/ideogram/generate 是 301 别名页（→ v3-text-to-image），同上不进 sitemap
     { loc: '/home/midjourney/imagine', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/midjourney/upscale', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { loc: '/home/midjourney/vary', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },

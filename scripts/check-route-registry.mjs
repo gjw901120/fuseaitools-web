@@ -39,6 +39,17 @@ const REGISTERS = [
   { key: 'breadcrumb', file: 'utils/toolBreadcrumbs.js', minSegments: 3 }
 ]
 
+/**
+ * 重定向别名页豁免（仅 sitemap）：页面文件是 navigateTo(..., redirectCode: 301) 占位页，
+ * 只服务旧链接与站内存量引用。重定向 URL 写进 sitemap 会让 Google 反复抓取并归入
+ * 「自动重定向的网页」不收录，故故意不提交（见 docs/NEW_MODEL_CHECKLIST.md「孤儿旧别名页」）。
+ * 新增 301 别名页时在此登记，其他两张表（prerender / breadcrumb）仍须正常登记。
+ */
+const SITEMAP_EXCLUDE = new Set([
+  '/home/gpt-image/generate',
+  '/home/ideogram/generate'
+])
+
 const routes = [...new Set(collectRoutes(PAGES_HOME))].sort()
 let missingTotal = 0
 
@@ -50,8 +61,10 @@ const overviewSlugs = fs
 
 for (const { key, file, minSegments } of REGISTERS) {
   const text = fs.readFileSync(path.join(ROOT, file), 'utf8')
+  const exclude = key === 'sitemap' ? SITEMAP_EXCLUDE : null
   const missing = routes
     .filter((r) => r.split('/').filter(Boolean).length >= minSegments)
+    .filter((r) => !(exclude && exclude.has(r)))
     .filter((r) => !text.includes(`'${r}'`) && !text.includes(`"${r}"`))
   missingTotal += missing.length
   console.log(`\n[${key}] ${file} — 缺 ${missing.length} 条`)

@@ -37,25 +37,25 @@
 
         <!-- Content -->
         <div v-else>
-          <!-- 分类筛选器 - 动态数据 -->
+          <!-- 分类筛选器 - 真链接（?category=），Google 可抓取站内投票 -->
           <div class="news-filters">
-            <button 
-              v-for="category in categories" 
+            <NuxtLink
+              v-for="category in categories"
               :key="category"
+              :to="listQuery(1, category)"
               :class="['filter-btn', { active: selectedCategory === category }]"
-              @click="changeCategory(category)"
             >
               {{ category }}
-            </button>
+            </NuxtLink>
           </div>
 
-          <!-- 文章列表 - 动态数据 -->
+          <!-- 文章列表 - NuxtLink 真实 href，避免旧版 @click 导航导致详情页零内链（已抓取未收录的主因之一） -->
           <div class="news-list">
-            <article 
-              v-for="article in articles" 
+            <NuxtLink
+              v-for="article in articles"
               :key="article.id"
+              :to="`/news/${article.slug}`"
               class="news-list-item"
-              @click="navigateToDetail(article)"
             >
               <div class="news-image" v-if="article.image">
                 <img :src="article.image" :alt="article.title" loading="lazy" decoding="async" />
@@ -72,10 +72,10 @@
                   <i class="fas fa-arrow-right news-arrow"></i>
                 </div>
               </div>
-            </article>
+            </NuxtLink>
           </div>
 
-          <!-- 分页按钮 -->
+          <!-- 分页链接：URL 参数 ?page= 驱动 SSR，Google 可爬到第 2 页起的存量文章 -->
           <div class="pagination-section" v-if="pagination.totalPages > 1">
             <div class="pagination-info">
               Showing {{ (pagination.currentPage - 1) * articlesPerPage + 1 }} to 
@@ -83,31 +83,41 @@
               of {{ pagination.totalItems }} articles
             </div>
             <div class="pagination-buttons">
-              <button 
+              <NuxtLink
+                v-if="pagination.currentPage > 1"
+                :to="listQuery(pagination.currentPage - 1, selectedCategory)"
                 class="pagination-btn"
-                :disabled="pagination.currentPage === 1"
-                @click="goToPage(pagination.currentPage - 1)"
               >
+                <i class="fas fa-chevron-left"></i>
+                Previous
+              </NuxtLink>
+              <button v-else class="pagination-btn" disabled>
                 <i class="fas fa-chevron-left"></i>
                 Previous
               </button>
               
               <div class="page-numbers">
-                <button
-                  v-for="page in getVisiblePages()"
-                  :key="page"
-                  :class="['page-btn', { active: page === pagination.currentPage }]"
-                  @click="goToPage(page)"
-                >
-                  {{ page }}
-                </button>
+                <template v-for="page in getVisiblePages()" :key="page">
+                  <span v-if="page === pagination.currentPage" class="page-btn active" aria-current="page">{{ page }}</span>
+                  <NuxtLink
+                    v-else
+                    :to="listQuery(page, selectedCategory)"
+                    class="page-btn"
+                  >
+                    {{ page }}
+                  </NuxtLink>
+                </template>
               </div>
               
-              <button 
+              <NuxtLink
+                v-if="pagination.hasMore"
+                :to="listQuery(pagination.currentPage + 1, selectedCategory)"
                 class="pagination-btn"
-                :disabled="pagination.currentPage === pagination.totalPages"
-                @click="goToPage(pagination.currentPage + 1)"
               >
+                Next
+                <i class="fas fa-chevron-right"></i>
+              </NuxtLink>
+              <button v-else class="pagination-btn" disabled>
                 Next
                 <i class="fas fa-chevron-right"></i>
               </button>
@@ -120,22 +130,50 @@
 </template>
 
 <script setup>
-// SEO配置 - 静态外壳的SEO信息
-useHead({
-  title: 'AI News & Updates - FuseAI Tools',
-  meta: [
-    { name: 'description', content: 'Stay updated with the latest AI trends, product updates, and industry insights from FuseAI Tools.' },
-    { name: 'keywords', content: 'AI news, artificial intelligence updates, AI trends, FuseAI tools news' }
-  ]
-})
+import { SITE_ORIGIN } from '~/constants/site'
+
+// 路由参数驱动列表状态（?category= / ?page=）：URL 即可完整决定渲染结果，
+// Google 可抓取分页/分类链接，预渲染（crawlLinks）也能覆盖全部列表页
+const route = useRoute()
 
 // 频道/分类：与后端 category 数字对应
 const CATEGORY_LABELS = { 1: 'Chat', 2: 'Image', 3: 'Audio', 4: 'Video' }
 const CATEGORY_VALUES = { Chat: 1, Image: 2, Audio: 3, Video: 4 }
 
-const selectedCategory = ref('All')
-const currentPage = ref(1)
-const articlesPerPage = ref(10)
+const selectedCategory = computed(() => {
+  const c = String(route.query.category || '')
+  return CATEGORY_VALUES[c] ? c : 'All'
+})
+const currentPage = computed(() => {
+  const p = parseInt(route.query.page, 10)
+  return Number.isFinite(p) && p > 0 ? p : 1
+})
+const articlesPerPage = 10
+
+/** 生成列表页跳转链接：保留当前分类、重置/指定页码；首页省略 page 参数 */
+const listQuery = (page, category) => {
+  const query = {}
+  if (category && category !== 'All') query.category = category
+  if (page > 1) query.page = String(page)
+  return { path: '/news', query }
+}
+
+// SEO配置 - 静态外壳 + 自引用 canonical（带当前参数，避免分页/筛选页被判重复）
+const canonicalHref = computed(() => {
+  const params = new URLSearchParams()
+  if (selectedCategory.value !== 'All') params.set('category', selectedCategory.value)
+  if (currentPage.value > 1) params.set('page', String(currentPage.value))
+  const qs = params.toString()
+  return `${SITE_ORIGIN}/news${qs ? `?${qs}` : ''}`
+})
+useHead({
+  title: 'AI News & Updates - FuseAI Tools',
+  meta: [
+    { name: 'description', content: 'Stay updated with the latest AI trends, product updates, and industry insights from FuseAI Tools.' },
+    { name: 'keywords', content: 'AI news, artificial intelligence updates, AI trends, FuseAI tools news' }
+  ],
+  link: [{ rel: 'canonical', href: canonicalHref }]
+})
 
 // 调用后端 /api/news/list，返回 { errorCode, errorMessage, data: { records, total, current, size, pages } }
 const { data: newsData, pending, error, refresh } = await useAsyncData('news-list', async () => {
@@ -143,14 +181,14 @@ const { data: newsData, pending, error, refresh } = await useAsyncData('news-lis
   const categoryParam = selectedCategory.value !== 'All' ? CATEGORY_VALUES[selectedCategory.value] : undefined
   const query = {
     page: currentPage.value,
-    size: articlesPerPage.value,
+    size: articlesPerPage,
     ...(categoryParam != null ? { category: categoryParam } : {})
   }
   const queryString = new URLSearchParams(Object.entries(query).filter(([, v]) => v != null)).toString()
   const url = `/api/news/list?${queryString}`
   // useApi 会根据 runtimeConfig.public.apiBase 重写为 api.fuseaitools.com 或 127.0.0.1:8080
   return await get(url)
-})
+}, { watch: [selectedCategory, currentPage] })
 
 // 接口失败由 useAsyncData 的 error 处理；这里不再根据 errorCode 判定
 const apiFailed = computed(() => false)
@@ -188,27 +226,8 @@ const pagination = computed(() => {
   }
 })
 
-// 加载更多状态
-const pendingMore = ref(false)
-
 // 方法
 const { formatDate } = useDateFormat()
-
-const navigateToDetail = (article) => {
-  navigateTo(`/news/${article.slug}`)
-}
-
-const changeCategory = async (category) => {
-  selectedCategory.value = category
-  currentPage.value = 1
-  await refresh()
-}
-
-const goToPage = async (page) => {
-  if (page < 1 || page > pagination.value.totalPages) return
-  currentPage.value = page
-  await refresh()
-}
 
 const getVisiblePages = () => {
   const current = pagination.value.currentPage
@@ -233,11 +252,6 @@ const getVisiblePages = () => {
   }
   return pages
 }
-
-// 监听分类变化，重置数据
-watch(selectedCategory, () => {
-  currentPage.value = 1
-})
 </script>
 
 <style scoped>
@@ -330,6 +344,8 @@ watch(selectedCategory, () => {
 }
 
 .filter-btn {
+  display: inline-block;
+  text-decoration: none;
   padding: 0.75rem 1.5rem;
   border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   background: var(--flux-card, hsl(215, 25%, 14%));
@@ -357,6 +373,8 @@ watch(selectedCategory, () => {
 
 .news-list-item {
   display: flex;
+  text-decoration: none;
+  color: inherit;
   background: var(--flux-card, hsl(215, 25%, 14%));
   border-radius: 12px;
   overflow: hidden;
@@ -490,6 +508,7 @@ watch(selectedCategory, () => {
 
 .pagination-btn {
   display: flex;
+  text-decoration: none;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
@@ -521,6 +540,7 @@ watch(selectedCategory, () => {
 .page-btn {
   width: 40px;
   height: 40px;
+  text-decoration: none;
   border: 1px solid var(--flux-border, hsl(215, 16%, 22%));
   background: var(--flux-card, hsl(215, 25%, 14%));
   color: var(--flux-muted, hsl(215, 12%, 62%));
