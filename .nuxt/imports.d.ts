@@ -54,5 +54,4 @@ export { useWanBbox } from '../composables/useWanBbox';
 export { PRODUCTION_API_BASE, getEffectiveApiBaseForClient } from '../utils/apiBase';
 export { parseStandardApiJson, getFetchErrorMessage } from '../utils/parseStandardApiResponse';
 export { TOOL_PARENT_LABEL_BY_SLUG, CHILD_LABEL_OVERRIDES_BY_ROUTE, getToolBreadcrumbByRoute } from '../utils/toolBreadcrumbs';
-export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';

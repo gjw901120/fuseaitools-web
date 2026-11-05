@@ -201,7 +201,8 @@ const articles = computed(() => {
   return raw.map((r) => ({
     id: r.id,
     title: (r.title || '').trim(),
-    slug: r.path || String(r.id),
+    // 后端 path 存在尾部换行脏数据，trim 后再兜底回退 id，避免列表卡片生成带换行的死链
+    slug: (r.path || '').trim() || String(r.id),
     excerpt: r.description || '',
     category: CATEGORY_LABELS[r.category] ?? (r.category != null ? String(r.category) : ''),
     image: r.image || undefined,

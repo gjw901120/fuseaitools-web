@@ -158,7 +158,8 @@ const article = computed(() => {
   return {
     id: d.id,
     title: (d.title || '').trim(),
-    slug: d.path,
+    // 后端 path/prevPath/nextPath 存在尾部换行脏数据（如 "xxx-guide\n"），统一 trim 防止生成带换行的内链与自引用 404
+    slug: (d.path || '').trim(),
     excerpt: d.description || '',
     category: CATEGORY_LABELS[d.category] ?? (d.category != null ? String(d.category) : ''),
     categoryValue: d.category ?? null,
@@ -168,8 +169,8 @@ const article = computed(() => {
     readTime: d.readTime ?? null,
     keyword: d.keyword || '',
     content: d.content || '',
-    prevPath: d.prevPath || '',
-    nextPath: d.nextPath || ''
+    prevPath: (d.prevPath || '').trim(),
+    nextPath: (d.nextPath || '').trim()
   }
 })
 
@@ -208,10 +209,10 @@ const relatedArticles = computed(() => {
   if (!Array.isArray(records)) return []
   const currentSlug = article.value?.slug
   return records
-    .filter((r) => r && r.path && r.path !== currentSlug)
+    .filter((r) => r && r.path && r.path.trim() !== currentSlug)
     .slice(0, 6)
     .map((r) => ({
-      slug: r.path,
+      slug: r.path.trim(),
       title: (r.title || '').trim(),
       excerpt: r.description || '',
       category: CATEGORY_LABELS[r.category] ?? ''

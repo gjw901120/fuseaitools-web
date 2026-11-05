@@ -67,6 +67,31 @@ export default defineNuxtConfig({
     experimental: {
       maxRequestBodySize: 10 * 1024 * 1024 // 10MB
     },
+    // prerender 前把后端全量文章路径注入初始路由集合。
+    // 背景：nitro crawler 对 404/报错页不提取链接（generateRoute 在 _route.error 时提前 return），
+    // 且深层 prevPath/nextPath 内链偶发漏追（如 claude-opus-4.5-vs 仅在文章间互链），
+    // 纯靠 crawlLinks 发现文章会产生 sitemap 死链。后端 path 存在尾部换行脏数据，统一 trim 后用干净 slug。
+    // 接口不可达时仅警告，回退到 crawler 追链，不阻断构建。
+    hooks: {
+      'prerender:routes': async (routes) => {
+        const apiBase = process.env.NUXT_PUBLIC_API_BASE || 'https://api.fuseaitools.com/api'
+        try {
+          const res = await fetch(`${apiBase}/news/list?page=1&size=500`).then((r) => r.json())
+          const records = res?.data?.records || []
+          let added = 0
+          for (const r of records) {
+            const path = typeof r?.path === 'string' ? r.path.trim() : ''
+            if (path && !routes.has(`/news/${path}`)) {
+              routes.add(`/news/${path}`)
+              added++
+            }
+          }
+          console.log(`[prerender] news 路由注入：拉到 ${records.length} 篇，新增 ${added} 条`)
+        } catch (e) {
+          console.warn('[prerender] news list 拉取失败，回退到 crawler 追链：', e?.message || e)
+        }
+      }
+    },
     prerender: {
       crawlLinks: true,
       // 如果路由不存在，不抛出错误（适用于 node-server preset）

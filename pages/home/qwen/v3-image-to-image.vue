@@ -14,10 +14,6 @@ import QwenTool from '~/components/tools/QwenTool.vue'
 import QwenV3SeoContent from '~/components/tools/QwenV3SeoContent.vue'
 import { useToolSEOAsync } from '~/composables/useToolSEO'
 
-definePageMeta({
-  path: '/home/qwen/v3-image-to-image'
-})
-
 const seoConfig = await useToolSEOAsync({
   name: 'Qwen v3 Image to Image',
   description: 'Qwen v3 Image to Image on FuseAITools—upload 1–3 images plus a prompt (up to 5000 chars), 1K/2K resolution, smart prompt rewriting, negative prompt, PNG/JPEG output. Billed by resolution with credits; 20 free credits on sign-up.',
