@@ -15,15 +15,15 @@ useHead({
   meta: [
     { 
       name: 'description', 
-      content: 'AI tools free: access 100+ AI models in one platform—ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more. Register now and get 20 credits free. Free AI chat, image, video, and audio tools.' 
+      content: 'AI tools free: access 100+ AI models in one platform—ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more. Register now and get 10 credits free. Free AI chat, image, video, and audio tools.' 
     },
     { 
       name: 'keywords', 
-      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 20 credits free' 
+      content: 'AI tools free, free AI tools, AI tools, ChatGPT, Claude, GPT-4, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno, free AI chat, image generation, video creation, audio processing, AI platform, 10 credits free' 
     },
     // Open Graph tags
     { property: 'og:title', content: 'AI Tools Free | FuseAI Tools - 10 Credits on Sign Up' },
-    { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
+    { property: 'og:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 10 credits free. ChatGPT, Claude, Ideogram, Veo3, Wan, HappyHorse, Qwen, Seedance, Seedream, ElevenLabs, Suno and more.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: SITE_ORIGIN },
     { property: 'og:image', content: `${SITE_ORIGIN}/logo-wide.png` },
@@ -32,7 +32,7 @@ useHead({
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: 'AI Tools Free | FuseAI Tools - 10 Credits on Sign Up' },
-    { name: 'twitter:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 20 credits free.' },
+    { name: 'twitter:description', content: 'AI tools free: 100+ AI models in one platform. Register and get 10 credits free.' },
     { name: 'twitter:image', content: `${SITE_ORIGIN}/logo-wide.png` },
     // Additional meta tags
     { name: 'author', content: 'FuseAI Tools' },
@@ -53,7 +53,7 @@ useHead({
         "name": "FuseAI Tools",
         "url": SITE_ORIGIN,
         "logo": `${SITE_ORIGIN}/logo-wide.png`,
-        "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 20 credits free. ChatGPT, Claude, Ideogram, Veo3, ElevenLabs, Suno and more.",
+        "description": "AI tools free: all-in-one platform with 100+ AI models. Register and get 10 credits free. ChatGPT, Claude, Ideogram, Veo3, ElevenLabs, Suno and more.",
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "Customer Service",

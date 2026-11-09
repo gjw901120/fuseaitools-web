@@ -11,7 +11,7 @@
             Access 100+ AI models in one browser workspace—Chat, Image, Audio, and Video. Start with free signup credits; pay per generation with flexible plans.
           </p>
           <p class="hero-credits">
-            <strong>Register now and get <span class="credits-highlight">20 credits free</span>.</strong> No credit card required.
+            <strong>Register now and get <span class="credits-highlight">10 credits free</span>.</strong> No credit card required.
           </p>
           <div class="hero-actions">
             <button class="btn-primary" @click="startFreeTrial">
