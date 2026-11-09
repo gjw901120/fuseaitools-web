@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Kling v2.5 Turbo Text to Video Pro',
   description:
-    'Kling v2.5 Turbo T2V Pro on FuseAITools—text-to-video with 16:9/9:16/1:1, 5/10s duration, negative prompt and CFG scale. 20 free credits on sign-up.',
+    'Kling v2.5 Turbo T2V Pro on FuseAITools—text-to-video with 16:9/9:16/1:1, 5/10s duration, negative prompt and CFG scale. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/kling/v2-5-turbo-text-to-video-pro',
   keywords: ['Kling', 'Kuaishou', 'Text to Video', 'v2.5 Turbo', 'T2V Pro', 'FuseAITools'],

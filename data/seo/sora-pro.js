@@ -79,7 +79,7 @@ export default {
     },
     {
       question: 'How is Sora 2 Pro priced on FuseAITools?',
-      answer: 'Credits depend on the model, selected duration, and size (standard/high). The exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on the model, selected duration, and size (standard/high). The exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🌟 Sora 2 Pro on FuseAITools',
-      html: '<strong>Sora 2 Pro</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is the professional-tier of OpenAI\'s Sora video generation—<strong>three workflows</strong> covering pro T2V, pro I2V, and <strong>multi-scene storyboard</strong> with per-shot duration control. Choose <strong>standard or high quality size</strong>, durations from <strong>10s to 25s</strong>, and craft complex narratives with the built-in shot builder. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Sora 2 Pro</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is the professional-tier of OpenAI\'s Sora video generation—<strong>three workflows</strong> covering pro T2V, pro I2V, and <strong>multi-scene storyboard</strong> with per-shot duration control. Choose <strong>standard or high quality size</strong>, durations from <strong>10s to 25s</strong>, and craft complex narratives with the built-in shot builder. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -209,7 +209,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Sora 2 Pro per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Sora 2 Pro per-generation costs.'
     }
   ]
 }

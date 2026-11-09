@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Grok Image 2.0 Segment Edit',
   description:
-    'Grok Imagine Image 2.0 segment edit on FuseAITools—refine a prior grok-imagine-image-2.0 text-to-image task with a prompt up to 65000 characters and optional 0-based segment indexes. 20 free credits on sign-up.',
+    'Grok Imagine Image 2.0 segment edit on FuseAITools—refine a prior grok-imagine-image-2.0 text-to-image task with a prompt up to 65000 characters and optional 0-based segment indexes. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/grok/image-2-0-segment-edit',
   keywords: ['Grok', 'Grok Imagine 2.0', 'xAI', 'Segment Edit', 'Image Editing', 'AI image generation', 'FuseAITools'],

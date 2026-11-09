@@ -16,7 +16,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Qwen v1 Image to Image Generator',
-  description: 'Transform a reference image with Qwen v1 Classic on FuseAITools—denoising strength 0–1, prompts up to 5000 chars, full steps/guidance/seed/acceleration controls. Pay per image with credits; 20 free credits on sign-up.',
+  description: 'Transform a reference image with Qwen v1 Classic on FuseAITools—denoising strength 0–1, prompts up to 5000 chars, full steps/guidance/seed/acceleration controls. Pay per image with credits; 10 free credits on sign-up.',
   category: 'image',
   route: '/home/qwen/image-to-image',
   keywords: ['Qwen v1', 'Qwen', 'Image to Image', 'I2I', 'AI image editing', 'reference image', 'FuseAITools'],

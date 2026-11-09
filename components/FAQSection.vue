@@ -35,7 +35,7 @@ import { ref, computed } from 'vue'
 const faqItems = ref([
   {
     question: "What is FuseAI Tools?",
-    answer: "<p>FuseAI Tools is an integrated AI platform with 100+ models for chat, image, video, and audio. Use everything in the browser with credit-based pricing—new users receive <strong>20 free credits</strong> on sign-up.</p>",
+    answer: "<p>FuseAI Tools is an integrated AI platform with 100+ models for chat, image, video, and audio. Use everything in the browser with credit-based pricing—new users receive <strong>10 free credits</strong> on sign-up.</p>",
     isOpen: true
   },
   {
@@ -45,7 +45,7 @@ const faqItems = ref([
   },
   {
     question: "Is FuseAI Tools free?",
-    answer: "<p>Yes—you can start for free:</p><ul><li><strong>Free sign-up:</strong> New users receive <strong>20 free credits</strong> to try models across chat, image, video, and audio—no payment method required.</li><li><strong>Subscriptions:</strong> Basic, Pro, and Ultra plans include monthly credits and member discounts on generations.</li><li><strong>Top-up:</strong> Buy additional credits anytime on our <a href=\"/pricing\">pricing page</a>.</li></ul>",
+    answer: "<p>Yes—you can start for free:</p><ul><li><strong>Free sign-up:</strong> New users receive <strong>10 free credits</strong> to try models across chat, image, video, and audio—no payment method required.</li><li><strong>Subscriptions:</strong> Basic, Pro, and Ultra plans include monthly credits and member discounts on generations.</li><li><strong>Top-up:</strong> Buy additional credits anytime on our <a href=\"/pricing\">pricing page</a>.</li></ul>",
     isOpen: false
   },
   {

@@ -55,7 +55,7 @@ export default {
     },
     {
       question: 'How do I try Seedance 2.5 on FuseAITools?',
-      answer: 'Open this workflow and generate. New users receive <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
+      answer: 'Open this workflow and generate. New users receive <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
     }
   ],
   sections: [
@@ -69,7 +69,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Seedance 2.5 on FuseAITools',
-      html: 'Seedance 2.5 on <a href="/" class="seo-inline-link">FuseAITools</a> extends the Seedance 2 multimodal feature set with <strong>4–30 second</strong> duration and up to <strong>1080p</strong> resolution—ideal for longer storytelling, ads, and social content. Same first/last frame and reference media controls as Seedance 2. <strong>480p / 720p / 1080p</strong> output, credits scale by duration and reference usage. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Seedance 2.5 on <a href="/" class="seo-inline-link">FuseAITools</a> extends the Seedance 2 multimodal feature set with <strong>4–30 second</strong> duration and up to <strong>1080p</strong> resolution—ideal for longer storytelling, ads, and social content. Same first/last frame and reference media controls as Seedance 2. <strong>480p / 720p / 1080p</strong> output, credits scale by duration and reference usage. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -161,7 +161,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

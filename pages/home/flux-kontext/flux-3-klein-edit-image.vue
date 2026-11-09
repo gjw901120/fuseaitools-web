@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Flux 3 Klein Image Editing Generator',
   description:
-    'Flux 3 Klein image editing on FuseAITools—upload 1–10 reference images, prompt up to 5000 chars, 1K/2K/4K resolution, nine aspect ratios plus auto, and 1–4 outputs. Credits scale by resolution and image count. 20 free credits on sign-up.',
+    'Flux 3 Klein image editing on FuseAITools—upload 1–10 reference images, prompt up to 5000 chars, 1K/2K/4K resolution, nine aspect ratios plus auto, and 1–4 outputs. Credits scale by resolution and image count. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/flux-kontext/flux-3-klein-edit-image',
   keywords: ['Flux 3 Klein', 'Image Editing', 'Black Forest Labs', 'multi-reference', 'FuseAITools'],

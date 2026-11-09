@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Grok Video 1.5 Preview Generator',
   description:
-    'Grok Imagine Video 1.5 Preview on FuseAITools—one unified entry for text-to-video and image-to-video. Prompt up to 4096 chars or up to 7 reference images, 1-15s duration at 480p/720p, aspect ratio with auto, billed per second. 20 free credits on sign-up.',
+    'Grok Imagine Video 1.5 Preview on FuseAITools—one unified entry for text-to-video and image-to-video. Prompt up to 4096 chars or up to 7 reference images, 1-15s duration at 480p/720p, aspect ratio with auto, billed per second. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/grok/video-1-5-preview',
   keywords: ['Grok', 'Grok Imagine', 'xAI', 'Video 1.5 Preview', 'text to video', 'image to video', 'FuseAITools'],

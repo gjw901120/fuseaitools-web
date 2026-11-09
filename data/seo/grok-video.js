@@ -115,7 +115,7 @@ export default {
     },
     {
       question: 'How is Grok Imagine video priced on FuseAITools?',
-      answer: 'Text-to-video and image-to-video are billed <strong>per second</strong> (the RULE <code>duration=1</code> rate × your 6–30s choice) at the selected <strong>resolution</strong> (480p/720p/1080p). Video 1.5 Preview uses the same <strong>per-second</strong> model × your 1–15s choice at 480p/720p. Extend uses <strong>duration</strong> (6s/10s) + <strong>resolution</strong> (480p/720p) for RULE credits. Upscale matches RULE credits by the source task <strong>resolution</strong> and <strong>duration</strong> plus the target <strong>scene</strong> (<code>upscale-720p</code>/<code>upscale-1080p</code>). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
+      answer: 'Text-to-video and image-to-video are billed <strong>per second</strong> (the RULE <code>duration=1</code> rate × your 6–30s choice) at the selected <strong>resolution</strong> (480p/720p/1080p). Video 1.5 Preview uses the same <strong>per-second</strong> model × your 1–15s choice at 480p/720p. Extend uses <strong>duration</strong> (6s/10s) + <strong>resolution</strong> (480p/720p) for RULE credits. Upscale matches RULE credits by the source task <strong>resolution</strong> and <strong>duration</strong> plus the target <strong>scene</strong> (<code>upscale-720p</code>/<code>upscale-1080p</code>). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>10 free credits</strong> on sign-up.'
     }
   ],
   sections: [
@@ -129,7 +129,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Grok Imagine Video on FuseAITools',
-      html: '<strong>Grok Imagine video</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> covers short clip generation and post steps— <strong>text-to-video</strong>, <strong>image-to-video</strong>, <strong>Video 1.5 Preview</strong>, <strong>upscale</strong>, and <strong>extend</strong>. <strong>Video 1.5 Preview</strong> is a unified entry—one endpoint for text-to-video or up to 7 reference images at 480p/720p, 1–15s. On text and image to video, pick aspect ratio, motion mode, a <strong>6–30s duration slider</strong>, and resolution (<strong>480p / 720p / 1080p</strong>); extend keeps 6s/10s at 480p/720p. Need stills first? Use <a href="/home/grok/text-to-image" class="seo-inline-link">Grok Text to Image</a>. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Grok Imagine video</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> covers short clip generation and post steps— <strong>text-to-video</strong>, <strong>image-to-video</strong>, <strong>Video 1.5 Preview</strong>, <strong>upscale</strong>, and <strong>extend</strong>. <strong>Video 1.5 Preview</strong> is a unified entry—one endpoint for text-to-video or up to 7 reference images at 480p/720p, 1–15s. On text and image to video, pick aspect ratio, motion mode, a <strong>6–30s duration slider</strong>, and resolution (<strong>480p / 720p / 1080p</strong>); extend keeps 6s/10s at 480p/720p. Need stills first? Use <a href="/home/grok/text-to-image" class="seo-inline-link">Grok Text to Image</a>. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -296,7 +296,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

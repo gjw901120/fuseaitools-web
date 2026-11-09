@@ -84,7 +84,7 @@ export default {
       },
       {
         question: 'What does Grok Image 2.0 Text to Image cost?',
-        answer: 'A <strong>flat per-image credit price</strong>—the exact amount is shown on the Generate button before you submit. New users get <strong>20 free credits</strong> on sign-up.'
+        answer: 'A <strong>flat per-image credit price</strong>—the exact amount is shown on the Generate button before you submit. New users get <strong>10 free credits</strong> on sign-up.'
       }
     ],
     '/home/grok/image-2-0-image-edit': [
@@ -115,7 +115,7 @@ export default {
     },
     {
       question: 'How is Grok Imagine image priced on FuseAITools?',
-      answer: 'Per-generation credits by modelKey (<code>grok-imagine-text-to-image</code> or <code>grok-imagine-image-to-image</code>). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
+      answer: 'Per-generation credits by modelKey (<code>grok-imagine-text-to-image</code> or <code>grok-imagine-image-to-image</code>). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>10 free credits</strong> on sign-up.'
     }
   ],
   sections: [
@@ -129,7 +129,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🖼️ Grok Imagine Image on FuseAITools',
-      html: '<strong>Grok Imagine</strong> image workflows on <a href="/" class="seo-inline-link">FuseAITools</a> are xAI\'s still-image line—generate from a <strong>text prompt</strong> or transform a single <strong>uploaded image</strong> with optional instructions. Credits appear on Generate before you submit; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Grok Imagine</strong> image workflows on <a href="/" class="seo-inline-link">FuseAITools</a> are xAI\'s still-image line—generate from a <strong>text prompt</strong> or transform a single <strong>uploaded image</strong> with optional instructions. Credits appear on Generate before you submit; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -258,7 +258,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

@@ -92,7 +92,7 @@
 9. Technical specs + **能力简表**（与表单/API 一致）  
 10. Workflow grid（`model-mode-card--current` 高亮当前）  
 11. **（多版本品牌）** 版本对比表 — 见 §3.3.3，放在 Workflow grid **之后**  
-12. Pricing tip（20 free credits → `/pricing`）  
+12. Pricing tip（10 free credits → `/pricing`）  
 13. **（多版本品牌）** 向上版本 `upgrade-tip` — 见 §3.3.2；单版本品牌可保留跨版本引导（如 Wan 2.6 ↔ 2.7）
 
 **多版本品牌**：按 **§3.3** 以版本为维度拆分 `*SeoContent.vue`；同版本内工作流共用一个组件，禁止把所有版本塞进单一 SEO 组件。
@@ -104,7 +104,7 @@
 | 字段 | 要求（Wan 已实现） |
 |------|-------------------|
 | `title` | `Wan`（与全站称呼一致） |
-| `intro` | 1 段：2.6 / 2.7 分工 + 图像能力一句 + FuseAITools + **20 free credits** |
+| `intro` | 1 段：2.6 / 2.7 分工 + 图像能力一句 + FuseAITools + **10 free credits** |
 | `features[]` | 9 项：2 图像 + **7 视频**；`name` 带版本前缀（如 `Wan 2.6 Text to Video`）；`description` 与子页不矛盾 |
 | `sections[]` | **3 段**：`Core capabilities`、`Workflow`、`Try Wan on FuseAITools`（勿堆 8+ 段重复子页） |
 
@@ -209,9 +209,9 @@ Try [Kling 2.6 →](/home/kling/v2-6-text-to-video) for optional audio on T2V/I2
 
 - **长度**：120–160 字符（`clampDescription`）  
 - **必含**：工作流做什么、FuseAITools、1 个可核实参数或差异化  
-- **可选**：20 free credits、credit-based pricing  
+- **可选**：10 free credits、credit-based pricing  
 - **示例（Wan 2.6 T2V）**：  
-  `Wan 2.6 text-to-video on FuseAITools—5/10/15s clips at 720p/1080p with multi-shot mode. Pay with credits; 20 free credits on sign-up.`
+  `Wan 2.6 text-to-video on FuseAITools—5/10/15s clips at 720p/1080p with multi-shot mode. Pay with credits; 10 free credits on sign-up.`
 
 ### 4.3 Keywords
 
@@ -288,7 +288,7 @@ Try [Kling 2.6 →](/home/kling/v2-6-text-to-video) for optional audio on T2V/I2
 | Wan 2.6 / Wan 2.7 | 混用 v2.7 与 2.7 且无说明 |
 | Wan 2.6 Video to Video | 把 2.6 V2V 写成 R2V（R2V 是 2.7 工作流） |
 | FuseAITools | Fuse AI Tool、域名混写 |
-| 20 free credits | 77 credits（已废弃） |
+| 10 free credits | 77 credits（已废弃） |
 | Text to Video / Image to Video | 仅写 T2V 不解释 |
 
 四处一致：**meta、SEO 区块、`toolOverviews.wan`、Footer / llms.txt**。
@@ -367,7 +367,7 @@ Definition → Capability table → FAQ → vs table → Workflow grid（Wan 均
 
 | 项 | 当前约定 |
 |----|----------|
-| 新用户赠送 | **20 free credits** on sign-up |
+| 新用户赠送 | **10 free credits** on sign-up |
 | 定价链接 | `/pricing`（`seo-pricing-link`） |
 | 首页链接 | `/`（`seo-inline-link`） |
 | 语言 | 正文英文 |
@@ -435,7 +435,7 @@ Definition → Capability table → FAQ → vs table → Workflow grid（Wan 均
 // 结构示意 — 以仓库内实文件为准
 wan: {
   title: 'Wan',
-  intro: '… 2.6 vs 2.7 … FuseAITools … 20 free credits …',
+  intro: '… 2.6 vs 2.7 … FuseAITools … 10 free credits …',
   features: [
     { name: 'Wan 2.6 Text to Video', path: '/home/wan/text-to-video', description: '…' },
     // … 共 9 项（含 2 图像 + 7 视频）
@@ -833,7 +833,7 @@ Kling 九视频子页 + `/home/kling` 聚合页，按 §3 同一标准实施。
 
 ### 聚合 intro（一句式）
 
-> Wan on FuseAITools is Alibaba's multimodal suite for image and video: Wan 2.6 for fast multi-shot clips, Wan 2.7 for edit and multi-reference R2V—plus Wan 2.7 Image / Image Pro. New users receive **20 free credits** on sign-up.
+> Wan on FuseAITools is Alibaba's multimodal suite for image and video: Wan 2.6 for fast multi-shot clips, Wan 2.7 for edit and multi-reference R2V—plus Wan 2.7 Image / Image Pro. New users receive **10 free credits** on sign-up.
 
 ---
 
@@ -867,7 +867,7 @@ Flux Kontext 五图像子页 + `/home/flux-kontext` 聚合页。**generate = v1*
 
 - [x] v1 / v2 分组件（§3.3.1）  
 - [x] v2 四页：`workflowIntroMap` + `workflowDefinitionMap` + 专属 FAQ  
-- [x] 每页独立 `useToolSEOAsync` description / keywords（含 20 free credits）  
+- [x] 每页独立 `useToolSEOAsync` description / keywords（含 10 free credits）  
 - [x] FAQ + `useToolSeoFaqSchema`  
 - [x] Technical specs + 能力简表  
 - [x] `useToolSeoPageScroll` 工作流卡片回顶  
@@ -924,7 +924,7 @@ Ideogram 七图像子页 + `/home/ideogram` 聚合页。**V3 四工作流** = �
 
 - [x] V3 / Character 分组件（§3.3.1）  
 - [x] 各页：`workflowIntroMap` + `workflowDefinitionMap` + 专属 FAQ  
-- [x] 每页独立 `useToolSEOAsync` description / keywords（含 20 free credits）  
+- [x] 每页独立 `useToolSEOAsync` description / keywords（含 10 free credits）  
 - [x] FAQ + `useToolSeoFaqSchema`  
 - [x] 工作流内对比表 + Technical specs  
 - [x] `useToolSeoPageScroll` 工作流卡片回顶  
@@ -980,7 +980,7 @@ Grok 六子页 + `/home/grok` 聚合页。**Image 两工作流** → `GrokImageS
 **Image 子页（2）**
 
 - [x] `GrokImageSeoContent` + `workflow*Map`  
-- [x] `#below-main`、meta（20 free credits、`priceFromApi`）  
+- [x] `#below-main`、meta（10 free credits、`priceFromApi`）  
 - [x] FAQ 4 条/页（2 专属 + 2 common，question 与 video 组件 **不重复**）  
 - [x] 底部互链 → Grok Video  
 

@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Kling 2.6 Motion Control',
   description:
-    'Kling 2.6 Motion Control on FuseAITools—transfer motion from reference video to a character image at 720p/1080p. Per-second pricing. 20 free credits on sign-up.',
+    'Kling 2.6 Motion Control on FuseAITools—transfer motion from reference video to a character image at 720p/1080p. Per-second pricing. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/kling/v2-6-motion-control',
   keywords: ['Kling', 'Motion Control', '2.6', 'reference video', 'FuseAITools'],

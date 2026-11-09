@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Sora 2 priced on FuseAITools?',
-      answer: 'Credits are shown on the Generate button before each run. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits are shown on the Generate button before each run. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Sora 2 on FuseAITools',
-      html: '<strong>Sora 2</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is OpenAI\'s standard video generation tier—realistic motion, physics consistency, and improved control over style and scene. Generate from <strong>text prompts up to 10000 characters</strong> or animate <strong>reference images</strong> with <strong>portrait or landscape</strong> aspect ratios at <strong>10s or 15s</strong> duration. Optional watermark removal. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Sora 2</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is OpenAI\'s standard video generation tier—realistic motion, physics consistency, and improved control over style and scene. Generate from <strong>text prompts up to 10000 characters</strong> or animate <strong>reference images</strong> with <strong>portrait or landscape</strong> aspect ratios at <strong>10s or 15s</strong> duration. Optional watermark removal. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -219,7 +219,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Sora 2 per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Sora 2 per-generation costs.'
     },
     {
       pricing: false,

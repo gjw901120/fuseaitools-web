@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Nano Banana Pro Image Generator',
   description:
-    'Nano Banana Pro on FuseAITools—1–10 reference images plus prompt, 1K/2K/4K resolution via Gemini Flash Image. Credit cost by resolution tier. 20 free credits on sign-up.',
+    'Nano Banana Pro on FuseAITools—1–10 reference images plus prompt, 1K/2K/4K resolution via Gemini Flash Image. Credit cost by resolution tier. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/nano-banana/pro-generate',
   keywords: ['Nano Banana Pro', '4K image', 'Gemini Flash Image', 'high resolution', 'FuseAITools'],

@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Runway Video Generator',
   description:
-    'Runway Generate on FuseAITools—text or image to 5s/10s video at 720p/1080p, five aspect ratios, optional watermark. Credits by duration and quality; 20 free on sign-up.',
+    'Runway Generate on FuseAITools—text or image to 5s/10s video at 720p/1080p, five aspect ratios, optional watermark. Credits by duration and quality; 10 free on sign-up.',
   category: 'video',
   route: '/home/runway/generate',
   keywords: ['Runway', 'Runway Generate', 'text to video', 'image to video', 'AI video', 'FuseAITools'],

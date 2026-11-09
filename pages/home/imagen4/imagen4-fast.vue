@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Imagen 4 Fast Text to Image Generator',
   description:
-    'Imagen 4 Fast text-to-image on FuseAITools—speed-first single-image generation, integer seed, five aspect ratios (default 16:9). Pay with credits; 20 free credits on sign-up.',
+    'Imagen 4 Fast text-to-image on FuseAITools—speed-first single-image generation, integer seed, five aspect ratios (default 16:9). Pay with credits; 10 free credits on sign-up.',
   category: 'image',
   route: '/home/imagen4/imagen4-fast',
   keywords: ['Imagen 4 Fast', 'Imagen4', 'Google Imagen 4', 'fast image generation', 'text to image', 'FuseAITools'],

@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is GPT Image 1.5 priced on FuseAITools?',
-      answer: 'Credits depend on the model and quality tier—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on the model and quality tier—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎨 GPT Image 1.5 on FuseAITools',
-      html: 'GPT Image 1.5 on <a href="/" class="seo-inline-link">FuseAITools</a> is OpenAI\'s <strong>classic image generation</strong> suite—generate from text prompts up to <strong>3000 characters</strong> or edit a single reference image with natural language. Choose <strong>medium or high quality</strong> to balance speed and detail, with <strong>three aspect ratios</strong> (1:1, 2:3, 3:2). New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'GPT Image 1.5 on <a href="/" class="seo-inline-link">FuseAITools</a> is OpenAI\'s <strong>classic image generation</strong> suite—generate from text prompts up to <strong>3000 characters</strong> or edit a single reference image with natural language. Choose <strong>medium or high quality</strong> to balance speed and detail, with <strong>three aspect ratios</strong> (1:1, 2:3, 3:2). New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -196,7 +196,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for GPT Image 1.5 per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for GPT Image 1.5 per-generation costs.'
     },
     {
       pricing: false,

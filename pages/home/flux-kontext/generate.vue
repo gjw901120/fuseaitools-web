@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Flux Kontext Image Generator',
   description:
-    'Flux Kontext Pro and Max on FuseAITools—text-to-image and single-image edit with six aspect ratios, safety controls, and prompt enhancement. 20 free credits on sign-up.',
+    'Flux Kontext Pro and Max on FuseAITools—text-to-image and single-image edit with six aspect ratios, safety controls, and prompt enhancement. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/flux-kontext/generate',
   keywords: ['Flux Kontext', 'Black Forest Labs', 'AI image generation', 'image editing', 'flux_kontext_pro', 'FuseAITools'],

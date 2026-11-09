@@ -6,7 +6,7 @@
         <div class="hero-content">
           <h1 class="hero-title">About FuseAI Tools</h1>
           <p class="hero-subtitle">
-            FuseAI Tools integrates 100+ AI models for chat, image, video, and audio in one browser workspace—with credit-based pricing and 20 free credits on sign-up.
+            FuseAI Tools integrates 100+ AI models for chat, image, video, and audio in one browser workspace—with credit-based pricing and 10 free credits on sign-up.
           </p>
         </div>
       </div>
@@ -25,7 +25,7 @@
           <ul>
             <li><strong>100+ integrated models</strong> across chat, image, video, and audio</li>
             <li><strong>Credit-based billing</strong> with plans, top-ups, and member discounts—see <NuxtLink to="/pricing" class="about-inline-link">pricing</NuxtLink></li>
-            <li><strong>20 free credits</strong> for new users to try models without a payment method</li>
+            <li><strong>10 free credits</strong> for new users to try models without a payment method</li>
             <li><strong>Tutorials and updates</strong> on our <NuxtLink to="/news" class="about-inline-link">News</NuxtLink> hub</li>
           </ul>
 
@@ -98,13 +98,13 @@ useHead({
     {
       name: 'description',
       content:
-        'FuseAI Tools integrates 100+ AI models for chat, image, video, and audio. Credit-based pricing with 20 free credits on sign-up. Contact service@fuseaitools.com.'
+        'FuseAI Tools integrates 100+ AI models for chat, image, video, and audio. Credit-based pricing with 10 free credits on sign-up. Contact service@fuseaitools.com.'
     },
     { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     { property: 'og:title', content: 'About FuseAI Tools' },
     {
       property: 'og:description',
-      content: '100+ AI models, credit-based pricing, and 20 free credits for new users.'
+      content: '100+ AI models, credit-based pricing, and 10 free credits for new users.'
     },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: aboutCanonical },

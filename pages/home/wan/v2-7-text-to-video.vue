@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Wan 2.7 Text to Video Generator',
   description:
-    'Wan 2.7 text-to-video on FuseAITools—2–15s clips, aspect ratios, optional audio and prompt extend. Cloud credits; 20 free on sign-up.',
+    'Wan 2.7 text-to-video on FuseAITools—2–15s clips, aspect ratios, optional audio and prompt extend. Cloud credits; 10 free on sign-up.',
   category: 'video',
   route: '/home/wan/v2-7-text-to-video',
   keywords: ['Wan 2.7', 'Wan', 'text to video', 'AI video generation', 'aspect ratio video', 'FuseAITools'],

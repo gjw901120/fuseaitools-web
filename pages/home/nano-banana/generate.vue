@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Nano Banana Text to Image',
   description:
-    'Nano Banana text-to-image on FuseAITools—Google Gemini Flash Image with eleven aspect ratios and PNG/JPEG output. Prompts up to 5000 chars. 20 free credits on sign-up.',
+    'Nano Banana text-to-image on FuseAITools—Google Gemini Flash Image with eleven aspect ratios and PNG/JPEG output. Prompts up to 5000 chars. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/nano-banana/generate',
   keywords: ['Nano Banana', 'Gemini Flash Image', 'text to image', 'Google', 'AI image generation', 'FuseAITools'],

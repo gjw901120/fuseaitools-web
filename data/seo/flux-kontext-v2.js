@@ -97,7 +97,7 @@ export default {
     },
     {
       question: 'How is Flux 2 priced on FuseAITools?',
-      answer: 'RULE credits by <strong>quality (1K/2K)</strong> per workflow modelKey. See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
+      answer: 'RULE credits by <strong>quality (1K/2K)</strong> per workflow modelKey. See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>10 free credits</strong> on sign-up.'
     }
   ],
   sections: [
@@ -111,7 +111,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🖼️ Flux 2 on FuseAITools',
-      html: '<strong>Flux 2 (v2)</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is Black Forest Labs\' dedicated 1K/2K image line—four workflows split into <strong>Flux 2</strong> (fast drafts) and <strong>Flux 2 Pro</strong> (higher fidelity). Image-to-image modes accept <strong>1–8</strong> reference images; prompts are <strong>3–5000 characters</strong>. Credits scale by resolution (1K vs 2K). New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Flux 2 (v2)</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is Black Forest Labs\' dedicated 1K/2K image line—four workflows split into <strong>Flux 2</strong> (fast drafts) and <strong>Flux 2 Pro</strong> (higher fidelity). Image-to-image modes accept <strong>1–8</strong> reference images; prompts are <strong>3–5000 characters</strong>. Credits scale by resolution (1K vs 2K). New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -421,7 +421,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

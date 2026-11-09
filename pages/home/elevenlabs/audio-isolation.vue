@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs AI Audio Isolation',
   description:
-    'ElevenLabs AI Audio Isolation on FuseAITools—extract vocals or instruments from mixed audio uploads up to 10MB. 20 free credits on sign-up.',
+    'ElevenLabs AI Audio Isolation on FuseAITools—extract vocals or instruments from mixed audio uploads up to 10MB. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/elevenlabs/audio-isolation',
   keywords: ['ElevenLabs', 'Audio Isolation', 'vocal isolation', 'stem separation', 'FuseAITools'],

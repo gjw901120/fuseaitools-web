@@ -16,7 +16,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Qwen v2 Image Edit',
-  description: 'Edit images with Qwen v2 on FuseAITools—upload a reference image, prompt up to 800 chars, 8 aspect ratios including 21:9 ultra-wide, seed control. Pay per image with credits; 20 free credits on sign-up.',
+  description: 'Edit images with Qwen v2 on FuseAITools—upload a reference image, prompt up to 800 chars, 8 aspect ratios including 21:9 ultra-wide, seed control. Pay per image with credits; 10 free credits on sign-up.',
   category: 'image',
   route: '/home/qwen/v2-image-edit',
   keywords: ['Qwen v2', 'Qwen2', 'Image Edit', 'AI image editor', 'image editing', '21:9', 'FuseAITools'],

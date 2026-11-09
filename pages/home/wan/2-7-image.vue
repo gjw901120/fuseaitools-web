@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Wan 2.7 Image Generator',
   description:
-    'Wan 2.7 Image on FuseAITools—text-to-image and editing with up to 9 reference images, 1K/2K output, eight aspect ratios, thinking mode and color palette. Pair with Wan video workflows. 20 free credits on sign-up.',
+    'Wan 2.7 Image on FuseAITools—text-to-image and editing with up to 9 reference images, 1K/2K output, eight aspect ratios, thinking mode and color palette. Pair with Wan video workflows. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/wan/2-7-image',
   keywords: ['Wan', 'Wan 2.7 Image', 'AI image generation', 'image editing', 'Alibaba Wan', 'FuseAITools'],

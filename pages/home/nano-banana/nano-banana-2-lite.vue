@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Nano Banana 2 Lite Image Generator',
   description:
-    'Nano Banana 2 Lite on FuseAITools—unified text-to-image & image-to-image in one mode, prompts up to 20k chars, optional 0–10 references, fifteen aspect ratios, single flat price. 20 free credits on sign-up.',
+    'Nano Banana 2 Lite on FuseAITools—unified text-to-image & image-to-image in one mode, prompts up to 20k chars, optional 0–10 references, fifteen aspect ratios, single flat price. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/nano-banana/nano-banana-2-lite',
   keywords: ['Nano Banana 2 Lite', 'text to image', 'image to image', 'AI image generation', 'FuseAITools'],

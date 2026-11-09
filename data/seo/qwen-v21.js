@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Qwen v2.1 priced on FuseAITools?',
-      answer: 'Pricing is matched by <strong>resolution</strong> (1K or 2K)—the exact credits appear on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+      answer: 'Pricing is matched by <strong>resolution</strong> (1K or 2K)—the exact credits appear on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '✨ Qwen v2.1 on FuseAITools',
-      html: 'Qwen v2.1 on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>resolution-billed image model</strong> with long <strong>5000-character prompts</strong>, <strong>9 aspect ratios</strong>, real <strong>transparent backgrounds</strong> and <strong>PNG / WebP / JPEG</strong> output. Generate from text, or drive edits with up to <strong>10 reference images</strong> and an optional black/white <strong>local-edit mask</strong>. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Qwen v2.1 on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>resolution-billed image model</strong> with long <strong>5000-character prompts</strong>, <strong>9 aspect ratios</strong>, real <strong>transparent backgrounds</strong> and <strong>PNG / WebP / JPEG</strong> output. Generate from text, or drive edits with up to <strong>10 reference images</strong> and an optional black/white <strong>local-edit mask</strong>. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -225,7 +225,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen v2.1 costs per resolution.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen v2.1 costs per resolution.'
     },
     {
       pricing: false,

@@ -115,7 +115,7 @@ export default {
     },
     {
       question: 'How is ElevenLabs priced on FuseAITools?',
-      answer: 'TTS workflows bill per <strong>1K characters</strong> (<code>elevenlabs_text_to_speech_multilingual</code> / <code>elevenlabs_text_to_speech_turbo</code>); STT, Sound Effect, and Isolation bill per <strong>minute</strong>. Exact credits appear on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'TTS workflows bill per <strong>1K characters</strong> (<code>elevenlabs_text_to_speech_multilingual</code> / <code>elevenlabs_text_to_speech_turbo</code>); STT, Sound Effect, and Isolation bill per <strong>minute</strong>. Exact credits appear on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -129,7 +129,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎙️ ElevenLabs on FuseAITools',
-      html: 'ElevenLabs on <a href="/" class="seo-inline-link">FuseAITools</a> covers professional voice and audio in the browser—natural <strong>text-to-speech</strong> (Multilingual v2 or fast Turbo 2.5), accurate <strong>speech-to-text</strong> with optional diarization, AI <strong>sound effects</strong>, and <strong>audio isolation</strong> for stems. Pick a voice, paste or upload audio, and download results from history. Credits appear on the Generate button before you submit; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'ElevenLabs on <a href="/" class="seo-inline-link">FuseAITools</a> covers professional voice and audio in the browser—natural <strong>text-to-speech</strong> (Multilingual v2 or fast Turbo 2.5), accurate <strong>speech-to-text</strong> with optional diarization, AI <strong>sound effects</strong>, and <strong>audio isolation</strong> for stems. Pick a voice, paste or upload audio, and download results from history. Credits appear on the Generate button before you submit; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -302,7 +302,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

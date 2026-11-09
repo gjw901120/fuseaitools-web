@@ -79,7 +79,7 @@ export default {
     },
     {
       question: 'How is Seedream 5 Pro priced on FuseAITools?',
-      answer: 'Pricing is matched by <strong>resolution</strong>—1K or 2K for generation, 1K / 1.5K / 2K for layer decomposition—with the exact credit cost shown on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+      answer: 'Pricing is matched by <strong>resolution</strong>—1K or 2K for generation, 1K / 1.5K / 2K for layer decomposition—with the exact credit cost shown on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
     }
   ],
   sections: [
@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '👑 Seedream 5 Pro on FuseAITools',
-      html: '<strong>Seedream 5 Pro</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is ByteDance\'s premium image tier: <strong>prompts up to 5000 characters</strong>, <strong>8 aspect ratios</strong> from 1:1 to 21:9, and <strong>1K / 2K resolution as the billing dimension</strong>. It ships three workflows—text to image, image to image with up to <strong>10 reference images</strong>, and <strong>layer decomposition</strong> that splits one artwork into editable PNG layers. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Seedream 5 Pro</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is ByteDance\'s premium image tier: <strong>prompts up to 5000 characters</strong>, <strong>8 aspect ratios</strong> from 1:1 to 21:9, and <strong>1K / 2K resolution as the billing dimension</strong>. It ships three workflows—text to image, image to image with up to <strong>10 reference images</strong>, and <strong>layer decomposition</strong> that splits one artwork into editable PNG layers. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -249,7 +249,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Seedream 5 Pro costs per resolution.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Seedream 5 Pro costs per resolution.'
     },
     {
       pricing: false,

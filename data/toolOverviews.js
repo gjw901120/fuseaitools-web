@@ -591,7 +591,7 @@ Control: Style—movements (Renaissance, Baroque, Impressionist, Modern), techni
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Nano Banana on FuseAITools is Google\'s Gemini Flash Image suite across two generations: v1 (Text to Image, Image to Image, Pro Generate) and the v2 family (Nano Banana 2, 2 Lite, and 2.1) with 20k prompts and optional reference images. Nano Banana 2 Lite unifies text-to-image and image-to-image at a single flat price; 2.1 adds 1K/2K/4K resolution billing. Credits shown before each run. Pair with Seedream for ByteDance image workflows. New users receive 20 free credits on sign-up.',
+    intro: 'Nano Banana on FuseAITools is Google\'s Gemini Flash Image suite across two generations: v1 (Text to Image, Image to Image, Pro Generate) and the v2 family (Nano Banana 2, 2 Lite, and 2.1) with 20k prompts and optional reference images. Nano Banana 2 Lite unifies text-to-image and image-to-image at a single flat price; 2.1 adds 1K/2K/4K resolution billing. Credits shown before each run. Pair with Seedream for ByteDance image workflows. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Nano Banana v1 · Text to Image', path: '/home/nano-banana/generate', description: 'Generate from text—prompt up to 5000 chars, eleven aspect ratios including auto, PNG or JPEG output.' },
       { name: 'Nano Banana v1 · Image to Image', path: '/home/nano-banana/edit', description: 'Edit 1–10 images with natural-language prompts—style transfer, detail polish, or batch look unification.' },
@@ -633,7 +633,7 @@ All workflows run in the browser—no local GPU required.`
       },
       {
         title: 'Try Nano Banana on FuseAITools',
-        content: `Nano Banana on FuseAITools delivers fast Gemini Flash Image generation and editing—whether you need social covers, style transfers, or 4K production assets. Open any workflow above and start creating. New users receive 20 free credits on sign-up.`
+        content: `Nano Banana on FuseAITools delivers fast Gemini Flash Image generation and editing—whether you need social covers, style transfers, or 4K production assets. Open any workflow above and start creating. New users receive 10 free credits on sign-up.`
       }
     ]
   },
@@ -698,7 +698,7 @@ Vary: Subtle tweaks or bold new directions; style transfer; composition and view
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedream on FuseAITools is ByteDance\'s image suite with eight workflows: 5 Lite for text-to-image and image-to-image at Basic (2K) or High (3K), the premium 5 Pro tier with 5000-char prompts and 1K/2K resolution billing, and the speed-first 5 Flash tier where 1K, 1.5K and 2K cost the same. Both new families accept up to 10 reference images and add layer decomposition that splits one artwork into editable PNG layers. Pair with Seedance for ByteDance video workflows. Credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Seedream on FuseAITools is ByteDance\'s image suite with eight workflows: 5 Lite for text-to-image and image-to-image at Basic (2K) or High (3K), the premium 5 Pro tier with 5000-char prompts and 1K/2K resolution billing, and the speed-first 5 Flash tier where 1K, 1.5K and 2K cost the same. Both new families accept up to 10 reference images and add layer decomposition that splits one artwork into editable PNG layers. Pair with Seedance for ByteDance video workflows. Credits shown before each run. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Seedream 5 Lite Text to Image', path: '/home/seedream/5-lite-text-to-image', description: 'Generate from text—prompt up to 2995 chars, Basic 2K or High 3K, aspect ratios 1:1 through 21:9.' },
       { name: 'Seedream 5 Lite Image to Image', path: '/home/seedream/5-lite-image-to-image', description: 'Edit 1–5 images with natural-language prompts—lighting, style transfer, or frame prep for Seedance video.' },
@@ -738,7 +738,7 @@ All workflows run in the browser—no local GPU required.`
       },
       {
         title: 'Try Seedream on FuseAITools',
-        content: `Seedream on FuseAITools spans three tiers—5 Lite for flexible 2K/3K generation and editing, 5 Pro for premium hero assets with 10-image references and editable layer decomposition, and 5 Flash for bulk drafting where 1K, 1.5K and 2K cost the same credits. Open any workflow above and start creating. New users receive 20 free credits on sign-up.`
+        content: `Seedream on FuseAITools spans three tiers—5 Lite for flexible 2K/3K generation and editing, 5 Pro for premium hero assets with 10-image references and editable layer decomposition, and 5 Flash for bulk drafting where 1K, 1.5K and 2K cost the same credits. Open any workflow above and start creating. New users receive 10 free credits on sign-up.`
       }
     ]
   },
@@ -747,7 +747,7 @@ All workflows run in the browser—no local GPU required.`
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Qwen on FuseAITools is Alibaba\'s image generation and editing suite: v1 Classic with full parameter control (steps, guidance, acceleration) across three workflows, Z-Image for fast aspect-ratio T2I, v2 for streamlined generation, v2.1 with transparent backgrounds and multi-image references, and v3 / v3 Pro with smart prompt rewriting. Twelve workflows cover text-to-image, image-to-image, and image editing. New users receive 20 free credits on sign-up.',
+    intro: 'Qwen on FuseAITools is Alibaba\'s image generation and editing suite: v1 Classic with full parameter control (steps, guidance, acceleration) across three workflows, Z-Image for fast aspect-ratio T2I, v2 for streamlined generation, v2.1 with transparent backgrounds and multi-image references, and v3 / v3 Pro with smart prompt rewriting. Twelve workflows cover text-to-image, image-to-image, and image editing. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Qwen v1 · Text to Image', path: '/home/qwen/text-to-image', description: 'Generate from prompts up to 5000 chars—6 size presets, steps 2–250, guidance 0–20, acceleration, negative prompt, seed, PNG/JPEG.' },
       { name: 'Qwen v1 · Image to Image', path: '/home/qwen/image-to-image', description: 'Transform a reference image with denoising strength 0–1 and full parameter control—steps, guidance, seed, acceleration, safety checker.' },
@@ -791,7 +791,7 @@ When to pick which: Use v1 Classic for full creative control and long prompts; Z
       },
       {
         title: 'Try Qwen on FuseAITools',
-        content: 'Qwen on FuseAITools delivers image generation and editing across four tiers—v1 Classic for power users, Z-Image for speed, v2/v2.1 for transparent backgrounds and multi-image references, and v3 / v3 Pro for smart prompt rewriting with negative-prompt control. Open any workflow above and start creating. New users receive 20 free credits on sign-up.'
+        content: 'Qwen on FuseAITools delivers image generation and editing across four tiers—v1 Classic for power users, Z-Image for speed, v2/v2.1 for transparent backgrounds and multi-image references, and v3 / v3 Pro for smart prompt rewriting with negative-prompt control. Open any workflow above and start creating. New users receive 10 free credits on sign-up.'
       }
     ]
   },
@@ -1154,7 +1154,7 @@ Output: Up to 1080p (1920×1080), 24fps or 30fps, MP4 (H.264). Clip length typic
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Runway on FuseAITools covers three linked video workflows: Generate short clips from text or a reference still (5s/10s at 720p/1080p), Extend a completed generate task with a continuation prompt, and Aleph to restyle uploaded footage while preserving motion. New users receive 20 free credits on sign-up.',
+    intro: 'Runway on FuseAITools covers three linked video workflows: Generate short clips from text or a reference still (5s/10s at 720p/1080p), Extend a completed generate task with a continuation prompt, and Aleph to restyle uploaded footage while preserving motion. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Runway Generate', path: '/home/runway/generate', description: 'Text-to-video or optional image-to-video—prompt ≤1800 chars, 5s/10s, 720p/1080p, five aspect ratios when no image.' },
       { name: 'Runway Extend', path: '/home/runway/extend', description: 'Continue a Runway Generate task with prompt ≤1000 chars at 720p/1080p—task ID from your generate history.' },
@@ -1184,7 +1184,7 @@ Aleph (\`runway_aleph\`): Uploaded video URL + prompt; optional reference image,
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Luma Dream Machine on FuseAITools is a focused video modification workflow: upload a short clip (MP4/MOV/AVI, max 500MB, 10 seconds), describe visual changes in English, and receive a modified render—ideal for 3D-style tweaks and VFX experiments. New users receive 20 free credits on sign-up.',
+    intro: 'Luma Dream Machine on FuseAITools is a focused video modification workflow: upload a short clip (MP4/MOV/AVI, max 500MB, 10 seconds), describe visual changes in English, and receive a modified render—ideal for 3D-style tweaks and VFX experiments. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Luma Video Modification', path: '/home/luma/generate', description: 'Upload video + English modification prompt—MP4/MOV/AVI up to 500MB and 10s; optional watermark; per-run credits (modelKey Luma).' }
     ],
@@ -1275,7 +1275,7 @@ Pro Storyboard: Shot planning, timing and transitions, dynamic preview, team com
     category: 'Image & Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Wan on FuseAITools is Alibaba\'s multimodal suite for image and video. Use Wan 2.6 for text, image, and video-to-video clips (5–15s, multi-shot, 720p/1080p), Wan 2.7 for director-style text-to-video, frame-controlled image-to-video, natural-language Video Edit, and R2V with up to five references—plus Wan 2.7 Image and Image Pro. Wan 3.0 unifies text, first/last frame, all-capability reference, file, and link into one entry with 2–30s clips at 480p/720p/1080p and per-second pricing. New users receive 20 free credits on sign-up.',
+    intro: 'Wan on FuseAITools is Alibaba\'s multimodal suite for image and video. Use Wan 2.6 for text, image, and video-to-video clips (5–15s, multi-shot, 720p/1080p), Wan 2.7 for director-style text-to-video, frame-controlled image-to-video, natural-language Video Edit, and R2V with up to five references—plus Wan 2.7 Image and Image Pro. Wan 3.0 unifies text, first/last frame, all-capability reference, file, and link into one entry with 2–30s clips at 480p/720p/1080p and per-second pricing. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Wan 2.7 Image', path: '/home/wan/2-7-image', description: 'Text-to-image and image editing—optional up to 9 reference images, aspect ratios when generating from prompt only, batch n, 1K/2K, sequential mode, and advanced controls.' },
       { name: 'Wan 2.7 Image Pro', path: '/home/wan/2-7-image-pro', description: 'Same as Wan 2.7 Image with 4K output when no input image and sequential mode is off—built for hero assets and print-ready creatives.' },
@@ -1330,7 +1330,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
       },
       {
         title: 'Try Wan on FuseAITools',
-        content: `Wan on FuseAITools is your hub for Alibaba Wan image and video models. Start with Wan 2.7 Image / Image Pro for stills, use Wan 2.6 for fast multi-shot video from text, images, or footage, and step up to Wan 2.7 for editing and up-to-five-reference R2V. New users receive 20 free credits on sign-up—open any workflow card above or see pricing for credit packs.`
+        content: `Wan on FuseAITools is your hub for Alibaba Wan image and video models. Start with Wan 2.7 Image / Image Pro for stills, use Wan 2.6 for fast multi-shot video from text, images, or footage, and step up to Wan 2.7 for editing and up-to-five-reference R2V. New users receive 10 free credits on sign-up—open any workflow card above or see pricing for credit packs.`
       }
     ]
   },
@@ -1339,7 +1339,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'HappyHorse on FuseAITools delivers native audio-video generation across the v1 and v1.1 lines. v1 covers four workflows—text-to-video, image-to-video, reference-to-video (1–9 images), and video edit. v1.1 streamlines text, image, and reference generation with nine aspect ratios (adds 4:5, 5:4, 9:21, 21:9) and no seed. Clips run 3–15s at 720p/1080p with credits shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'HappyHorse on FuseAITools delivers native audio-video generation across the v1 and v1.1 lines. v1 covers four workflows—text-to-video, image-to-video, reference-to-video (1–9 images), and video edit. v1.1 streamlines text, image, and reference generation with nine aspect ratios (adds 4:5, 5:4, 9:21, 21:9) and no seed. Clips run 3–15s at 720p/1080p with credits shown before each run. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'HappyHorse v1 Text to Video', path: '/home/happy-horse/v1-text-to-video', description: 'Prompt-only generation with native audio-video sync—3–15s, 720p/1080p, aspect ratios 16:9 through 3:4.' },
       { name: 'HappyHorse v1 Image to Video', path: '/home/happy-horse/v1-image-to-video', description: 'Animate one still image with optional prompt—3–15s at 720p/1080p.' },
@@ -1382,7 +1382,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
       },
       {
         title: 'Try HappyHorse on FuseAITools',
-        content: `HappyHorse v1 on FuseAITools is built for dialogue-driven and audio-synced video—social clips, ads, and quick edits in one hub. Start with text or image workflows, use reference mode for cast consistency, or open Video Edit for natural-language changes. New users receive 20 free credits on sign-up—open any workflow card above or see pricing for plans.`
+        content: `HappyHorse v1 on FuseAITools is built for dialogue-driven and audio-synced video—social clips, ads, and quick edits in one hub. Start with text or image workflows, use reference mode for cast consistency, or open Video Edit for natural-language changes. New users receive 10 free credits on sign-up—open any workflow card above or see pricing for plans.`
       }
     ]
   },
@@ -1391,7 +1391,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Hailuo 2.3 (MiniMax) on FuseAITools animates a single image with a text prompt—realistic motion, expressive characters, and cinematic visuals at 6s/10s and 768P/1080P. Choose Pro for highest fidelity or Standard for faster iteration. Image-to-video only; new users receive 20 free credits on sign-up.',
+    intro: 'Hailuo 2.3 (MiniMax) on FuseAITools animates a single image with a text prompt—realistic motion, expressive characters, and cinematic visuals at 6s/10s and 768P/1080P. Choose Pro for highest fidelity or Standard for faster iteration. Image-to-video only; new users receive 10 free credits on sign-up.',
     features: [
       { name: 'Hailuo 2.3 Pro Image to Video', path: '/home/hailuo/image-to-video-pro', description: 'High-fidelity I2V—prompt ≤5000, one image (JPEG/PNG/WebP, max 10MB), 6s/10s, 768P/1080P (10s → 768P only).' },
       { name: 'Hailuo 2.3 Standard Image to Video', path: '/home/hailuo/image-to-video-standard', description: 'Same controls as Pro—balanced speed and quality for drafts and batch content.' }
@@ -1536,7 +1536,7 @@ Resolution and duration: Match duration to platform (e.g. 5–10s for shorts). U
     category: 'Video',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro, Seedance 2, Seedance 2 Mini, and Seedance 2.5—ten workflows for text, image, and multimodal generation. Pair with Seedream for 2K/3K stills and image edits. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4–12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s up to 4K; Seedance 2 Mini provides the same at 480p/720p for cost-effective generation; Seedance 2.5 extends duration to 4–30s at up to 1080p. Credits are shown before each run. New users receive 20 free credits on sign-up.',
+    intro: 'Seedance on FuseAITools covers ByteDance video models from v1 Lite/Pro through 1.5 Pro, Seedance 2, Seedance 2 Mini, and Seedance 2.5—ten workflows for text, image, and multimodal generation. Pair with Seedream for 2K/3K stills and image edits. v1 offers 5/10s clips up to 1080p; 1.5 Pro adds 4–12s with optional audio; Seedance 2 supports first/last frame and reference media at 4–15s up to 4K; Seedance 2 Mini provides the same at 480p/720p for cost-effective generation; Seedance 2.5 extends duration to 4–30s at up to 1080p. Credits are shown before each run. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Seedance v1 Lite Text to Video', path: '/home/seedance/v1-lite-text-to-video', description: 'Prompt-only clips—16:9 through 9:21, 480p/720p/1080p, 5s or 10s. Camera fixed, seed, and safety checker.' },
       { name: 'Seedance v1 Lite Image to Video', path: '/home/seedance/v1-lite-image-to-video', description: 'Animate one image with optional end frame—5/10s at up to 1080p with camera and seed controls.' },
@@ -1588,7 +1588,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
       },
       {
         title: 'Try Seedance on FuseAITools',
-        content: `Seedance on FuseAITools spans ten workflows—from v1 Lite/Pro text and image modes through 1.5 Pro with optional audio, Seedance 2 multimodal generation at up to 4K, Seedance 2 Mini for lightweight 480p/720p output, to Seedance 2.5 for extended 4–30s duration at up to 1080p. Open any workflow above, review credits on the Generate button, and start creating. New users receive 20 free credits on sign-up.`
+        content: `Seedance on FuseAITools spans ten workflows—from v1 Lite/Pro text and image modes through 1.5 Pro with optional audio, Seedance 2 multimodal generation at up to 4K, Seedance 2 Mini for lightweight 480p/720p output, to Seedance 2.5 for extended 4–30s duration at up to 1080p. Open any workflow above, review credits on the Generate button, and start creating. New users receive 10 free credits on sign-up.`
       }
     ]
   },
@@ -1597,7 +1597,7 @@ All workflows run in the browser on FuseAITools with credit-based pricing—no l
     category: 'Image',
     showCategory: false,
     introFullWidth: true,
-    intro: 'Imagen 4 on FuseAITools is Google\'s text-to-image suite—Generate for balanced quality, Fast for speed-first single-image drafts, and Ultra for flagship fidelity. All tiers support prompts up to 5000 characters, optional negative prompts, five aspect ratios, and seed controls. New users receive 20 free credits on sign-up.',
+    intro: 'Imagen 4 on FuseAITools is Google\'s text-to-image suite—Generate for balanced quality, Fast for speed-first single-image drafts, and Ultra for flagship fidelity. All tiers support prompts up to 5000 characters, optional negative prompts, five aspect ratios, and seed controls. New users receive 10 free credits on sign-up.',
     features: [
       { name: 'Imagen 4 Generate', path: '/home/imagen4/imagen4-generate', description: 'Balanced text-to-image—one image per run, string seed (≤500 chars), five aspect ratios (default 1:1).' },
       { name: 'Imagen 4 Fast', path: '/home/imagen4/imagen4-fast', description: 'Speed tier—one fast image per request, integer seed, five aspect ratios (default 16:9).' },
@@ -1626,7 +1626,7 @@ All workflows run in the browser—no local GPU required.`
       },
       {
         title: 'Try Imagen 4 on FuseAITools',
-        content: `Imagen 4 on FuseAITools gives you three Google tiers in one tabbed workflow—Generate, Fast, and Ultra—without rewriting prompts. Credits appear before each run; new users get 20 free credits on sign-up. Start from any tier and switch tabs as your project moves from draft to final.`
+        content: `Imagen 4 on FuseAITools gives you three Google tiers in one tabbed workflow—Generate, Fast, and Ultra—without rewriting prompts. Credits appear before each run; new users get 10 free credits on sign-up. Start from any tier and switch tabs as your project moves from draft to final.`
       }
     ]
   }

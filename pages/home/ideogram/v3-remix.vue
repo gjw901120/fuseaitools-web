@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram V3 Remix',
   description:
-    'Ideogram V3 remix on FuseAITools—source image + prompt, strength 0.01–1, 1–4 outputs, style and negative prompt. 20 free credits on sign-up.',
+    'Ideogram V3 remix on FuseAITools—source image + prompt, strength 0.01–1, 1–4 outputs, style and negative prompt. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/v3-remix',
   keywords: ['Ideogram', 'V3', 'Remix', 'AI image remix', 'strength', 'FuseAITools'],

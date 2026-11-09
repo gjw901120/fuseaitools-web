@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🌐 Kling 3.0 Omni on FuseAITools',
-      html: '<strong>Kling 3.0 Omni</strong> is the most flexible member of the Kling 3.x family on <a href="/" class="seo-inline-link">FuseAITools</a>—three workflows (<strong>Text to Video</strong>, <strong>Image to Video</strong>, and <strong>Reference to Video</strong>) sharing a rich control set: prompt up to <strong>3072 characters</strong>, <strong>3–15s</strong> duration, <strong>720p / 1080p / 4K</strong> resolution, optional <strong>native audio</strong>, and <strong>smart</strong> or <strong>custom</strong> multi-shot. You can attach reusable <strong>subject elements</strong> (characters or objects) and reference them with <code>@name</code>. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Kling 3.0 Omni</strong> is the most flexible member of the Kling 3.x family on <a href="/" class="seo-inline-link">FuseAITools</a>—three workflows (<strong>Text to Video</strong>, <strong>Image to Video</strong>, and <strong>Reference to Video</strong>) sharing a rich control set: prompt up to <strong>3072 characters</strong>, <strong>3–15s</strong> duration, <strong>720p / 1080p / 4K</strong> resolution, optional <strong>native audio</strong>, and <strong>smart</strong> or <strong>custom</strong> multi-shot. You can attach reusable <strong>subject elements</strong> (characters or objects) and reference them with <code>@name</code>. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -271,7 +271,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

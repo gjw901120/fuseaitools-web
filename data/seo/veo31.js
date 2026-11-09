@@ -97,7 +97,7 @@ export default {
     },
     {
       question: 'How is Veo 3.1 priced on FuseAITools?',
-      answer: 'Generate modes bill per video at the model you select—exact credits appear on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Generate modes bill per video at the model you select—exact credits appear on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -111,7 +111,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Veo 3.1 on FuseAITools',
-      html: 'Veo 3.1 on <a href="/" class="seo-inline-link">FuseAITools</a> brings <strong>Google DeepMind video generation</strong> to the browser—text-to-video, keyframe animation, reference-driven clips, and video extension in one tool stack. Choose <strong>Standard (veo3)</strong> for higher quality, <strong>Fast (veo3_fast)</strong> for quicker previews, or <strong>Lite (veo3_lite)</strong> as the lightweight tier. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Veo 3.1 on <a href="/" class="seo-inline-link">FuseAITools</a> brings <strong>Google DeepMind video generation</strong> to the browser—text-to-video, keyframe animation, reference-driven clips, and video extension in one tool stack. Choose <strong>Standard (veo3)</strong> for higher quality, <strong>Fast (veo3_fast)</strong> for quicker previews, or <strong>Lite (veo3_lite)</strong> as the lightweight tier. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -272,7 +272,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Veo 3.1 per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Veo 3.1 per-generation costs.'
     },
     {
       pricing: false,

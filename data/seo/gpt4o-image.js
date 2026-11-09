@@ -32,7 +32,7 @@ export default {
       },
       {
         question: 'How is GPT 4o Image priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/gpt-image/image-to-image': [
@@ -54,7 +54,7 @@ export default {
       },
       {
         question: 'How is GPT 4o Image priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/gpt-image/v2-text-to-image': [
@@ -76,7 +76,7 @@ export default {
       },
       {
         question: 'How is GPT 4o Image priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/gpt-image/v2-image-to-image': [
@@ -98,7 +98,7 @@ export default {
       },
       {
         question: 'How is GPT 4o Image priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>GPT_4o_image</code>. Credit cost may vary based on current pricing. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ]
   },
@@ -119,7 +119,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🆕 GPT 4o Image on FuseAITools',
-      html: 'GPT 4o Image on <a href="/" class="seo-inline-link">FuseAITools</a> is OpenAI\'s <strong>most advanced image generation model</strong>, offering a single unified interface for both creating and editing images. Key highlights include support for <strong>up to 5 reference images</strong> (JPEG, PNG, WebP; max 10MB each), <strong>optional prompt enhancement</strong> optimized for 3D and specific scenarios, and a <strong>fallback mechanism</strong> that ensures generation reliability. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'GPT 4o Image on <a href="/" class="seo-inline-link">FuseAITools</a> is OpenAI\'s <strong>most advanced image generation model</strong>, offering a single unified interface for both creating and editing images. Key highlights include support for <strong>up to 5 reference images</strong> (JPEG, PNG, WebP; max 10MB each), <strong>optional prompt enhancement</strong> optimized for 3D and specific scenarios, and a <strong>fallback mechanism</strong> that ensures generation reliability. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -250,7 +250,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for GPT 4o Image per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for GPT 4o Image per-generation costs.'
     },
     {
       pricing: false,

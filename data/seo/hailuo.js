@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Hailuo priced on FuseAITools?',
-      answer: 'Both tiers use <strong>RULE</strong> pricing—credits depend on <strong>duration</strong> and <strong>quality</strong> (768p/1080p). The exact amount appears on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans.'
+      answer: 'Both tiers use <strong>RULE</strong> pricing—credits depend on <strong>duration</strong> and <strong>quality</strong> (768p/1080p). The exact amount appears on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Hailuo on FuseAITools',
-      html: '<strong>Hailuo 2.3</strong> (MiniMax) on <a href="/" class="seo-inline-link">FuseAITools</a> animates a <strong>single input image</strong> with a text prompt—realistic motion, expressive characters, and cinematic lighting. Choose <strong>Pro</strong> for highest fidelity or <strong>Standard</strong> for faster iteration; both share the same form controls (6s/10s, 768P/1080P). This hub is <strong>image-to-video only</strong>—not text-to-video from scratch. Credits appear on Generate before submission. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Hailuo 2.3</strong> (MiniMax) on <a href="/" class="seo-inline-link">FuseAITools</a> animates a <strong>single input image</strong> with a text prompt—realistic motion, expressive characters, and cinematic lighting. Choose <strong>Pro</strong> for highest fidelity or <strong>Standard</strong> for faster iteration; both share the same form controls (6s/10s, 768P/1080P). This hub is <strong>image-to-video only</strong>—not text-to-video from scratch. Credits appear on Generate before submission. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -213,7 +213,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

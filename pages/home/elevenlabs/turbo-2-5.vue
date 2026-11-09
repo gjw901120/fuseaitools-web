@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs Turbo 2.5 TTS',
   description:
-    'ElevenLabs Turbo 2.5 on FuseAITools—fast text-to-speech with voice controls, context text, and low-latency output for assistants and batch narration. 20 free credits on sign-up.',
+    'ElevenLabs Turbo 2.5 on FuseAITools—fast text-to-speech with voice controls, context text, and low-latency output for assistants and batch narration. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/elevenlabs/turbo-2-5',
   keywords: ['ElevenLabs', 'Turbo 2.5', 'TTS', 'fast voice synthesis', 'FuseAITools'],

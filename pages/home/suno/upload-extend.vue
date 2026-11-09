@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Suno Audio Expansion',
   description:
-    'Suno Audio Expansion on FuseAITools—upload short clips (≤2 min) and expand into fuller tracks. Custom or default params, V3.5–V5. 20 free credits on sign-up.',
+    'Suno Audio Expansion on FuseAITools—upload short clips (≤2 min) and expand into fuller tracks. Custom or default params, V3.5–V5. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/suno/upload-extend',
   keywords: ['Suno', 'Audio Expansion', 'expand music', 'AI music', 'FuseAITools'],

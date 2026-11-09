@@ -65,7 +65,7 @@ export default {
     },
     {
       question: 'How do I try Seedance 2 on FuseAITools?',
-      answer: 'Open Seedance 2 or 2 Fast above and generate. New users receive <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
+      answer: 'Open Seedance 2 or 2 Fast above and generate. New users receive <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
     }
   ],
   sections: [
@@ -79,7 +79,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Seedance 2 on FuseAITools',
-      html: 'Seedance 2 on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>multimodal video</strong> line—condition generation with <strong>first and last frames</strong>, plus optional reference <strong>images, videos, and audio</strong>. Choose <strong>Seedance 2 Fast</strong> for quicker iteration or <strong>Seedance 2</strong> when you need up to <strong>five reference videos</strong>. Output is <strong>4–15 seconds</strong> at <strong>480p, 720p, 1080p, or 4K</strong>; credits scale by duration and reference usage. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Seedance 2 on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>multimodal video</strong> line—condition generation with <strong>first and last frames</strong>, plus optional reference <strong>images, videos, and audio</strong>. Choose <strong>Seedance 2 Fast</strong> for quicker iteration or <strong>Seedance 2</strong> when you need up to <strong>five reference videos</strong>. Output is <strong>4–15 seconds</strong> at <strong>480p, 720p, 1080p, or 4K</strong>; credits scale by duration and reference usage. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -195,7 +195,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

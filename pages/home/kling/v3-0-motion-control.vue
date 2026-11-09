@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Kling 3.0 Motion Control',
   description:
-    'Kling 3.0 Motion Control on FuseAITools—reference image + video with std/pro quality and background source control. 20 free credits on sign-up.',
+    'Kling 3.0 Motion Control on FuseAITools—reference image + video with std/pro quality and background source control. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/kling/v3-0-motion-control',
   keywords: ['Kling', 'Motion Control', '3.0', 'Kuaishou', 'FuseAITools'],

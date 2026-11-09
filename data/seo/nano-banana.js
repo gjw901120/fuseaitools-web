@@ -133,7 +133,7 @@ export default {
     },
     {
       question: 'How is Nano Banana priced on FuseAITools?',
-      answer: 'Base <strong>Text to Image</strong> and <strong>Image to Image</strong> use flat per-image credits. <strong>Pro</strong> and <strong>Nano Banana 2</strong> vary by <strong>resolution</strong> tier—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Base <strong>Text to Image</strong> and <strong>Image to Image</strong> use flat per-image credits. <strong>Pro</strong> and <strong>Nano Banana 2</strong> vary by <strong>resolution</strong> tier—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -147,7 +147,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🍌 Nano Banana on FuseAITools',
-      html: 'Nano Banana on <a href="/" class="seo-inline-link">FuseAITools</a> is Google\'s <strong>Gemini Flash Image</strong> suite in two generations: <strong>v1</strong> covers <strong>Text to Image</strong>, <strong>Image to Image</strong>, and <strong>Pro Generate</strong> (5000-char prompts; Pro adds mandatory 1–10 references and 1K/2K/4K). <strong>v2 — Nano Banana 2</strong> raises the prompt cap to <strong>20,000 characters</strong> with <strong>optional 0–14</strong> image inputs. Credits appear on the Generate button before you submit; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Nano Banana on <a href="/" class="seo-inline-link">FuseAITools</a> is Google\'s <strong>Gemini Flash Image</strong> suite in two generations: <strong>v1</strong> covers <strong>Text to Image</strong>, <strong>Image to Image</strong>, and <strong>Pro Generate</strong> (5000-char prompts; Pro adds mandatory 1–10 references and 1K/2K/4K). <strong>v2 — Nano Banana 2</strong> raises the prompt cap to <strong>20,000 characters</strong> with <strong>optional 0–14</strong> image inputs. Credits appear on the Generate button before you submit; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -347,7 +347,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

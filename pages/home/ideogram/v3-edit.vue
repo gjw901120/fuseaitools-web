@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram V3 Image Edit',
   description:
-    'Ideogram V3 mask-based image edit on FuseAITools—upload image + mask, inpaint with prompt, TURBO/BALANCED/QUALITY speed. 20 free credits on sign-up.',
+    'Ideogram V3 mask-based image edit on FuseAITools—upload image + mask, inpaint with prompt, TURBO/BALANCED/QUALITY speed. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/v3-edit',
   keywords: ['Ideogram', 'V3', 'Image Edit', 'mask', 'inpainting', 'FuseAITools'],

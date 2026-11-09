@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram V3 Text to Image Generator',
   description:
-    'Ideogram V3 text-to-image on FuseAITools—TURBO/BALANCED/QUALITY speed, MagicPrompt, six aspect ratios, and negative prompts. 20 free credits on sign-up.',
+    'Ideogram V3 text-to-image on FuseAITools—TURBO/BALANCED/QUALITY speed, MagicPrompt, six aspect ratios, and negative prompts. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/v3-text-to-image',
   keywords: ['Ideogram', 'V3', 'Text to Image', 'AI image generation', 'MagicPrompt', 'FuseAITools'],

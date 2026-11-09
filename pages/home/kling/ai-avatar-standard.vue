@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Kling AI Avatar Standard',
   description:
-    'Kling AI Avatar Standard on FuseAITools—talking-head video from avatar image, audio, and prompt up to 5000 chars. 20 free credits on sign-up.',
+    'Kling AI Avatar Standard on FuseAITools—talking-head video from avatar image, audio, and prompt up to 5000 chars. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/kling/ai-avatar-standard',
   keywords: ['Kling', 'AI Avatar', 'talking head', 'lip sync', 'FuseAITools'],

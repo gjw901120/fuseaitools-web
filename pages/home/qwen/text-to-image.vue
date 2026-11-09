@@ -16,7 +16,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Qwen v1 Text to Image Generator',
-  description: 'Generate images from text with Qwen v1 Classic on FuseAITools—prompts up to 5000 chars, inference steps 2–250, guidance scale 0–20, acceleration, negative prompt, and seed control. Pay per image with credits; 20 free credits on sign-up.',
+  description: 'Generate images from text with Qwen v1 Classic on FuseAITools—prompts up to 5000 chars, inference steps 2–250, guidance scale 0–20, acceleration, negative prompt, and seed control. Pay per image with credits; 10 free credits on sign-up.',
   category: 'image',
   route: '/home/qwen/text-to-image',
   keywords: ['Qwen v1', 'Qwen', 'Text to Image', 'T2I', 'AI image generation', 'image generator', 'FuseAITools'],

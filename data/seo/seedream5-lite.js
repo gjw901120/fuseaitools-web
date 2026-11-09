@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Seedream 5 Lite priced on FuseAITools?',
-      answer: 'Credits depend on <strong>aspect ratio</strong> and <strong>quality</strong> (Basic 2K vs High 3K)—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on <strong>aspect ratio</strong> and <strong>quality</strong> (Basic 2K vs High 3K)—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🖼️ Seedream 5 Lite on FuseAITools',
-      html: 'Seedream 5 Lite on <a href="/" class="seo-inline-link">FuseAITools</a> is ByteDance\'s <strong>multimodal image</strong> line—generate from text or edit existing images with natural-language instructions. Pick <strong>Basic (2K)</strong> or <strong>High (3K)</strong> quality and aspect ratios from square through <strong>21:9</strong>. Credits appear on the Generate button before you submit; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Seedream 5 Lite on <a href="/" class="seo-inline-link">FuseAITools</a> is ByteDance\'s <strong>multimodal image</strong> line—generate from text or edit existing images with natural-language instructions. Pick <strong>Basic (2K)</strong> or <strong>High (3K)</strong> quality and aspect ratios from square through <strong>21:9</strong>. Credits appear on the Generate button before you submit; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -228,7 +228,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

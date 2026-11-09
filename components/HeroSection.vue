@@ -15,7 +15,7 @@
           </p>
           <div class="hero-actions">
             <button class="btn-primary" @click="startFreeTrial">
-              Get 20 Free Credits
+              Get 10 Free Credits
             </button>
             <button class="btn-secondary" @click="exploreProducts">
               Explore AI Tools Free

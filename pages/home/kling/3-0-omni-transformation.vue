@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Kling 3.0 Omni Video Transformation',
   description:
-    'Kling 3.0 Omni Video Transformation on FuseAITools—restyle one uploaded source video (3–15.5s) with a prompt up to 3072 chars and optional reference images at 720p/1080p/4K. Billing follows the actual uploaded video length. 20 free credits on sign-up.',
+    'Kling 3.0 Omni Video Transformation on FuseAITools—restyle one uploaded source video (3–15.5s) with a prompt up to 3072 chars and optional reference images at 720p/1080p/4K. Billing follows the actual uploaded video length. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/kling/3-0-omni-transformation',
   keywords: ['Kling', 'Kuaishou', '3.0 Omni', 'Video Transformation', 'video to video', 'AI video restyle', 'FuseAITools'],

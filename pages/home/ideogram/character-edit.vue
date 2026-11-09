@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram Character Edit',
   description:
-    'Ideogram Character Edit on FuseAITools—image + mask + character reference, identity-preserving inpaint. 20 free credits on sign-up.',
+    'Ideogram Character Edit on FuseAITools—image + mask + character reference, identity-preserving inpaint. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/character-edit',
   keywords: ['Ideogram', 'Character Edit', 'mask', 'character reference', 'FuseAITools'],

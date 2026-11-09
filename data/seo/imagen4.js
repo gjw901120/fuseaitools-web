@@ -79,7 +79,7 @@ export default {
     },
     {
       question: 'How is Imagen 4 priced on FuseAITools?',
-      answer: 'Credits depend on tier—shown on the Generate button before you submit. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on tier—shown on the Generate button before you submit. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🖼️ Imagen 4 on FuseAITools',
-      html: 'Imagen 4 on <a href="/" class="seo-inline-link">FuseAITools</a> is Google\'s <strong>text-to-image</strong> suite—pick <strong>Generate</strong> for balanced quality, <strong>Fast</strong> for raw speed, or <strong>Ultra</strong> for flagship fidelity. All tiers share optional <strong>negative prompts</strong>, <strong>five aspect ratios</strong>, and <strong>seed</strong> controls. Credits appear on the Generate button before you submit; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Imagen 4 on <a href="/" class="seo-inline-link">FuseAITools</a> is Google\'s <strong>text-to-image</strong> suite—pick <strong>Generate</strong> for balanced quality, <strong>Fast</strong> for raw speed, or <strong>Ultra</strong> for flagship fidelity. All tiers share optional <strong>negative prompts</strong>, <strong>five aspect ratios</strong>, and <strong>seed</strong> controls. Credits appear on the Generate button before you submit; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -289,7 +289,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

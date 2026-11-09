@@ -133,7 +133,7 @@ export default {
     },
     {
       question: 'How is Suno priced on FuseAITools?',
-      answer: 'Each workflow has its own credit cost (<code>suno_generate</code>, <code>suno_extend</code>, etc.)—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Each workflow has its own credit cost (<code>suno_generate</code>, <code>suno_extend</code>, etc.)—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -147,7 +147,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎵 Suno on FuseAITools',
-      html: 'Suno on <a href="/" class="seo-inline-link">FuseAITools</a> turns text, lyrics, and uploaded audio into full tracks—generate from scratch, extend completed songs, reimagine covers, expand short clips, or add instrumentals and vocals. Pick models from <strong>V3.5</strong> through <strong>V5</strong> (up to 8 minutes on V4.5+). Credits appear on the Generate button before you submit; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Suno on <a href="/" class="seo-inline-link">FuseAITools</a> turns text, lyrics, and uploaded audio into full tracks—generate from scratch, extend completed songs, reimagine covers, expand short clips, or add instrumentals and vocals. Pick models from <strong>V3.5</strong> through <strong>V5</strong> (up to 8 minutes on V4.5+). Credits appear on the Generate button before you submit; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -339,7 +339,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

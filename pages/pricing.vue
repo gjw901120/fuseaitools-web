@@ -6,7 +6,7 @@
         <div class="hero-content">
           <h1 class="hero-title">Plans & Pricing</h1>
           <p class="hero-subtitle">
-            Choose the plan that fits your workflow. New users get <strong>20 free credits</strong> on sign-up—no card required to start.
+            Choose the plan that fits your workflow. New users get <strong>10 free credits</strong> on sign-up—no card required to start.
           </p>
         </div>
       </div>
@@ -290,13 +290,13 @@ useHead({
     {
       name: 'description',
       content:
-        'FuseAI Tools pricing: Basic, Pro, and Ultra plans with credit top-ups. $1 = 100 credits. New users get 20 free credits on sign-up. Member discounts on all AI models.'
+        'FuseAI Tools pricing: Basic, Pro, and Ultra plans with credit top-ups. $1 = 100 credits. New users get 10 free credits on sign-up. Member discounts on all AI models.'
     },
     { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     { property: 'og:title', content: 'Pricing & Credits | FuseAI Tools' },
     {
       property: 'og:description',
-      content: 'Subscription plans and credit top-ups for 100+ AI models. 20 free credits for new users.'
+      content: 'Subscription plans and credit top-ups for 100+ AI models. 10 free credits for new users.'
     },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: pricingCanonical },
@@ -306,7 +306,7 @@ useHead({
     { name: 'twitter:title', content: 'Pricing & Credits | FuseAI Tools' },
     {
       name: 'twitter:description',
-      content: 'Plans, top-ups, and 20 free credits on sign-up for FuseAI Tools.'
+      content: 'Plans, top-ups, and 10 free credits on sign-up for FuseAI Tools.'
     },
     { name: 'twitter:image', content: `${siteUrl}/logo-wide.png` }
   ],
@@ -653,7 +653,7 @@ const faqs = ref([
   {
     question: 'Is there a free trial or sign-up bonus?',
     answer:
-      '<ul><li>Register and get <strong>20 free credits</strong> immediately.</li><li>Use credits across chat, image, video, and audio models—no payment method or subscription required to start.</li></ul>',
+      '<ul><li>Register and get <strong>10 free credits</strong> immediately.</li><li>Use credits across chat, image, video, and audio models—no payment method or subscription required to start.</li></ul>',
     isOpen: false
   },
   {

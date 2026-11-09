@@ -79,7 +79,7 @@ export default {
     },
     {
       question: 'How is Seedream 5 Flash priced on FuseAITools?',
-      answer: 'Pricing is matched by <strong>resolution</strong> (1K / 1.5K / 2K) at a <strong>single flat credit cost</strong>—shown on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+      answer: 'Pricing is matched by <strong>resolution</strong> (1K / 1.5K / 2K) at a <strong>single flat credit cost</strong>—shown on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
     }
   ],
   sections: [
@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '⚡ Seedream 5 Flash on FuseAITools',
-      html: '<strong>Seedream 5 Flash</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is the speed-first ByteDance image line: the same <strong>5000-character prompts</strong>, <strong>8 aspect ratios</strong> and <strong>10-image reference capacity</strong> as 5 Pro, but <strong>1K / 1.5K / 2K all bill at one price</strong>. Three workflows—text to image, image to image and <strong>layer decomposition</strong>—make it the default for high-volume drafting. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Seedream 5 Flash</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is the speed-first ByteDance image line: the same <strong>5000-character prompts</strong>, <strong>8 aspect ratios</strong> and <strong>10-image reference capacity</strong> as 5 Pro, but <strong>1K / 1.5K / 2K all bill at one price</strong>. Three workflows—text to image, image to image and <strong>layer decomposition</strong>—make it the default for high-volume drafting. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -249,7 +249,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Seedream 5 Flash costs per resolution.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Seedream 5 Flash costs per resolution.'
     },
     {
       pricing: false,

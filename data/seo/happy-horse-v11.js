@@ -75,7 +75,7 @@ export default {
   commonFaq: [
     {
       question: 'How is HappyHorse v1.1 priced on FuseAITools?',
-      answer: 'All three modes bill <strong>per second</strong> at the resolution you select—the exact credits appear on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'All three modes bill <strong>per second</strong> at the resolution you select—the exact credits appear on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     },
     {
       question: 'What is the difference between HappyHorse v1 and v1.1?',
@@ -97,7 +97,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🐴 HappyHorse v1.1 on FuseAITools',
-      html: 'HappyHorse v1.1 on <a href="/" class="seo-inline-link">FuseAITools</a> is the refined pass of the <strong>happyhorse-1-1</strong> family—<strong>native audio-video</strong> generation across text, image, and reference workflows. It widens the <strong>aspect-ratio grid to nine</strong> presets (adds 4:5, 5:4, 9:21, 21:9) while keeping <strong>3–15s</strong> clips at <strong>720p/1080p</strong>. Each run shows <strong>credits required</strong> before you generate; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'HappyHorse v1.1 on <a href="/" class="seo-inline-link">FuseAITools</a> is the refined pass of the <strong>happyhorse-1-1</strong> family—<strong>native audio-video</strong> generation across text, image, and reference workflows. It widens the <strong>aspect-ratio grid to nine</strong> presets (adds 4:5, 5:4, 9:21, 21:9) while keeping <strong>3–15s</strong> clips at <strong>720p/1080p</strong>. Each run shows <strong>credits required</strong> before you generate; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -269,7 +269,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

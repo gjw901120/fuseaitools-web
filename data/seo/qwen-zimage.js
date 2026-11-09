@@ -28,7 +28,7 @@ export default {
       },
       {
         question: 'How is Qwen Z-Image priced on FuseAITools?',
-        answer: 'Credits are based on the aspect ratio selected—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are based on the aspect ratio selected—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/qwen/v2-image-edit': [
@@ -46,7 +46,7 @@ export default {
       },
       {
         question: 'How is Qwen Z-Image priced on FuseAITools?',
-        answer: 'Credits are based on the aspect ratio selected—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are based on the aspect ratio selected—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ]
   },
@@ -55,7 +55,7 @@ export default {
       type: 'intro',
       id: 'workflow-intro-heading',
       title: '⚡ Qwen Z-Image',
-      html: 'Qwen Z-Image on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>streamlined text-to-image</strong> workflow optimized for speed and format compliance. Write a prompt up to <strong>1000 characters</strong> and pick from <strong>5 aspect ratios</strong> (1:1, 4:3, 3:4, 16:9, 9:16). No advanced parameters—just prompt, aspect ratio, and generate. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Qwen Z-Image on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>streamlined text-to-image</strong> workflow optimized for speed and format compliance. Write a prompt up to <strong>1000 characters</strong> and pick from <strong>5 aspect ratios</strong> (1:1, 4:3, 3:4, 16:9, 9:16). No advanced parameters—just prompt, aspect ratio, and generate. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'definition',
@@ -202,7 +202,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen Z-Image per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen Z-Image per-generation costs.'
     },
     {
       pricing: false,

@@ -16,7 +16,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Seedream 5 Flash Layer Decomposition',
-  description: 'Seedream 5 Flash Layer Decomposition on FuseAITools—turn a single source image into editable PNG layers, with optional <bbox> targeting, at 1K/1.5K/2K for one price. Billed by resolution with credits; 20 free credits on sign-up.',
+  description: 'Seedream 5 Flash Layer Decomposition on FuseAITools—turn a single source image into editable PNG layers, with optional <bbox> targeting, at 1K/1.5K/2K for one price. Billed by resolution with credits; 10 free credits on sign-up.',
   category: 'image',
   route: '/home/seedream/5-flash-layer-decomposition',
   keywords: ['Seedream 5 Flash', 'layer decomposition', 'image layers', 'ByteDance', 'FuseAITools'],

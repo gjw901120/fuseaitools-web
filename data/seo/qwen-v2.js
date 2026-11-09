@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Qwen v2 priced on FuseAITools?',
-      answer: 'Credits depend on the model—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on the model—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '✨ Qwen v2 on FuseAITools',
-      html: 'Qwen v2 on <a href="/" class="seo-inline-link">FuseAITools</a> delivers <strong>streamlined image generation and editing</strong> with modern quality. Choose <strong>v2 Text to Image</strong> for prompt-driven creation with aspect ratio control, or <strong>v2 Image Edit</strong> for reference-based editing with up to <strong>21:9</strong> support. Both workflows use concise prompts (≤800 characters) and simplified controls. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Qwen v2 on <a href="/" class="seo-inline-link">FuseAITools</a> delivers <strong>streamlined image generation and editing</strong> with modern quality. Choose <strong>v2 Text to Image</strong> for prompt-driven creation with aspect ratio control, or <strong>v2 Image Edit</strong> for reference-based editing with up to <strong>21:9</strong> support. Both workflows use concise prompts (≤800 characters) and simplified controls. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -215,7 +215,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen v2 per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen v2 per-generation costs.'
     },
     {
       pricing: false,

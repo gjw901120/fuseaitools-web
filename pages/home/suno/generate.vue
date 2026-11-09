@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Suno Music Generation',
   description:
-    'Suno Music Generation on FuseAITools—create tracks from text with Simple or Custom mode, models V3.5–V5, instrumental or vocal. 20 free credits on sign-up.',
+    'Suno Music Generation on FuseAITools—create tracks from text with Simple or Custom mode, models V3.5–V5, instrumental or vocal. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/suno/generate',
   keywords: ['Suno', 'Music Generation', 'AI music', 'text to music', 'V5', 'FuseAITools'],

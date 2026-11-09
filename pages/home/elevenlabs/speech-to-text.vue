@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs Speech-to-Text',
   description:
-    'ElevenLabs Speech-to-Text on FuseAITools—upload audio up to 200MB for transcripts with diarization, event tags, and word-level timeline. 20 free credits on sign-up.',
+    'ElevenLabs Speech-to-Text on FuseAITools—upload audio up to 200MB for transcripts with diarization, event tags, and word-level timeline. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/elevenlabs/speech-to-text',
   keywords: ['ElevenLabs', 'Speech to Text', 'STT', 'transcription', 'diarization', 'FuseAITools'],

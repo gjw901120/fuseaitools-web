@@ -16,7 +16,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 
 const seoConfig = await useToolSEOAsync({
   name: 'Qwen Z-Image Generator',
-  description: 'Fast text-to-image with Qwen Z-Image on FuseAITools—prompts up to 1000 chars, 5 aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16), 3–15 second generation. Pay per image with credits; 20 free credits on sign-up.',
+  description: 'Fast text-to-image with Qwen Z-Image on FuseAITools—prompts up to 1000 chars, 5 aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16), 3–15 second generation. Pay per image with credits; 10 free credits on sign-up.',
   category: 'image',
   route: '/home/qwen/z-image',
   keywords: ['Qwen', 'Z-Image', 'AI image', 'text to image', 'fast image generation', 'aspect ratio', 'FuseAITools'],

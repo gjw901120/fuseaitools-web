@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Grok Image to Image',
   description:
-    'Grok Imagine image-to-image on FuseAITools—transform one uploaded image with optional prompt guidance (max 5000 chars). 20 free credits on sign-up.',
+    'Grok Imagine image-to-image on FuseAITools—transform one uploaded image with optional prompt guidance (max 5000 chars). 10 free credits on sign-up.',
   category: 'image',
   route: '/home/grok/image-to-image',
   keywords: ['Grok', 'Grok Imagine', 'xAI', 'Image to Image', 'AI image editing', 'FuseAITools'],

@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Wan 2.7 Image priced on FuseAITools?',
-      answer: 'Credits depend on model, resolution, and batch settings—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on model, resolution, and batch settings—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🖼️ Wan 2.7 Image on FuseAITools',
-      html: 'Wan 2.7 Image on <a href="/" class="seo-inline-link">FuseAITools</a> is Alibaba\'s <strong>still-image</strong> line—generate from text or edit up to <strong>9 reference images</strong> with prompts up to <strong>5000 characters</strong>. Choose <strong>Image</strong> for 1K/2K output or <strong>Image Pro</strong> for <strong>4K</strong> when generating without input images. Pair with <strong>Wan 2.7 video</strong> workflows to animate keyframes. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Wan 2.7 Image on <a href="/" class="seo-inline-link">FuseAITools</a> is Alibaba\'s <strong>still-image</strong> line—generate from text or edit up to <strong>9 reference images</strong> with prompts up to <strong>5000 characters</strong>. Choose <strong>Image</strong> for 1K/2K output or <strong>Image Pro</strong> for <strong>4K</strong> when generating without input images. Pair with <strong>Wan 2.7 video</strong> workflows to animate keyframes. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -217,7 +217,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Wan 2.7 Image per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Wan 2.7 Image per-generation costs.'
     },
     {
       pricing: false,

@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Veo 3.1 Reference to Video Generator',
   description:
-    'Veo 3.1 reference-to-video on FuseAITools—animate 1–3 reference images with Google DeepMind video. Fast or Lite at /home/veo3. 20 free credits on sign-up.',
+    'Veo 3.1 reference-to-video on FuseAITools—animate 1–3 reference images with Google DeepMind video. Fast or Lite at /home/veo3. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/veo3/reference-to-video',
   keywords: ['Veo3', 'Veo 3.1', 'reference to video', 'image to video', 'FuseAITools'],

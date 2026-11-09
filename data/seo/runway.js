@@ -75,7 +75,7 @@ export default {
   commonFaq: [
     {
       question: 'Do I need a local GPU for Runway on FuseAITools?',
-      answer: 'No—Runway runs in the cloud. Use any modern browser; credits are charged per successful generation. New users receive <strong>20 free credits</strong> on sign-up.'
+      answer: 'No—Runway runs in the cloud. Use any modern browser; credits are charged per successful generation. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       question: 'How is Runway priced on FuseAITools?',
@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Runway on FuseAITools',
-      html: '<strong>Runway</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> covers the full short-video lifecycle— <strong>Generate</strong> from text or a reference still, <strong>Extend</strong> a completed generate task forward or backward, and <strong>Aleph</strong> to restyle uploaded footage while preserving motion structure. Credits appear on each Generate button before submission. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Runway</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> covers the full short-video lifecycle— <strong>Generate</strong> from text or a reference still, <strong>Extend</strong> a completed generate task forward or backward, and <strong>Aleph</strong> to restyle uploaded footage while preserving motion structure. Credits appear on each Generate button before submission. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -234,7 +234,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

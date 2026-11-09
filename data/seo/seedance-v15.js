@@ -51,7 +51,7 @@ export default {
     },
     {
       question: 'How do I try Seedance 1.5 Pro on FuseAITools?',
-      answer: 'Open this workflow and generate. New users receive <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
+      answer: 'Open this workflow and generate. New users receive <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
     }
   ],
   sections: [
@@ -65,7 +65,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎵 Seedance 1.5 Pro on FuseAITools',
-      html: 'Seedance 1.5 Pro on <a href="/" class="seo-inline-link">FuseAITools</a> merges <strong>text-to-video</strong> and <strong>image-to-video</strong> in one workflow—add <strong>0–2 reference images</strong> when you need I2V, or run prompt-only for T2V. Toggle <strong>fixed lens</strong> and optional <strong>audio generation</strong>; credits reflect duration, resolution, and sound settings. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Seedance 1.5 Pro on <a href="/" class="seo-inline-link">FuseAITools</a> merges <strong>text-to-video</strong> and <strong>image-to-video</strong> in one workflow—add <strong>0–2 reference images</strong> when you need I2V, or run prompt-only for T2V. Toggle <strong>fixed lens</strong> and optional <strong>audio generation</strong>; credits reflect duration, resolution, and sound settings. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -173,7 +173,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

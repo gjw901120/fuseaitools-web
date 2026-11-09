@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Flux 3 Klein Text to Image Generator',
   description:
-    'Flux 3 Klein text-to-image on FuseAITools—prompts up to 5000 chars, 1K/2K/4K resolution, nine aspect ratios, and 1–4 images per run. Credits scale by resolution and image count. 20 free credits on sign-up.',
+    'Flux 3 Klein text-to-image on FuseAITools—prompts up to 5000 chars, 1K/2K/4K resolution, nine aspect ratios, and 1–4 images per run. Credits scale by resolution and image count. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/flux-kontext/flux-3-klein-text-to-image',
   keywords: ['Flux 3 Klein', 'Text to Image', 'Black Forest Labs', '4K image', 'FuseAITools'],

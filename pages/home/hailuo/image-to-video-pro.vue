@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Hailuo 2.3 Pro Image to Video',
   description:
-    'Hailuo 2.3 Pro image-to-video on FuseAITools—one image + prompt ≤5000, 6s/10s at 768P/1080P (10s → 768P only). MiniMax cinematic I2V; credits by duration and quality; 20 free on sign-up.',
+    'Hailuo 2.3 Pro image-to-video on FuseAITools—one image + prompt ≤5000, 6s/10s at 768P/1080P (10s → 768P only). MiniMax cinematic I2V; credits by duration and quality; 10 free on sign-up.',
   category: 'video',
   route: '/home/hailuo/image-to-video-pro',
   keywords: ['Hailuo', 'Hailuo 2.3 Pro', 'MiniMax', 'image to video', 'AI video', 'FuseAITools'],

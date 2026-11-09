@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Luma Video Modification',
   description:
-    'Luma Dream Machine video modification on FuseAITools—upload MP4/MOV/AVI (max 500MB, 10s), describe changes in English, optional watermark. Per-run credits; 20 free on sign-up.',
+    'Luma Dream Machine video modification on FuseAITools—upload MP4/MOV/AVI (max 500MB, 10s), describe changes in English, optional watermark. Per-run credits; 10 free on sign-up.',
   category: 'video',
   route: '/home/luma/generate',
   keywords: ['Luma', 'Luma Dream Machine', 'video modification', 'AI video edit', '3D video effects', 'FuseAITools'],

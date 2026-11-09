@@ -88,7 +88,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Kling 3.0 on FuseAITools',
-      html: 'Kling <strong>3.0</strong> is Kuaishou\'s top scene-generation tier on <a href="/" class="seo-inline-link">FuseAITools</a>—<strong>3.0 Video</strong> for single- or multi-shot storytelling (3–15s, std/pro/4K) and <strong>3.0 Motion Control</strong> for advanced pose transfer with background source control. Compared to <a href="/home/kling/v2-6-text-to-video" class="seo-inline-link">Kling 2.6</a>, 3.0 adds longer flexible duration, multi-shot editing, and per-shot elements. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Kling <strong>3.0</strong> is Kuaishou\'s top scene-generation tier on <a href="/" class="seo-inline-link">FuseAITools</a>—<strong>3.0 Video</strong> for single- or multi-shot storytelling (3–15s, std/pro/4K) and <strong>3.0 Motion Control</strong> for advanced pose transfer with background source control. Compared to <a href="/home/kling/v2-6-text-to-video" class="seo-inline-link">Kling 2.6</a>, 3.0 adds longer flexible duration, multi-shot editing, and per-shot elements. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -158,7 +158,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       html: '👤 Need a talking-head presenter to cut with your 3.0 scenes? <a href="/home/kling/ai-avatar-standard" class="seo-inline-link">Try Kling AI Avatar Standard →</a> for audio-driven lip-sync—or <a href="/home/kling/ai-avatar-pro" class="seo-inline-link">AI Avatar Pro</a> for higher-quality presenter output. Pair with <a href="/home/elevenlabs/multilingual-v2" class="seo-inline-link">ElevenLabs TTS</a> to generate narration first.'

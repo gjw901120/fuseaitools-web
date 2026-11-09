@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Nano Banana Image to Image',
   description:
-    'Nano Banana image-to-image on FuseAITools—edit 1–10 photos with natural-language prompts via Gemini Flash Image. Style transfer and detail polish. 20 free credits on sign-up.',
+    'Nano Banana image-to-image on FuseAITools—edit 1–10 photos with natural-language prompts via Gemini Flash Image. Style transfer and detail polish. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/nano-banana/edit',
   keywords: ['Nano Banana Edit', 'image to image', 'Gemini Flash Image', 'AI image edit', 'FuseAITools'],

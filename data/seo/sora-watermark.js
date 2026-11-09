@@ -28,7 +28,7 @@ export default {
       },
       {
         question: 'How is Sora Watermark Remover priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/sora/image-to-video': [
@@ -46,7 +46,7 @@ export default {
       },
       {
         question: 'How is Sora Watermark Remover priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/sora/pro-text-to-video': [
@@ -64,7 +64,7 @@ export default {
       },
       {
         question: 'How is Sora Watermark Remover priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/sora/pro-image-to-video': [
@@ -82,7 +82,7 @@ export default {
       },
       {
         question: 'How is Sora Watermark Remover priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ],
     '/home/sora/pro-storyboard': [
@@ -100,7 +100,7 @@ export default {
       },
       {
         question: 'How is Sora Watermark Remover priced on FuseAITools?',
-        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+        answer: 'Credits are shown on the Generate button before each run. Model key: <code>sora-watermark-remover</code>. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
       }
     ]
   },
@@ -109,7 +109,7 @@ export default {
       type: 'intro',
       id: 'workflow-intro-heading',
       title: '🧹 Sora Watermark Remover',
-      html: 'Remove watermarks from Sora-generated videos on <a href="/" class="seo-inline-link">FuseAITools</a>. Simply <strong>upload a video</strong> and process—no prompt, no aspect ratio, no frame count required. Model key: <code>sora-watermark-remover</code>. Pay per use with credits. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Remove watermarks from Sora-generated videos on <a href="/" class="seo-inline-link">FuseAITools</a>. Simply <strong>upload a video</strong> and process—no prompt, no aspect ratio, no frame count required. Model key: <code>sora-watermark-remover</code>. Pay per use with credits. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'definition',
@@ -121,7 +121,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🧹 Sora Watermark Remover on FuseAITools',
-      html: 'The <strong>Sora Watermark Remover</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is a focused utility for cleaning up Sora-generated content. While Sora 2 and Sora 2 Pro have a built-in watermark removal toggle, this standalone version lets you process <strong>existing video files</strong> that may have been generated elsewhere or at an earlier time. It accepts <strong>video uploads and image uploads</strong> (JPG, PNG, WebP), making it flexible for various post-processing needs. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'The <strong>Sora Watermark Remover</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is a focused utility for cleaning up Sora-generated content. While Sora 2 and Sora 2 Pro have a built-in watermark removal toggle, this standalone version lets you process <strong>existing video files</strong> that may have been generated elsewhere or at an earlier time. It accepts <strong>video uploads and image uploads</strong> (JPG, PNG, WebP), making it flexible for various post-processing needs. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -200,7 +200,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Sora Watermark Remover per-use costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Sora Watermark Remover per-use costs.'
     },
     {
       pricing: false,

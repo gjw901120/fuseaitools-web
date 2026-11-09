@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Veo 3.1 Video Extend',
   description:
-    'Veo 3.1 video extend on FuseAITools—continue prior Veo3 clips with extension prompts via veo3_extend. Route /home/veo3/extend. 20 free credits on sign-up.',
+    'Veo 3.1 video extend on FuseAITools—continue prior Veo3 clips with extension prompts via veo3_extend. Route /home/veo3/extend. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/veo3/extend',
   keywords: ['Veo3', 'Veo 3.1', 'video extend', 'extend video', 'FuseAITools'],

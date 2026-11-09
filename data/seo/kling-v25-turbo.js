@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Kling v2.5 Turbo priced on FuseAITools?',
-      answer: 'Credits depend on <strong>duration (5/10s)</strong>—shown on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+      answer: 'Credits depend on <strong>duration (5/10s)</strong>—shown on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '⚡ Kling v2.5 Turbo on FuseAITools',
-      html: 'Kling <strong>v2.5 Turbo</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is the fastest Kuaishou scene-generation tier—<strong>T2V Pro</strong> and <strong>I2V Pro</strong> with <strong>negative prompts</strong>, <strong>CFG scale</strong> (0–1), and fixed <strong>5s/10s</strong> outputs. No generated sound (upgrade to <a href="/home/kling/v2-6-text-to-video" class="seo-inline-link">Kling 2.6</a> for audio). Credits show on the Generate button; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Kling <strong>v2.5 Turbo</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is the fastest Kuaishou scene-generation tier—<strong>T2V Pro</strong> and <strong>I2V Pro</strong> with <strong>negative prompts</strong>, <strong>CFG scale</strong> (0–1), and fixed <strong>5s/10s</strong> outputs. No generated sound (upgrade to <a href="/home/kling/v2-6-text-to-video" class="seo-inline-link">Kling 2.6</a> for audio). Credits show on the Generate button; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -239,7 +239,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

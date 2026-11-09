@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'ElevenLabs Sound Effect v2',
   description:
-    'ElevenLabs Sound Effect v2 on FuseAITools—generate SFX from text descriptions with duration, loop, intensity, and MP3/PCM output. 20 free credits on sign-up.',
+    'ElevenLabs Sound Effect v2 on FuseAITools—generate SFX from text descriptions with duration, loop, intensity, and MP3/PCM output. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/elevenlabs/sound-effect-v2',
   keywords: ['ElevenLabs', 'Sound Effect v2', 'AI sound effects', 'SFX', 'FuseAITools'],

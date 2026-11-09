@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Flux 2 Pro Image to Image Generator',
   description:
-    'Flux 2 Pro image-to-image on FuseAITools—1–8 reference images, Pro-tier fidelity, 1K/2K, prompts 3–5000 chars. 20 free credits on sign-up.',
+    'Flux 2 Pro image-to-image on FuseAITools—1–8 reference images, Pro-tier fidelity, 1K/2K, prompts 3–5000 chars. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/flux-kontext/flux-2-pro-image-to-image',
   keywords: ['Flux 2 Pro', 'Image to Image', 'multi-reference', 'Black Forest Labs', 'FuseAITools'],

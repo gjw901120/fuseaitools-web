@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Runway Aleph Video Generator',
   description:
-    'Runway Aleph on FuseAITools—style-transform uploaded video (MP4/MOV/AVI, max 10MB) with prompts, optional reference image, seed, and aspect ratio. Per-run credits; 20 free on sign-up.',
+    'Runway Aleph on FuseAITools—style-transform uploaded video (MP4/MOV/AVI, max 10MB) with prompts, optional reference image, seed, and aspect ratio. Per-run credits; 10 free on sign-up.',
   category: 'video',
   route: '/home/runway/aleph',
   keywords: ['Runway', 'Runway Aleph', 'video style transfer', 'AI video transform', 'FuseAITools'],

@@ -79,7 +79,7 @@ export default {
     },
     {
       question: 'How do I try Wan 2.6 on FuseAITools?',
-      answer: 'Open any Wan 2.6 workflow above and generate. New users receive <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
+      answer: 'Open any Wan 2.6 workflow above and generate. New users receive <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
     }
   ],
   sections: [
@@ -255,7 +255,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for per-generation credit costs on Wan 2.6.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for per-generation credit costs on Wan 2.6.'
     },
     {
       pricing: false,

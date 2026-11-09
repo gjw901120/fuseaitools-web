@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Grok Video Extend',
   description:
-    'Grok Imagine extend on FuseAITools—continue a Grok clip with prompt, extend_at, 6s/10s at 480p/720p. 20 free credits on sign-up.',
+    'Grok Imagine extend on FuseAITools—continue a Grok clip with prompt, extend_at, 6s/10s at 480p/720p. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/grok/extend',
   keywords: ['Grok', 'Grok Imagine', 'xAI', 'Video Extend', 'AI video continuation', 'FuseAITools'],

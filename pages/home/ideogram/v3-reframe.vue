@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram V3 Reframe',
   description:
-    'Ideogram V3 reframe on FuseAITools—new square, portrait, or landscape aspect ratios from one image, 1–4 outputs. 20 free credits on sign-up.',
+    'Ideogram V3 reframe on FuseAITools—new square, portrait, or landscape aspect ratios from one image, 1–4 outputs. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/v3-reframe',
   keywords: ['Ideogram', 'V3', 'Reframe', 'aspect ratio', 'AI image reframe', 'FuseAITools'],

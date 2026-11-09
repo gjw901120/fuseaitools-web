@@ -133,7 +133,7 @@ export default {
     },
     {
       question: 'How is GPT Image v2 priced on FuseAITools?',
-      answer: 'Credits depend on the selected resolution—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on the selected resolution—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     },
     {
       question: 'What is the difference between GPT Image v2 and the 2.5 Flare / Sunburst models?',
@@ -151,7 +151,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🌟 GPT Image v2 &amp; 2.5 on FuseAITools',
-      html: 'GPT Image on <a href="/" class="seo-inline-link">FuseAITools</a> covers OpenAI\'s <strong>v2</strong> and <strong>2.5 Flare / Sunburst</strong> image models, all with <strong>20000-character prompt</strong> capacity and <strong>selectable 1K/2K/4K resolution</strong> as the billing tier. The 2.5 families expand framing to <strong>13 aspect ratios</strong> and add an optional <strong>background</strong> control at 1K, while image-to-image accepts <strong>up to 16 reference images</strong>. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'GPT Image on <a href="/" class="seo-inline-link">FuseAITools</a> covers OpenAI\'s <strong>v2</strong> and <strong>2.5 Flare / Sunburst</strong> image models, all with <strong>20000-character prompt</strong> capacity and <strong>selectable 1K/2K/4K resolution</strong> as the billing tier. The 2.5 families expand framing to <strong>13 aspect ratios</strong> and add an optional <strong>background</strong> control at 1K, while image-to-image accepts <strong>up to 16 reference images</strong>. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -315,7 +315,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for GPT Image v2 / 2.5 Flare / 2.5 Sunburst per-generation costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for GPT Image v2 / 2.5 Flare / 2.5 Sunburst per-generation costs.'
     }
   ]
 }

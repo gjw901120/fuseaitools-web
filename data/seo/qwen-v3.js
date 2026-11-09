@@ -112,7 +112,7 @@ export default {
     {
       question: 'How is Qwen v3 priced on FuseAITools?',
       answer:
-        'Pricing is matched by <strong>resolution</strong> (1K or 2K), with Pro costing more per tier—the exact credits appear on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+        'Pricing is matched by <strong>resolution</strong> (1K or 2K), with Pro costing more per tier—the exact credits appear on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
     }
   ],
 
@@ -123,7 +123,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🌟 Qwen v3 / v3 Pro on FuseAITools',
-      html: 'The Qwen <strong>v3</strong> family on <a href="/" class="seo-inline-link">FuseAITools</a> adds <strong>smart prompt rewriting (promptExtend)</strong> and a dedicated <strong>negative prompt</strong> on top of 5000-character prompts, <strong>8 aspect ratios</strong> and <strong>1K / 2K</strong> resolution. Use the standard tier for everyday work or the <strong>v3 Pro</strong> tier for maximum fidelity. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'The Qwen <strong>v3</strong> family on <a href="/" class="seo-inline-link">FuseAITools</a> adds <strong>smart prompt rewriting (promptExtend)</strong> and a dedicated <strong>negative prompt</strong> on top of 5000-character prompts, <strong>8 aspect ratios</strong> and <strong>1K / 2K</strong> resolution. Use the standard tier for everyday work or the <strong>v3 Pro</strong> tier for maximum fidelity. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -208,7 +208,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen v3 / v3 Pro costs per resolution.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Qwen v3 / v3 Pro costs per resolution.'
     },
     {
       html: '🧩 Need transparent backgrounds or a local-edit mask with up to 10 references? <a href="/home/qwen/v21-text-to-image" class="seo-inline-link">Qwen v2.1 Text to Image</a> and <a href="/home/qwen/v21-image-to-image" class="seo-inline-link">Image to Image</a> cover those while still billing by 1K/2K resolution.'

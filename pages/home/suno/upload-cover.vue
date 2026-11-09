@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Suno Audio Cover',
   description:
-    'Suno Audio Cover on FuseAITools—upload MP3/WAV/M4A (≤2 min) and reimagine style, title, and lyrics. Models V3.5–V5. 20 free credits on sign-up.',
+    'Suno Audio Cover on FuseAITools—upload MP3/WAV/M4A (≤2 min) and reimagine style, title, and lyrics. Models V3.5–V5. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/suno/upload-cover',
   keywords: ['Suno', 'Audio Cover', 'AI music cover', 'style transfer music', 'FuseAITools'],

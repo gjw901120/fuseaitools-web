@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Seedream 5 Lite Text to Image Generator',
   description:
-    'Seedream 5 Lite text-to-image on FuseAITools—ByteDance 2K/3K images from prompts up to 2995 chars. Nine aspect ratios from 1:1 to 21:9. 20 free credits on sign-up.',
+    'Seedream 5 Lite text-to-image on FuseAITools—ByteDance 2K/3K images from prompts up to 2995 chars. Nine aspect ratios from 1:1 to 21:9. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/seedream/5-lite-text-to-image',
   keywords: ['Seedream', 'Seedream 5 Lite', 'text to image', 'ByteDance', 'AI image', 'FuseAITools'],

@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '👤 Kling AI Avatar on FuseAITools',
-      html: '<strong>Kling AI Avatar</strong> is a standalone product line—not v2.5, 2.6, or 3.0 scene generation. It lip-syncs a <strong>portrait</strong> to your uploaded <strong>audio</strong> with a delivery <strong>prompt</strong> (max 5000 chars). Use <a href="/home/elevenlabs/multilingual-v2" class="seo-inline-link">ElevenLabs TTS</a> for the voice track, then Avatar Standard or Pro for the video. For cinematic B-roll or multi-shot scenes, pair with <a href="/home/kling/v3-0-video" class="seo-inline-link">Kling 3.0 Video</a> —Avatar handles the talking head; 3.0 handles scene invention. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Kling AI Avatar</strong> is a standalone product line—not v2.5, 2.6, or 3.0 scene generation. It lip-syncs a <strong>portrait</strong> to your uploaded <strong>audio</strong> with a delivery <strong>prompt</strong> (max 5000 chars). Use <a href="/home/elevenlabs/multilingual-v2" class="seo-inline-link">ElevenLabs TTS</a> for the voice track, then Avatar Standard or Pro for the video. For cinematic B-roll or multi-shot scenes, pair with <a href="/home/kling/v3-0-video" class="seo-inline-link">Kling 3.0 Video</a> —Avatar handles the talking head; 3.0 handles scene invention. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -218,7 +218,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

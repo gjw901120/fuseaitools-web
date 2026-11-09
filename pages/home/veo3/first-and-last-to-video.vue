@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Veo 3.1 First and Last Frames to Video',
   description:
-    'Veo 3.1 first-and-last frames on FuseAITools—animate 1–2 keyframe images with Standard, Fast or Lite models. Routes at /home/veo3. 20 free credits on sign-up.',
+    'Veo 3.1 first-and-last frames on FuseAITools—animate 1–2 keyframe images with Standard, Fast or Lite models. Routes at /home/veo3. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/veo3/first-and-last-to-video',
   keywords: ['Veo3', 'Veo 3.1', 'first and last frames', 'keyframe video', 'FuseAITools'],

@@ -77,7 +77,7 @@ export default {
     },
     {
       question: 'How do I try Seedance 2 Mini on FuseAITools?',
-      answer: 'Open this workflow and generate. New users receive <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
+      answer: 'Open this workflow and generate. New users receive <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for credit packs and member rates.'
     }
   ],
   sections: [
@@ -91,7 +91,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎬 Seedance 2 Mini on FuseAITools',
-      html: 'Seedance 2 Mini on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>lightweight multimodal video</strong> model—same feature set as Seedance 2 (first/last frames, reference images/videos/audio) at <strong>480p or 720p</strong>. Ideal when you need fast iteration without 1080p/4K output. <strong>4–15 seconds</strong> duration, credits scale by duration and reference usage. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Seedance 2 Mini on <a href="/" class="seo-inline-link">FuseAITools</a> is a <strong>lightweight multimodal video</strong> model—same feature set as Seedance 2 (first/last frames, reference images/videos/audio) at <strong>480p or 720p</strong>. Ideal when you need fast iteration without 1080p/4K output. <strong>4–15 seconds</strong> duration, credits scale by duration and reference usage. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -173,7 +173,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

@@ -97,7 +97,7 @@ export default {
     },
     {
       question: 'How is HappyHorse v1 priced on FuseAITools?',
-      answer: 'Generate modes bill <strong>per second</strong> at the resolution you select—the exact credits appear on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Generate modes bill <strong>per second</strong> at the resolution you select—the exact credits appear on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -111,7 +111,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🐴 HappyHorse v1 on FuseAITools',
-      html: 'HappyHorse v1 on <a href="/" class="seo-inline-link">FuseAITools</a> targets <strong>native audio-video joint generation</strong>—dialogue, lip sync, and ambient sound in one pass. Pick text-to-video, image-to-video, reference-to-video, or video edit; each workflow shows <strong>credits required</strong> before you generate. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'HappyHorse v1 on <a href="/" class="seo-inline-link">FuseAITools</a> targets <strong>native audio-video joint generation</strong>—dialogue, lip sync, and ambient sound in one pass. Pick text-to-video, image-to-video, reference-to-video, or video edit; each workflow shows <strong>credits required</strong> before you generate. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -322,7 +322,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

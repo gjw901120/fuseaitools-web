@@ -32,7 +32,7 @@ export default {
       },
       {
         question: 'Do I need a local GPU, and how do I start?',
-        answer: 'No—Wan 3.0 runs in the cloud. Open the <strong>Wan 3.0</strong> tab, choose an input mode, and generate. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for top-ups.'
+        answer: 'No—Wan 3.0 runs in the cloud. Open the <strong>Wan 3.0</strong> tab, choose an input mode, and generate. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for top-ups.'
       }
     ],
     '/home/wan/2-7-image-pro': [
@@ -54,7 +54,7 @@ export default {
       },
       {
         question: 'Do I need a local GPU, and how do I start?',
-        answer: 'No—Wan 3.0 runs in the cloud. Open the <strong>Wan 3.0</strong> tab, choose an input mode, and generate. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for top-ups.'
+        answer: 'No—Wan 3.0 runs in the cloud. Open the <strong>Wan 3.0</strong> tab, choose an input mode, and generate. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for top-ups.'
       }
     ]
   },
@@ -167,7 +167,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Wan 3.0 per-second costs.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for Wan 3.0 per-second costs.'
     },
     {
       pricing: false,

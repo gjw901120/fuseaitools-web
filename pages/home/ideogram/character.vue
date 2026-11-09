@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Ideogram Character Generator',
   description:
-    'Ideogram Character on FuseAITools—reference-driven identity in new scenes, REALISTIC/FICTION styles, 1–4 outputs. 20 free credits on sign-up.',
+    'Ideogram Character on FuseAITools—reference-driven identity in new scenes, REALISTIC/FICTION styles, 1–4 outputs. 10 free credits on sign-up.',
   category: 'image',
   route: '/home/ideogram/character',
   keywords: ['Ideogram', 'Character', 'consistent character', 'reference image', 'FuseAITools'],

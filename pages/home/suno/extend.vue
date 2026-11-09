@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Suno Music Extension',
   description:
-    'Extend Suno tracks on FuseAITools—pick Audio ID from Music Generation, optional continueAt and custom style/title. Models V3.5–V5. 20 free credits on sign-up.',
+    'Extend Suno tracks on FuseAITools—pick Audio ID from Music Generation, optional continueAt and custom style/title. Models V3.5–V5. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/suno/extend',
   keywords: ['Suno', 'Music Extension', 'extend AI music', 'continue song', 'FuseAITools'],

@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Kling v2.5 Turbo Image to Video Pro',
   description:
-    'Kling v2.5 Turbo I2V Pro on FuseAITools—animate images with optional tail frame, 5/10s clips, negative prompt and CFG scale. 20 free credits on sign-up.',
+    'Kling v2.5 Turbo I2V Pro on FuseAITools—animate images with optional tail frame, 5/10s clips, negative prompt and CFG scale. 10 free credits on sign-up.',
   category: 'video',
   route: '/home/kling/v2-5-turbo-image-to-video-pro',
   keywords: ['Kling', 'Kuaishou', 'Image to Video', 'v2.5 Turbo', 'I2V Pro', 'FuseAITools'],

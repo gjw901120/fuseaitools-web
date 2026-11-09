@@ -121,7 +121,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🔊 Kling 2.6 on FuseAITools',
-      html: 'Kling <strong>2.6</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> adds <strong>generated sound</strong> to text and image-to-video, plus <strong>Motion Control</strong>—transfer pose from a reference video onto a character image at 720p/1080p. Compared to <a href="/home/kling/v2-5-turbo-text-to-video-pro" class="seo-inline-link">v2.5 Turbo</a>, 2.6 trades CFG knobs for audio and motion workflows. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Kling <strong>2.6</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> adds <strong>generated sound</strong> to text and image-to-video, plus <strong>Motion Control</strong>—transfer pose from a reference video onto a character image at 720p/1080p. Compared to <a href="/home/kling/v2-5-turbo-text-to-video-pro" class="seo-inline-link">v2.5 Turbo</a>, 2.6 trades CFG knobs for audio and motion workflows. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'prose',
@@ -297,7 +297,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

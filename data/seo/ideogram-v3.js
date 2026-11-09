@@ -97,7 +97,7 @@ export default {
     },
     {
       question: 'How is Ideogram V3 priced on FuseAITools?',
-      answer: 'RULE credits by <strong>speed</strong> (TURBO/BALANCED/QUALITY). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
+      answer: 'RULE credits by <strong>speed</strong> (TURBO/BALANCED/QUALITY). See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>10 free credits</strong> on sign-up.'
     }
   ],
   sections: [
@@ -111,7 +111,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎨 Ideogram V3 on FuseAITools',
-      html: '<strong>Ideogram V3</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> covers general image creation— text-to-image, mask edit, remix, and reframe—with shared controls for <strong>TURBO / BALANCED / QUALITY</strong> rendering speed and style presets. Need <strong>identity-locked characters</strong> across scenes? Use the separate <a href="/home/ideogram/character" class="seo-inline-link">Character</a> line. Credits scale by speed tier; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Ideogram V3</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> covers general image creation— text-to-image, mask edit, remix, and reframe—with shared controls for <strong>TURBO / BALANCED / QUALITY</strong> rendering speed and style presets. Need <strong>identity-locked characters</strong> across scenes? Use the separate <a href="/home/ideogram/character" class="seo-inline-link">Character</a> line. Credits scale by speed tier; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -276,7 +276,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

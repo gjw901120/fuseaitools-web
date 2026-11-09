@@ -61,7 +61,7 @@ export default {
     },
     {
       question: 'How is Flux 3 Klein priced on FuseAITools?',
-      answer: 'RULE credits by <strong>resolution (1K/2K/4K)</strong> per image, then multiplied by the <strong>1–4</strong> images you request. See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>20 free credits</strong> on sign-up.'
+      answer: 'RULE credits by <strong>resolution (1K/2K/4K)</strong> per image, then multiplied by the <strong>1–4</strong> images you request. See <a href="/pricing" class="seo-pricing-link">pricing</a>. New users get <strong>10 free credits</strong> on sign-up.'
     }
   ],
   sections: [
@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '⚡ Flux 3 Klein on FuseAITools',
-      html: '<strong>Flux 3 Klein</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is Black Forest Labs\' high-resolution image line—two workflows: <strong>Text to Image</strong> for prompt-only generation and <strong>Edit Image</strong> for multi-reference editing with <strong>1–10</strong> input images. Prompts run up to <strong>5000 characters</strong>, output reaches <strong>4K</strong>, and each run produces <strong>1–4 images</strong>. Credits scale by <strong>resolution (1K/2K/4K)</strong> and <strong>image count</strong>. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Flux 3 Klein</strong> on <a href="/" class="seo-inline-link">FuseAITools</a> is Black Forest Labs\' high-resolution image line—two workflows: <strong>Text to Image</strong> for prompt-only generation and <strong>Edit Image</strong> for multi-reference editing with <strong>1–10</strong> input images. Prompts run up to <strong>5000 characters</strong>, output reaches <strong>4K</strong>, and each run produces <strong>1–4 images</strong>. Credits scale by <strong>resolution (1K/2K/4K)</strong> and <strong>image count</strong>. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -226,7 +226,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

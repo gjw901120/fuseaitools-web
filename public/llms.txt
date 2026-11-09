@@ -1,6 +1,6 @@
 # FuseAITools
 
-> FuseAITools is an all-in-one AI platform with 100+ models for chat, image, video, and audio. Use tools in the browser with credit-based pricing; new users receive 20 free credits on sign-up. This file lists the most useful public pages for understanding our products and workflows.
+> FuseAITools is an all-in-one AI platform with 100+ models for chat, image, video, and audio. Use tools in the browser with credit-based pricing; new users receive 10 free credits on sign-up. This file lists the most useful public pages for understanding our products and workflows.
 
 FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyHorse, Seedream, Seedance, Veo3, Suno, ElevenLabs, and more). Each tool page includes usage controls and an SEO content section with features, FAQs, and workflow links. For a full URL list, see [sitemap.xml](https://www.fuseaitools.com/sitemap.xml). Crawler rules: [robots.txt](https://www.fuseaitools.com/robots.txt).
 
@@ -8,8 +8,8 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 
 - [Home](https://www.fuseaitools.com/): Marketing homepage, product overview, and FAQ.
 - [AI Tools Hub](https://www.fuseaitools.com/home): Launch pad for all integrated AI tools.
-- [Pricing](https://www.fuseaitools.com/pricing): Subscription plans, credit top-ups, and 20 free credits on sign-up.
-- [About](https://www.fuseaitools.com/about): Platform overview, contact, and 20 free credits on sign-up.
+- [Pricing](https://www.fuseaitools.com/pricing): Subscription plans, credit top-ups, and 10 free credits on sign-up.
+- [About](https://www.fuseaitools.com/about): Platform overview, contact, and 10 free credits on sign-up.
 - [News](https://www.fuseaitools.com/news): Tutorials, comparisons, and product updates.
 
 ## Chat
@@ -34,12 +34,12 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 - [GPT Image v2 Image to Image](https://www.fuseaitools.com/home/gpt-image/v2-image-to-image): Modern I2I—up to 16 reference images, resolution tiers, 6 aspect ratios.
 - [Ideogram](https://www.fuseaitools.com/home/ideogram): Ideogram image tools overview.
 - [Flux Kontext](https://www.fuseaitools.com/home/flux-kontext): FLUX image generation overview.
-- [Nano Banana Overview](https://www.fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 20 free credits on sign-up.
+- [Nano Banana Overview](https://www.fuseaitools.com/home/nano-banana): Google Gemini Flash Image—T2I, I2I, Pro 4K, NB2; 10 free credits on sign-up.
 - [Nano Banana Text to Image](https://www.fuseaitools.com/home/nano-banana/generate): Prompt-only, eleven aspect ratios, PNG/JPEG, up to 5000 chars.
 - [Nano Banana Image to Image](https://www.fuseaitools.com/home/nano-banana/edit): Edit 1–10 images with natural-language prompts.
 - [Nano Banana Pro Generate](https://www.fuseaitools.com/home/nano-banana/pro-generate): 1–10 reference images, 1K/2K/4K resolution.
 - [Nano Banana 2](https://www.fuseaitools.com/home/nano-banana/nano-banana-2): Up to 20k prompt, optional 0–14 images, fifteen aspect ratios.
-- [Seedream Overview](https://www.fuseaitools.com/home/seedream): ByteDance Seedream 5 Lite image tools; pairs with Seedance video; 20 free credits on sign-up.
+- [Seedream Overview](https://www.fuseaitools.com/home/seedream): ByteDance Seedream 5 Lite image tools; pairs with Seedance video; 10 free credits on sign-up.
 - [Seedream 5 Lite Text to Image](https://www.fuseaitools.com/home/seedream/5-lite-text-to-image): Text-to-image at 2K/3K, nine aspect ratios, prompts up to 2995 chars.
 - [Seedream 5 Lite Image to Image](https://www.fuseaitools.com/home/seedream/5-lite-image-to-image): Edit 1–5 images with prompts—style, lighting, or frame prep for Seedance.
 - [Qwen Image](https://www.fuseaitools.com/home/qwen): Qwen image tools overview.
@@ -49,7 +49,7 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 - [Qwen Z-Image](https://www.fuseaitools.com/home/qwen/z-image): Fast T2I with 5 aspect ratios (1:1–9:16), 3–15s generation.
 - [Qwen v2 Text to Image](https://www.fuseaitools.com/home/qwen/v2-text-to-image): Streamlined T2I with 5 aspect ratios, prompt up to 800 chars.
 - [Qwen v2 Image Edit](https://www.fuseaitools.com/home/qwen/v2-image-edit): Reference-based editing with 8 aspect ratios including 21:9.
-- [Imagen 4 Overview](https://www.fuseaitools.com/home/imagen4): Google Imagen 4 text-to-image—Generate, Fast (1–4 images), and Ultra tiers; 20 free credits on sign-up.
+- [Imagen 4 Overview](https://www.fuseaitools.com/home/imagen4): Google Imagen 4 text-to-image—Generate, Fast (1–4 images), and Ultra tiers; 10 free credits on sign-up.
 - [Imagen 4 Generate](https://www.fuseaitools.com/home/imagen4/imagen4-generate): Balanced text-to-image—prompt up to 5000 chars, five aspect ratios, optional negative prompt and seed string.
 - [Imagen 4 Fast](https://www.fuseaitools.com/home/imagen4/imagen4-fast): Speed tier—1–4 images per request, integer seed, five aspect ratios (default 16:9).
 - [Imagen 4 Ultra](https://www.fuseaitools.com/home/imagen4/imagen4-ultra): Flagship fidelity—one high-quality image per prompt; pairs with Veo 3.1 video.
@@ -58,7 +58,7 @@ FuseAITools integrates third-party and in-house models (GPT, Claude, Wan, HappyH
 
 HappyHorse v1 focuses on native audio-video joint generation (lip-sync, ambient sound, multi-shot narrative).
 
-- [HappyHorse Overview](https://www.fuseaitools.com/home/happy-horse): Four v1 workflows with native audio-video sync; 20 free credits on sign-up.
+- [HappyHorse Overview](https://www.fuseaitools.com/home/happy-horse): Four v1 workflows with native audio-video sync; 10 free credits on sign-up.
 - [HappyHorse v1 Text to Video](https://www.fuseaitools.com/home/happy-horse/v1-text-to-video): Generate video from text; 3–15s, 720p/1080p, multiple aspect ratios.
 - [HappyHorse v1 Image to Video](https://www.fuseaitools.com/home/happy-horse/v1-image-to-video): Animate one input image with optional prompt.
 - [HappyHorse v1 Reference to Video](https://www.fuseaitools.com/home/happy-horse/v1-reference-to-video): 1–9 reference images with character placeholders.
@@ -83,7 +83,7 @@ Wan 2.6 covers text, image, and video-to-video (5–15s, multi-shot); Wan 2.7 ad
 
 Runway covers Generate (text or image to 5s/10s at 720p/1080p), Extend (continue a completed generate task), and Aleph (style transform on uploaded video). Typical pipeline: Generate → Extend → Aleph.
 
-- [Runway Overview](https://www.fuseaitools.com/home/runway): Three linked video workflows; 20 free credits on sign-up.
+- [Runway Overview](https://www.fuseaitools.com/home/runway): Three linked video workflows; 10 free credits on sign-up.
 - [Runway Generate](https://www.fuseaitools.com/home/runway/generate): Text-to-video or optional image-to-video—prompt ≤1800, 5s/10s, five aspect ratios.
 - [Runway Extend](https://www.fuseaitools.com/home/runway/extend): Continue a Runway Generate task with prompt ≤1000 at 720p/1080p.
 - [Runway Aleph](https://www.fuseaitools.com/home/runway/aleph): Style-transform uploaded MP4/MOV/AVI (max 10MB) with optional reference image and seed.
@@ -92,13 +92,13 @@ Runway covers Generate (text or image to 5s/10s at 720p/1080p), Extend (continue
 
 Luma Dream Machine on FuseAITools is video modification only—upload MP4/MOV/AVI (max 500MB, 10s), describe changes in English, optional watermark. Not text-to-video; pair with Seedance or Wan for generation.
 
-- [Luma Overview](https://www.fuseaitools.com/home/luma): Single video-modification workflow; 20 free credits on sign-up.
+- [Luma Overview](https://www.fuseaitools.com/home/luma): Single video-modification workflow; 10 free credits on sign-up.
 - [Luma Video Modification](https://www.fuseaitools.com/home/luma/generate): English prompt + uploaded clip; modelKey Luma; per-run credits.
 
 ## Video — Other models
 
 - [Veo3](https://www.fuseaitools.com/home/veo3): Google Veo 3 video tools overview.
-- [Sora](https://www.fuseaitools.com/home/sora): OpenAI Sora video tools overview; two tiers (Sora 2 standard and Sora 2 Pro) plus a standalone watermark remover; 20 free credits on sign-up.
+- [Sora](https://www.fuseaitools.com/home/sora): OpenAI Sora video tools overview; two tiers (Sora 2 standard and Sora 2 Pro) plus a standalone watermark remover; 10 free credits on sign-up.
 - [Sora 2 Text to Video](https://www.fuseaitools.com/home/sora/text-to-video): Standard T2V—prompt ≤10000 chars, portrait/landscape, 10s/15s, optional watermark removal.
 - [Sora 2 Image to Video](https://www.fuseaitools.com/home/sora/image-to-video): Standard I2V—animate up to 3 reference images with prompt, aspect ratio and duration controls.
 - [Sora 2 Pro Text to Video](https://www.fuseaitools.com/home/sora/pro-text-to-video): Pro T2V—standard/high size control, 10s/15s, watermark removal.
@@ -111,7 +111,7 @@ Luma Dream Machine on FuseAITools is video modification only—upload MP4/MOV/AV
 
 Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro (4/8/12s with optional audio), and Seedance 2 multimodal (4–15s, first/last frame, reference media). Pairs with Seedream for ByteDance image-to-video pipelines.
 
-- [Seedance Overview](https://www.fuseaitools.com/home/seedance): Eight workflows from v1 Lite/Pro through Seedance 2; 20 free credits on sign-up.
+- [Seedance Overview](https://www.fuseaitools.com/home/seedance): Eight workflows from v1 Lite/Pro through Seedance 2; 10 free credits on sign-up.
 - [Seedance v1 Lite Text to Video](https://www.fuseaitools.com/home/seedance/v1-lite-text-to-video): Text-to-video with 16:9–9:21 ratios, 480p–1080p, 5s/10s.
 - [Seedance v1 Lite Image to Video](https://www.fuseaitools.com/home/seedance/v1-lite-image-to-video): Animate one image with optional end frame.
 - [Seedance v1 Pro Text to Video](https://www.fuseaitools.com/home/seedance/v1-pro-text-to-video): Pro T2V with 21:9 ultra-wide support.
@@ -125,7 +125,7 @@ Seedance covers ByteDance video models: v1 Lite/Pro (5/10s up to 1080p), 1.5 Pro
 
 Hailuo 2.3 (MiniMax) image-to-video: one image + prompt, 6s/10s at 768P/1080P (10s → 768P only). Pro for max fidelity; Standard for faster drafts. Not text-to-video.
 
-- [Hailuo Overview](https://www.fuseaitools.com/home/hailuo): Pro and Standard I2V tiers; 20 free credits on sign-up.
+- [Hailuo Overview](https://www.fuseaitools.com/home/hailuo): Pro and Standard I2V tiers; 10 free credits on sign-up.
 - [Hailuo 2.3 Pro Image to Video](https://www.fuseaitools.com/home/hailuo/image-to-video-pro): Cinematic I2V—prompt ≤5000, one image, RULE credits by duration and quality.
 - [Hailuo 2.3 Standard Image to Video](https://www.fuseaitools.com/home/hailuo/image-to-video-standard): Same controls as Pro—optimized for iteration speed.
 

@@ -75,7 +75,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '⚡ Kling V3 Turbo on FuseAITools',
-      html: '<strong>Kling V3 Turbo</strong> is the fast lane of the Kling 3.x family on <a href="/" class="seo-inline-link">FuseAITools</a>—<strong>Text to Video</strong> and <strong>Image to Video</strong> with clean controls: prompt up to 2500 characters, duration from <strong>3 to 15 seconds</strong>, output at <strong>720p or 1080p</strong>, billed <strong>per second</strong>. Compared to <a href="/home/kling/v2-5-turbo-text-to-video-pro" class="seo-inline-link">v2.5 Turbo</a>, V3 Turbo lifts the duration ceiling from 10s to 15s and drops the CFG/negative-prompt knobs for a streamlined form. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: '<strong>Kling V3 Turbo</strong> is the fast lane of the Kling 3.x family on <a href="/" class="seo-inline-link">FuseAITools</a>—<strong>Text to Video</strong> and <strong>Image to Video</strong> with clean controls: prompt up to 2500 characters, duration from <strong>3 to 15 seconds</strong>, output at <strong>720p or 1080p</strong>, billed <strong>per second</strong>. Compared to <a href="/home/kling/v2-5-turbo-text-to-video-pro" class="seo-inline-link">v2.5 Turbo</a>, V3 Turbo lifts the duration ceiling from 10s to 15s and drops the CFG/negative-prompt knobs for a streamlined form. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -185,7 +185,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

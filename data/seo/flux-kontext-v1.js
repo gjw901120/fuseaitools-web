@@ -28,7 +28,7 @@ export default {
       },
       {
         question: 'How is Flux Kontext priced on FuseAITools?',
-        answer: 'Fixed credits per successful image—Pro or Max tier. Credits appear on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+        answer: 'Fixed credits per successful image—Pro or Max tier. Credits appear on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
       }
     ],
     '/home/flux-kontext/flux-2-image-to-image': [
@@ -46,7 +46,7 @@ export default {
       },
       {
         question: 'How is Flux Kontext priced on FuseAITools?',
-        answer: 'Fixed credits per successful image—Pro or Max tier. Credits appear on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+        answer: 'Fixed credits per successful image—Pro or Max tier. Credits appear on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
       }
     ],
     '/home/flux-kontext/flux-2-pro-text-to-image': [
@@ -64,7 +64,7 @@ export default {
       },
       {
         question: 'How is Flux Kontext priced on FuseAITools?',
-        answer: 'Fixed credits per successful image—Pro or Max tier. Credits appear on the Generate button. New users get <strong>20 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
+        answer: 'Fixed credits per successful image—Pro or Max tier. Credits appear on the Generate button. New users get <strong>10 free credits</strong>—see <a href="/pricing" class="seo-pricing-link">pricing</a>.'
       }
     ]
   },
@@ -85,7 +85,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎨 Flux Kontext on FuseAITools',
-      html: 'Flux Kontext on <a href="/" class="seo-inline-link">FuseAITools</a> is Black Forest Labs\' governed image line— strong text rendering, photoreal detail, and edit controls on a single tab. Need <strong>1K/2K Flux 2</strong> output or <strong>multi-reference</strong> (1–8 images)? Upgrade to <a href="/home/flux-kontext/flux-2-text-to-image" class="seo-inline-link">Flux 2</a>. Credits show on Generate; new users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Flux Kontext on <a href="/" class="seo-inline-link">FuseAITools</a> is Black Forest Labs\' governed image line— strong text rendering, photoreal detail, and edit controls on a single tab. Need <strong>1K/2K Flux 2</strong> output or <strong>multi-reference</strong> (1–8 images)? Upgrade to <a href="/home/flux-kontext/flux-2-text-to-image" class="seo-inline-link">Flux 2</a>. Credits show on Generate; new users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -227,7 +227,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,

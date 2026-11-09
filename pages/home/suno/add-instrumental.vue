@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Suno Accompaniment',
   description:
-    'Suno Accompaniment on FuseAITools—add backing instruments to uploaded audio via include/exclude tags (no prompt). Models V3.5–V5. 20 free credits on sign-up.',
+    'Suno Accompaniment on FuseAITools—add backing instruments to uploaded audio via include/exclude tags (no prompt). Models V3.5–V5. 10 free credits on sign-up.',
   category: 'audio',
   route: '/home/suno/add-instrumental',
   keywords: ['Suno', 'Accompaniment', 'add instrumental', 'AI music', 'FuseAITools'],

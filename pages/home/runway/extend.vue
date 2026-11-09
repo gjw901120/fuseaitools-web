@@ -17,7 +17,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: 'Runway Video Extend',
   description:
-    'Runway Extend on FuseAITools—continue a completed Runway Generate task with a prompt at 720p/1080p. Task ID from generate history; per-run credits; 20 free on sign-up.',
+    'Runway Extend on FuseAITools—continue a completed Runway Generate task with a prompt at 720p/1080p. Task ID from generate history; per-run credits; 10 free on sign-up.',
   category: 'video',
   route: '/home/runway/extend',
   keywords: ['Runway', 'Runway Extend', 'video extend', 'AI video continuation', 'FuseAITools'],

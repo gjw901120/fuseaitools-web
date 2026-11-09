@@ -201,7 +201,7 @@ import { useToolSEOAsync } from '~/composables/useToolSEO'
 const seoConfig = await useToolSEOAsync({
   name: '{modelLabel} Generator',
   description:
-    '{modelLabel} on FuseAITools—{一句话描述核心能力}. {duration} at {resolution}, prompts up to {promptMaxLength} chars. 20 free credits on sign-up.',
+    '{modelLabel} on FuseAITools—{一句话描述核心能力}. {duration} at {resolution}, prompts up to {promptMaxLength} chars. 10 free credits on sign-up.',
   category: 'video',
   route: '{pageRoute}',
   keywords: ['{modelLabel}', 'multimodal video', 'lightweight AI video', 'first last frame', 'FuseAITools'],

@@ -79,7 +79,7 @@ export default {
     },
     {
       question: 'How is Qwen v1 Classic priced on FuseAITools?',
-      answer: 'Credits depend on the model and image size—the exact amount appears on the Generate button. New users get <strong>20 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
+      answer: 'Credits depend on the model and image size—the exact amount appears on the Generate button. New users get <strong>10 free credits</strong> on sign-up—see <a href="/pricing" class="seo-pricing-link">pricing</a> for plans and member discounts.'
     }
   ],
   sections: [
@@ -93,7 +93,7 @@ export default {
       type: 'prose',
       id: 'positioning-heading',
       title: '🎨 Qwen v1 Classic on FuseAITools',
-      html: 'Qwen v1 Classic on <a href="/" class="seo-inline-link">FuseAITools</a> delivers <strong>three image workflows</strong> with full parameter control—prompts up to <strong>5000 characters</strong>, inference steps, guidance scale, seed, acceleration, and negative prompts. Whether you generate from text, transform existing images, or edit specific elements, Qwen v1 gives you fine-grained tuning for every task. New users receive <strong>20 free credits</strong> on sign-up.'
+      html: 'Qwen v1 Classic on <a href="/" class="seo-inline-link">FuseAITools</a> delivers <strong>three image workflows</strong> with full parameter control—prompts up to <strong>5000 characters</strong>, inference steps, guidance scale, seed, acceleration, and negative prompts. Whether you generate from text, transform existing images, or edit specific elements, Qwen v1 gives you fine-grained tuning for every task. New users receive <strong>10 free credits</strong> on sign-up.'
     },
     {
       type: 'features',
@@ -261,7 +261,7 @@ export default {
   tips: [
     {
       pricing: true,
-      html: '💳 New users get <strong>20 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
+      html: '💳 New users get <strong>10 free credits</strong> on sign-up. <a href="/pricing" class="seo-pricing-link">View pricing</a> for subscription discounts and credit top-ups.'
     },
     {
       pricing: false,
