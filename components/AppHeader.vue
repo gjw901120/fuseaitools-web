@@ -34,12 +34,40 @@
             
             <!-- 已登录状态 -->
             <div v-else class="user-info">
-              <img 
-                :src="userAvatar" 
-                :alt="userName || 'User'" 
-                class="user-avatar" 
-                @click="toggleUserMenu" 
-              />
+              <div class="user-avatar-wrap" :class="{ 'is-subscription': isSubscriptionUser }">
+                <img 
+                  :src="userAvatar" 
+                  :alt="userName || 'User'" 
+                  class="user-avatar" 
+                  @click="toggleUserMenu" 
+                />
+                <!-- 订阅用户：外边框上展示折扣徽标 -->
+                <span v-if="isSubscriptionUser" class="user-avatar-discount">{{ discountBadgeText }}</span>
+              </div>
+              <!-- 积分额度：默认展示可用额度，悬停查看分项明细，点击进入 credits 详情页 -->
+              <NuxtLink
+                to="/credits"
+                class="credits-chip"
+                :title="'View credits detail'"
+                @click="userMenuOpen = false"
+              >
+                <i class="fas fa-coins"></i>
+                <span class="credits-chip-value">{{ availableCreditsText }}</span>
+                <div class="credits-tooltip">
+                  <div class="credits-tooltip-row">
+                    <span>In Progress (Frozen)</span>
+                    <span>{{ blockedCreditsText }}</span>
+                  </div>
+                  <div class="credits-tooltip-row">
+                    <span>Recharge Credits</span>
+                    <span>{{ rechargeCreditsText }}</span>
+                  </div>
+                  <div class="credits-tooltip-row">
+                    <span>Subscription Credits</span>
+                    <span>{{ subscriptionCreditsText }}</span>
+                  </div>
+                </div>
+              </NuxtLink>
               <span v-if="userName" class="user-name">{{ userName }}</span>
               
               <!-- 用户菜单下拉 -->
@@ -149,6 +177,17 @@ const { isFluxThemeRoute } = useFluxThemeRoute()
 const { user, isAuthenticated, logout } = useAuth()
 const { drawerOpen, closeDrawer, toggleDrawer } = useMobileNav()
 
+// 积分账户信息（GET /api/user/credits）：头像右侧额度展示 + 订阅折扣徽标
+const {
+  isSubscription: isSubscriptionUser,
+  discountBadgeText,
+  availableCreditsText,
+  blockedCreditsText,
+  rechargeCreditsText,
+  subscriptionCreditsText,
+  fetchUserCredits
+} = useUserCredits()
+
 // 计算用户头像和用户名
 const userAvatar = computed(() => {
   return user.value?.avatar && user.value.avatar.trim() 
@@ -218,6 +257,11 @@ const handleEmailLogin = (email) => {
 // 点击外部关闭用户菜单 + 路由切换 / ESC 关闭抽屉
 const route = useRoute()
 onMounted(() => {
+  // 已登录则拉取积分额度；窗口重新获得焦点时刷新，保证余额接近实时
+  if (isAuthenticated.value) fetchUserCredits()
+  const handleWindowFocus = () => fetchUserCredits()
+  window.addEventListener('focus', handleWindowFocus)
+
   const handleClickOutside = (e) => {
     if (userMenuOpen.value && !e.target.closest('.user-info') && !e.target.closest('.user-menu')) {
       userMenuOpen.value = false
@@ -233,7 +277,13 @@ onMounted(() => {
   onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside)
     document.removeEventListener('keydown', handleEscape)
+    window.removeEventListener('focus', handleWindowFocus)
   })
+})
+
+// 登录状态变化时同步积分额度（登录后拉取，登出清空由 composable 内部处理）
+watch(isAuthenticated, (val) => {
+  if (val) fetchUserCredits()
 })
 
 // 跨页面跳转后确保抽屉关闭（例如从抽屉点了非当前监听项的链接）
@@ -598,6 +648,107 @@ watch(() => route.fullPath, () => closeDrawer())
   transform-origin: right center;
 }
 
+/* 订阅用户头像外边框容器：渐变圆环 + 底部折扣徽标 */
+.user-avatar-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.user-avatar-wrap.is-subscription {
+  padding: 2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #f59e0b);
+}
+
+.user-avatar-discount {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 4px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* 积分额度 chip：默认仅展示可用额度 */
+.credits-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #374151;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.credits-chip:hover {
+  border-color: #c7d2fe;
+  background: #eef2ff;
+  color: #667eea;
+}
+
+.credits-chip i {
+  font-size: 0.65rem;
+  color: #f59e0b;
+}
+
+/* 悬停明细浮层：展示冻结 / 充值 / 订阅分项 */
+.credits-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 190px;
+  padding: 0.6rem 0.75rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+  z-index: 1100;
+  pointer-events: none;
+}
+
+.credits-chip:hover .credits-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.credits-tooltip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.credits-tooltip-row span:last-child {
+  color: #1f2937;
+  font-weight: 700;
+}
+
 .user-avatar {
   width: 32px;
   height: 32px;
@@ -710,6 +861,32 @@ watch(() => route.fullPath, () => closeDrawer())
 
 .app-header--flux .user-menu-item:hover {
   background: var(--flux-card-hover) !important;
+}
+
+.app-header--flux .credits-chip {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  color: var(--flux-foreground) !important;
+}
+
+.app-header--flux .credits-chip:hover {
+  border-color: var(--flux-primary) !important;
+  background: var(--flux-card-hover) !important;
+  color: var(--flux-primary) !important;
+}
+
+.app-header--flux .credits-tooltip {
+  background: var(--flux-card) !important;
+  border-color: var(--flux-border) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.app-header--flux .credits-tooltip-row {
+  color: var(--flux-muted) !important;
+}
+
+.app-header--flux .credits-tooltip-row span:last-child {
+  color: var(--flux-foreground) !important;
 }
 
 .app-header--flux .mobile-menu-btn {
