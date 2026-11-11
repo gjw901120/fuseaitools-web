@@ -41,7 +41,7 @@
       <div class="footer-bottom">
         <div class="footer-bottom-content">
           <div class="copyright">
-            <p>&copy; 2026 Fuse Tech . LTD. All rights reserved.</p>
+            <p>&copy; 2026 Fuse Digital Tech. All rights reserved.</p>
           </div>
         </div>
       </div>
